@@ -32,8 +32,8 @@ An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering t
 
 ### 3. Automated Guardrails (The AI Bridge)
 * **CI/CD Integration:** Links to workflows running `axe-core` or `Lighthouse`.
-* **Axe Rules Coverage:** Explicit mapping of which rules are automated ([Example](./AXE_RULES_COVERAGE.md)).
-* **Best Practice Reference:** Project-specific guidance for complex components like [SVGs](./SVG_ACCESSIBILITY_BEST_PRACTICES.md) or [Mermaid diagrams](./MERMAID_ACCESSIBILITY_BEST_PRACTICES.md).
+* **Axe Rules Coverage:** Explicit mapping of which rules are automated ([Example](./examples/AXE_RULES_COVERAGE.md)).
+* **Best Practice Reference:** Project-specific guidance for complex components like [SVGs](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md), [Mermaid diagrams](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md), [keyboard interactions](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md), and [forms](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md).
 
 ---
 
