@@ -1590,12 +1590,12 @@ sources:
   - id: section508-gov
     domain: "Section508.gov"
     url: "section508.gov"
-    full_url: "https://section508.gov"
-    best_for: "US Government Compliance"
-    description: "Official U.S. government resource for Section 508 standards and compliance for federal IT."
+    full_url: "https://section508.gov/"
+    best_for: "U.S. federal accessibility policy and implementation guidance"
+    description: "Official U.S. government resource for Section 508 requirements, policy, and practical implementation guidance for federal ICT accessibility."
     authority_level: "to_review"
     topic_tags: []
-    jurisdiction: "global"
+    jurisdiction: "US"
     wcag_version: []
     last_reviewed: null
     owner: null
@@ -1873,6 +1873,34 @@ sources:
     full_url: "https://accessibility.civicactions.com/"
     best_for: "automation workflows, practical implementation guides, open-source accessibility operations"
     description: "CivicActions accessibility engineering resource hub with implementation-focused guidance, testing practices, and accessibility workflow patterns."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
+  - id: wcag-understanding-docs
+    domain: "W3C WCAG Understanding Docs"
+    url: "w3.org/WAI/WCAG22/Understanding/"
+    full_url: "https://www.w3.org/WAI/WCAG22/Understanding/"
+    best_for: "criterion-level interpretation and intent for WCAG 2.2"
+    description: "Official W3C explanatory guidance for each WCAG success criterion, including intent, benefits, examples, and related techniques."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
+  - id: wcag-techniques-docs
+    domain: "W3C WCAG Techniques"
+    url: "w3.org/WAI/WCAG22/Techniques/"
+    full_url: "https://www.w3.org/WAI/WCAG22/Techniques/"
+    best_for: "implementation patterns and testable techniques for WCAG 2.2"
+    description: "Official W3C techniques repository with sufficient/advisory techniques and common failure patterns mapped to WCAG success criteria."
     authority_level: "to_review"
     topic_tags: []
     jurisdiction: "global"
