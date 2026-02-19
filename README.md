@@ -1,0 +1,2 @@
+# ACCESSIBILITY.md
+A template
