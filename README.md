@@ -1,2 +1,80 @@
 # ACCESSIBILITY.md
-A template
+
+> **The open standard for project accessibility transparency, governance, and AI-assisted inclusion.**
+
+Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md`** defines the inclusive state of a project. It is a machine-readable and human-navigable manifest that tracks a project’s commitment to accessibility (a11y) through metrics, guardrails, and automated enforcement.
+
+---
+
+## 🚀 Why This Exists
+
+Modern software is built by two groups: **Humans** and **AI Agents**. Currently, neither has a reliable place to look for a project's accessibility "Source of Truth."
+
+1.  **For Users:** It provides transparency on what works, what doesn't, and how to report barriers.
+2.  **For Maintainers:** It standardizes how a11y debt is tracked and how contributors are expected to code.
+3.  **For AI Agents:** It provides explicit "System Instructions" for LLMs (like Copilot, Cursor, or GPT-4) to ensure they don't generate inaccessible code patterns.
+
+---
+
+## 🛠 The Framework
+
+An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering three core pillars:
+
+### 1. Transparency & Disclosure
+* **Conformance Level:** Current WCAG status (e.g., 2.2 AA).
+* **Known Gaps:** Honest disclosure of current barriers.
+* **Assistive Tech:** Actively tested with.
+
+### 2. Operational Governance
+* **Taxonomy:** Standardized labels for issues (e.g., `accessibility`, `color-contrast`).
+* **Definition of Done:** Requirement that no PR is merged without passing a11y linting.
+* **Severity Matrix:** How a11y bugs are prioritized compared to feature requests.
+
+### 3. Automated Guardrails (The AI Bridge)
+* **CI/CD Integration:** Links to workflows running `axe-core` or `Lighthouse`.
+* **Axe Rules Coverage:** Explicit mapping of which rules are automated ([Example](./AXE_RULES_COVERAGE.md)).
+* **Best Practice Reference:** Project-specific guidance for complex components like [SVGs](./SVG_ACCESSIBILITY_BEST_PRACTICES.md) or [Mermaid diagrams](./MERMAID_ACCESSIBILITY_BEST_PRACTICES.md).
+
+---
+
+## 📊 The "Living Metric" Table
+We recommend including a dynamic table in your file to track progress. This turns a static statement into a measurable pulse.
+
+| Metric | Status / Source |
+| :--- | :--- |
+| **A11y Issue Health** | `Open: 12` / `Closed (Last 30d): 8` |
+| **Automated Pass Rate** | `96%` (via GitHub Actions) |
+| **CI/CD Enforcement** | 🛑 **Strict** (Build fails on a11y errors) |
+| **Contributor Guide** | [Read the A11y Guide](./CONTRIBUTING_A11Y.md) |
+
+---
+
+## 📖 How to Use This Repo
+
+This repository provides templates and guidance to help you implement `ACCESSIBILITY.md` in your own projects.
+
+* **/templates:** Copy-paste Markdown templates for different project types (Web Apps, Libraries, Docs).
+* **/spec:** The technical specification for making these files machine-readable.
+* **/examples:** Real-world instances of `ACCESSIBILITY.md` in the wild.
+* **/tools:** GitHub Action snippets to automate the metrics in your manifest.
+
+---
+
+## 🤖 AI Agent Integration
+
+To ensure your AI coding assistant respects your accessibility standards, add this line to your `.cursorrules`, `AGENTS.md`, or system prompt:
+
+> *"Before modifying or creating UI components, read `ACCESSIBILITY.md` and ensure all changes comply with the established `AXE_RULES_REFERENCE.md` and component-specific best practices."*
+
+---
+
+## 🤝 Contributing
+
+We are looking for feedback on the taxonomy and automation workflows. 
+* **Found a gap?** Open an issue.
+* **Have a better workflow?** Send a PR.
+* **Using this?** Let us know so we can add you to the "Adopters" list.
+
+---
+
+**Would you like me to generate a sample `specification.md` next to define the exact Markdown headings and data structures for this standard?**
