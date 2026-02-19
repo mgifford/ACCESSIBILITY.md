@@ -1,0 +1,10 @@
+exclude_mail = true
+accept = [200, 206, 429]
+max_concurrency = 12
+
+# Known local placeholders that should not be treated as broken web links.
+exclude = [
+  "^http://localhost",
+  "^http://127\\.0\\.0\\.1",
+  "^https://example\\.com"
+]
