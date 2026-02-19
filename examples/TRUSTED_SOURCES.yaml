@@ -1867,3 +1867,17 @@ sources:
     owner: null
     license: null
     status: "active"
+  - id: civicactions-accessibility
+    domain: "CivicActions Accessibility"
+    url: "accessibility.civicactions.com"
+    full_url: "https://accessibility.civicactions.com/"
+    best_for: "automation workflows, practical implementation guides, open-source accessibility operations"
+    description: "CivicActions accessibility engineering resource hub with implementation-focused guidance, testing practices, and accessibility workflow patterns."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
