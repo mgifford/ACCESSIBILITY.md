@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: accessibility-checks
+        name: Run accessibility checks
+        entry: bash -lc 'npm run lint:a11y && npm run test:a11y:changed'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
