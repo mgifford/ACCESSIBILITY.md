@@ -76,9 +76,14 @@ To ensure your AI coding assistant respects your accessibility standards, add th
 ## 🤝 Contributing
 
 We are looking for feedback on the taxonomy and automation workflows. 
+* **Read the guide:** See [CONTRIBUTING.md](./CONTRIBUTING.md).
 * **Found a gap?** Open an issue.
 * **Have a better workflow?** Send a PR.
 * **Using this?** Let us know so we can add you to the "Adopters" list.
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
