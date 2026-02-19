@@ -50,7 +50,7 @@ We recommend including a dynamic table in your file to track progress. This turn
 | **A11y Issue Health** | `Open: 12` / `Closed (Last 30d): 8` |
 | **Automated Pass Rate** | `96%` (via GitHub Actions) |
 | **CI/CD Enforcement** | 🛑 **Strict** (Build fails on a11y errors) |
-| **Contributor Guide** | [Read the A11y Guide](./CONTRIBUTING_A11Y.md) |
+| **Contributor Guide** | [Read the A11y Guide](./examples/CONTRIBUTING_A11Y.md) |
 
 ---
 
