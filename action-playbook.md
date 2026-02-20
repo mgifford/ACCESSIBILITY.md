@@ -27,13 +27,13 @@ It is intentionally practical: short checklists, clear ownership, and measurable
 - Publish a short public commitment in `ACCESSIBILITY.md`.
 - Enforce CI gates for accessibility checks and WCAG compliance on every PR.
 - Run axe-core or Lighthouse on every PR against the live site URL.
-- Start with realistic thresholds (for example 90+ accessibility score) to stabilize signal quality.
+- Start with realistic thresholds (for example 95+ accessibility score) to catch meaningful issues while stabilizing signal quality.
 
 ### Phase 2: Full template adoption after ownership is clear
 
 - Add full sections for ownership, scope, exceptions, and governance.
 - Establish metric baselines and monthly targets per owner.
-- Tighten CI and Lighthouse gates progressively toward 100/100/100/100.
+- Tighten CI and Lighthouse gates progressively toward 100/100/100/100 (Performance/Accessibility/Best Practices/SEO).
 
 ## Weekly workflow (team)
 
@@ -99,7 +99,7 @@ It is intentionally practical: short checklists, clear ownership, and measurable
 - No generation of complex ARIA patterns without explicit review.
 - No AI-generated image alt text without human verification.
 - No automated fixes to accessibility violations without validation.
-- No AI call when established accessible component patterns exist.
+- No AI generation when established accessible component patterns exist.
 
 ### AI logging and accountability
 
