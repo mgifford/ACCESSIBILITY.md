@@ -112,6 +112,10 @@ title: ACCESSIBILITY.md
         <h3>Prompt Generator Tool</h3>
         <p><a href="./prompt-generator.html">Open the prompt generator</a></p>
       </article>
+      <article class="card">
+        <h3>Action Playbook</h3>
+        <p><a href="./action-playbook.html">Practical accessibility workflow guide</a></p>
+      </article>
     </div>
   </div>
 </section>

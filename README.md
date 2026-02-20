@@ -71,6 +71,7 @@ For local setup and Jekyll build instructions, see [INSTALL.txt](./INSTALL.txt).
 * **/examples:** Reference docs for scanner integration, automation policy, and component-specific best practices.
 * **/examples/README.md:** Human-friendly index of example files and prompt starter.
 * **/prompt-generator.md:** Lightweight form-based generator for copy/download-ready ACCESSIBILITY.md prompts.
+* **/action-playbook.md:** Practical workflow guide for teams and AI agents to implement accessibility through measurable, repeatable actions.
 * **/tools:** GitHub Action snippets to automate the metrics in your manifest.
 
 ---
