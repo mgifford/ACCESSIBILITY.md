@@ -31,3 +31,7 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 ## Prompt Starter
 
 - [ACCESSIBILITY_PROMPT_STARTER.md](./ACCESSIBILITY_PROMPT_STARTER.html)
+
+## Action Playbook
+
+- [Action Playbook](../action-playbook.html) - Practical workflow guide for teams and AI agents
