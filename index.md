@@ -107,6 +107,10 @@ title: ACCESSIBILITY.md
         <h3>Prompt Starter</h3>
         <p><a href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">examples/ACCESSIBILITY_PROMPT_STARTER</a></p>
       </article>
+      <article class="card">
+        <h3>Prompt Generator Tool</h3>
+        <p><a href="./prompt-generator.html">Open the prompt generator</a></p>
+      </article>
     </div>
   </div>
 </section>

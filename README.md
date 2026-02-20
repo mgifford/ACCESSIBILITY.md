@@ -75,6 +75,7 @@ For project-site parity, use `http://127.0.0.1:4000/ACCESSIBILITY.md/`.
 * **/spec:** The technical specification for making these files machine-readable.
 * **/examples:** Reference docs for scanner integration, automation policy, and component-specific best practices.
 * **/examples/README.md:** Human-friendly index of example files and prompt starter.
+* **/prompt-generator.md:** Lightweight form-based generator for copy/download-ready ACCESSIBILITY.md prompts.
 * **/tools:** GitHub Action snippets to automate the metrics in your manifest.
 
 ---

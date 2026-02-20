@@ -193,6 +193,34 @@ section h2 {
   color: var(--muted);
 }
 
+.generator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin: 0.6rem 0 0.35rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
 .site-footer {
   margin-top: auto;
   border-top: 1px solid var(--line);
@@ -209,6 +237,10 @@ section h2 {
   }
 
   .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .generator-grid {
     grid-template-columns: 1fr;
   }
 }
