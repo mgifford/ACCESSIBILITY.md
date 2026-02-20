@@ -4,6 +4,11 @@ Thanks for your interest in improving ACCESSIBILITY.md.
 
 We welcome contributions from the community, especially from people with disabilities (PwD) and others with lived accessibility experience. Your feedback helps ensure this project remains practical, inclusive, and grounded in real-world use.
 
+> [!IMPORTANT]
+> **Participation from people with disabilities is highly valued in this project.**
+> We consider lived accessibility experience essential to the quality of this work.
+> You are welcome to contribute without disclosing personal disability status.
+
 ## Ways to contribute
 
 - Open issues for gaps, barriers, or unclear guidance.
