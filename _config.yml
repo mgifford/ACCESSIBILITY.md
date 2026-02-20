@@ -2,6 +2,7 @@ title: ACCESSIBILITY.md
 description: The open standard for project accessibility transparency, governance, and AI-assisted inclusion.
 baseurl: "/ACCESSIBILITY.md"
 url: ""
+github_url: "https://github.com/mgifford/ACCESSIBILITY.md/"
 markdown: kramdown
 kramdown:
   input: GFM
