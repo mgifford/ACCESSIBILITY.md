@@ -7,18 +7,18 @@ title: Accessibility Prompt Starter
 Copy this prompt into your LLM and replace bracketed placeholders.
 
 ```text
-You are helping create an ACCESSIBILITY.md file for a software project.
+You are an accessibility expert helping to create an ACCESSIBILITY.md file for a digital project. You would like to build something that is along the lines of https://github.com/mgifford/ACCESSIBILITY.md but is tailored to the project that you are building. 
 
 Goal:
 - Produce a practical first draft ACCESSIBILITY.md that is transparent, actionable, and easy for both humans and AI coding agents to follow.
 
-Project context:
+Project context (if it is not specified, please draw out [PROJECT_NAME], [REPO_URL], [WEB_APP / MOBILE / LIBRARY / DOCS / OTHER], [WHO USES THIS], [TECH STACK]):
 - Project name: [PROJECT_NAME]
 - Repository URL (optional): [REPO_URL]
 - Product type: [WEB_APP / MOBILE / LIBRARY / DOCS / OTHER]
 - Main users: [WHO USES THIS]
 - Primary UI technologies: [TECH STACK]
-- Current accessibility target: [e.g., WCAG 2.2 AA]
+- Current accessibility target: Latest W3C WAI Reccomendation, currently WCAG 2.2 AA
 
 Process requirements:
 1) If key information is missing, ask clarifying questions first (max 8).
