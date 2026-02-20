@@ -1,0 +1,21 @@
+ACCESSIBILITY.md Local Installation & Build
+=========================================
+
+This project uses Jekyll for local preview.
+
+Prerequisites
+-------------
+- Ruby and Bundler installed
+
+Install dependencies
+--------------------
+bundle install
+
+Run locally
+-----------
+bundle exec jekyll serve
+
+Open in browser
+---------------
+- http://127.0.0.1:4000
+- Project-site parity: http://127.0.0.1:4000/ACCESSIBILITY.md/

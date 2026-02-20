@@ -4,6 +4,10 @@
 
 Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md`** defines the inclusive state of a project. It is a machine-readable and human-navigable manifest that tracks a project’s commitment to accessibility (a11y) through metrics, guardrails, and automated enforcement.
 
+## Quick Links
+
+- Installation: [INSTALL.txt](./INSTALL.txt)
+
 ---
 
 ## 🚀 Why This Exists
@@ -58,18 +62,9 @@ We recommend including a dynamic table in your file to track progress. This turn
 
 This repository provides templates and guidance to help you implement `ACCESSIBILITY.md` in your own projects.
 
-### Website preview (Jekyll)
+### Local install and build
 
-The repository now includes a lightweight Jekyll site (styled to match the visual structure of agents.md more closely).
-
-```bash
-bundle install
-bundle exec jekyll serve
-```
-
-Then open `http://127.0.0.1:4000`.
-
-For project-site parity, use `http://127.0.0.1:4000/ACCESSIBILITY.md/`.
+For local setup and Jekyll build instructions, see [INSTALL.txt](./INSTALL.txt).
 
 * **/templates:** Copy-paste Markdown templates for different project types (Web Apps, Libraries, Docs).
 * **/spec:** The technical specification for making these files machine-readable.
