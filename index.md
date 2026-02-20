@@ -20,8 +20,9 @@ title: ACCESSIBILITY.md
         <a class="button secondary" href="https://github.com/mgifford/ACCESSIBILITY.md">View on GitHub</a>
       </div>
     </div>
-    <aside class="code-card" aria-label="Sample ACCESSIBILITY.md snippet">
-      <h2>Sample ACCESSIBILITY.md</h2>
+    <aside class="code-card" aria-label="Simple sample ACCESSIBILITY.md snippet">
+      <h2>Simple Sample ACCESSIBILITY.md</h2>
+      <p><a href="./ACCESSIBILITY-template.md">See full ACCESSIBILITY-template.md</a></p>
       <pre><code># ACCESSIBILITY.md
 
 ## Conformance
