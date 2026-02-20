@@ -1,3 +1,7 @@
+---
+title: SVG Accessibility Best Practices
+---
+
 # SVG Accessibility Best Practices
 
 This document defines accessibility practices for SVG files used on the web.

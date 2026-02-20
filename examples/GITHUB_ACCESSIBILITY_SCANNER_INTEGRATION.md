@@ -1,3 +1,7 @@
+---
+title: GitHub Accessibility Scanner Integration
+---
+
 # GitHub Accessibility Scanner Integration
 
 This guide shows how to integrate GitHub's AI-powered Accessibility Scanner into your repository as part of your `ACCESSIBILITY.md` guardrails.

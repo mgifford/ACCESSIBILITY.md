@@ -1,3 +1,7 @@
+---
+title: Mermaid Accessibility Best Practices
+---
+
 # Mermaid Accessibility Best Practices
 
 AGPL-3.0-or-later License - See LICENSE file for full text  

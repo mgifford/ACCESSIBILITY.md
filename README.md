@@ -58,9 +58,23 @@ We recommend including a dynamic table in your file to track progress. This turn
 
 This repository provides templates and guidance to help you implement `ACCESSIBILITY.md` in your own projects.
 
+### Website preview (Jekyll)
+
+The repository now includes a lightweight Jekyll site (styled to match the visual structure of agents.md more closely).
+
+```bash
+bundle install
+bundle exec jekyll serve
+```
+
+Then open `http://127.0.0.1:4000`.
+
+For project-site parity, use `http://127.0.0.1:4000/ACCESSIBILITY.md/`.
+
 * **/templates:** Copy-paste Markdown templates for different project types (Web Apps, Libraries, Docs).
 * **/spec:** The technical specification for making these files machine-readable.
 * **/examples:** Reference docs for scanner integration, automation policy, and component-specific best practices.
+* **/examples/README.md:** Human-friendly index of example files and prompt starter.
 * **/tools:** GitHub Action snippets to automate the metrics in your manifest.
 
 ---

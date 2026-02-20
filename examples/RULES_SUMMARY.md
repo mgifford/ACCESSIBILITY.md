@@ -1,3 +1,7 @@
+---
+title: Rules Summary
+---
+
 # Axe 4.11 Test Coverage - Quick Reference
 
 ## 📋 What's Tested

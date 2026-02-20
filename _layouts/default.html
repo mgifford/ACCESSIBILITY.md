@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main>{{ content }}</main>
+      <footer class="site-footer">
+        <p>
+          <strong>ACCESSIBILITY.md</strong> is an open documentation standard for
+          accessibility transparency and governance.
+        </p>
+        <p>
+          <a href="{{ '/README.md' | relative_url }}">README</a>
+          ·
+          <a href="{{ '/CONTRIBUTING.md' | relative_url }}">Contributing</a>
+          ·
+          <a href="{{ '/LICENSE' | relative_url }}">License</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

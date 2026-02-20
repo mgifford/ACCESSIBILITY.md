@@ -1,3 +1,7 @@
+---
+title: Test Coverage Documentation
+---
+
 # Test Coverage Documentation
 
 This directory contains comprehensive accessibility test pages designed to validate axe-core 4.11 rule coverage.

@@ -1,0 +1,13 @@
+title: ACCESSIBILITY.md
+description: The open standard for project accessibility transparency, governance, and AI-assisted inclusion.
+baseurl: "/ACCESSIBILITY.md"
+url: ""
+markdown: kramdown
+kramdown:
+  input: GFM
+plugins: []
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

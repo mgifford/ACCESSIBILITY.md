@@ -1,3 +1,7 @@
+---
+title: Contributing Accessibility Guide
+---
+
 # Contributing Accessibility Guide
 
 This guide defines minimum accessibility expectations for all contributions.

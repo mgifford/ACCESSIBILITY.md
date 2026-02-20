@@ -1,3 +1,7 @@
+---
+title: Shift-Left Accessibility Automation
+---
+
 # Shift-Left Accessibility Automation
 
 This guide focuses on preventing accessibility issues from entering commits in the first place.

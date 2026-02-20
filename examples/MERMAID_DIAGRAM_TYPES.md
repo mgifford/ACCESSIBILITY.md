@@ -1,3 +1,7 @@
+---
+title: Mermaid Diagram Types
+---
+
 # Mermaid Diagram Types Reference
 
 **File**: `MERMAID_DIAGRAM_TYPES.json`

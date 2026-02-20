@@ -1,3 +1,7 @@
+---
+title: Axe Rules Coverage
+---
+
 # Axe 4.11 Rules Coverage Summary
 
 This document outlines the accessibility issues that axe-core 4.11 can detect and which test pages cover them.

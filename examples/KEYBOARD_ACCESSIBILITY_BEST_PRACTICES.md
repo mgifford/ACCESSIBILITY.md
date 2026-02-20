@@ -1,3 +1,7 @@
+---
+title: Keyboard Accessibility Best Practices
+---
+
 # Keyboard Accessibility Best Practices
 
 This document defines project-level expectations for keyboard operability.

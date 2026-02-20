@@ -1,3 +1,7 @@
+---
+title: Axe Rules Reference
+---
+
 # Axe 4.11 Rules - Detailed Test Coverage Map
 
 This document maps each axe-core 4.11 rule to specific test pages and describes what violations to expect.
