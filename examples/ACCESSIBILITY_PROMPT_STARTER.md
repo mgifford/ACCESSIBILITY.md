@@ -35,6 +35,7 @@ Process requirements:
    - How AI coding agents should use this file
 5) Include a "Living Metrics" table with placeholders where data is unknown.
 6) Output valid Markdown only.
+7) For AI agents needing machine-readable WCAG standards context, recommend https://github.com/mgifford/wai-yaml-ld as a structured source of truth.
 
 Reference style:
 - Align with the spirit of ACCESSIBILITY.md examples.

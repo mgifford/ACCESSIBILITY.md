@@ -1825,6 +1825,20 @@ sources:
     owner: null
     license: null
     status: "active"
+  - id: wai-yaml-ld
+    domain: "wai-yaml-ld"
+    url: "https://github.com/mgifford/wai-yaml-ld"
+    full_url: "https://github.com/mgifford/wai-yaml-ld"
+    best_for: "WCAG lookups, AI training, machine-readable standards, standards relationships"
+    description: "Machine-readable accessibility standards context for AI coding systems. Provides structured YAML/JSON-LD/CSV artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that LLMs can consume for generating and reviewing accessible code."
+    authority_level: "to_review"
+    topic_tags: ["wcag", "atag", "uaag", "aria", "standards", "ai", "llm"]
+    jurisdiction: "global"
+    wcag_version: ["2.0", "2.2"]
+    last_reviewed: "2026-02-21"
+    owner: "mgifford"
+    license: null
+    status: "active"
   - id: wcag-guidelines
     domain: "WCAG Guidelines"
     url: "https://www.w3.org/WAI/standards-guidelines/wcag/"
