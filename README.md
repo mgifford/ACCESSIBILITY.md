@@ -40,7 +40,7 @@ An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering t
 * **GitHub Accessibility Scanner:** AI-powered accessibility scans with issue creation via `github/accessibility-scanner` ([Integration Guide](./examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)).
 * **Shift-Left Prevention:** Stop accessibility regressions before merge with pre-commit hooks and CI gates ([Guide](./examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md)).
 * **Copy-Ready Samples:** Starter files for CI and local guardrails ([Workflow](./examples/A11Y_SHIFT_LEFT_WORKFLOW.yml), [pre-commit config](./examples/PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml)).
-* **Trusted Source Registry:** Machine-readable list of vetted accessibility references for AI retrieval and citation policies ([YAML](./examples/TRUSTED_SOURCES.yaml)).
+* **Trusted Source Registry:** Machine-readable list of vetted accessibility references for AI retrieval and citation policies ([YAML](./examples/TRUSTED_SOURCES.yaml)), including [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured WCAG/ARIA/ATAG standards data.
 * **Link Integrity Checks:** Scheduled and PR-time validation of documentation links ([Workflow](./.github/workflows/link-check.yml)).
 * **Best Practice Reference:** Project-specific guidance for complex components like [SVGs](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md), [Mermaid diagrams](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md), [keyboard interactions](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md), and [forms](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md).
 
@@ -81,6 +81,14 @@ For local setup and Jekyll build instructions, see [INSTALL.txt](./INSTALL.txt).
 To ensure your AI coding assistant respects your accessibility standards, add this line to your `.cursorrules`, `AGENTS.md`, or system prompt:
 
 > *"Before modifying or creating UI components, read `ACCESSIBILITY.md` and ensure all changes comply with the established `AXE_RULES_REFERENCE.md` and component-specific best practices."*
+
+### Machine-Readable Standards for AI
+
+For LLMs to provide more accurate, standards-grounded accessibility guidance, consider using [**wai-yaml-ld**](https://github.com/mgifford/wai-yaml-ld) as a structured source of truth. This repository provides machine-readable YAML/JSON-LD artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that help AI agents:
+* Map implementation choices to specific standards relationships
+* Separate normative vs informative references
+* Produce auditable, standards-aligned recommendations
+* Explain the reasoning behind accessibility advice
 
 ---
 

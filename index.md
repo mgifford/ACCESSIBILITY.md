@@ -99,6 +99,7 @@ title: ACCESSIBILITY.md
       <article class="card">
         <h3>Trusted Sources</h3>
         <p><a href="./examples/TRUSTED_SOURCES.yaml">examples/TRUSTED_SOURCES.yaml</a></p>
+        <p>Includes <a href="https://github.com/mgifford/wai-yaml-ld">wai-yaml-ld</a> for machine-readable WCAG standards</p>
       </article>
       <article class="card">
         <h3>Examples Index</h3>
