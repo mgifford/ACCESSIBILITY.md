@@ -82,6 +82,8 @@ To ensure your AI coding assistant respects your accessibility standards, add th
 
 > *"Before modifying or creating UI components, read `ACCESSIBILITY.md` and ensure all changes comply with the established `AXE_RULES_REFERENCE.md` and component-specific best practices."*
 
+For a comprehensive guide on AI agent instructions for accessibility, see [AGENTS.md](./AGENTS.md), which provides detailed requirements, testing guidelines, and example prompts for AI coding assistants.
+
 ### Machine-Readable Standards for AI
 
 For LLMs to provide more accurate, standards-grounded accessibility guidance, consider using [**wai-yaml-ld**](https://github.com/mgifford/wai-yaml-ld) as a structured source of truth. This repository provides machine-readable YAML/JSON-LD artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that help AI agents:
