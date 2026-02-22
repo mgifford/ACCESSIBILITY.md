@@ -117,6 +117,14 @@ title: ACCESSIBILITY.md
         <h3>Action Playbook</h3>
         <p><a href="./action-playbook.html">Practical accessibility workflow guide</a></p>
       </article>
+      <article class="card">
+        <h3>AI Agent Instructions</h3>
+        <p><a href="./AGENTS.html">AGENTS.md - AI coding assistant guidance</a></p>
+      </article>
+      <article class="card">
+        <h3>Contributing Guide</h3>
+        <p><a href="./CONTRIBUTING.html">CONTRIBUTING.md - How to contribute to this project</a></p>
+      </article>
     </div>
   </div>
 </section>
