@@ -155,7 +155,9 @@ nav {
 }
 
 #theme-toggle {
-  margin-left: auto; /* In flexbox with space-between, positions toggle at right edge */
+  /* Note: Parent uses justify-content: space-between for spacing.
+     margin-left: auto is a fallback if additional header items are added. */
+  margin-left: auto;
   padding: 0.5rem;
   border: 1px solid var(--color-border);
   background-color: var(--color-background);
@@ -226,10 +228,12 @@ const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 // Get user preference from localStorage, or default to system preference
 const savedTheme = localStorage.getItem('theme');
 let currentTheme;
+let userHasOverride = false;
 
 if (savedTheme) {
   // User has explicitly set a preference
   currentTheme = savedTheme;
+  userHasOverride = true;
 } else {
   // No user override - inherit from browser/OS default
   currentTheme = prefersDarkScheme.matches ? 'dark' : 'light';
@@ -245,20 +249,19 @@ function applyTheme(theme) {
   } else {
     themeToggle.setAttribute('aria-label', 'Switch to dark mode');
   }
-  
-  // Save user preference
-  localStorage.setItem('theme', theme);
 }
 
 themeToggle.addEventListener('click', () => {
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   currentTheme = newTheme;
+  userHasOverride = true;
+  localStorage.setItem('theme', newTheme);
   applyTheme(newTheme);
 });
 
 // Listen for system theme preference changes (only when no user override exists)
 prefersDarkScheme.addEventListener('change', (e) => {
-  if (!localStorage.getItem('theme')) {
+  if (!userHasOverride) {
     currentTheme = e.matches ? 'dark' : 'light';
     applyTheme(currentTheme);
   }
