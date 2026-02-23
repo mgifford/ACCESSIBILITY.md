@@ -231,6 +231,13 @@ textarea {
   font-size: 0.95rem;
 }
 
+.structure-code {
+  background: var(--code);
+  padding: 1.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
 @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
