@@ -109,7 +109,7 @@ If providing manual theme toggle:
 
 Use a single toggle button that switches between light and dark modes:
 
-- **Visual affordance**: Use sun/moon icon to provide clear indication of theme switching functionality
+- **Visual affordance**: Use sun/moon icons to provide clear indication of theme switching functionality
 - **Placement**: Position in the top-right corner of the header in both desktop and mobile views
 - **Scroll behavior**: Do not make the toggle fixed/sticky; it should remain in normal document flow within the header
 - **Keyboard navigation**: Place the toggle in the DOM **after** navigation/menu items so it appears later in the tab order
