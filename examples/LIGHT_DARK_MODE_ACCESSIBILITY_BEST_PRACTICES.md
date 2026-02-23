@@ -155,7 +155,7 @@ nav {
 }
 
 #theme-toggle {
-  margin-left: auto; /* In flexbox layout, pushes toggle to the right */
+  margin-left: auto; /* In flexbox with space-between, positions toggle at right edge */
   padding: 0.5rem;
   border: 1px solid var(--color-border);
   background-color: var(--color-background);
@@ -179,7 +179,7 @@ nav {
   height: 20px;
 }
 
-/* Default state (before JS loads): show moon icon for light mode */
+/* Default state (before JS loads): show moon icon indicating "switch to dark mode" */
 .sun-icon {
   display: none;
 }
@@ -221,6 +221,7 @@ nav {
 
 ```javascript
 const themeToggle = document.getElementById('theme-toggle');
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
 // Get user preference from localStorage, or default to system preference
 const savedTheme = localStorage.getItem('theme');
@@ -231,7 +232,7 @@ if (savedTheme) {
   currentTheme = savedTheme;
 } else {
   // No user override - inherit from browser/OS default
-  currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  currentTheme = prefersDarkScheme.matches ? 'dark' : 'light';
 }
 
 function applyTheme(theme) {
@@ -253,6 +254,14 @@ themeToggle.addEventListener('click', () => {
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   currentTheme = newTheme;
   applyTheme(newTheme);
+});
+
+// Listen for system theme preference changes (only when no user override exists)
+prefersDarkScheme.addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {
+    currentTheme = e.matches ? 'dark' : 'light';
+    applyTheme(currentTheme);
+  }
 });
 
 // Apply theme on load
