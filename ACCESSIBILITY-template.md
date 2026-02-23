@@ -24,5 +24,5 @@ Please use our [Accessibility Issue Template]. We prioritize based on:
 - **Medium:** Annoyance or inconsistent experience.
 
 ## 5. Automated Check Coverage
-We track our automated testing rules against the [Axe Rules Reference](./AXE_RULES_REFERENCE.md). 
-Currently, **72%** of our accessibility requirements are guarded by CI.
+We track our automated testing rules against the [Axe Rules Reference](./examples/AXE_RULES_REFERENCE.md). 
+Currently, **~50%** of our accessibility requirements are guarded by CI.
