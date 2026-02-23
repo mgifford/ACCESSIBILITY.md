@@ -56,6 +56,35 @@ title: ACCESSIBILITY.md
   </div>
 </section>
 
+<section id="structure">
+  <div class="wrap">
+    <h2>Repository Structure</h2>
+    <div class="prose">
+      <p>This repository is organized to help you quickly find what to adopt vs. what to reference:</p>
+      <pre class="structure-code"><code class="language-plaintext">[Repository Root]
+├── ACCESSIBILITY-template.md       ← Start here: Copy this template
+├── AGENTS.md                       ← AI agent instructions
+│
+├── examples/                       ← Copy these to your project
+│   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml
+│   ├── PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml
+│   ├── TRUSTED_SOURCES.yaml
+│   ├── Component best practices (SVG, forms, keyboard, diagrams)
+│   └── Automation guides (axe-core, shift-left testing)
+│
+├── .github/workflows/              ← This repo's automation (reference)
+├── _layouts/, _config.yml          ← Jekyll site (for documentation)
+└── README.md                       ← Complete adoption guide</code></pre>
+      <p>
+        <strong>Key:</strong><br>
+        ✅ Copy to your project: <code>ACCESSIBILITY-template.md</code>, files in <code>examples/</code><br>
+        📖 Read for guidance: <code>README.md</code>, <code>AGENTS.md</code>, <code>CONTRIBUTING.md</code><br>
+        🛠️ Jekyll/docs site: <code>_layouts/</code>, <code>_config.yml</code>, <code>assets/</code>, <code>index.md</code>
+      </p>
+    </div>
+  </div>
+</section>
+
 <section id="framework">
   <div class="wrap">
     <h2>The Framework</h2>
@@ -149,29 +178,45 @@ title: ACCESSIBILITY.md
 <section id="adopt">
   <div class="wrap">
     <h2>How to Adopt</h2>
+    <div class="prose">
+      <p>Follow these steps to implement ACCESSIBILITY.md in your project:</p>
+    </div>
     <div class="steps">
       <article class="step">
-        <h3>1. Add ACCESSIBILITY.md</h3>
-        <p>Create it at your repository root and link it from README.</p>
+        <h3>1. Copy the Template</h3>
+        <p>Start with <a href="./ACCESSIBILITY-template.md">ACCESSIBILITY-template.md</a>, customize it for your project, and place it at your repository root. Link it from your README.</p>
       </article>
       <article class="step">
-        <h3>2. Document what matters</h3>
+        <h3>2. Set Up GitHub Workflows</h3>
         <p>
-          Include conformance, known gaps, test workflow, issue labels, and
-          escalation policy.
+          Copy workflows from the <a href="./examples/">examples/</a> directory. Start with <code>A11Y_SHIFT_LEFT_WORKFLOW.yml</code> for automated accessibility testing on every PR.
         </p>
       </article>
       <article class="step">
-        <h3>3. Enforce in CI</h3>
+        <h3>3. Configure AI Agents</h3>
         <p>
-          Wire accessibility checks and fail builds for high-severity
-          regressions.
+          Add <a href="./AGENTS.html">AGENTS.md</a> or create <code>.cursorrules</code> to ensure AI coding assistants follow accessibility standards. Include component-specific best practices.
         </p>
       </article>
       <article class="step">
-        <h3>4. Keep it living</h3>
-        <p>Update this file as architecture, tooling, and gaps evolve.</p>
+        <h3>4. Add Pre-Commit Hooks</h3>
+        <p>
+          Copy <code>PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml</code> to catch issues before they're committed. Optional but highly recommended.
+        </p>
       </article>
+      <article class="step">
+        <h3>5. Copy Component Guides</h3>
+        <p>
+          Add relevant best practice guides for forms, SVGs, keyboard navigation, and diagrams from the examples directory.
+        </p>
+      </article>
+      <article class="step">
+        <h3>6. Keep it Living</h3>
+        <p>Update ACCESSIBILITY.md as your project evolves. Track metrics, document gaps, and maintain your commitment to accessibility.</p>
+      </article>
+    </div>
+    <div class="prose steps-footer">
+      <p><strong>For detailed instructions, see the <a href="https://github.com/mgifford/ACCESSIBILITY.md#how-to-adopt-this-in-your-project">step-by-step adoption guide</a> in the README.</strong></p>
     </div>
   </div>
 </section>
