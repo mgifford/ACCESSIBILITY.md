@@ -28,16 +28,16 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 This repository is organized to separate **content you adopt** from **project documentation**:
 
 ```
-ACCESSIBILITY.md/
-├── ACCESSIBILITY-template.md     ← Start here: Copy this template
-├── ACCESSIBILITY.md              ← Our own accessibility commitment
-├── AGENTS.md                     ← AI agent instructions (copy/adapt)
-├── CONTRIBUTING.md               ← How to contribute to this project
-├── SUSTAINABILITY.md             ← Sustainability policy
-├── BROWSER_SUPPORT.md            ← Browser support guidelines
-├── README.md                     ← This file
+mgifford/ACCESSIBILITY.md/          (repository root)
+├── ACCESSIBILITY-template.md       ← Start here: Copy this template
+├── ACCESSIBILITY.md                ← Our own accessibility commitment
+├── AGENTS.md                       ← AI agent instructions (copy/adapt)
+├── CONTRIBUTING.md                 ← How to contribute to this project
+├── SUSTAINABILITY.md               ← Sustainability policy
+├── BROWSER_SUPPORT.md              ← Browser support guidelines
+├── README.md                       ← This file
 │
-├── examples/                     ← Copy these to your project
+├── examples/                       ← Copy these to your project
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml          ← GitHub Actions workflow
 │   ├── PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml  ← Pre-commit hooks
 │   ├── TRUSTED_SOURCES.yaml                  ← Vetted a11y resources
@@ -49,13 +49,13 @@ ACCESSIBILITY.md/
 │   ├── SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md
 │   └── README.md                             ← Examples index
 │
-├── .github/workflows/            ← This repo's automation (reference)
-├── _layouts/                     ← Jekyll theme (for documentation site)
-├── _config.yml                   ← Jekyll config (for documentation site)
-├── assets/                       ← Site assets (for documentation site)
-├── index.md                      ← Landing page (for documentation site)
-├── prompt-generator.md           ← Interactive prompt builder
-└── action-playbook.md            ← Practical workflow guide
+├── .github/workflows/              ← This repo's automation (reference)
+├── _layouts/                       ← Jekyll theme (for documentation site)
+├── _config.yml                     ← Jekyll config (for documentation site)
+├── assets/                         ← Site assets (for documentation site)
+├── index.md                        ← Landing page (for documentation site)
+├── prompt-generator.md             ← Interactive prompt builder
+└── action-playbook.md              ← Practical workflow guide
 ```
 
 **Key:**

@@ -61,20 +61,20 @@ title: ACCESSIBILITY.md
     <h2>Repository Structure</h2>
     <div class="prose">
       <p>This repository is organized to help you quickly find what to adopt vs. what to reference:</p>
-      <pre class="structure-code"><code class="language-plaintext">ACCESSIBILITY.md/
-├── ACCESSIBILITY-template.md     ← Start here: Copy this template
-├── AGENTS.md                     ← AI agent instructions
+      <pre class="structure-code"><code class="language-plaintext">mgifford/ACCESSIBILITY.md/          (repository root)
+├── ACCESSIBILITY-template.md       ← Start here: Copy this template
+├── AGENTS.md                       ← AI agent instructions
 │
-├── examples/                     ← Copy these to your project
+├── examples/                       ← Copy these to your project
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml
 │   ├── PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml
 │   ├── TRUSTED_SOURCES.yaml
 │   ├── Component best practices (SVG, forms, keyboard, diagrams)
 │   └── Automation guides (axe-core, shift-left testing)
 │
-├── .github/workflows/            ← This repo's automation (reference)
-├── _layouts/, _config.yml        ← Jekyll site (for documentation)
-└── README.md                     ← Complete adoption guide</code></pre>
+├── .github/workflows/              ← This repo's automation (reference)
+├── _layouts/, _config.yml          ← Jekyll site (for documentation)
+└── README.md                       ← Complete adoption guide</code></pre>
       <p>
         <strong>Key:</strong><br>
         ✅ Copy to your project: <code>ACCESSIBILITY-template.md</code>, files in <code>examples/</code><br>
