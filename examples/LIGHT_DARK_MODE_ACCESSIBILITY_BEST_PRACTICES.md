@@ -132,7 +132,7 @@ Use a single toggle button that switches between light and dark modes:
       <circle cx="12" cy="12" r="5" fill="currentColor"/>
       <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
     </svg>
-    <svg aria-hidden="true" class="theme-icon moon-icon" viewBox="0 0 24 24" width="20" height="20" style="display: none;">
+    <svg aria-hidden="true" class="theme-icon moon-icon" viewBox="0 0 24 24" width="20" height="20">
       <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
     </svg>
   </button>
@@ -155,7 +155,7 @@ nav {
 }
 
 #theme-toggle {
-  margin-left: auto; /* Pushes toggle to the right */
+  margin-left: auto; /* In flexbox layout, pushes toggle to the right */
   padding: 0.5rem;
   border: 1px solid var(--color-border);
   background-color: var(--color-background);
@@ -177,6 +177,15 @@ nav {
   display: block;
   width: 20px;
   height: 20px;
+}
+
+/* Default state (before JS loads): show moon icon for light mode */
+.sun-icon {
+  display: none;
+}
+
+.moon-icon {
+  display: block;
 }
 
 /* Show/hide appropriate icon based on theme */
@@ -212,8 +221,6 @@ nav {
 
 ```javascript
 const themeToggle = document.getElementById('theme-toggle');
-const sunIcon = document.querySelector('.sun-icon');
-const moonIcon = document.querySelector('.moon-icon');
 
 // Get user preference from localStorage, or default to system preference
 const savedTheme = localStorage.getItem('theme');
@@ -228,16 +235,13 @@ if (savedTheme) {
 }
 
 function applyTheme(theme) {
+  // Set data-theme attribute; CSS handles icon visibility via [data-theme] selectors
   document.documentElement.setAttribute('data-theme', theme);
   
-  // Update icon visibility and button label
+  // Update button label to reflect the action
   if (theme === 'dark') {
-    sunIcon.style.display = 'block';
-    moonIcon.style.display = 'none';
     themeToggle.setAttribute('aria-label', 'Switch to light mode');
   } else {
-    sunIcon.style.display = 'none';
-    moonIcon.style.display = 'block';
     themeToggle.setAttribute('aria-label', 'Switch to dark mode');
   }
   
