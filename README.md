@@ -62,9 +62,18 @@ We recommend including a dynamic table in your file to track progress. This turn
 
 This repository provides templates and guidance to help you implement `ACCESSIBILITY.md` in your own projects.
 
+### Key Files
+
+* **[ACCESSIBILITY.md](./ACCESSIBILITY.md):** This repository's own accessibility commitment and standards
+* **[SUSTAINABILITY.md](./SUSTAINABILITY.md):** Digital sustainability policy including AI usage guidelines
+* **[AGENTS.md](./AGENTS.md):** Instructions for AI coding assistants
+* **[CONTRIBUTING.md](./CONTRIBUTING.md):** How to contribute, including accessibility accommodations
+
 ### Local install and build
 
 For local setup and Jekyll build instructions, see [INSTALL.txt](./INSTALL.txt).
+
+### Repository Structure
 
 * **/templates:** Copy-paste Markdown templates for different project types (Web Apps, Libraries, Docs).
 * **/spec:** The technical specification for making these files machine-readable.
@@ -78,9 +87,11 @@ For local setup and Jekyll build instructions, see [INSTALL.txt](./INSTALL.txt).
 
 ## 🤖 AI Agent Integration
 
-To ensure your AI coding assistant respects your accessibility standards, add this line to your `.cursorrules`, `AGENTS.md`, or system prompt:
+To ensure your AI coding assistant respects your accessibility and sustainability standards, add this to your `.cursorrules`, `AGENTS.md`, or system prompt:
 
-> *"Before modifying or creating UI components, read `ACCESSIBILITY.md` and ensure all changes comply with the established `AXE_RULES_REFERENCE.md` and component-specific best practices."*
+> *"Before modifying or creating UI components, read `ACCESSIBILITY.md` and `SUSTAINABILITY.md`. Ensure all changes comply with WCAG 2.2 AA standards and follow the component-specific best practices in the examples directory. Optimize assets and use AI judiciously."*
+
+For a comprehensive guide on AI agent instructions for this project, see [AGENTS.md](./AGENTS.md).
 
 ### Machine-Readable Standards for AI
 
