@@ -13,7 +13,7 @@ This directory contains comprehensive accessibility test pages designed to valid
 - **[AXE_RULES_REFERENCE.md](AXE_RULES_REFERENCE.md)** — Detailed map of each rule to specific test pages
 
 ### Run Scanner
-1. Open [`a11y-scan.html`](a11y-scan.html)
+1. Open `a11y-scan.html` (example scanner interface - not yet implemented)
 2. Select "Local Directory" 
 3. Drag the repository root onto the drop zone
 4. Click "Start Scan"
@@ -23,15 +23,15 @@ This directory contains comprehensive accessibility test pages designed to valid
 
 | Page | Focus | Error Types | Rules Tested |
 |------|-------|-------------|--------------|
-| [page1.html](page1.html) | Images & Contrast | 2-3 | image-alt, color-contrast |
-| [page2.html](page2.html) | Forms & Labels | 3-4 | label, select-name, form-field-multiple-labels |
-| [page3.html](page3.html) | Buttons & Headings | 3-4 | button-name, heading-order, empty-heading |
-| [page4.html](page4.html) | ARIA & Language | 4-5 | aria-*, html-has-lang, html-lang-valid |
-| [page5.html](page5.html) | Media & Captions | 3-4 | video-caption, frame-title, object-alt, svg-img-alt |
-| [page6.html](page6.html) | Tables & Structure | 4-5 | th-has-data-cells, td-headers-attr, list, listitem |
-| [auth/login.html](auth/login.html) | Form Authentication | 3-4 | label, autocomplete-valid, meta-viewport, tabindex |
-| [blog/post1.html](blog/post1.html) | Blog & Landmarks | 4-5 | heading-order, image-alt, landmark-one-main, region |
-| [demo-bad.html](demo-bad.html) | Multiple Issues | 5+ | Various mixed violations |
+| `page1.html` | Images & Contrast | 2-3 | image-alt, color-contrast |
+| `page2.html` | Forms & Labels | 3-4 | label, select-name, form-field-multiple-labels |
+| `page3.html` | Buttons & Headings | 3-4 | button-name, heading-order, empty-heading |
+| `page4.html` | ARIA & Language | 4-5 | aria-*, html-has-lang, html-lang-valid |
+| `page5.html` | Media & Captions | 3-4 | video-caption, frame-title, object-alt, svg-img-alt |
+| `page6.html` | Tables & Structure | 4-5 | th-has-data-cells, td-headers-attr, list, listitem |
+| `auth/login.html` | Form Authentication | 3-4 | label, autocomplete-valid, meta-viewport, tabindex |
+| `blog/post1.html` | Blog & Landmarks | 4-5 | heading-order, image-alt, landmark-one-main, region |
+| `demo-bad.html` | Multiple Issues | 5+ | Various mixed violations |
 
 ## Expected Violations
 
@@ -100,7 +100,7 @@ Each page is designed to trigger 3-5 specific error types, with no overlap excep
 
 🔍 **Not all rules have tests** — Some edge cases and deprecated rules are not covered. See [AXE_RULES_REFERENCE.md](AXE_RULES_REFERENCE.md) for full details.
 
-🚀 **Use with scanner validation** — These pages should be scanned with [a11y-scan.html](a11y-scan.html) to verify scanner accuracy.
+🚀 **Use with scanner validation** — These pages should be scanned with `a11y-scan.html` (example scanner - not yet implemented) to verify scanner accuracy.
 
 ## Detailed Documentation
 

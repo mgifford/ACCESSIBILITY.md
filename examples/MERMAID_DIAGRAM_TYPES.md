@@ -258,7 +258,7 @@ Narrative generation should:
 ### Accessibility References
 - [Léonie Watson: Accessible SVG Flowcharts](https://tink.uk/accessible-svg-flowcharts/)
 - [Carie Fisher: Accessible SVGs Pattern 11](https://cariefisher.com/a11y-svg-updated/)
-- [AGENTS.md](./AGENTS.md) - Project philosophy and accessibility model
+- [AGENTS.md](../AGENTS.md) - Project philosophy and accessibility model
 
 ## JSON Schema Notes
 

@@ -20,34 +20,34 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 ## 🎯 Test Pages
 
 ### Text Alternatives
-**[page1.html](page1.html)** — Images & Contrast
+**`page1.html`** — Images & Contrast
 - Missing alt text on images
 - Poor color contrast (WCAG 2 AA)
 - Expected violations: 2-3
 
 ### Forms & Input Accessibility
-**[page2.html](page2.html)** — Forms & Labels
+**`page2.html`** — Forms & Labels
 - Inputs without associated labels
 - Unlabeled select elements
 - Multiple labels on single field
 - Expected violations: 3-4
 
 ### Buttons & Semantic HTML
-**[page3.html](page3.html)** — Buttons & Headings
+**`page3.html`** — Buttons & Headings
 - Icon buttons without accessible text
 - Heading hierarchy issues (h1 → h3 skip)
 - Duplicate IDs
 - Expected violations: 3-4
 
 ### ARIA & Language
-**[page4.html](page4.html)** — ARIA & Language
+**`page4.html`** — ARIA & Language
 - Missing lang attribute on HTML element
 - Invalid ARIA roles
 - ARIA attributes without required values
 - Expected violations: 4-5
 
 ### Media & Embedded Content
-**[page5.html](page5.html)** — Media & Captions *(NEW)*
+**`page5.html`** — Media & Captions *(NEW)*
 - Videos without captions (video-caption rule)
 - Audio without transcripts
 - Iframes without accessible titles
@@ -56,7 +56,7 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 - Expected violations: 3-4
 
 ### Tables & Data Structure
-**[page6.html](page6.html)** — Tables & Data *(NEW)*
+**`page6.html`** — Tables & Data *(NEW)*
 - Table headers not associated with cells
 - Incorrect header attribute references
 - List items outside containers
@@ -64,7 +64,7 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 - Expected violations: 4-5
 
 ### Form Authentication
-**[auth/login.html](auth/login.html)** — Form Authentication
+**`auth/login.html`** — Form Authentication
 - Missing field labels
 - Invalid autocomplete attributes
 - Meta viewport disables zoom
@@ -72,7 +72,7 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 - Expected violations: 3-4
 
 ### Blog & Content
-**[blog/post1.html](blog/post1.html)** — Blog & Landmarks
+**`blog/post1.html`** — Blog & Landmarks
 - Missing lang attribute
 - Missing image alt text
 - Skipped heading levels
@@ -81,7 +81,7 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 - Expected violations: 4-5
 
 ### Comprehensive Test
-**[demo-bad.html](demo-bad.html)** — Multiple Issues
+**`demo-bad.html`** — Multiple Issues
 - Comprehensive violations across multiple categories
 - Expected violations: 5+
 
@@ -120,7 +120,7 @@ This accessibility test suite covers **50+ axe-core 4.11 rules** across **9 test
 
 ### Using the Standalone Scanner
 
-1. Open [`a11y-scan.html?token=A11Y-SECRET`](a11y-scan.html?token=A11Y-SECRET)
+1. Open `a11y-scan.html` (example scanner interface - not yet implemented)
 2. Select "Local Directory" from the dropdown
 3. Drag this repository folder onto the drop zone
 4. Click "Start Scan"
@@ -200,7 +200,7 @@ All accessibility errors on these pages are **intentional** and used for validat
 Some advanced or deprecated rules are not tested. See [AXE_RULES_REFERENCE.md](AXE_RULES_REFERENCE.md) for complete rule status.
 
 ### Scanner Validation
-These pages should be used with [a11y-scan.html](a11y-scan.html) to verify scanner accuracy and rule detection.
+These pages should be used with `a11y-scan.html` (example scanner - not yet implemented) to verify scanner accuracy and rule detection.
 
 ---
 

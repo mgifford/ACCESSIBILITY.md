@@ -208,7 +208,7 @@ This document maps each axe-core 4.11 rule to specific test pages and describes 
 
 ## Testing Methodology
 
-1. Open [a11y-scan.html](a11y-scan.html)
+1. Open `a11y-scan.html` (example scanner interface - not yet implemented)
 2. Select "Local Directory" from dropdown
 3. Drag this repository folder onto the drop zone
 4. Run the scan
