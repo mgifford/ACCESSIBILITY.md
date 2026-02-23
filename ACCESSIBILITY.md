@@ -23,6 +23,7 @@ To contribute to this repo, you must follow these guidelines:
   - [Mermaid Diagram Best Practices](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md)
   - [Forms Accessibility Best Practices](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
   - [Keyboard Accessibility Best Practices](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+  - [Light/Dark Mode Accessibility Best Practices](./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Link Validation:** All documentation links must pass our automated link checker
 - **Inclusive Language:** Use person-centered, respectful language throughout
 
