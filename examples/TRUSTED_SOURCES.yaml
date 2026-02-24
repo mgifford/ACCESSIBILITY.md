@@ -988,20 +988,6 @@ sources:
     owner: null
     license: null
     status: "active"
-  - id: github-com
-    domain: "github.com"
-    url: "https://github.com/"
-    full_url: "https://github.com/"
-    best_for: "general accessibility"
-    description: "Repository hosting service, where many open-source accessibility projects are hosted."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
   - id: google-accessibility
     domain: "Google Accessibility"
     url: "google.com/accessibility"
