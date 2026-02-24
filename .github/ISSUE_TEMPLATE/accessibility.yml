@@ -1,0 +1,155 @@
+name: Accessibility Issue
+description: Report an accessibility barrier or WCAG violation
+title: "[A11Y]: "
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve accessibility! This template helps you report accessibility issues in a way that makes them easier to reproduce and fix.
+        
+        **Tip**: Include as much detail as you can, but don't worry if you can't fill everything out. Any information helps!
+
+  - type: input
+    id: issue-title
+    attributes:
+      label: Issue Summary
+      description: Brief description of the accessibility issue
+      placeholder: "e.g., Ensure role attribute has an appropriate value for the element"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How does this issue impact users?
+      options:
+        - Critical - Prevents completing core tasks
+        - High - Significant barrier to access
+        - Medium - Moderate usability issue
+        - Low - Minor accessibility improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Describe the accessibility problem. If you know the specific rule or guideline, include it here.
+      placeholder: |
+        Example:
+        Issue: Ensure role attribute has an appropriate value for the element (aria-allowed-role)
+        Reference: https://dequeuniversity.com/rules/axe/4.10/aria-allowed-role
+        
+        The issue prevents screen reader users from understanding the purpose of the element...
+    validations:
+      required: true
+
+  - type: input
+    id: target-url
+    attributes:
+      label: Target URL or Application
+      description: Where did you encounter this issue?
+      placeholder: "e.g., https://example.com/search?q=youtube or Local environment: http://localhost:3000/dashboard"
+    validations:
+      required: false
+
+  - type: input
+    id: element-path
+    attributes:
+      label: Element Path or Selector
+      description: CSS selector, XPath, or other way to identify the element (optional but helpful)
+      placeholder: "e.g., #APjFqb, .nav-menu > button:first-child, or //div[@role='banner']//button"
+    validations:
+      required: false
+
+  - type: textarea
+    id: code-snippet
+    attributes:
+      label: Code Snippet
+      description: HTML/code showing the issue (if available)
+      placeholder: |
+        <div role="invalid-role">
+          <button>Click me</button>
+        </div>
+      render: html
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can someone else reproduce this issue?
+      placeholder: |
+        1. Navigate to [URL]
+        2. Tab to the search input
+        3. Observe that...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: wcag-criteria
+    attributes:
+      label: Related WCAG Success Criteria
+      description: Select any that apply (if known)
+      options:
+        - label: "1.1.1 Non-text Content (Level A)"
+        - label: "1.3.1 Info and Relationships (Level A)"
+        - label: "1.4.3 Contrast (Minimum) (Level AA)"
+        - label: "2.1.1 Keyboard (Level A)"
+        - label: "2.4.1 Bypass Blocks (Level A)"
+        - label: "2.4.3 Focus Order (Level A)"
+        - label: "2.4.7 Focus Visible (Level AA)"
+        - label: "3.2.2 On Input (Level A)"
+        - label: "3.3.2 Labels or Instructions (Level A)"
+        - label: "4.1.2 Name, Role, Value (Level A)"
+        - label: "4.1.3 Status Messages (Level AA)"
+        - label: "Other (specify in description)"
+
+  - type: checkboxes
+    id: rule-categories
+    attributes:
+      label: Rule Categories
+      description: Select any that apply (if known)
+      options:
+        - label: "ARIA (roles, attributes, properties)"
+        - label: "Forms (labels, inputs, validation)"
+        - label: "Keyboard Navigation"
+        - label: "Color Contrast"
+        - label: "Semantic HTML"
+        - label: "Text Alternatives (alt text, captions)"
+        - label: "Focus Management"
+        - label: "Best Practice"
+
+  - type: textarea
+    id: assistive-technology
+    attributes:
+      label: Assistive Technology Testing
+      description: If you tested with assistive technology, please share details
+      placeholder: |
+        - Screen reader: NVDA 2024.1 with Chrome 120 on Windows 11
+        - Behavior: The button is announced as "unlabeled" instead of "Search"
+        - Keyboard only: Unable to reach the element with Tab key
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might help (screenshots, recordings, expected behavior, etc.)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Submission Guidelines
+      description: Please confirm you've reviewed these items
+      options:
+        - label: "I have searched for similar issues before submitting"
+          required: false
+        - label: "I have provided enough context for someone to understand and reproduce the issue"
+          required: false
