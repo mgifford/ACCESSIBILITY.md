@@ -1937,3 +1937,17 @@ sources:
     owner: null
     license: null
     status: "active"
+  - id: ericwbailey
+    domain: "Ericw Bailey's Website"
+    url: "ericwbailey.website"
+    full_url: "https://ericwbailey.website/"
+    best_for: "guideance for developers and designers"
+    description: "Working in the open Accessible and inclusive design Semantics and interoperability CSS architecture at scale Progressive enhancement Web performance Internationalization and localization."
+    authority_level: "to_review"
+    topic_tags: [accessibility, semantics, css, progressive enhancement, performance, open web]
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
