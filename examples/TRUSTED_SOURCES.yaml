@@ -1957,3 +1957,59 @@ sources:
     owner: null
     license: null
     status: "active"
+  - id: accessibility-github-com
+    domain: "GitHub Accessibility"
+    url: "accessibility.github.com"
+    full_url: "https://accessibility.github.com"
+    best_for: "accessibility resources, documentation, best practices"
+    description: "GitHub's accessibility documentation and resources covering inclusive design practices, keyboard navigation, screen reader support, and WCAG compliance for GitHub products and general web development."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
+  - id: cariefisher-com
+    domain: "Carie Fisher"
+    url: "cariefisher.com"
+    full_url: "https://cariefisher.com/"
+    best_for: "accessibility articles, tutorials, speaking resources"
+    description: "Personal site of Carie Fisher, accessibility advocate and developer, featuring articles, talks, and resources on web accessibility, inclusive design, and WCAG implementation."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
+  - id: a11yweekly-com
+    domain: "A11y Weekly"
+    url: "a11yweekly.com"
+    full_url: "https://a11yweekly.com/"
+    best_for: "weekly newsletter, curated accessibility content"
+    description: "Weekly newsletter featuring curated accessibility news, articles, tools, and resources from across the web accessibility community."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
+  - id: umn-webdesign-training
+    domain: "University of Minnesota Duluth - Web Design"
+    url: "d.umn.edu/itss/training/online/webdesign/"
+    full_url: "https://www.d.umn.edu/itss/training/online/webdesign/index.html"
+    best_for: "web design training, accessibility education"
+    description: "University of Minnesota Duluth's online web design training materials covering accessibility, HTML, CSS, and inclusive web development practices."
+    authority_level: "to_review"
+    topic_tags: []
+    jurisdiction: "global"
+    wcag_version: []
+    last_reviewed: null
+    owner: null
+    license: null
+    status: "active"
