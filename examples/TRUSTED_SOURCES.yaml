@@ -342,6 +342,7 @@ sources:
     last_reviewed: null
     owner: null
     license: null
+    ai_scraping: "prohibited"
     status: "active"
   - id: afb-american-foundation-for-the-blind
     domain: "AFB (American Foundation for the Blind)"
