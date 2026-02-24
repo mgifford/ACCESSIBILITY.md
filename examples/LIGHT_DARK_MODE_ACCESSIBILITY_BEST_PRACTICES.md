@@ -539,18 +539,29 @@ A color mode implementation is complete when:
 
 ## References
 
-Additional reading and resources:
+### W3C Specifications
+
+- [WCAG 2.2 Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [WCAG 2.2 Understanding 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [CSS Media Queries Level 5: prefers-color-scheme](https://www.w3.org/TR/mediaqueries-5/#prefers-color-scheme)
+- [CSS Media Queries Level 5: forced-colors](https://www.w3.org/TR/mediaqueries-5/#forced-colors)
+- [CSS Color Module Level 4: System Colors](https://www.w3.org/TR/css-color-4/#css-system-colors)
+
+### Machine-Readable Standards
+
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
+- [CSS Specifications Index (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/css-specifications-index.yaml) - CSS specs including media queries and color modules
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/CSS/HTML standards
+
+### Additional Reading
 
 - [Inclusive Dark Mode: Designing Accessible Dark Themes](https://www.smashingmagazine.com/2025/04/inclusive-dark-mode-designing-accessible-dark-themes/)
 - [Dark Mode Accessibility Myth Debunked](https://stephaniewalter.design/blog/dark-mode-accessibility-myth-debunked/)
 - [Dark Mode Done Right: Performance & Accessibility](https://dev.to/javascriptwizzard/dark-mode-done-right-performance-accessibility-considerations-43b1)
 - [Dark Mode UI Design: Best Practices](https://blog.logrocket.com/ux-design/dark-mode-ui-design-best-practices-and-examples/)
 - [Minnesota IT Services: Dark Mode Accessibility](https://mn.gov/mnit/media/blog/?id=38-469250)
-- [WCAG 2.2 Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
-- [WCAG 2.2 Understanding 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
-- [CSS Media Queries Level 5: prefers-color-scheme](https://www.w3.org/TR/mediaqueries-5/#prefers-color-scheme)
-- [CSS Media Queries Level 5: forced-colors](https://www.w3.org/TR/mediaqueries-5/#forced-colors)
-- [CSS Color Module Level 4: System Colors](https://www.w3.org/TR/css-color-4/#css-system-colors)
 
 ---
 

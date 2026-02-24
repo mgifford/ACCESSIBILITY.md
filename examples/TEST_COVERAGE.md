@@ -109,9 +109,22 @@ Each page is designed to trigger 3-5 specific error types, with no overlap excep
 
 ## Related Resources
 
+### W3C Specifications
+
+- **[WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)** — Official accessibility standards
+
+### Machine-Readable Standards
+
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
+- [WCAG 2.0 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.0-normative.yaml) - WCAG 2.0 legacy normative
+- [Accessibility Rule Catalogs (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/accessibility-rule-catalogs.yaml) - Machine-readable ACT, Deque axe, and Siteimprove Alfa rules
+
+### Tools and Projects
+
 - **[O-Hat Scanner](https://github.com/mgifford/o-hat-scanner)** — Parent project with automated scanning
 - **[Deque axe-core](https://github.com/dequelabs/axe-core)** — The accessibility engine behind all scanning
-- **[WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)** — Official accessibility standards
 
 ---
 

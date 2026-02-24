@@ -273,10 +273,23 @@ Document these limitations in diagram metadata or UI:
 
 ## References
 
-- **Léonie Watson's Accessible SVG Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
-- **Carie Fisher's Pattern Testing**: https://cariefisher.com/a11y-svg-updated/
+### W3C Specifications
+
 - **W3C ARIA**: https://www.w3.org/WAI/ARIA/apg/
 - **WCAG 2.2**: https://www.w3.org/WAI/WCAG22/quickref/
+
+### Machine-Readable Standards
+
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
+- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) - ARIA-focused informative catalog
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/ARIA/SVG standards
+
+### Additional Reading
+
+- **Léonie Watson's Accessible SVG Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
+- **Carie Fisher's Pattern Testing**: https://cariefisher.com/a11y-svg-updated/
 
 ---
 

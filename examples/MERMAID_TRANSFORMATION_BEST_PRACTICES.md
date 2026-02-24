@@ -422,11 +422,25 @@ describe('SVG Export', () => {
 
 ## References
 
-- **Carie Fisher's Pattern 11**: https://cariefisher.com/a11y-svg-updated/
-- **Léonie Watson's Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
+### W3C Specifications
+
 - **SVG Spec**: https://www.w3.org/TR/SVG2/
 - **WCAG 2.2**: https://www.w3.org/WAI/WCAG22/quickref/
 - **ARIA Spec**: https://www.w3.org/WAI/ARIA/apg/
+
+### Machine-Readable Standards
+
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
+- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) - ARIA-focused informative catalog
+- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml) - HTML accessibility including SVG
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/ARIA/SVG/HTML standards
+
+### Additional Reading
+
+- **Carie Fisher's Pattern 11**: https://cariefisher.com/a11y-svg-updated/
+- **Léonie Watson's Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
 
 ---
 
