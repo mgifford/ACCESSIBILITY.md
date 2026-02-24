@@ -4,6 +4,8 @@ generated_on: "2026-02-19"
 notes:
   - "First-pass machine-readable conversion from CSV."
   - "Update authority_level, topic_tags, jurisdiction, and ownership during curation."
+  - "AI scraping policy: Sources can be marked with 'ai_scraping' field. Values: 'allowed' (default if omitted), 'prohibited' (do not scrape/train on content), 'restricted' (use only for reference/citation, not training)."
+  - "Respect content creator preferences: Even trusted sources may prohibit AI scraping. Always check ai_scraping field before using content for AI training."
 sources:
   - id: 3play-media
     domain: "3Play Media"
@@ -1068,6 +1070,23 @@ sources:
     last_reviewed: null
     owner: null
     license: null
+    status: "active"
+  - id: hidde-devries
+    domain: "Hidde de Vries"
+    url: "hidde.blog"
+    full_url: "https://hidde.blog/"
+    additional_urls:
+      - "https://talks.hiddedevries.nl/bio"
+    best_for: "accessibility, web standards, wcag, aria, inclusive design, web components"
+    description: "Personal blog and speaking portfolio of accessibility advocate and web standards expert Hidde de Vries, featuring articles on ARIA, web components, and inclusive design practices."
+    authority_level: "high"
+    topic_tags: ["accessibility", "web-standards", "wcag", "aria", "inclusive-design"]
+    jurisdiction: "global"
+    wcag_version: ["2.1", "2.2"]
+    last_reviewed: "2026-02-24"
+    owner: "Hidde de Vries"
+    license: null
+    ai_scraping: "prohibited"
     status: "active"
   - id: html5-doctor
     domain: "HTML5 Doctor"

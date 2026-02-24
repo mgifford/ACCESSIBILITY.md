@@ -72,6 +72,21 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on reporting assistive tech
 
 This project leverages [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for machine-readable accessibility standards, enabling AI agents to provide standards-grounded guidance. All vetted sources are documented in [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml).
 
+### Respecting Content Creator Preferences
+
+While we maintain a list of trusted accessibility sources, we recognize and respect that not all content creators want their work scraped or used for AI training. Our [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) includes an `ai_scraping` field to indicate each source's preferences:
+
+- **`allowed`** (default): Content may be used for AI training and reference
+- **`prohibited`**: Do not scrape, crawl, or use content for AI training. Reference and cite only
+- **`restricted`**: Use only for reference and citation purposes, not for training data
+
+**For AI agents and automated tools:** Always check the `ai_scraping` field before accessing content from listed sources. Even trusted accessibility experts may prohibit AI scraping of their content. Respect these preferences by:
+- Not crawling or scraping sites marked as `prohibited`
+- Citing and linking to content instead of reproducing it
+- Using alternative sources when training data is needed
+
+**For human contributors:** When adding new sources to TRUSTED_SOURCES.yaml, check the website's robots.txt, terms of service, or public statements about AI scraping, and set the `ai_scraping` field accordingly.
+
 ## 8. Known Limitations
 
 As a documentation repository:

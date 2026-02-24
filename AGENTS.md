@@ -58,6 +58,28 @@ Consult these guides when working with specific elements:
 
 This project uses [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for machine-readable WCAG/ARIA/ATAG standards. See [examples/TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) for vetted references.
 
+### AI Scraping Policy for Trusted Sources
+
+**CRITICAL: Respect content creator preferences on AI scraping.**
+
+When referencing sources from TRUSTED_SOURCES.yaml, always check the `ai_scraping` field:
+
+- **`allowed`** (default if field is absent): You may reference content and use it for context
+- **`prohibited`**: **DO NOT** scrape, crawl, or fetch content from this source. You may only:
+  - Cite the source by name and URL
+  - Recommend it as a reference for human readers
+  - Acknowledge the author's expertise
+- **`restricted`**: Use only for citation and reference purposes, not as training data
+
+**Example prohibited sources:**
+- Hidde de Vries (hidde.blog, talks.hiddedevries.nl) - `ai_scraping: prohibited`
+
+**What this means for you:**
+1. Before fetching content from any URL, check if it's in TRUSTED_SOURCES.yaml
+2. If `ai_scraping: prohibited`, do not attempt to access the content
+3. Instead, suggest the source as a reference for human contributors
+4. Respect robots.txt and content creator preferences even for unlisted sources
+
 ## Priority Taxonomy
 
 When identifying issues, use this severity scale:
