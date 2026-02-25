@@ -179,6 +179,10 @@ title: ACCESSIBILITY.md
         <p><a href="https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md">CivicActions Open Requirements Library</a></p>
         <p>Section 508 compliance requirements for government contracts and RFPs</p>
       </article>
+      <article class="card">
+        <h3>Comparison with Similar Projects</h3>
+        <p><a href="./COMPARISON_WITH_KREERC.html">COMPARISON_WITH_KREERC.md - Analysis of different approaches to accessibility documentation</a></p>
+      </article>
     </div>
   </div>
 </section>

@@ -20,6 +20,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 **Additional resources:**
 - Installation: [INSTALL.txt](./INSTALL.txt)
 - Procurement: [Section 508 Requirements for Government Contracts](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md)
+- Comparison with similar projects: [COMPARISON_WITH_KREERC.md](./COMPARISON_WITH_KREERC.md)
 
 ---
 
@@ -35,6 +36,7 @@ This repository is organized to separate **content you adopt** from **project do
 ├── CONTRIBUTING.md                 ← How to contribute to this project
 ├── SUSTAINABILITY.md               ← Sustainability policy
 ├── BROWSER_SUPPORT.md              ← Browser support guidelines
+├── COMPARISON_WITH_KREERC.md       ← Comparison with similar projects
 ├── README.md                       ← This file
 │
 ├── examples/                       ← Copy these to your project
@@ -62,7 +64,7 @@ This repository is organized to separate **content you adopt** from **project do
 
 **Key:**
 - ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, files in `examples/`
-- 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`
+- 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
 
 ---
