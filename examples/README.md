@@ -29,7 +29,7 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 - [A11Y_SHIFT_LEFT_WORKFLOW.yml](./A11Y_SHIFT_LEFT_WORKFLOW.yml)
 - [BROWSER_TESTING_WORKFLOW.yml](./BROWSER_TESTING_WORKFLOW.yml) - Multi-browser accessibility testing
 - [PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml](./PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml)
-- [TRUSTED_SOURCES.yaml](./TRUSTED_SOURCES.yaml) - Includes procurement requirements from [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md)
+- [TRUSTED_SOURCES.yaml](./TRUSTED_SOURCES.yaml) - Vetted accessibility resources with automated monthly maintenance. Includes procurement requirements from [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md). See [maintenance documentation](../.github/TRUSTED_SOURCES_MAINTENANCE.md).
 
 ## Prompt Starter
 

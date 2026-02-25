@@ -52,6 +52,8 @@ This repository is organized to separate **content you adopt** from **project do
 │   └── README.md                             ← Examples index
 │
 ├── .github/workflows/              ← This repo's automation (reference)
+│   ├── link-check.yml              ← Weekly link validation
+│   └── maintain-trusted-sources.yml ← Monthly TRUSTED_SOURCES maintenance
 ├── _layouts/                       ← Jekyll theme (for documentation site)
 ├── _config.yml                     ← Jekyll config (for documentation site)
 ├── assets/                         ← Site assets (for documentation site)
@@ -227,6 +229,25 @@ This provides:
 **Reference materials:**
 * **[action-playbook.md](./action-playbook.md):** Practical workflow guide for teams
 * **[examples/README.md](./examples/README.md):** Complete index of all examples
+
+---
+
+## 🔄 Automated Quality Maintenance
+
+### TRUSTED_SOURCES.yaml Monthly Maintenance
+
+The [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) file is automatically maintained via a [monthly GitHub Action](./.github/workflows/maintain-trusted-sources.yml) that:
+
+- **Validates URLs**: Checks for 404 errors with a two-strike removal policy
+  - First 404 → marked as "not active"
+  - Second 404 → removed from the list
+- **Enriches metadata**: Automatically fills in missing owner, license, and freshness information
+- **Quality checks**: Validates YAML structure and ensures data consistency
+- **Creates PRs**: All changes are reviewed by maintainers before merging
+
+This ensures the trusted resources list remains high-quality and up-to-date without manual maintenance overhead.
+
+📖 **[Full maintenance documentation](./.github/TRUSTED_SOURCES_MAINTENANCE.md)**
 
 ---
 
