@@ -41,6 +41,7 @@ Before proposing or writing changes, read these project policy files:
 
 Consult these guides when working with specific elements:
 
+- **Audio/Video**: [examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
 - **SVG graphics**: [examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Diagrams (Mermaid)**: [examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Forms**: [examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)

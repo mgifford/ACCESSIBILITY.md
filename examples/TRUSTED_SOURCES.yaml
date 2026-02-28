@@ -21,6 +21,20 @@ sources:
     owner: null
     license: null
     status: "active"
+  - id: able-player
+    domain: "Able Player"
+    url: "ableplayer.github.io/ableplayer"
+    full_url: "https://ableplayer.github.io/ableplayer/"
+    best_for: "accessible media player, video accessibility, audio accessibility, captions, audio descriptions, keyboard navigation"
+    description: "Fully accessible cross-browser HTML5 media player with support for captions, audio descriptions, chapters, interactive transcripts, sign language, and keyboard navigation. Recommended default for accessible video and audio on the web."
+    authority_level: "to_review"
+    topic_tags: ["media", "video", "audio", "captions", "player", "html5"]
+    jurisdiction: "global"
+    wcag_version: ["2.0", "2.1", "2.2"]
+    last_reviewed: null
+    owner: "Terrill Thompson"
+    license: "MIT"
+    status: "active"
   - id: a-list-apart
     domain: "A List Apart"
     url: "alistapart.com"
@@ -1815,6 +1829,20 @@ sources:
     last_reviewed: null
     owner: null
     license: null
+    status: "active"
+  - id: wai-media-accessibility
+    domain: "W3C WAI: Making Audio and Video Media Accessible"
+    url: "w3.org/WAI/media/av"
+    full_url: "https://www.w3.org/WAI/media/av/"
+    best_for: "audio accessibility, video accessibility, captions, transcripts, audio descriptions, media player accessibility"
+    description: "Comprehensive W3C WAI guidance on making audio and video content accessible, including requirements for captions, transcripts, audio descriptions, and accessible media players."
+    authority_level: "to_review"
+    topic_tags: ["media", "video", "audio", "captions", "transcripts", "wcag"]
+    jurisdiction: "global"
+    wcag_version: ["2.0", "2.1", "2.2"]
+    last_reviewed: null
+    owner: "W3C"
+    license: "W3C Document License"
     status: "active"
   - id: wai-tools-project
     domain: "WAI-Tools Project"

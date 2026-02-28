@@ -132,6 +132,10 @@ title: ACCESSIBILITY.md
         <p>Includes <a href="https://github.com/mgifford/wai-yaml-ld">wai-yaml-ld</a> for machine-readable WCAG standards</p>
       </article>
       <article class="card">
+        <h3>Audio/Video Accessibility Best Practices</h3>
+        <p><a href="./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.html">examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES</a></p>
+      </article>
+      <article class="card">
         <h3>Examples Index</h3>
         <p><a href="./examples/README.html">examples/README</a></p>
       </article>
