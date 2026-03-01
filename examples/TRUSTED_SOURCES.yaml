@@ -1,2168 +1,2995 @@
 version: 1
-generated_from: "https://github.com/mgifford/a11y-ai-training/blob/main/Trusted%20resources%20for%20training%20AI%20-%20Trusted_Resources%20-%20compiled%20list%20with%20descriptions.csv"
-generated_on: "2026-02-19"
+generated_from: https://github.com/mgifford/a11y-ai-training/blob/main/Trusted%20resources%20for%20training%20AI%20-%20Trusted_Resources%20-%20compiled%20list%20with%20descriptions.csv
+generated_on: '2026-02-19'
 notes:
-  - "First-pass machine-readable conversion from CSV."
-  - "Update authority_level, topic_tags, jurisdiction, and ownership during curation."
-  - "AI scraping policy: Sources can be marked with 'ai_scraping' field. Values: 'allowed' (default if omitted), 'prohibited' (do not scrape/train on content), 'restricted' (use only for reference/citation, not training)."
-  - "Respect content creator preferences: Even trusted sources may prohibit AI scraping. Always check ai_scraping field before using content for AI training."
+- First-pass machine-readable conversion from CSV.
+- Update authority_level, topic_tags, jurisdiction, and ownership during curation.
+- 'AI scraping policy: Sources can be marked with ''ai_scraping'' field. Values: ''allowed'' (default if omitted), ''prohibited'' (do not scrape/train on content), ''restricted'' (use only for reference/citation, not training).'
+- 'Respect content creator preferences: Even trusted sources may prohibit AI scraping. Always check ai_scraping field before using content for AI training.'
 sources:
-  - id: 3play-media
-    domain: "3Play Media"
-    url: "3playmedia.com"
-    full_url: "https://3playmedia.com"
-    best_for: "audio, video, captions, audio descriptions"
-    description: "Provides captioning, transcription, and audio description services for video accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: able-player
-    domain: "Able Player"
-    url: "ableplayer.github.io/ableplayer"
-    full_url: "https://ableplayer.github.io/ableplayer/"
-    best_for: "accessible media player, video accessibility, audio accessibility, captions, audio descriptions, keyboard navigation"
-    description: "Fully accessible cross-browser HTML5 media player with support for captions, audio descriptions, chapters, interactive transcripts, sign language, and keyboard navigation. Recommended default for accessible video and audio on the web."
-    authority_level: "to_review"
-    topic_tags: ["media", "video", "audio", "captions", "player", "html5"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "Terrill Thompson"
-    license: "MIT"
-    status: "active"
-  - id: a-list-apart
-    domain: "A List Apart"
-    url: "alistapart.com"
-    full_url: "https://alistapart.com"
-    best_for: "inclusive design, interaction design, leadership, accessibility, system design"
-    description: "Magazine for people who make websites, often featuring in-depth articles on web standards, design, and accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: a11y-style-guide-com
-    domain: "a11y-style-guide.com"
-    url: "https://a11y-style-guide.com/"
-    full_url: "https://a11y-style-guide.com/"
-    best_for: "general accessibility"
-    description: "A practical, living style guide demonstrating accessible UI patterns and components."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: a11y-canada-ca
-    domain: "a11y.canada.ca"
-    url: "https://a11y.canada.ca/"
-    full_url: "https://a11y.canada.ca/"
-    best_for: "policy, best practices, standards, wcag"
-    description: "Government of Canada's digital accessibility standards and practices for federal websites."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: a11yquest-com
-    domain: "a11yquest.com"
-    url: "https://www.a11yquest.com/"
-    full_url: "https://www.a11yquest.com/"
-    best_for: "design, inclusive design, training, education"
-    description: "Interactive learning game designed to teach the basics of web accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: aaron-gustafson
-    domain: "Aaron Gustafson"
-    url: "aaron-gustafson.com"
-    full_url: "https://aaron-gustafson.com"
-    best_for: "code examples, aria, w3c"
-    description: "Personal site of a web designer, author, and accessibility advocate focusing on responsive design & web standards."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: abilitynet
-    domain: "AbilityNet"
-    url: "https://abilitynet.org.uk/"
-    full_url: "https://abilitynet.org.uk/"
-    best_for: "practical support, audits"
-    description: "Nonprofit providing accessibility guidance and testing."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-for-ontarians-with-disabilities-act-aoda
-    domain: "Accessibility for Ontarians with Disabilities Act(AODA)"
-    url: "https://www.aoda.ca"
-    full_url: "https://www.aoda.ca"
-    best_for: "AODA compliance, Canadian accessibility law, provincial accessibility standards, policy requirements, legal accessibility guidelines"
-    description: "Official portal for Accessibility for Ontarians with Disabilities Act information, standards, compliance guidance, and policy updates."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-for-teams-gov-uk
-    domain: "Accessibility for Teams (Gov.uk)"
-    url: "https://accessibility-manual.dwp.gov.uk/"
-    full_url: "https://accessibility-manual.dwp.gov.uk/"
-    best_for: "team workflows, writing, design+dev"
-    description: "Guidance for writing, designing, and building accessible services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-insights
-    domain: "Accessibility Insights"
-    url: "https://accessibilityinsights.io/"
-    full_url: "https://accessibilityinsights.io/"
-    best_for: "testing automation, audits"
-    description: "Tools for automated and assisted accessibility assessments using axe-core."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-object-model
-    domain: "Accessibility Object Model"
-    url: "wicg.github.io/aom/"
-    full_url: "https://wicg.github.io/aom/"
-    best_for: "code examples, development"
-    description: "W3C Community Group page dedicated to the AOM specification, which aims to improve web accessibility APIs."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-huit-harvard-edu
-    domain: "accessibility.huit.harvard.edu"
-    url: "https://accessibility.huit.harvard.edu/"
-    full_url: "https://accessibility.huit.harvard.edu/"
-    best_for: "general accessibility"
-    description: "Harvard University's central resources for digital accessibility policy, tools, and training."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-oregonstate-edu
-    domain: "accessibility.oregonstate.edu"
-    url: "http://accessibility.oregonstate.edu/"
-    full_url: "http://accessibility.oregonstate.edu/"
-    best_for: "general accessibility"
-    description: "Accessibility resources, training, and policy guidance from Oregon State University."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibilityoz
-    domain: "AccessibilityOz"
-    url: "accessibilityoz.com"
-    full_url: "https://accessibilityoz.com"
-    best_for: "wcag, vpat, australia, video, mobile"
-    description: "Australian consulting firm offering accessibility audits, training, and testing services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessible-culture
-    domain: "Accessible Culture"
-    url: "https://accessibleculture.org"
-    full_url: "https://accessibleculture.org"
-    best_for: "accessible arts, museum accessibility, cultural inclusion, event accessibility, public-space best practices"
-    description: "Accessible Culture promotes inclusion in arts and cultural institutions through guidelines, best practices, and tools for accessible cultural spaces."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessible-educational-materials-aem
-    domain: "Accessible Educational Materials (AEM)"
-    url: "https://aem.cast.org/"
-    full_url: "https://aem.cast.org/"
-    best_for: "education accommodations, learning materials"
-    description: "Resources for accessible learning materials."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessible-media-education
-    domain: "Accessible Media Education"
-    url: "access-media.org"
-    full_url: "https://access-media.org"
-    best_for: "Media Accessibility"
-    description: "Resources and tools specific to making digital video and audio content accessible, focusing on captioning, transcription, and describing."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessible-eu-centre-ec-europa-eu
-    domain: "accessible-eu-centre.ec.europa.eu"
-    url: "https://accessible-eu-centre.ec.europa.eu/"
-    full_url: "https://accessible-eu-centre.ec.europa.eu/"
-    best_for: "general accessibility, european accessibility act, en301549"
-    description: "European Union's center providing resources and knowledge on the European Accessibility Act."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessible-canada-ca
-    domain: "accessible.canada.ca"
-    url: "https://accessible.canada.ca/"
-    full_url: "https://accessible.canada.ca/"
-    best_for: "Accessible Canada Act (ACA) information, Canadian legal requirements, policy on federal inclusion, promoting inclusion."
-    description: "Information on the Accessible Canada Act, promoting inclusion and accessibility for persons with disabilities."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibleweb-com
-    domain: "accessibleweb.com"
-    url: "https://accessibleweb.com/"
-    full_url: "https://accessibleweb.com/"
-    best_for: "Accessibility monitoring software, compliance reporting, WCAG testing services, ongoing website maintenance."
-    description: "Services and software for accessibility testing, monitoring, and compliance reporting."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ada-gov
-    domain: "ADA.gov"
-    url: "https://www.ada.gov/"
-    full_url: "https://www.ada.gov/"
-    best_for: "legal compliance, ADA, US law, VPAT"
-    description: "Official ADA guidance and accessibility resources."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: adobe-spectrum-design
-    domain: "Adobe Spectrum Design"
-    url: "https://spectrum.adobe.com"
-    full_url: "https://spectrum.adobe.com"
-    best_for: "inclusive design, color, design system"
-    description: "Information on Adobe product accessibility, including PDF and creative suite tools."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: adp-acb-org
-    domain: "adp.acb.org"
-    url: "https://adp.acb.org/"
-    full_url: "https://adp.acb.org/"
-    best_for: "Assistive technology resources, accessible product reviews, American Council of the Blind (ACB) programs, low-vision aids."
-    description: "American Council of the Blind's resource for assistive technology and accessible products."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: adrian-roselli
-    domain: "Adrian Roselli"
-    url: "adrianroselli.com"
-    full_url: "https://adrianroselli.com"
-    best_for: "wcag, code examples, ARIA, inclusive design, disabilities, W3c"
-    description: "Personal blog by accessibility expert Adrian Roselli covering WCAG, ARIA, and practical implementation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: afb-american-foundation-for-the-blind
-    domain: "AFB (American Foundation for the Blind)"
-    url: "afb.org"
-    full_url: "https://afb.org"
-    best_for: "blindness, low-vision, disabilities, legal"
-    description: "Major non-profit organization promoting education, research, and policy for people with vision loss."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: alistapart-com
-    domain: "alistapart.com"
-    url: "https://alistapart.com/"
-    full_url: "https://alistapart.com/"
-    best_for: "In-depth articles on web standards, design philosophy, interaction design, digital publishing accessibility."
-    description: "Online magazine with in-depth articles on web standards, design, and accessibility (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: android-accessibility
-    domain: "Android Accessibility"
-    url: "http://developer.android.com"
-    full_url: "http://developer.android.com"
-    best_for: "Building and testing accessible apps for the Android platform"
-    description: "Guides and documentation for building accessible apps for the Android operating system."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: annual-disability-statistics-compendium-home
-    domain: "Annual Disability Statistics Compendium - Home"
-    url: "https://www.disabilitycompendium.org"
-    full_url: "https://www.disabilitycompendium.org"
-    best_for: "disability statistics, research data, national disability metrics, policy analysis, evidence-based disability insights"
-    description: "The Annual Disability Statistics Compendium aggregates national and state-level U.S. disability data across key demographic and policy areas."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: apple-accessibility
-    domain: "Apple Accessibility"
-    url: "apple.com/accessibility"
-    full_url: "https://apple.com/accessibility"
-    best_for: "mobile, user preferences, ios, inclusive design"
-    description: "Details on built-in accessibility features across Apple's hardware and software ecosystem."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: apple-accessibility-hig
-    domain: "Apple Accessibility HIG"
-    url: "https://developer.apple.com/accessibility/ios/"
-    full_url: "https://developer.apple.com/accessibility/ios/"
-    best_for: "native app guidance, mobile accessibility"
-    description: "Guidelines for building accessible iOS/macOS apps."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: autistic-self-advocacy-network-asan
-    domain: "Autistic Self Advocacy Network (ASAN)"
-    url: "https://autisticadvocacy.org/"
-    full_url: "https://autisticadvocacy.org/"
-    best_for: "neurodiversity, disability rights"
-    description: "Self-advocate\u2013led disability inclusion guidance."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: axe-devtools
-    domain: "Axe DevTools"
-    url: "https://www.deque.com/axe/"
-    full_url: "https://www.deque.com/axe/"
-    best_for: "testing automation"
-    description: "Leading testing engine for accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: axesslab-com
-    domain: "axesslab.com"
-    url: "https://axesslab.com/"
-    full_url: "https://axesslab.com/"
-    best_for: "Inclusive design consultancy, accessibility testing focused on UX, user experience testing, European legal compliance."
-    description: "Inclusive design and accessibility consultancy (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: barrierbreak-com
-    domain: "barrierbreak.com"
-    url: "https://barrierbreak.com/"
-    full_url: "https://barrierbreak.com/"
-    best_for: "Global accessibility consulting, India-based testing services, international standards compliance, digital accessibility audits."
-    description: "India-based global accessibility consulting and testing firm."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: bbc-accessibility
-    domain: "BBC Accessibility"
-    url: "bbc.co.uk/accessibility"
-    full_url: "https://bbc.co.uk/accessibility"
-    best_for: "mobile accessibility, user experience, coding examples, content design, United Kingdom"
-    description: "The British Broadcasting Corporation's guidelines and commitment to accessible digital content."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: bbc-accessibility-guidelines
-    domain: "BBC Accessibility Guidelines"
-    url: "https://www.bbc.co.uk/accessibility/forproducts/guides/"
-    full_url: "https://www.bbc.co.uk/accessibility/forproducts/guides/"
-    best_for: "design patterns"
-    description: "BBC accessibility patterns for media and products."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: blog-pope-tech
-    domain: "blog.pope.tech"
-    url: "https://blog.pope.tech/"
-    full_url: "https://blog.pope.tech/"
-    best_for: "Web accessibility scanning tools, automated reporting features, accessibility monitoring best practices, WCAG tips."
-    description: "Blog for Pope Tech, a web accessibility scanning and monitoring tool."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: boia-org
-    domain: "boia.org"
-    url: "https://www.boia.org/"
-    full_url: "https://www.boia.org/"
-    best_for: "testing, audits"
-    description: "The Bureau of Internet Accessibility, offering website accessibility audits and remediation services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: bryan-garaventa-whatsock
-    domain: "Bryan Garaventa (WhatSock)"
-    url: "whatsock.com"
-    full_url: "https://whatsock.com"
-    best_for: "code examples, development"
-    description: "Site by accessibility developer Bryan Garaventa, focusing on ARIA, scripting, and accessible widgets."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: cnib-canadian-national-institute-for-the-blind
-    domain: "CNIB (Canadian National Institute for the Blind)"
-    url: "cnib.ca"
-    full_url: "https://cnib.ca"
-    best_for: "Canada, AODA, ACA, blindness, low-vision, disabilities, legal"
-    description: "National charity providing support, services, and advocacy for Canadians with vision loss."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: colorandcontrast-com
-    domain: "colorandcontrast.com"
-    url: "https://colorandcontrast.com/"
-    full_url: "https://colorandcontrast.com/"
-    best_for: "WCAG color contrast validation, accessibility compliance tools, visual design best practices, accessible color palette creation."
-    description: "Tool and resources focused on meeting WCAG color contrast requirements."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: commission-europa-eu
-    domain: "commission.europa.eu"
-    url: "https://commission.europa.eu/"
-    full_url: "https://commission.europa.eu/"
-    best_for: "European digital inclusion policy, official EU legislation, European Commission's stance on digital accessibility."
-    description: "European Commission's official site, including policy and legislation on digital inclusion."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: contentdesign-intuit-com
-    domain: "contentdesign.intuit.com"
-    url: "https://contentdesign.intuit.com/"
-    full_url: "https://contentdesign.intuit.com/"
-    best_for: "Intuit's design system principles, accessible content strategy, content guidelines for UX writing, inclusive design practices."
-    description: "Intuit's (creators of QuickBooks) design system principles for accessible content."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: daisy-consortium
-    domain: "DAISY Consortium"
-    url: "https://www.daisy.org/"
-    full_url: "https://www.daisy.org/"
-    best_for: "accessible publishing"
-    description: "Standards for accessible digital publishing."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: dcmp-org
-    domain: "dcmp.org"
-    url: "https://dcmp.org/"
-    full_url: "https://dcmp.org/"
-    best_for: "Accessible educational videos, described and captioned media (DCMP), resources for students with disabilities, media accessibility standards."
-    description: "Described and Captioned Media Program, providing accessible educational videos for students with disabilities."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: deque-systems
-    domain: "Deque Systems"
-    url: "deque.com"
-    full_url: "https://deque.com"
-    best_for: "Accessibility software, testing (automated & manual), training, audits, compliance (ADA, VPAT, WCAG, etc.)"
-    description: "Enterprise accessibility software and consulting, creators of the axe-core automated testing engine."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: deque-university
-    domain: "Deque University"
-    url: "https://dequeuniversity.com/"
-    full_url: "https://dequeuniversity.com/"
-    best_for: "training, testing methods, remediation"
-    description: "Training for accessibility testing, development, ARIA use, and WCAG compliance."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: design-system-service-gov-uk
-    domain: "design-system.service.gov.uk"
-    url: "https://design-system.service.gov.uk/"
-    full_url: "https://design-system.service.gov.uk/"
-    best_for: "code examples, development, design, inclusive design, policy, best practices"
-    description: "The official GOV.UK Design System, with accessible components and front-end code."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: designsystem-digital-gov
-    domain: "designsystem.digital.gov"
-    url: "https://designsystem.digital.gov/"
-    full_url: "https://designsystem.digital.gov/"
-    best_for: "design, inclusive design, policy, best practices"
-    description: "The U.S. Web Design System (USWDS), providing accessible government components and guidelines."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: developer-android-com
-    domain: "developer.android.com"
-    url: "https://developer.android.com/"
-    full_url: "https://developer.android.com/"
-    best_for: "code examples, development"
-    description: "General developer documentation for Android, including guides on platform accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: developer-apple-com
-    domain: "developer.apple.com"
-    url: "https://developer.apple.com/"
-    full_url: "https://developer.apple.com/"
-    best_for: "code examples, development"
-    description: "Apple developer resources, with extensive guides on building accessible iOS and macOS apps."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: developer-microsoft-com
-    domain: "developer.microsoft.com"
-    url: "https://developer.microsoft.com/"
-    full_url: "https://developer.microsoft.com/"
-    best_for: "code examples, development"
-    description: "Microsoft developer documentation, including accessibility guides for Windows and web platforms."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: developer-mozilla-org
-    domain: "developer.mozilla.org"
-    url: "https://developer.mozilla.org/"
-    full_url: "https://developer.mozilla.org/"
-    best_for: "standards, wcag"
-    description: "MDN Web Docs, the definitive resource for web standards, including detailed accessibility documentation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: digital-strategy-ec-europa-eu
-    domain: "digital-strategy.ec.europa.eu"
-    url: "https://digital-strategy.ec.europa.eu/"
-    full_url: "https://digital-strategy.ec.europa.eu/"
-    best_for: "general accessibility"
-    description: "European Commission's strategy on digital transformation and inclusive technology policies."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: disability-news-in-france
-    domain: "Disability news in france"
-    url: "https://informations.handicap.fr"
-    full_url: "https://informations.handicap.fr"
-    best_for: "disability news (France), French accessibility resources, disability rights, inclusion information, European accessibility updates"
-    description: "Handicap.fr is a French information hub offering news, rights guidance, and resources for people with disabilities and accessibility professionals."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: disability-statistics
-    domain: "Disability Statistics"
-    url: "https://www.disabilitystatistics.org"
-    full_url: "https://www.disabilitystatistics.org"
-    best_for: "U.S. disability data, research tools, demographic insights, disability prevalence, statistical reporting"
-    description: "A resource offering curated U.S. disability statistics and tools for researchers, policymakers, and advocates."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: disabilityin
-    domain: "DisabilityIN"
-    url: "https://disabilityin.org/"
-    full_url: "https://disabilityin.org/"
-    best_for: "corporate inclusion"
-    description: "Resources for disability inclusion in the workplace."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ebay-gitbook-io
-    domain: "ebay.gitbook.io"
-    url: "https://ebay.gitbook.io/"
-    full_url: "https://ebay.gitbook.io/"
-    best_for: "design, inclusive design"
-    description: "eBay's internal or public accessibility guidelines and design system documentation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ec-europa-eu
-    domain: "ec.europa.eu"
-    url: "https://ec.europa.eu/"
-    full_url: "https://ec.europa.eu/"
-    best_for: "policy, best practices"
-    description: "The European Commission's main website, containing official documents and information."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: edf-feph-org
-    domain: "edf-feph.org"
-    url: "https://www.edf-feph.org/"
-    full_url: "https://www.edf-feph.org/"
-    best_for: "general accessibility"
-    description: "European Disability Forum, an NGO advocating for the rights of people with disabilities."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ethical-design-guide
-    domain: "Ethical Design guide"
-    url: "https://ethicaldesign.guide"
-    full_url: "https://ethicaldesign.guide"
-    best_for: "ethical design, UX best practices, responsible tech, privacy-first design, accessibility principles, human-centered design"
-    description: "A curated guide to ethical design principles, emphasizing responsible technology, accessibility, privacy, and human\u201a\u00c4\u00ebcentered practices."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ethics-for-designers
-    domain: "Ethics for Designers"
-    url: "https://www.ethicsfordesigners.com"
-    full_url: "https://www.ethicsfordesigners.com"
-    best_for: "design ethics, UX decision-making, responsible innovation, ethical frameworks, design guidelines, product ethics"
-    description: "A resource providing ethical frameworks, checklists, and case studies to help designers integrate ethics into digital product decisions."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: etsi-org
-    domain: "etsi.org"
-    url: "https://www.etsi.org/"
-    full_url: "https://www.etsi.org/"
-    best_for: "standards, wcag, european accessibility act, en301549"
-    description: "European Telecommunications Standards Institute, which develops ICT accessibility standards like EN 301 549."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: eur-lex-europa-eu
-    domain: "eur-lex.europa.eu"
-    url: "https://eur-lex.europa.eu/"
-    full_url: "https://eur-lex.europa.eu/"
-    best_for: "general accessibility"
-    description: "Database of European Union law, including directives on digital accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: evinced-com
-    domain: "evinced.com"
-    url: "https://evinced.com/"
-    full_url: "https://evinced.com/"
-    best_for: "testing, audits"
-    description: "AI-powered solution for automated accessibility testing and issue remediation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: filamentgroup-com
-    domain: "filamentgroup.com"
-    url: "https://www.filamentgroup.com/"
-    full_url: "https://www.filamentgroup.com/"
-    best_for: "general accessibility"
-    description: "Consultancy specializing in performance and inclusive web development (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: freedom-scientific
-    domain: "Freedom Scientific"
-    url: "https://www.freedomscientific.com/"
-    full_url: "https://www.freedomscientific.com/"
-    best_for: "JAWS, assistive technology, blind, low-visioni, reading, dyslexia, screen reader"
-    description: "Screen reader for Microsoft."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: g3ict
-    domain: "G3ict"
-    url: "https://g3ict.org/"
-    full_url: "https://g3ict.org/"
-    best_for: "policy, global inclusion"
-    description: "Global initiative for inclusive ICT standards."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: getevinced-github-io
-    domain: "getevinced.github.io"
-    url: "https://getevinced.github.io/"
-    full_url: "https://getevinced.github.io/"
-    best_for: "testing, audits"
-    description: "Documentation and resources for the Evinced automated accessibility testing platform."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: getstark-co
-    domain: "getstark.co"
-    url: "https://www.getstark.co/"
-    full_url: "https://www.getstark.co/"
-    best_for: "design, inclusive design"
-    description: "Designer tool for checking color contrast, typography, and focus order for accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: google-accessibility
-    domain: "Google Accessibility"
-    url: "google.com/accessibility"
-    full_url: "https://google.com/accessibility"
-    best_for: "tools/software, mobile, android, talk back, user preferences"
-    description: "Overview of accessibility features and tools across Google products, including Android, Chrome, and search."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: gov-uk-accessibility
-    domain: "Gov.uk Accessibility"
-    url: "accessibility.blog.gov.uk"
-    full_url: "https://accessibility.blog.gov.uk"
-    best_for: "accessibility best practices, management, standards"
-    description: "Official blog from the UK government on public sector digital accessibility compliance and standards."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: gov-uk-service-manual-accessibility
-    domain: "GOV.UK Service Manual Accessibility"
-    url: "https://www.gov.uk/service-manual/helping-people-to-use-your-service/accessibility"
-    full_url: "https://www.gov.uk/service-manual/helping-people-to-use-your-service/accessibility"
-    best_for: "government patterns"
-    description: "Accessibility guidelines for UK public services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: handicap-fr
-    domain: "handicap.fr"
-    url: "https://www.handicap.fr/"
-    full_url: "https://www.handicap.fr/"
-    best_for: "general accessibility"
-    description: "French-language news and resource site for people with disabilities and accessibility topics."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: heydon-pickering
-    domain: "Heydon Pickering"
-    url: "heydonworks.com"
-    full_url: "https://heydonworks.com"
-    best_for: "design/ux, inclusive design, interaction design, keyboard accessibility, wcag, aria"
-    description: "Personal site of a writer and accessibility expert focusing on inclusive design patterns and components."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: hidde-devries
-    domain: "Hidde de Vries"
-    url: "hidde.blog"
-    full_url: "https://hidde.blog/"
-    additional_urls:
-      - "https://talks.hiddedevries.nl/bio"
-    best_for: "accessibility, web standards, wcag, aria, inclusive design, web components"
-    description: "Personal blog and speaking portfolio of accessibility advocate and web standards expert Hidde de Vries, featuring articles on ARIA, web components, and inclusive design practices."
-    authority_level: "high"
-    topic_tags: ["accessibility", "web-standards", "wcag", "aria", "inclusive-design"]
-    jurisdiction: "global"
-    wcag_version: ["2.1", "2.2"]
-    last_reviewed: "2026-02-24"
-    owner: "Hidde de Vries"
-    license: null
-    ai_scraping: "prohibited"
-    status: "active"
-  - id: html5-doctor
-    domain: "HTML5 Doctor"
-    url: "html5doctor.com"
-    full_url: "https://html5doctor.com"
-    best_for: "design/ux, development/code, pdf/documents, resources/blog"
-    description: "Reference and guide site dedicated to proper usage and semantics of HTML5 elements for better accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: html5accessibility-com
-    domain: "html5accessibility.com"
-    url: "https://html5accessibility.com/"
-    full_url: "https://html5accessibility.com/"
-    best_for: "general accessibility"
-    description: "A reference site detailing the accessibility support status of various HTML5 features and elements."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ibm-accessibility
-    domain: "IBM Accessibility"
-    url: "https://www.ibm.com/able"
-    full_url: "https://www.ibm.com/able"
-    best_for: "research, enterprise accessibility"
-    description: "Enterprise accessibility research and best practices."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: iheni-com
-    domain: "iheni.com"
-    url: "https://www.iheni.com/"
-    full_url: "https://www.iheni.com/"
-    best_for: "general accessibility"
-    description: "Personal site of accessibility specialist Henny Swan, focusing on inclusive user experience."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: inclusionhub-com
-    domain: "inclusionhub.com"
-    url: "https://inclusionhub.com/"
-    full_url: "https://inclusionhub.com/"
-    best_for: "design, inclusive design"
-    description: "A directory and resource center for accessibility and inclusive design tools, agencies, and vendors."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: inclusive-components
-    domain: "Inclusive Components"
-    url: "inclusive-components.design"
-    full_url: "https://inclusive-components.design"
-    best_for: "code examples, development"
-    description: "A collection of articles and code examples demonstrating how to build inclusive web components (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: inclusive-design-guide
-    domain: "Inclusive Design Guide"
-    url: "https://guide.inclusivedesign.ca/"
-    full_url: "https://guide.inclusivedesign.ca/"
-    best_for: "inclusive design decisions, design frameworks"
-    description: "Practical guide for implementing inclusive design throughout a design process."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: inclusive-design-research-centre-idrc
-    domain: "Inclusive Design Research Centre (IDRC)"
-    url: "https://idrc.ocadu.ca/"
-    full_url: "https://idrc.ocadu.ca/"
-    best_for: "inclusive design theory, frameworks"
-    description: "Research-based inclusive design principles and systems-level methodologies."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: inclusivedesign24-org
-    domain: "inclusivedesign24.org"
-    url: "https://www.inclusivedesign24.org/"
-    full_url: "https://www.inclusivedesign24.org/"
-    best_for: "design, inclusive design"
-    description: "Annual free 24-hour virtual conference dedicated to inclusive design (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: joe-dolson
-    domain: "Joe Dolson"
-    url: "joedolson.com"
-    full_url: "https://joedolson.com"
-    best_for: "wordpress, accessibility, cms"
-    description: "Personal site of a WordPress core committer and accessibility consultant."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: juicystudio-com
-    domain: "juicystudio.com"
-    url: "https://juicystudio.com/"
-    full_url: "https://juicystudio.com/"
-    best_for: "general accessibility, standards, wcag, aria"
-    description: "Site by accessibility expert Gez Lemon, offering resources, articles, and tools."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: karlgroves-com
-    domain: "karlgroves.com"
-    url: "https://karlgroves.com/"
-    full_url: "https://karlgroves.com/"
-    best_for: "general accessibility, standards, wcag, aria"
-    description: "Personal site of accessibility consultant Karl Groves, featuring articles and services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: knowbility
-    domain: "Knowbility"
-    url: "knowbility.org"
-    full_url: "https://knowbility.org"
-    best_for: "Education & Events, web standards, compliance"
-    description: "Non-profit promoting digital accessibility through education and consulting (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: last-child-ted-s-site
-    domain: "Last child - Ted's site"
-    url: "https://last-child.com"
-    full_url: "https://last-child.com"
-    best_for: "general accessibility, trauma informed design, diversity, user experience, wcag, aria, web accessibility, leadership"
-    description: "Personal site of Ted Drake, focusing on accessibility development and testing."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: law-office-of-lainey-feingold
-    domain: "Law Office of Lainey Feingold"
-    url: "lflegal.com"
-    full_url: "https://lflegal.com"
-    best_for: "general accessibility, legal, ada, aoda, european accessibility act, structured negotiations"
-    description: "Legal resources, cases, and settlement agreements related to digital accessibility law."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: léonie-watson-tink
-    domain: "L\u00e9onie Watson (Tink)"
-    url: "tink.uk"
-    full_url: "https://tink.uk"
-    best_for: "general accessibility"
-    description: "Personal site of a director at TPGi and a well-known accessibility advocate and expert."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: level-access
-    domain: "Level Access"
-    url: "levelaccess.com"
-    full_url: "https://levelaccess.com"
-    best_for: "Enterprise Compliance"
-    description: "Accessibility auditing, consulting, and software for compliance and testing."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: linkedin-accessibility
-    domain: "LinkedIn Accessibility"
-    url: "linkedin.com/accessibility"
-    full_url: "https://linkedin.com/accessibility"
-    best_for: "general accessibility"
-    description: "Accessibility features and commitments for the LinkedIn professional networking platform."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: m3-material-io
-    domain: "m3.material.io"
-    url: "https://m3.material.io/"
-    full_url: "https://m3.material.io/"
-    best_for: "design, inclusive design"
-    description: "Google's Material Design 3 guidelines, including comprehensive accessibility specifications."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: marco-zehe
-    domain: "Marco Zehe"
-    url: "marcozehe.de"
-    full_url: "https://marcozehe.de"
-    best_for: "news, thought leadership, blind, firefox"
-    description: "Personal blog of an accessibility advocate, often focusing on screen readers and Mozilla/Firefox."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: marcy-sutton
-    domain: "Marcy Sutton"
-    url: "marcysutton.com"
-    full_url: "https://marcysutton.com"
-    best_for: "general accessibility"
-    description: "Personal site of an accessibility engineer, speaker, and trainer focused on modern web applications."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: material-design-accessibility
-    domain: "Material Design Accessibility"
-    url: "https://m3.material.io/foundations/accessibility/overview"
-    full_url: "https://m3.material.io/foundations/accessibility/overview"
-    best_for: "design patterns, contrast, interaction guidance"
-    description: "Accessibility best practices in Material Design."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: mdn-accessibility
-    domain: "MDN Accessibility"
-    url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility"
-    full_url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility"
-    best_for: "developer patterns, semantic HTML"
-    description: "Developer-focused documentation with code examples and accessibility best practices."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: mdn-web-docs-mozilla
-    domain: "MDN Web Docs (Mozilla)"
-    url: "developer.mozilla.org"
-    full_url: "https://developer.mozilla.org"
-    best_for: "Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs"
-    description: "Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: microsoft-accessibility
-    domain: "Microsoft Accessibility"
-    url: "microsoft.com/en-us/accessibility"
-    full_url: "https://microsoft.com/en-us/accessibility"
-    best_for: "Microsoft product accessibility features (Windows, Office, Edge), developer tools (Accessibility Insights), inclusive design principles."
-    description: "Microsoft's accessibility commitment, products, and developer resources."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: microsoft-inclusive-design
-    domain: "Microsoft Inclusive Design"
-    url: "https://inclusive.microsoft.design/"
-    full_url: "https://inclusive.microsoft.design/"
-    best_for: "inclusive design principles"
-    description: "Microsoft's inclusive design toolkit."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: national-association-of-the-deaf
-    domain: "national association of the deaf"
-    url: "https://nad.org"
-    full_url: "https://nad.org"
-    best_for: "Deaf community resources, ASL advocacy, captioning standards, communication accessibility, disability rights (U.S.)"
-    description: "The National Association of the Deaf advocates for civil rights, education, accessibility, and communication access for Deaf and Hard-of-Hearing individuals."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: national-federation-of-the-blind
-    domain: "National Federation of the Blind"
-    url: "https://nfb.org/"
-    full_url: "https://nfb.org/"
-    best_for: "blindness advocacy"
-    description: "Guidance and resources from NFB community."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ncam-national-center-for-accessible-media
-    domain: "NCAM (National Center for Accessible Media)"
-    url: "ncam.wgbh.org"
-    full_url: "https://ncam.wgbh.org"
-    best_for: "general accessibility"
-    description: "Center focused on research, development, and policy to make media accessible for people with disabilities."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: nhk-japan-accessibility
-    domain: "NHK (Japan) Accessibility"
-    url: "nhk.or.jp"
-    full_url: "https://nhk.or.jp"
-    best_for: "general accessibility"
-    description: "Japan's public broadcaster, providing information on their efforts for media and website accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: nicolas-hoffmann
-    domain: "Nicolas Hoffmann"
-    url: "van11y.net"
-    full_url: "https://van11y.net"
-    best_for: "general accessibility, components"
-    description: "Resource site by Nicolas Hoffmann, providing accessible components and coding examples (van11y = Vanilla A11y)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: nielsen-norman-group-nn-g-accessibility
-    domain: "Nielsen Norman Group (NN/g) Accessibility"
-    url: "https://www.nngroup.com/topic/accessibility/"
-    full_url: "https://www.nngroup.com/topic/accessibility/"
-    best_for: "UX research, usability"
-    description: "Evidence-based UX research on accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: nvda
-    domain: "NVDA"
-    url: "https://community.nvda-project.org"
-    full_url: "https://community.nvda-project.org"
-    best_for: "screen reader support, NVDA troubleshooting, open-source accessibility tools, assistive technology, blindness accessibility"
-    description: "The community hub for NVDA users and developers, offering documentation, support forums, and accessibility resources."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ozewai
-    domain: "OZeWAI"
-    url: "https://www.ozewai.org/"
-    full_url: "https://www.ozewai.org/"
-    best_for: "APAC accessibility community"
-    description: "Australia\u2019s Web Accessibility Initiative community."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: paul-j-adam
-    domain: "Paul J. Adam"
-    url: "pauljadam.com"
-    full_url: "https://pauljadam.com"
-    best_for: "general accessibility, mobile, ios, android, auditing"
-    description: "Personal site of a principal accessibility engineer and conference speaker."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: pdf-association
-    domain: "PDF Association"
-    url: "pdfa.org"
-    full_url: "https://pdfa.org"
-    best_for: "standards, wcag, pdf"
-    description: "Organization promoting and developing the use of PDF standards, including accessibility (PDF/UA)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: rnib-royal-national-institute-of-blind-people
-    domain: "RNIB (Royal National Institute of Blind People)"
-    url: "rnib.org.uk"
-    full_url: "https://rnib.org.uk"
-    best_for: "general accessibility, blind, low-vision, disability, uk"
-    description: "UK-based charity offering support and resources for people with sight loss."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: section508-gov
-    domain: "Section508.gov"
-    url: "section508.gov"
-    full_url: "https://section508.gov/"
-    best_for: "U.S. federal accessibility policy and implementation guidance"
-    description: "Official U.S. government resource for Section 508 requirements, policy, and practical implementation guidance for federal ICT accessibility."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "US"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: shopify-ux
-    domain: "Shopify UX"
-    url: "ux.shopify.com"
-    full_url: "https://ux.shopify.com"
-    best_for: "design, inclusive design"
-    description: "Shopify's user experience (UX) documentation, including guides on accessible design within their platform."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: simply-accessible
-    domain: "Simply Accessible"
-    url: "simplyaccessible.com"
-    full_url: "https://simplyaccessible.com"
-    best_for: "general accessibility"
-    description: "Accessibility consulting and training firm focused on practical, user-centered solutions."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: siteimprove-accessibility
-    domain: "Siteimprove Accessibility"
-    url: "https://siteimprove.com/"
-    full_url: "https://siteimprove.com/"
-    best_for: "website monitoring, analytics"
-    description: "Accessibility monitoring and reporting tools."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: smashing-magazine
-    domain: "Smashing Magazine"
-    url: "smashingmagazine.com"
-    full_url: "https://smashingmagazine.com"
-    best_for: "Front-End & UX Design"
-    description: "Leading online magazine for professional web designers and developers, with frequent accessibility coverage."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: teach-access
-    domain: "Teach Access"
-    url: "https://teachaccess.org/"
-    full_url: "https://teachaccess.org/"
-    best_for: "education, curriculum development"
-    description: "Resources that help educators teach accessibility concepts."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: the-a11y-project
-    domain: "The A11Y Project"
-    url: "https://www.a11yproject.com/"
-    full_url: "https://www.a11yproject.com/"
-    best_for: "best practices, checklists, onboarding"
-    description: "Community-driven accessibility resource with guides, checklists, and articles."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: tpgi-com
-    domain: "tpgi.com"
-    url: "https://www.tpgi.com/"
-    full_url: "https://www.tpgi.com/"
-    best_for: "Technical Auditing, jaws, compliance, web standards"
-    description: "The Paciello Group (TPGi), a leading accessibility consulting and software company (Duplicate entry)."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: u-s-department-of-labor-office-of-disability-employment-policy
-    domain: "U.S. Department of Labor - Office of Disability Employment Policy"
-    url: "https://www.dol.gov"
-    full_url: "https://www.dol.gov"
-    best_for: "employment law, disability employment policy, workforce accessibility, labor regulations, workplace rights guidance"
-    description: "The U.S. Department of Labor site providing employment regulations, workplace rights information, and disability employment policy resources."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: uk-gov-accessibility-blog
-    domain: "UK Gov Accessibility Blog"
-    url: "https://accessibility.blog.gov.uk/"
-    full_url: "https://accessibility.blog.gov.uk/"
-    best_for: "policy, implementation"
-    description: "Government service patterns, testing insights, and accessibility processes."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: us-access-board
-    domain: "US Access Board"
-    url: "https://www.access-board.gov/"
-    full_url: "https://www.access-board.gov/"
-    best_for: "508 compliance, physical + digital standards"
-    description: "Government accessibility standards body."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: vision-australia
-    domain: "Vision Australia"
-    url: "visionaustralia.org"
-    full_url: "https://visionaustralia.org"
-    best_for: "general accessibility"
-    description: "Australian blindness and low vision service provider, offering advocacy and accessible technology services."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: vox-product-accessibility-guidelines
-    domain: "Vox Product Accessibility Guidelines"
-    url: "https://accessibility.voxmedia.com"
-    full_url: "https://accessibility.voxmedia.com"
-    best_for: "digital accessibility standards, accessible publishing, accessible design systems, industry accessibility practices, inclusive engineering"
-    description: "Vox Media's accessibility portal documenting inclusive design standards, engineering patterns, and digital accessibility processes."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: w3c-silver-project-wcag-3
-    domain: "W3C Silver Project (WCAG 3)"
-    url: "https://www.w3.org/WAI/GL/task-forces/silver/"
-    full_url: "https://www.w3.org/WAI/GL/task-forces/silver/"
-    best_for: "next\u2011gen standards"
-    description: "Future WCAG 3 accessibility guidelines development."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: w3c-web-accessibility-initiative-wai
-    domain: "W3C Web Accessibility Initiative (WAI)"
-    url: "w3.org/WAI/"
-    full_url: "https://w3.org/WAI/"
-    best_for: "Web Standards & Guidelines"
-    description: "The official World Wide Web Consortium group that develops WCAG and other accessibility guidelines."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: wai-aria-authoring-practices
-    domain: "WAI-ARIA Authoring Practices"
-    url: "https://www.w3.org/WAI/ARIA/apg/"
-    full_url: "https://www.w3.org/WAI/ARIA/apg/"
-    best_for: "ARIA patterns and roles"
-    description: "Authoring patterns, roles, states, properties, and component guidance."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: wai-media-accessibility
-    domain: "W3C WAI: Making Audio and Video Media Accessible"
-    url: "w3.org/WAI/media/av"
-    full_url: "https://www.w3.org/WAI/media/av/"
-    best_for: "audio accessibility, video accessibility, captions, transcripts, audio descriptions, media player accessibility"
-    description: "Comprehensive W3C WAI guidance on making audio and video content accessible, including requirements for captions, transcripts, audio descriptions, and accessible media players."
-    authority_level: "to_review"
-    topic_tags: ["media", "video", "audio", "captions", "transcripts", "wcag"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "W3C"
-    license: "W3C Document License"
-    status: "active"
-  - id: wai-tools-project
-    domain: "WAI-Tools Project"
-    url: "https://www.w3.org/WAI/Tools/"
-    full_url: "https://www.w3.org/WAI/Tools/"
-    best_for: "testing tools"
-    description: "EU-backed accessibility testing innovation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: wai-yaml-ld
-    domain: "wai-yaml-ld"
-    url: "https://github.com/mgifford/wai-yaml-ld"
-    full_url: "https://github.com/mgifford/wai-yaml-ld"
-    best_for: "WCAG lookups, AI training, machine-readable standards, standards relationships"
-    description: "Machine-readable accessibility standards context for AI coding systems. Provides structured YAML/JSON-LD/CSV artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that LLMs can consume for generating and reviewing accessible code."
-    authority_level: "to_review"
-    topic_tags: ["wcag", "atag", "uaag", "aria", "standards", "ai", "llm"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.2"]
-    last_reviewed: "2026-02-21"
-    owner: "mgifford"
-    license: null
-    status: "active"
-  - id: wcag-guidelines
-    domain: "WCAG Guidelines"
-    url: "https://www.w3.org/WAI/standards-guidelines/wcag/"
-    full_url: "https://www.w3.org/WAI/standards-guidelines/wcag/"
-    best_for: "WCAG lookups, criteria explanations"
-    description: "Official Web Content Accessibility Guidelines."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: web-axe
-    domain: "Web Axe"
-    url: "webaxe.org"
-    full_url: "https://webaxe.org"
-    best_for: "news, thought leadership"
-    description: "Podcast and blog covering digital accessibility topics, news, and tools."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: webaim
-    domain: "WebAIM"
-    url: "webaim.org"
-    full_url: "https://webaim.org"
-    best_for: "Training & Evaluation"
-    description: "Non-profit offering accessibility tools, training, and the annual screen reader survey."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: civicactions-accessibility
-    domain: "CivicActions Accessibility"
-    url: "accessibility.civicactions.com"
-    full_url: "https://accessibility.civicactions.com/"
-    best_for: "automation workflows, practical implementation guides, open-source accessibility operations"
-    description: "CivicActions accessibility engineering resource hub with implementation-focused guidance, testing practices, and accessibility workflow patterns."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: civicactions-open-requirements-accessibility
-    domain: "CivicActions Open Requirements Library - Accessibility"
-    url: "github.com/CivicActions/open-practice"
-    full_url: "https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md"
-    best_for: "procurement, Section 508, government contracts, RFP requirements, vendor requirements, WCAG compliance in procurement"
-    description: "Comprehensive, vendor-agnostic framework for integrating Section 508 and WCAG 2.2 Level AA accessibility requirements into government procurements. Provides copy-paste requirements for contracting officers to include in solicitations, covering project roles, task requirements, ACR processes, and quality assurance for website maintenance and enhancement."
-    authority_level: "to_review"
-    topic_tags: ["procurement", "section-508", "government", "rfp", "wcag", "contracting"]
-    jurisdiction: "us"
-    wcag_version: ["2.2"]
-    last_reviewed: "2026-02-23"
-    owner: "CivicActions"
-    license: "CC-BY-SA-4.0"
-    status: "active"
-  - id: wcag-understanding-docs
-    domain: "W3C WCAG Understanding Docs"
-    url: "w3.org/WAI/WCAG22/Understanding/"
-    full_url: "https://www.w3.org/WAI/WCAG22/Understanding/"
-    best_for: "criterion-level interpretation and intent for WCAG 2.2"
-    description: "Official W3C explanatory guidance for each WCAG success criterion, including intent, benefits, examples, and related techniques."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: wcag-techniques-docs
-    domain: "W3C WCAG Techniques"
-    url: "w3.org/WAI/WCAG22/Techniques/"
-    full_url: "https://www.w3.org/WAI/WCAG22/Techniques/"
-    best_for: "implementation patterns and testable techniques for WCAG 2.2"
-    description: "Official W3C techniques repository with sufficient/advisory techniques and common failure patterns mapped to WCAG success criteria."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: ericwbailey
-    domain: "Ericw Bailey's Website"
-    url: "ericwbailey.website"
-    full_url: "https://ericwbailey.website/"
-    best_for: "guideance for developers and designers"
-    description: "Working in the open Accessible and inclusive design Semantics and interoperability CSS architecture at scale Progressive enhancement Web performance Internationalization and localization."
-    authority_level: "to_review"
-    topic_tags: [accessibility, semantics, css, progressive enhancement, performance, open web]
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: accessibility-github-com
-    domain: "GitHub Accessibility"
-    url: "accessibility.github.com"
-    full_url: "https://accessibility.github.com"
-    best_for: "accessibility resources, documentation, best practices"
-    description: "GitHub's accessibility documentation and resources covering inclusive design practices, keyboard navigation, screen reader support, and WCAG compliance for GitHub products and general web development."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: cariefisher-com
-    domain: "Carie Fisher"
-    url: "cariefisher.com"
-    full_url: "https://cariefisher.com/"
-    best_for: "accessibility articles, tutorials, speaking resources"
-    description: "Personal site of Carie Fisher, accessibility advocate and developer, featuring articles, talks, and resources on web accessibility, inclusive design, and WCAG implementation."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: a11yweekly-com
-    domain: "A11y Weekly"
-    url: "a11yweekly.com"
-    full_url: "https://a11yweekly.com/"
-    best_for: "weekly newsletter, curated accessibility content"
-    description: "Weekly newsletter featuring curated accessibility news, articles, tools, and resources from across the web accessibility community."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: umn-webdesign-training
-    domain: "University of Minnesota Duluth - Web Design"
-    url: "d.umn.edu/itss/training/online/webdesign/"
-    full_url: "https://www.d.umn.edu/itss/training/online/webdesign/index.html"
-    best_for: "web design training, accessibility education"
-    description: "University of Minnesota Duluth's online web design training materials covering accessibility, HTML, CSS, and inclusive web development practices."
-    authority_level: "to_review"
-    topic_tags: []
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: null
-    license: null
-    status: "active"
-  - id: overlayfactsheet
-    domain: "Overlay Fact Sheet"
-    url: "overlayfactsheet.com"
-    full_url: "https://overlayfactsheet.com/en/"
-    best_for: "accessibility overlays, overlay problems, automated accessibility tools"
-    description: "Comprehensive documentation explaining why accessibility overlays should not be used as a substitute for proper accessible design. Signed by over 800 accessibility professionals. Essential reading on the limitations and problems with overlay widgets that claim to automatically fix accessibility issues."
-    authority_level: "to_review"
-    topic_tags: ["overlays", "automation", "remediation", "widgets"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "Karl Groves and overlay experts community"
-    license: null
-    status: "active"
-  - id: fluid-infusion-preferences
-    domain: "Fluid Infusion Preferences Framework"
-    url: "docs.fluidproject.org/infusion/development/PreferencesFramework"
-    full_url: "https://docs.fluidproject.org/infusion/development/PreferencesFramework"
-    best_for: "user preferences, personalization, accessibility customization, inclusive design"
-    description: "Reference implementation of user preference framework that allows users to customize text size, line spacing, font, contrast options, table of contents, and enhanced inputs. Demonstrates best practices for legitimate user personalization without claiming to fix accessibility issues."
-    authority_level: "to_review"
-    topic_tags: ["personalization", "preferences", "user-control", "customization"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "Fluid Project (IDRC)"
-    license: "BSD-3-Clause"
-    status: "active"
-  - id: paypal-skipto
-    domain: "PayPal SkipTo"
-    url: "paypal.github.io/skipto"
-    full_url: "https://paypal.github.io/skipto/"
-    best_for: "skip navigation, landmarks menu, heading navigation, keyboard accessibility"
-    description: "Keyboard-accessible menu that lists all landmarks and headings on a page, making it easy for users to jump to different sections. Fills the gap where browsers don't provide easy page structure navigation. Triggered by keyboard shortcut (Alt+0 or Option+0)."
-    authority_level: "to_review"
-    topic_tags: ["navigation", "skip-links", "keyboard", "landmarks", "headings"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "PayPal Accessibility Team"
-    license: "Apache-2.0"
-    status: "active"
-  - id: elevenways-media-queries
-    domain: "Eleven Ways - Media Queries Article"
-    url: "elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries"
-    full_url: "https://elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries"
-    best_for: "CSS media queries, user preferences, inclusive design, prefers-reduced-motion"
-    description: "Comprehensive guide on using CSS media queries to create more inclusive websites by respecting user preferences for motion, color scheme, contrast, and transparency."
-    authority_level: "to_review"
-    topic_tags: ["css", "media-queries", "user-preferences", "motion", "contrast"]
-    jurisdiction: "global"
-    wcag_version: ["2.1", "2.2"]
-    last_reviewed: null
-    owner: "Eleven Ways"
-    license: null
-    status: "active"
-  - id: dockyard-media-queries
-    domain: "DockYard - CSS Media Queries Accessibility"
-    url: "dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design"
-    full_url: "https://dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design"
-    best_for: "CSS media queries, accessibility optimization, responsive design, user preferences"
-    description: "Guide on using CSS media queries to optimize digital product design for accessibility, covering prefers-reduced-motion, prefers-color-scheme, prefers-contrast, and other user preference queries."
-    authority_level: "to_review"
-    topic_tags: ["css", "media-queries", "responsive-design", "user-preferences"]
-    jurisdiction: "global"
-    wcag_version: ["2.1", "2.2"]
-    last_reviewed: null
-    owner: "DockYard"
-    license: null
-    status: "active"
-  - id: pmc-dyslexia-fonts
-    domain: "PMC - Typography and Dyslexia"
-    url: "pmc.ncbi.nlm.nih.gov/articles/PMC5934461"
-    full_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5934461/"
-    best_for: "dyslexia fonts research, typography, reading accessibility"
-    description: "Research article examining the effectiveness of typeface on reading performance for readers with dyslexia. Provides scientific context on dyslexia-friendly font claims."
-    authority_level: "to_review"
-    topic_tags: ["research", "dyslexia", "typography", "fonts", "readability"]
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: "PubMed Central / NIH"
-    license: "public-domain"
-    status: "active"
-  - id: heidi-gregory-dyslexia-fonts
-    domain: "Heidi Gregory - Dyslexia Font Myth"
-    url: "heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth"
-    full_url: "https://www.heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth"
-    best_for: "dyslexia fonts, evidence-based practices, typography myths"
-    description: "Parent advocate and educator perspective on dyslexia-friendly fonts, examining research evidence and practical considerations for font selection in educational settings."
-    authority_level: "to_review"
-    topic_tags: ["dyslexia", "typography", "fonts", "education", "evidence-based"]
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: "Heidi Gregory"
-    license: null
-    status: "active"
-  - id: edutopia-dyslexia-fonts
-    domain: "Edutopia - Do Dyslexia Fonts Actually Work"
-    url: "edutopia.org/article/do-dyslexia-fonts-actually-work"
-    full_url: "https://www.edutopia.org/article/do-dyslexia-fonts-actually-work"
-    best_for: "dyslexia fonts, education research, evidence-based practices"
-    description: "Educational resource examining research on whether specialized dyslexia fonts actually improve reading for students with dyslexia, providing balanced perspective on font choice."
-    authority_level: "to_review"
-    topic_tags: ["dyslexia", "typography", "fonts", "education", "research"]
-    jurisdiction: "global"
-    wcag_version: []
-    last_reviewed: null
-    owner: "George Lucas Educational Foundation"
-    license: null
-    status: "active"
-  - id: web-almanac-2024-accessibility
-    domain: "Web Almanac 2024 - Accessibility Chapter"
-    url: "almanac.httparchive.org/en/2024/accessibility"
-    full_url: "https://almanac.httparchive.org/en/2024/accessibility"
-    best_for: "accessibility trends, web statistics, user personalization, overlay analysis"
-    description: "Annual report analyzing the state of web accessibility based on HTTP Archive data. Includes sections on user personalization widgets, overlay remediation, and current accessibility practices across millions of websites."
-    authority_level: "to_review"
-    topic_tags: ["research", "statistics", "trends", "personalization", "overlays"]
-    jurisdiction: "global"
-    wcag_version: ["2.0", "2.1", "2.2"]
-    last_reviewed: null
-    owner: "HTTP Archive / W3C"
-    license: "Apache-2.0"
-    status: "active"
+- id: 3play-media
+  domain: 3Play Media
+  url: 3playmedia.com
+  full_url: https://3playmedia.com
+  best_for: audio, video, captions, audio descriptions
+  description: Provides captioning, transcription, and audio description services for video accessibility.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - audio-description
+  - transcripts
+  - video
+  - audio
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: 3Play Media
+  license: unknown
+  status: active
+- id: able-player
+  domain: Able Player
+  url: ableplayer.github.io/ableplayer
+  full_url: https://ableplayer.github.io/ableplayer/
+  best_for: accessible media player, video accessibility, audio accessibility, captions, audio descriptions, keyboard navigation
+  description: Fully accessible cross-browser HTML5 media player with support for captions, audio descriptions, chapters, interactive transcripts, sign language, and keyboard navigation. Recommended default for accessible video and audio on the web.
+  authority_level: to_review
+  topic_tags:
+  - media
+  - video
+  - audio
+  - captions
+  - player
+  - html5
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Terrill Thompson
+  license: MIT
+  status: active
+- id: a-list-apart
+  domain: A List Apart
+  url: alistapart.com
+  full_url: https://alistapart.com
+  best_for: inclusive design, interaction design, leadership, accessibility, system design
+  description: Magazine for people who make websites, often featuring in-depth articles on web standards, design, and accessibility.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: A List Apart
+  license: unknown
+  status: active
+- id: a11y-style-guide-com
+  domain: a11y-style-guide.com
+  url: https://a11y-style-guide.com/
+  full_url: https://a11y-style-guide.com/
+  best_for: general accessibility
+  description: A practical, living style guide demonstrating accessible UI patterns and components.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: a11y-canada-ca
+  domain: a11y.canada.ca
+  url: https://a11y.canada.ca/
+  full_url: https://a11y.canada.ca/
+  best_for: policy, best practices, standards, wcag
+  description: Government of Canada's digital accessibility standards and practices for federal websites.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - captions
+  - audio-description
+  - policy
+  - ada
+  jurisdiction: Canada
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Government of Canada
+  license: Open Government Licence - Canada
+  status: active
+- id: a11yquest-com
+  domain: a11yquest.com
+  url: https://www.a11yquest.com/
+  full_url: https://www.a11yquest.com/
+  best_for: design, inclusive design, training, education
+  description: Interactive learning game designed to teach the basics of web accessibility.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  - captions
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: aaron-gustafson
+  domain: Aaron Gustafson
+  url: aaron-gustafson.com
+  full_url: https://aaron-gustafson.com
+  best_for: code examples, aria, w3c
+  description: Personal site of a web designer, author, and accessibility advocate focusing on responsive design & web standards.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - keyboard
+  - design
+  - development
+  - captions
+  - audio-description
+  - focus
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Aaron Gustafson
+  license: unknown
+  status: active
+- id: abilitynet
+  domain: AbilityNet
+  url: https://abilitynet.org.uk/
+  full_url: https://abilitynet.org.uk/
+  best_for: practical support, audits
+  description: Nonprofit providing accessibility guidance and testing.
+  authority_level: established
+  topic_tags:
+  - testing
+  - design
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: AbilityNet
+  license: unknown
+  status: active
+- id: accessibility-for-ontarians-with-disabilities-act-aoda
+  domain: Accessibility for Ontarians with Disabilities Act(AODA)
+  url: https://www.aoda.ca
+  full_url: https://www.aoda.ca
+  best_for: AODA compliance, Canadian accessibility law, provincial accessibility standards, policy requirements, legal accessibility guidelines
+  description: Official portal for Accessibility for Ontarians with Disabilities Act information, standards, compliance guidance, and policy updates.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - forms
+  - design
+  - captions
+  - audio-description
+  - policy
+  - aoda
+  - assistive-technology
+  jurisdiction: Canada
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessibility for Ontarians with Disabilities Act(AODA)
+  license: unknown
+  status: active
+- id: accessibility-for-teams-gov-uk
+  domain: Accessibility for Teams (Gov.uk)
+  url: https://accessibility-manual.dwp.gov.uk/
+  full_url: https://accessibility-manual.dwp.gov.uk/
+  best_for: team workflows, writing, design+dev
+  description: Guidance for writing, designing, and building accessible services.
+  authority_level: authoritative
+  topic_tags:
+  - design
+  - captions
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: UK Government
+  license: Open Government Licence
+  status: active
+- id: accessibility-insights
+  domain: Accessibility Insights
+  url: https://accessibilityinsights.io/
+  full_url: https://accessibilityinsights.io/
+  best_for: testing automation, audits
+  description: Tools for automated and assisted accessibility assessments using axe-core.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessibility Insights
+  license: unknown
+  status: active
+- id: accessibility-object-model
+  domain: Accessibility Object Model
+  url: wicg.github.io/aom/
+  full_url: https://wicg.github.io/aom/
+  best_for: code examples, development
+  description: W3C Community Group page dedicated to the AOM specification, which aims to improve web accessibility APIs.
+  authority_level: to_review
+  topic_tags:
+  - development
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessibility Object Model
+  license: unknown
+  status: active
+- id: accessibility-huit-harvard-edu
+  domain: accessibility.huit.harvard.edu
+  url: https://accessibility.huit.harvard.edu/
+  full_url: https://accessibility.huit.harvard.edu/
+  best_for: general accessibility
+  description: Harvard University's central resources for digital accessibility policy, tools, and training.
+  authority_level: established
+  topic_tags:
+  - testing
+  - captions
+  - policy
+  - training
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Harvard University
+  license: unknown
+  status: active
+- id: accessibility-oregonstate-edu
+  domain: accessibility.oregonstate.edu
+  url: http://accessibility.oregonstate.edu/
+  full_url: http://accessibility.oregonstate.edu/
+  best_for: general accessibility
+  description: Accessibility resources, training, and policy guidance from Oregon State University.
+  authority_level: established
+  topic_tags:
+  - design
+  - captions
+  - policy
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Oregon State University
+  license: unknown
+  status: active
+- id: accessibilityoz
+  domain: AccessibilityOz
+  url: accessibilityoz.com
+  full_url: https://accessibilityoz.com
+  best_for: wcag, vpat, australia, video, mobile
+  description: Australian consulting firm offering accessibility audits, training, and testing services.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - mobile
+  - training
+  - video
+  - assistive-technology
+  jurisdiction: Australia
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: AccessibilityOz
+  license: unknown
+  status: active
+- id: accessible-culture
+  domain: Accessible Culture
+  url: https://accessibleculture.org
+  full_url: https://accessibleculture.org
+  best_for: accessible arts, museum accessibility, cultural inclusion, event accessibility, public-space best practices
+  description: Accessible Culture promotes inclusion in arts and cultural institutions through guidelines, best practices, and tools for accessible cultural spaces.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - testing
+  - design
+  - inclusive-design
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessible Culture
+  license: unknown
+  status: active
+- id: accessible-educational-materials-aem
+  domain: Accessible Educational Materials (AEM)
+  url: https://aem.cast.org/
+  full_url: https://aem.cast.org/
+  best_for: education accommodations, learning materials
+  description: Resources for accessible learning materials.
+  authority_level: established
+  topic_tags:
+  - captions
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessible Educational Materials (AEM)
+  license: unknown
+  status: active
+- id: accessible-media-education
+  domain: Accessible Media Education
+  url: access-media.org
+  full_url: https://access-media.org
+  best_for: Media Accessibility
+  description: Resources and tools specific to making digital video and audio content accessible, focusing on captioning, transcription, and describing.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - testing
+  - captions
+  - transcripts
+  - video
+  - audio
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Accessible Media Education
+  license: unknown
+  status: active
+- id: accessible-eu-centre-ec-europa-eu
+  domain: accessible-eu-centre.ec.europa.eu
+  url: https://accessible-eu-centre.ec.europa.eu/
+  full_url: https://accessible-eu-centre.ec.europa.eu/
+  best_for: general accessibility, european accessibility act, en301549
+  description: European Union's center providing resources and knowledge on the European Accessibility Act.
+  authority_level: authoritative
+  topic_tags:
+  - captions
+  - en301549
+  - eaa
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: European Commission
+  license: unknown
+  status: active
+- id: accessible-canada-ca
+  domain: accessible.canada.ca
+  url: https://accessible.canada.ca/
+  full_url: https://accessible.canada.ca/
+  best_for: Accessible Canada Act (ACA) information, Canadian legal requirements, policy on federal inclusion, promoting inclusion.
+  description: Information on the Accessible Canada Act, promoting inclusion and accessibility for persons with disabilities.
+  authority_level: authoritative
+  topic_tags:
+  - forms
+  - design
+  - inclusive-design
+  - captions
+  - audio-description
+  - policy
+  - ada
+  - aca
+  - assistive-technology
+  jurisdiction: Canada
+  wcag_version: []
+  last_reviewed: null
+  owner: Government of Canada
+  license: Open Government Licence - Canada
+  status: active
+- id: accessibleweb-com
+  domain: accessibleweb.com
+  url: https://accessibleweb.com/
+  full_url: https://accessibleweb.com/
+  best_for: Accessibility monitoring software, compliance reporting, WCAG testing services, ongoing website maintenance.
+  description: Services and software for accessibility testing, monitoring, and compliance reporting.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - policy
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ada-gov
+  domain: ADA.gov
+  url: https://www.ada.gov/
+  full_url: https://www.ada.gov/
+  best_for: legal compliance, ADA, US law, VPAT
+  description: Official ADA guidance and accessibility resources.
+  authority_level: authoritative
+  topic_tags:
+  - design
+  - captions
+  - audio-description
+  - policy
+  - ada
+  - assistive-technology
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: Public Domain
+  status: active
+- id: adobe-spectrum-design
+  domain: Adobe Spectrum Design
+  url: https://spectrum.adobe.com
+  full_url: https://spectrum.adobe.com
+  best_for: inclusive design, color, design system
+  description: Information on Adobe product accessibility, including PDF and creative suite tools.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - color
+  - testing
+  - design
+  - inclusive-design
+  - captions
+  - audio-description
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Adobe Spectrum Design
+  license: unknown
+  status: active
+- id: adp-acb-org
+  domain: adp.acb.org
+  url: https://adp.acb.org/
+  full_url: https://adp.acb.org/
+  best_for: Assistive technology resources, accessible product reviews, American Council of the Blind (ACB) programs, low-vision aids.
+  description: American Council of the Blind's resource for assistive technology and accessible products.
+  authority_level: established
+  topic_tags:
+  - captions
+  - assistive-technology
+  - visual
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: American Council of the Blind
+  license: unknown
+  status: active
+- id: adrian-roselli
+  domain: Adrian Roselli
+  url: adrianroselli.com
+  full_url: https://adrianroselli.com
+  best_for: wcag, code examples, ARIA, inclusive design, disabilities, W3c
+  description: Personal blog by accessibility expert Adrian Roselli covering WCAG, ARIA, and practical implementation.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Adrian Roselli
+  license: unknown
+  status: active
+- id: afb-american-foundation-for-the-blind
+  domain: AFB (American Foundation for the Blind)
+  url: afb.org
+  full_url: https://afb.org
+  best_for: blindness, low-vision, disabilities, legal
+  description: Major non-profit organization promoting education, research, and policy for people with vision loss.
+  authority_level: established
+  topic_tags:
+  - policy
+  - training
+  - assistive-technology
+  - visual
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: American Foundation for the Blind
+  license: unknown
+  status: active
+- id: alistapart-com
+  domain: alistapart.com
+  url: https://alistapart.com/
+  full_url: https://alistapart.com/
+  best_for: In-depth articles on web standards, design philosophy, interaction design, digital publishing accessibility.
+  description: Online magazine with in-depth articles on web standards, design, and accessibility (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: A List Apart
+  license: unknown
+  status: active
+- id: android-accessibility
+  domain: Android Accessibility
+  url: http://developer.android.com
+  full_url: http://developer.android.com
+  best_for: Building and testing accessible apps for the Android platform
+  description: Guides and documentation for building accessible apps for the Android operating system.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - testing
+  - design
+  - captions
+  - pdf
+  - mobile
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Android Accessibility
+  license: unknown
+  status: active
+- id: annual-disability-statistics-compendium-home
+  domain: Annual Disability Statistics Compendium - Home
+  url: https://www.disabilitycompendium.org
+  full_url: https://www.disabilitycompendium.org
+  best_for: disability statistics, research data, national disability metrics, policy analysis, evidence-based disability insights
+  description: The Annual Disability Statistics Compendium aggregates national and state-level U.S. disability data across key demographic and policy areas.
+  authority_level: to_review
+  topic_tags:
+  - policy
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Annual Disability Statistics Compendium - Home
+  license: unknown
+  status: active
+- id: apple-accessibility
+  domain: Apple Accessibility
+  url: apple.com/accessibility
+  full_url: https://apple.com/accessibility
+  best_for: mobile, user preferences, ios, inclusive design
+  description: Details on built-in accessibility features across Apple's hardware and software ecosystem.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  - captions
+  - mobile
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Apple Accessibility
+  license: unknown
+  status: active
+- id: apple-accessibility-hig
+  domain: Apple Accessibility HIG
+  url: https://developer.apple.com/accessibility/ios/
+  full_url: https://developer.apple.com/accessibility/ios/
+  best_for: native app guidance, mobile accessibility
+  description: Guidelines for building accessible iOS/macOS apps.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - mobile
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Apple Accessibility HIG
+  license: unknown
+  status: active
+- id: autistic-self-advocacy-network-asan
+  domain: Autistic Self Advocacy Network (ASAN)
+  url: https://autisticadvocacy.org/
+  full_url: https://autisticadvocacy.org/
+  best_for: neurodiversity, disability rights
+  description: Self-advocate–led disability inclusion guidance.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Autistic Self Advocacy Network (ASAN)
+  license: unknown
+  status: active
+- id: axe-devtools
+  domain: Axe DevTools
+  url: https://www.deque.com/axe/
+  full_url: https://www.deque.com/axe/
+  best_for: testing automation
+  description: Leading testing engine for accessibility.
+  authority_level: established
+  topic_tags:
+  - testing
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Axe DevTools
+  license: unknown
+  status: active
+- id: axesslab-com
+  domain: axesslab.com
+  url: https://axesslab.com/
+  full_url: https://axesslab.com/
+  best_for: Inclusive design consultancy, accessibility testing focused on UX, user experience testing, European legal compliance.
+  description: Inclusive design and accessibility consultancy (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - testing
+  - design
+  - inclusive-design
+  - captions
+  - policy
+  - focus
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: barrierbreak-com
+  domain: barrierbreak.com
+  url: https://barrierbreak.com/
+  full_url: https://barrierbreak.com/
+  best_for: Global accessibility consulting, India-based testing services, international standards compliance, digital accessibility audits.
+  description: India-based global accessibility consulting and testing firm.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - policy
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: bbc-accessibility
+  domain: BBC Accessibility
+  url: bbc.co.uk/accessibility
+  full_url: https://bbc.co.uk/accessibility
+  best_for: mobile accessibility, user experience, coding examples, content design, United Kingdom
+  description: The British Broadcasting Corporation's guidelines and commitment to accessible digital content.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - audio-description
+  - mobile
+  - assistive-technology
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: BBC Accessibility
+  license: unknown
+  status: active
+- id: bbc-accessibility-guidelines
+  domain: BBC Accessibility Guidelines
+  url: https://www.bbc.co.uk/accessibility/forproducts/guides/
+  full_url: https://www.bbc.co.uk/accessibility/forproducts/guides/
+  best_for: design patterns
+  description: BBC accessibility patterns for media and products.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: BBC Accessibility Guidelines
+  license: unknown
+  status: active
+- id: blog-pope-tech
+  domain: blog.pope.tech
+  url: https://blog.pope.tech/
+  full_url: https://blog.pope.tech/
+  best_for: Web accessibility scanning tools, automated reporting features, accessibility monitoring best practices, WCAG tips.
+  description: Blog for Pope Tech, a web accessibility scanning and monitoring tool.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: boia-org
+  domain: boia.org
+  url: https://www.boia.org/
+  full_url: https://www.boia.org/
+  best_for: testing, audits
+  description: The Bureau of Internet Accessibility, offering website accessibility audits and remediation services.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Bureau of Internet Accessibility
+  license: unknown
+  status: active
+- id: bryan-garaventa-whatsock
+  domain: Bryan Garaventa (WhatSock)
+  url: whatsock.com
+  full_url: https://whatsock.com
+  best_for: code examples, development
+  description: Site by accessibility developer Bryan Garaventa, focusing on ARIA, scripting, and accessible widgets.
+  authority_level: to_review
+  topic_tags:
+  - aria
+  - keyboard
+  - development
+  - captions
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Bryan Garaventa (WhatSock)
+  license: unknown
+  status: active
+- id: cnib-canadian-national-institute-for-the-blind
+  domain: CNIB (Canadian National Institute for the Blind)
+  url: cnib.ca
+  full_url: https://cnib.ca
+  best_for: Canada, AODA, ACA, blindness, low-vision, disabilities, legal
+  description: National charity providing support, services, and advocacy for Canadians with vision loss.
+  authority_level: to_review
+  topic_tags:
+  - audio-description
+  - policy
+  - ada
+  - aoda
+  - aca
+  - assistive-technology
+  - visual
+  jurisdiction: Canada
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: colorandcontrast-com
+  domain: colorandcontrast.com
+  url: https://colorandcontrast.com/
+  full_url: https://colorandcontrast.com/
+  best_for: WCAG color contrast validation, accessibility compliance tools, visual design best practices, accessible color palette creation.
+  description: Tool and resources focused on meeting WCAG color contrast requirements.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - forms
+  - color
+  - keyboard
+  - testing
+  - design
+  - captions
+  - policy
+  - focus
+  - error-handling
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: commission-europa-eu
+  domain: commission.europa.eu
+  url: https://commission.europa.eu/
+  full_url: https://commission.europa.eu/
+  best_for: European digital inclusion policy, official EU legislation, European Commission's stance on digital accessibility.
+  description: European Commission's official site, including policy and legislation on digital inclusion.
+  authority_level: authoritative
+  topic_tags:
+  - inclusive-design
+  - captions
+  - policy
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: European Commission
+  license: unknown
+  status: active
+- id: contentdesign-intuit-com
+  domain: contentdesign.intuit.com
+  url: https://contentdesign.intuit.com/
+  full_url: https://contentdesign.intuit.com/
+  best_for: Intuit's design system principles, accessible content strategy, content guidelines for UX writing, inclusive design practices.
+  description: Intuit's (creators of QuickBooks) design system principles for accessible content.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: daisy-consortium
+  domain: DAISY Consortium
+  url: https://www.daisy.org/
+  full_url: https://www.daisy.org/
+  best_for: accessible publishing
+  description: Standards for accessible digital publishing.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: DAISY Consortium
+  license: unknown
+  status: active
+- id: dcmp-org
+  domain: dcmp.org
+  url: https://dcmp.org/
+  full_url: https://dcmp.org/
+  best_for: Accessible educational videos, described and captioned media (DCMP), resources for students with disabilities, media accessibility standards.
+  description: Described and Captioned Media Program, providing accessible educational videos for students with disabilities.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - training
+  - video
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: deque-systems
+  domain: Deque Systems
+  url: deque.com
+  full_url: https://deque.com
+  best_for: Accessibility software, testing (automated & manual), training, audits, compliance (ADA, VPAT, WCAG, etc.)
+  description: Enterprise accessibility software and consulting, creators of the axe-core automated testing engine.
+  authority_level: established
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - audio-description
+  - policy
+  - training
+  - ada
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Deque Systems
+  license: unknown
+  status: active
+- id: deque-university
+  domain: Deque University
+  url: https://dequeuniversity.com/
+  full_url: https://dequeuniversity.com/
+  best_for: training, testing methods, remediation
+  description: Training for accessibility testing, development, ARIA use, and WCAG compliance.
+  authority_level: established
+  topic_tags:
+  - wcag
+  - aria
+  - testing
+  - development
+  - captions
+  - policy
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Deque Systems
+  license: unknown
+  status: active
+- id: design-system-service-gov-uk
+  domain: design-system.service.gov.uk
+  url: https://design-system.service.gov.uk/
+  full_url: https://design-system.service.gov.uk/
+  best_for: code examples, development, design, inclusive design, policy, best practices
+  description: The official GOV.UK Design System, with accessible components and front-end code.
+  authority_level: authoritative
+  topic_tags:
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - policy
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: UK Government
+  license: Open Government Licence
+  status: active
+- id: designsystem-digital-gov
+  domain: designsystem.digital.gov
+  url: https://designsystem.digital.gov/
+  full_url: https://designsystem.digital.gov/
+  best_for: design, inclusive design, policy, best practices
+  description: The U.S. Web Design System (USWDS), providing accessible government components and guidelines.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - policy
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: Public Domain
+  status: active
+- id: developer-android-com
+  domain: developer.android.com
+  url: https://developer.android.com/
+  full_url: https://developer.android.com/
+  best_for: code examples, development
+  description: General developer documentation for Android, including guides on platform accessibility.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - design
+  - development
+  - captions
+  - pdf
+  - mobile
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: developer-apple-com
+  domain: developer.apple.com
+  url: https://developer.apple.com/
+  full_url: https://developer.apple.com/
+  best_for: code examples, development
+  description: Apple developer resources, with extensive guides on building accessible iOS and macOS apps.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - development
+  - captions
+  - mobile
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Apple
+  license: unknown
+  status: active
+- id: developer-microsoft-com
+  domain: developer.microsoft.com
+  url: https://developer.microsoft.com/
+  full_url: https://developer.microsoft.com/
+  best_for: code examples, development
+  description: Microsoft developer documentation, including accessibility guides for Windows and web platforms.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - design
+  - development
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Microsoft
+  license: unknown
+  status: active
+- id: developer-mozilla-org
+  domain: developer.mozilla.org
+  url: https://developer.mozilla.org/
+  full_url: https://developer.mozilla.org/
+  best_for: standards, wcag
+  description: MDN Web Docs, the definitive resource for web standards, including detailed accessibility documentation.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Mozilla
+  license: unknown
+  status: active
+- id: digital-strategy-ec-europa-eu
+  domain: digital-strategy.ec.europa.eu
+  url: https://digital-strategy.ec.europa.eu/
+  full_url: https://digital-strategy.ec.europa.eu/
+  best_for: general accessibility
+  description: European Commission's strategy on digital transformation and inclusive technology policies.
+  authority_level: authoritative
+  topic_tags:
+  - forms
+  - inclusive-design
+  - captions
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: European Commission
+  license: unknown
+  status: active
+- id: disability-news-in-france
+  domain: Disability news in france
+  url: https://informations.handicap.fr
+  full_url: https://informations.handicap.fr
+  best_for: disability news (France), French accessibility resources, disability rights, inclusion information, European accessibility updates
+  description: Handicap.fr is a French information hub offering news, rights guidance, and resources for people with disabilities and accessibility professionals.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - design
+  - inclusive-design
+  - captions
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: Disability news in france
+  license: unknown
+  status: active
+- id: disability-statistics
+  domain: Disability Statistics
+  url: https://www.disabilitystatistics.org
+  full_url: https://www.disabilitystatistics.org
+  best_for: U.S. disability data, research tools, demographic insights, disability prevalence, statistical reporting
+  description: A resource offering curated U.S. disability statistics and tools for researchers, policymakers, and advocates.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - audio-description
+  - policy
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Disability Statistics
+  license: unknown
+  status: active
+- id: disabilityin
+  domain: DisabilityIN
+  url: https://disabilityin.org/
+  full_url: https://disabilityin.org/
+  best_for: corporate inclusion
+  description: Resources for disability inclusion in the workplace.
+  authority_level: to_review
+  topic_tags:
+  - inclusive-design
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ebay-gitbook-io
+  domain: ebay.gitbook.io
+  url: https://ebay.gitbook.io/
+  full_url: https://ebay.gitbook.io/
+  best_for: design, inclusive design
+  description: eBay's internal or public accessibility guidelines and design system documentation.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ec-europa-eu
+  domain: ec.europa.eu
+  url: https://ec.europa.eu/
+  full_url: https://ec.europa.eu/
+  best_for: policy, best practices
+  description: The European Commission's main website, containing official documents and information.
+  authority_level: authoritative
+  topic_tags:
+  - forms
+  - pdf
+  - policy
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: European Commission
+  license: unknown
+  status: active
+- id: edf-feph-org
+  domain: edf-feph.org
+  url: https://www.edf-feph.org/
+  full_url: https://www.edf-feph.org/
+  best_for: general accessibility
+  description: European Disability Forum, an NGO advocating for the rights of people with disabilities.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ethical-design-guide
+  domain: Ethical Design guide
+  url: https://ethicaldesign.guide
+  full_url: https://ethicaldesign.guide
+  best_for: ethical design, UX best practices, responsible tech, privacy-first design, accessibility principles, human-centered design
+  description: A curated guide to ethical design principles, emphasizing responsible technology, accessibility, privacy, and human‚Äëcentered practices.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Ethical Design guide
+  license: unknown
+  status: active
+- id: ethics-for-designers
+  domain: Ethics for Designers
+  url: https://www.ethicsfordesigners.com
+  full_url: https://www.ethicsfordesigners.com
+  best_for: design ethics, UX decision-making, responsible innovation, ethical frameworks, design guidelines, product ethics
+  description: A resource providing ethical frameworks, checklists, and case studies to help designers integrate ethics into digital product decisions.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Ethics for Designers
+  license: unknown
+  status: active
+- id: etsi-org
+  domain: etsi.org
+  url: https://www.etsi.org/
+  full_url: https://www.etsi.org/
+  best_for: standards, wcag, european accessibility act, en301549
+  description: European Telecommunications Standards Institute, which develops ICT accessibility standards like EN 301 549.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - en301549
+  - eaa
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: eur-lex-europa-eu
+  domain: eur-lex.europa.eu
+  url: https://eur-lex.europa.eu/
+  full_url: https://eur-lex.europa.eu/
+  best_for: general accessibility
+  description: Database of European Union law, including directives on digital accessibility.
+  authority_level: authoritative
+  topic_tags:
+  - captions
+  - policy
+  - assistive-technology
+  jurisdiction: EU
+  wcag_version: []
+  last_reviewed: null
+  owner: European Commission
+  license: unknown
+  status: active
+- id: evinced-com
+  domain: evinced.com
+  url: https://evinced.com/
+  full_url: https://evinced.com/
+  best_for: testing, audits
+  description: AI-powered solution for automated accessibility testing and issue remediation.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: filamentgroup-com
+  domain: filamentgroup.com
+  url: https://www.filamentgroup.com/
+  full_url: https://www.filamentgroup.com/
+  best_for: general accessibility
+  description: Consultancy specializing in performance and inclusive web development (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - development
+  - inclusive-design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: freedom-scientific
+  domain: Freedom Scientific
+  url: https://www.freedomscientific.com/
+  full_url: https://www.freedomscientific.com/
+  best_for: JAWS, assistive technology, blind, low-visioni, reading, dyslexia, screen reader
+  description: Screen reader for Microsoft.
+  authority_level: to_review
+  topic_tags:
+  - screen-readers
+  - audio-description
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Freedom Scientific
+  license: unknown
+  status: active
+- id: g3ict
+  domain: G3ict
+  url: https://g3ict.org/
+  full_url: https://g3ict.org/
+  best_for: policy, global inclusion
+  description: Global initiative for inclusive ICT standards.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - inclusive-design
+  - policy
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: getevinced-github-io
+  domain: getevinced.github.io
+  url: https://getevinced.github.io/
+  full_url: https://getevinced.github.io/
+  best_for: testing, audits
+  description: Documentation and resources for the Evinced automated accessibility testing platform.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - testing
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: getstark-co
+  domain: getstark.co
+  url: https://www.getstark.co/
+  full_url: https://www.getstark.co/
+  best_for: design, inclusive design
+  description: Designer tool for checking color contrast, typography, and focus order for accessibility.
+  authority_level: to_review
+  topic_tags:
+  - color
+  - keyboard
+  - testing
+  - design
+  - inclusive-design
+  - captions
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: google-accessibility
+  domain: Google Accessibility
+  url: google.com/accessibility
+  full_url: https://google.com/accessibility
+  best_for: tools/software, mobile, android, talk back, user preferences
+  description: Overview of accessibility features and tools across Google products, including Android, Chrome, and search.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - mobile
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Google Accessibility
+  license: unknown
+  status: active
+- id: gov-uk-accessibility
+  domain: Gov.uk Accessibility
+  url: accessibility.blog.gov.uk
+  full_url: https://accessibility.blog.gov.uk
+  best_for: accessibility best practices, management, standards
+  description: Official blog from the UK government on public sector digital accessibility compliance and standards.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - captions
+  - policy
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: UK Government
+  license: Open Government Licence
+  status: active
+- id: gov-uk-service-manual-accessibility
+  domain: GOV.UK Service Manual Accessibility
+  url: https://www.gov.uk/service-manual/helping-people-to-use-your-service/accessibility
+  full_url: https://www.gov.uk/service-manual/helping-people-to-use-your-service/accessibility
+  best_for: government patterns
+  description: Accessibility guidelines for UK public services.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: UK Government
+  license: Open Government Licence
+  status: active
+- id: handicap-fr
+  domain: handicap.fr
+  url: https://www.handicap.fr/
+  full_url: https://www.handicap.fr/
+  best_for: general accessibility
+  description: French-language news and resource site for people with disabilities and accessibility topics.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: heydon-pickering
+  domain: Heydon Pickering
+  url: heydonworks.com
+  full_url: https://heydonworks.com
+  best_for: design/ux, inclusive design, interaction design, keyboard accessibility, wcag, aria
+  description: Personal site of a writer and accessibility expert focusing on inclusive design patterns and components.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - keyboard
+  - design
+  - inclusive-design
+  - captions
+  - focus
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Heydon Pickering
+  license: unknown
+  status: active
+- id: hidde-devries
+  domain: Hidde de Vries
+  url: hidde.blog
+  full_url: https://hidde.blog/
+  additional_urls:
+  - https://talks.hiddedevries.nl/bio
+  best_for: accessibility, web standards, wcag, aria, inclusive design, web components
+  description: Personal blog and speaking portfolio of accessibility advocate and web standards expert Hidde de Vries, featuring articles on ARIA, web components, and inclusive design practices.
+  authority_level: high
+  topic_tags:
+  - accessibility
+  - web-standards
+  - wcag
+  - aria
+  - inclusive-design
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: '2026-02-24'
+  owner: Hidde de Vries
+  license: unknown
+  ai_scraping: prohibited
+  status: active
+- id: html5-doctor
+  domain: HTML5 Doctor
+  url: html5doctor.com
+  full_url: https://html5doctor.com
+  best_for: design/ux, development/code, pdf/documents, resources/blog
+  description: Reference and guide site dedicated to proper usage and semantics of HTML5 elements for better accessibility.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - development
+  - captions
+  - pdf
+  - html
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: HTML5 Doctor
+  license: unknown
+  status: active
+- id: html5accessibility-com
+  domain: html5accessibility.com
+  url: https://html5accessibility.com/
+  full_url: https://html5accessibility.com/
+  best_for: general accessibility
+  description: A reference site detailing the accessibility support status of various HTML5 features and elements.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - html
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ibm-accessibility
+  domain: IBM Accessibility
+  url: https://www.ibm.com/able
+  full_url: https://www.ibm.com/able
+  best_for: research, enterprise accessibility
+  description: Enterprise accessibility research and best practices.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: IBM Accessibility
+  license: unknown
+  status: active
+- id: iheni-com
+  domain: iheni.com
+  url: https://www.iheni.com/
+  full_url: https://www.iheni.com/
+  best_for: general accessibility
+  description: Personal site of accessibility specialist Henny Swan, focusing on inclusive user experience.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - design
+  - inclusive-design
+  - captions
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: inclusionhub-com
+  domain: inclusionhub.com
+  url: https://inclusionhub.com/
+  full_url: https://inclusionhub.com/
+  best_for: design, inclusive design
+  description: A directory and resource center for accessibility and inclusive design tools, agencies, and vendors.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - design
+  - inclusive-design
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: inclusive-components
+  domain: Inclusive Components
+  url: inclusive-components.design
+  full_url: https://inclusive-components.design
+  best_for: code examples, development
+  description: A collection of articles and code examples demonstrating how to build inclusive web components (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - design
+  - development
+  - inclusive-design
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: inclusive-design-guide
+  domain: Inclusive Design Guide
+  url: https://guide.inclusivedesign.ca/
+  full_url: https://guide.inclusivedesign.ca/
+  best_for: inclusive design decisions, design frameworks
+  description: Practical guide for implementing inclusive design throughout a design process.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: inclusive-design-research-centre-idrc
+  domain: Inclusive Design Research Centre (IDRC)
+  url: https://idrc.ocadu.ca/
+  full_url: https://idrc.ocadu.ca/
+  best_for: inclusive design theory, frameworks
+  description: Research-based inclusive design principles and systems-level methodologies.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: inclusivedesign24-org
+  domain: inclusivedesign24.org
+  url: https://www.inclusivedesign24.org/
+  full_url: https://www.inclusivedesign24.org/
+  best_for: design, inclusive design
+  description: Annual free 24-hour virtual conference dedicated to inclusive design (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - design
+  - inclusive-design
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: joe-dolson
+  domain: Joe Dolson
+  url: joedolson.com
+  full_url: https://joedolson.com
+  best_for: wordpress, accessibility, cms
+  description: Personal site of a WordPress core committer and accessibility consultant.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Joe Dolson
+  license: unknown
+  status: active
+- id: juicystudio-com
+  domain: juicystudio.com
+  url: https://juicystudio.com/
+  full_url: https://juicystudio.com/
+  best_for: general accessibility, standards, wcag, aria
+  description: Site by accessibility expert Gez Lemon, offering resources, articles, and tools.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - testing
+  - captions
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: karlgroves-com
+  domain: karlgroves.com
+  url: https://karlgroves.com/
+  full_url: https://karlgroves.com/
+  best_for: general accessibility, standards, wcag, aria
+  description: Personal site of accessibility consultant Karl Groves, featuring articles and services.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: knowbility
+  domain: Knowbility
+  url: knowbility.org
+  full_url: https://knowbility.org
+  best_for: Education & Events, web standards, compliance
+  description: Non-profit promoting digital accessibility through education and consulting (Duplicate entry).
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - policy
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: last-child-ted-s-site
+  domain: Last child - Ted's site
+  url: https://last-child.com
+  full_url: https://last-child.com
+  best_for: general accessibility, trauma informed design, diversity, user experience, wcag, aria, web accessibility, leadership
+  description: Personal site of Ted Drake, focusing on accessibility development and testing.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - aria
+  - forms
+  - keyboard
+  - testing
+  - design
+  - development
+  - captions
+  - audio-description
+  - focus
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Ted Drake
+  license: unknown
+  status: active
+- id: law-office-of-lainey-feingold
+  domain: Law Office of Lainey Feingold
+  url: lflegal.com
+  full_url: https://lflegal.com
+  best_for: general accessibility, legal, ada, aoda, european accessibility act, structured negotiations
+  description: Legal resources, cases, and settlement agreements related to digital accessibility law.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - audio-description
+  - policy
+  - ada
+  - aoda
+  - eaa
+  - assistive-technology
+  jurisdiction: Canada
+  wcag_version: []
+  last_reviewed: null
+  owner: Law Office of Lainey Feingold
+  license: unknown
+  status: active
+- id: léonie-watson-tink
+  domain: Léonie Watson (Tink)
+  url: tink.uk
+  full_url: https://tink.uk
+  best_for: general accessibility
+  description: Personal site of a director at TPGi and a well-known accessibility advocate and expert.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Léonie Watson (Tink)
+  license: unknown
+  status: active
+- id: level-access
+  domain: Level Access
+  url: levelaccess.com
+  full_url: https://levelaccess.com
+  best_for: Enterprise Compliance
+  description: Accessibility auditing, consulting, and software for compliance and testing.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - policy
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Level Access
+  license: unknown
+  status: active
+- id: linkedin-accessibility
+  domain: LinkedIn Accessibility
+  url: linkedin.com/accessibility
+  full_url: https://linkedin.com/accessibility
+  best_for: general accessibility
+  description: Accessibility features and commitments for the LinkedIn professional networking platform.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - captions
+  - links
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: LinkedIn Accessibility
+  license: unknown
+  status: active
+- id: m3-material-io
+  domain: m3.material.io
+  url: https://m3.material.io/
+  full_url: https://m3.material.io/
+  best_for: design, inclusive design
+  description: Google's Material Design 3 guidelines, including comprehensive accessibility specifications.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: marco-zehe
+  domain: Marco Zehe
+  url: marcozehe.de
+  full_url: https://marcozehe.de
+  best_for: news, thought leadership, blind, firefox
+  description: Personal blog of an accessibility advocate, often focusing on screen readers and Mozilla/Firefox.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - screen-readers
+  - captions
+  - audio-description
+  - focus
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Marco Zehe
+  license: unknown
+  status: active
+- id: marcy-sutton
+  domain: Marcy Sutton
+  url: marcysutton.com
+  full_url: https://marcysutton.com
+  best_for: general accessibility
+  description: Personal site of an accessibility engineer, speaker, and trainer focused on modern web applications.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - captions
+  - mobile
+  - focus
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Marcy Sutton
+  license: unknown
+  status: active
+- id: material-design-accessibility
+  domain: Material Design Accessibility
+  url: https://m3.material.io/foundations/accessibility/overview
+  full_url: https://m3.material.io/foundations/accessibility/overview
+  best_for: design patterns, contrast, interaction guidance
+  description: Accessibility best practices in Material Design.
+  authority_level: to_review
+  topic_tags:
+  - color
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Material Design Accessibility
+  license: unknown
+  status: active
+- id: mdn-accessibility
+  domain: MDN Accessibility
+  url: https://developer.mozilla.org/en-US/docs/Web/Accessibility
+  full_url: https://developer.mozilla.org/en-US/docs/Web/Accessibility
+  best_for: developer patterns, semantic HTML
+  description: Developer-focused documentation with code examples and accessibility best practices.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - development
+  - captions
+  - pdf
+  - html
+  - focus
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: MDN Accessibility
+  license: unknown
+  status: active
+- id: mdn-web-docs-mozilla
+  domain: MDN Web Docs (Mozilla)
+  url: developer.mozilla.org
+  full_url: https://developer.mozilla.org
+  best_for: Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs
+  description: Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - development
+  - captions
+  - html
+  - css
+  - javascript
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Mozilla
+  license: unknown
+  status: active
+- id: microsoft-accessibility
+  domain: Microsoft Accessibility
+  url: microsoft.com/en-us/accessibility
+  full_url: https://microsoft.com/en-us/accessibility
+  best_for: Microsoft product accessibility features (Windows, Office, Edge), developer tools (Accessibility Insights), inclusive design principles.
+  description: Microsoft's accessibility commitment, products, and developer resources.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Microsoft Accessibility
+  license: unknown
+  status: active
+- id: microsoft-inclusive-design
+  domain: Microsoft Inclusive Design
+  url: https://inclusive.microsoft.design/
+  full_url: https://inclusive.microsoft.design/
+  best_for: inclusive design principles
+  description: Microsoft's inclusive design toolkit.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - design
+  - inclusive-design
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: national-association-of-the-deaf
+  domain: national association of the deaf
+  url: https://nad.org
+  full_url: https://nad.org
+  best_for: Deaf community resources, ASL advocacy, captioning standards, communication accessibility, disability rights (U.S.)
+  description: The National Association of the Deaf advocates for civil rights, education, accessibility, and communication access for Deaf and Hard-of-Hearing individuals.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - audio-description
+  - training
+  - assistive-technology
+  - auditory
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: national association of the deaf
+  license: unknown
+  status: active
+- id: national-federation-of-the-blind
+  domain: National Federation of the Blind
+  url: https://nfb.org/
+  full_url: https://nfb.org/
+  best_for: blindness advocacy
+  description: Guidance and resources from NFB community.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - audio-description
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: National Federation of the Blind
+  license: unknown
+  status: active
+- id: ncam-national-center-for-accessible-media
+  domain: NCAM (National Center for Accessible Media)
+  url: ncam.wgbh.org
+  full_url: https://ncam.wgbh.org
+  best_for: general accessibility
+  description: Center focused on research, development, and policy to make media accessible for people with disabilities.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - development
+  - captions
+  - policy
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: nhk-japan-accessibility
+  domain: NHK (Japan) Accessibility
+  url: nhk.or.jp
+  full_url: https://nhk.or.jp
+  best_for: general accessibility
+  description: Japan's public broadcaster, providing information on their efforts for media and website accessibility.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - captions
+  - audio-description
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: NHK (Japan) Accessibility
+  license: unknown
+  status: active
+- id: nicolas-hoffmann
+  domain: Nicolas Hoffmann
+  url: van11y.net
+  full_url: https://van11y.net
+  best_for: general accessibility, components
+  description: Resource site by Nicolas Hoffmann, providing accessible components and coding examples (van11y = Vanilla A11y).
+  authority_level: to_review
+  topic_tags:
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Nicolas Hoffmann
+  license: unknown
+  status: active
+- id: nielsen-norman-group-nn-g-accessibility
+  domain: Nielsen Norman Group (NN/g) Accessibility
+  url: https://www.nngroup.com/topic/accessibility/
+  full_url: https://www.nngroup.com/topic/accessibility/
+  best_for: UX research, usability
+  description: Evidence-based UX research on accessibility.
+  authority_level: established
+  topic_tags:
+  - design
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Nielsen Norman Group
+  license: unknown
+  status: active
+- id: nvda
+  domain: NVDA
+  url: https://community.nvda-project.org
+  full_url: https://community.nvda-project.org
+  best_for: screen reader support, NVDA troubleshooting, open-source accessibility tools, assistive technology, blindness accessibility
+  description: The community hub for NVDA users and developers, offering documentation, support forums, and accessibility resources.
+  authority_level: to_review
+  topic_tags:
+  - screen-readers
+  - testing
+  - development
+  - captions
+  - audio-description
+  - pdf
+  - assistive-technology
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: ozewai
+  domain: OZeWAI
+  url: https://www.ozewai.org/
+  full_url: https://www.ozewai.org/
+  best_for: APAC accessibility community
+  description: Australia’s Web Accessibility Initiative community.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - assistive-technology
+  jurisdiction: Australia
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: paul-j-adam
+  domain: Paul J. Adam
+  url: pauljadam.com
+  full_url: https://pauljadam.com
+  best_for: general accessibility, mobile, ios, android, auditing
+  description: Personal site of a principal accessibility engineer and conference speaker.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - mobile
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Paul J. Adam
+  license: unknown
+  status: active
+- id: pdf-association
+  domain: PDF Association
+  url: pdfa.org
+  full_url: https://pdfa.org
+  best_for: standards, wcag, pdf
+  description: Organization promoting and developing the use of PDF standards, including accessibility (PDF/UA).
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: PDF Association
+  license: unknown
+  status: active
+- id: rnib-royal-national-institute-of-blind-people
+  domain: RNIB (Royal National Institute of Blind People)
+  url: rnib.org.uk
+  full_url: https://rnib.org.uk
+  best_for: general accessibility, blind, low-vision, disability, uk
+  description: UK-based charity offering support and resources for people with sight loss.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - visual
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: section508-gov
+  domain: Section508.gov
+  url: section508.gov
+  full_url: https://section508.gov/
+  best_for: U.S. federal accessibility policy and implementation guidance
+  description: Official U.S. government resource for Section 508 requirements, policy, and practical implementation guidance for federal ICT accessibility.
+  authority_level: authoritative
+  topic_tags:
+  - design
+  - captions
+  - policy
+  - section508
+  - assistive-technology
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: US Government
+  license: Public Domain
+  status: active
+- id: shopify-ux
+  domain: Shopify UX
+  url: ux.shopify.com
+  full_url: https://ux.shopify.com
+  best_for: design, inclusive design
+  description: Shopify's user experience (UX) documentation, including guides on accessible design within their platform.
+  authority_level: to_review
+  topic_tags:
+  - forms
+  - design
+  - inclusive-design
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Shopify UX
+  license: unknown
+  status: active
+- id: simply-accessible
+  domain: Simply Accessible
+  url: simplyaccessible.com
+  full_url: https://simplyaccessible.com
+  best_for: general accessibility
+  description: Accessibility consulting and training firm focused on practical, user-centered solutions.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - captions
+  - training
+  - focus
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Simply Accessible
+  license: unknown
+  status: active
+- id: siteimprove-accessibility
+  domain: Siteimprove Accessibility
+  url: https://siteimprove.com/
+  full_url: https://siteimprove.com/
+  best_for: website monitoring, analytics
+  description: Accessibility monitoring and reporting tools.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: smashing-magazine
+  domain: Smashing Magazine
+  url: smashingmagazine.com
+  full_url: https://smashingmagazine.com
+  best_for: Front-End & UX Design
+  description: Leading online magazine for professional web designers and developers, with frequent accessibility coverage.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - development
+  - captions
+  - audio-description
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Smashing Magazine
+  license: unknown
+  status: active
+- id: teach-access
+  domain: Teach Access
+  url: https://teachaccess.org/
+  full_url: https://teachaccess.org/
+  best_for: education, curriculum development
+  description: Resources that help educators teach accessibility concepts.
+  authority_level: to_review
+  topic_tags:
+  - development
+  - captions
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Teach Access
+  license: unknown
+  status: active
+- id: the-a11y-project
+  domain: The A11Y Project
+  url: https://www.a11yproject.com/
+  full_url: https://www.a11yproject.com/
+  best_for: best practices, checklists, onboarding
+  description: Community-driven accessibility resource with guides, checklists, and articles.
+  authority_level: to_review
+  topic_tags:
+  - design
+  - captions
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: The A11Y Project
+  license: unknown
+  status: active
+- id: tpgi-com
+  domain: tpgi.com
+  url: https://www.tpgi.com/
+  full_url: https://www.tpgi.com/
+  best_for: Technical Auditing, jaws, compliance, web standards
+  description: The Paciello Group (TPGi), a leading accessibility consulting and software company (Duplicate entry).
+  authority_level: established
+  topic_tags:
+  - wcag
+  - screen-readers
+  - testing
+  - captions
+  - audio-description
+  - policy
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: TPGi
+  license: unknown
+  status: active
+- id: u-s-department-of-labor-office-of-disability-employment-policy
+  domain: U.S. Department of Labor - Office of Disability Employment Policy
+  url: https://www.dol.gov
+  full_url: https://www.dol.gov
+  best_for: employment law, disability employment policy, workforce accessibility, labor regulations, workplace rights guidance
+  description: The U.S. Department of Labor site providing employment regulations, workplace rights information, and disability employment policy resources.
+  authority_level: authoritative
+  topic_tags:
+  - forms
+  - design
+  - captions
+  - policy
+  - assistive-technology
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: Public Domain
+  status: active
+- id: uk-gov-accessibility-blog
+  domain: UK Gov Accessibility Blog
+  url: https://accessibility.blog.gov.uk/
+  full_url: https://accessibility.blog.gov.uk/
+  best_for: policy, implementation
+  description: Government service patterns, testing insights, and accessibility processes.
+  authority_level: authoritative
+  topic_tags:
+  - testing
+  - captions
+  - policy
+  - assistive-technology
+  - visual
+  jurisdiction: UK
+  wcag_version: []
+  last_reviewed: null
+  owner: UK Government
+  license: Open Government Licence
+  status: active
+- id: us-access-board
+  domain: US Access Board
+  url: https://www.access-board.gov/
+  full_url: https://www.access-board.gov/
+  best_for: 508 compliance, physical + digital standards
+  description: Government accessibility standards body.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - captions
+  - policy
+  - section508
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: US Access Board
+  license: Public Domain
+  status: active
+- id: vision-australia
+  domain: Vision Australia
+  url: visionaustralia.org
+  full_url: https://visionaustralia.org
+  best_for: general accessibility
+  description: Australian blindness and low vision service provider, offering advocacy and accessible technology services.
+  authority_level: to_review
+  topic_tags:
+  - captions
+  - audio-description
+  - visual
+  jurisdiction: Australia
+  wcag_version: []
+  last_reviewed: null
+  owner: Vision Australia
+  license: unknown
+  status: active
+- id: vox-product-accessibility-guidelines
+  domain: Vox Product Accessibility Guidelines
+  url: https://accessibility.voxmedia.com
+  full_url: https://accessibility.voxmedia.com
+  best_for: digital accessibility standards, accessible publishing, accessible design systems, industry accessibility practices, inclusive engineering
+  description: Vox Media's accessibility portal documenting inclusive design standards, engineering patterns, and digital accessibility processes.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - inclusive-design
+  - captions
+  - pdf
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Vox Product Accessibility Guidelines
+  license: unknown
+  status: active
+- id: w3c-silver-project-wcag-3
+  domain: W3C Silver Project (WCAG 3)
+  url: https://www.w3.org/WAI/GL/task-forces/silver/
+  full_url: https://www.w3.org/WAI/GL/task-forces/silver/
+  best_for: next‑gen standards
+  description: Future WCAG 3 accessibility guidelines development.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - development
+  - captions
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C Silver Project (WCAG 3)
+  license: W3C Software License
+  status: active
+- id: w3c-web-accessibility-initiative-wai
+  domain: W3C Web Accessibility Initiative (WAI)
+  url: w3.org/WAI/
+  full_url: https://w3.org/WAI/
+  best_for: Web Standards & Guidelines
+  description: The official World Wide Web Consortium group that develops WCAG and other accessibility guidelines.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C
+  license: W3C Software License
+  status: active
+- id: wai-aria-authoring-practices
+  domain: WAI-ARIA Authoring Practices
+  url: https://www.w3.org/WAI/ARIA/apg/
+  full_url: https://www.w3.org/WAI/ARIA/apg/
+  best_for: ARIA patterns and roles
+  description: Authoring patterns, roles, states, properties, and component guidance.
+  authority_level: authoritative
+  topic_tags:
+  - aria
+  - design
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: WAI-ARIA Authoring Practices
+  license: W3C Software License
+  status: active
+- id: wai-media-accessibility
+  domain: 'W3C WAI: Making Audio and Video Media Accessible'
+  url: w3.org/WAI/media/av
+  full_url: https://www.w3.org/WAI/media/av/
+  best_for: audio accessibility, video accessibility, captions, transcripts, audio descriptions, media player accessibility
+  description: Comprehensive W3C WAI guidance on making audio and video content accessible, including requirements for captions, transcripts, audio descriptions, and accessible media players.
+  authority_level: authoritative
+  topic_tags:
+  - media
+  - video
+  - audio
+  - captions
+  - transcripts
+  - wcag
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C
+  license: W3C Document License
+  status: active
+- id: wai-tools-project
+  domain: WAI-Tools Project
+  url: https://www.w3.org/WAI/Tools/
+  full_url: https://www.w3.org/WAI/Tools/
+  best_for: testing tools
+  description: EU-backed accessibility testing innovation.
+  authority_level: authoritative
+  topic_tags:
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: WAI-Tools Project
+  license: W3C Software License
+  status: active
+- id: wai-yaml-ld
+  domain: wai-yaml-ld
+  url: https://github.com/mgifford/wai-yaml-ld
+  full_url: https://github.com/mgifford/wai-yaml-ld
+  best_for: WCAG lookups, AI training, machine-readable standards, standards relationships
+  description: Machine-readable accessibility standards context for AI coding systems. Provides structured YAML/JSON-LD/CSV artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that LLMs can consume for generating and reviewing accessible code.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - atag
+  - uaag
+  - aria
+  - standards
+  - ai
+  - llm
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.2'
+  last_reviewed: '2026-02-21'
+  owner: mgifford
+  license: unknown
+  status: active
+- id: wcag-guidelines
+  domain: WCAG Guidelines
+  url: https://www.w3.org/WAI/standards-guidelines/wcag/
+  full_url: https://www.w3.org/WAI/standards-guidelines/wcag/
+  best_for: WCAG lookups, criteria explanations
+  description: Official Web Content Accessibility Guidelines.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: WCAG Guidelines
+  license: W3C Software License
+  status: active
+- id: web-axe
+  domain: Web Axe
+  url: webaxe.org
+  full_url: https://webaxe.org
+  best_for: news, thought leadership
+  description: Podcast and blog covering digital accessibility topics, news, and tools.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - audio-description
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: webaim
+  domain: WebAIM
+  url: webaim.org
+  full_url: https://webaim.org
+  best_for: Training & Evaluation
+  description: Non-profit offering accessibility tools, training, and the annual screen reader survey.
+  authority_level: established
+  topic_tags:
+  - screen-readers
+  - testing
+  - captions
+  - audio-description
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: WebAIM
+  license: unknown
+  status: active
+- id: civicactions-accessibility
+  domain: CivicActions Accessibility
+  url: accessibility.civicactions.com
+  full_url: https://accessibility.civicactions.com/
+  best_for: automation workflows, practical implementation guides, open-source accessibility operations
+  description: CivicActions accessibility engineering resource hub with implementation-focused guidance, testing practices, and accessibility workflow patterns.
+  authority_level: to_review
+  topic_tags:
+  - keyboard
+  - testing
+  - design
+  - captions
+  - focus
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: CivicActions Accessibility
+  license: unknown
+  status: active
+- id: civicactions-open-requirements-accessibility
+  domain: CivicActions Open Requirements Library - Accessibility
+  url: github.com/CivicActions/open-practice
+  full_url: https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md
+  best_for: procurement, Section 508, government contracts, RFP requirements, vendor requirements, WCAG compliance in procurement
+  description: Comprehensive, vendor-agnostic framework for integrating Section 508 and WCAG 2.2 Level AA accessibility requirements into government procurements. Provides copy-paste requirements for contracting officers to include in solicitations, covering project roles, task requirements, ACR processes, and quality assurance for website maintenance and enhancement.
+  authority_level: to_review
+  topic_tags:
+  - procurement
+  - section-508
+  - government
+  - rfp
+  - wcag
+  - contracting
+  jurisdiction: us
+  wcag_version:
+  - '2.2'
+  last_reviewed: '2026-02-23'
+  owner: CivicActions
+  license: CC-BY-SA-4.0
+  status: active
+- id: wcag-understanding-docs
+  domain: W3C WCAG Understanding Docs
+  url: w3.org/WAI/WCAG22/Understanding/
+  full_url: https://www.w3.org/WAI/WCAG22/Understanding/
+  best_for: criterion-level interpretation and intent for WCAG 2.2
+  description: Official W3C explanatory guidance for each WCAG success criterion, including intent, benefits, examples, and related techniques.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - design
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C WCAG Understanding Docs
+  license: W3C Software License
+  status: active
+- id: wcag-techniques-docs
+  domain: W3C WCAG Techniques
+  url: w3.org/WAI/WCAG22/Techniques/
+  full_url: https://www.w3.org/WAI/WCAG22/Techniques/
+  best_for: implementation patterns and testable techniques for WCAG 2.2
+  description: Official W3C techniques repository with sufficient/advisory techniques and common failure patterns mapped to WCAG success criteria.
+  authority_level: authoritative
+  topic_tags:
+  - wcag
+  - testing
+  - captions
+  - audio-description
+  - mobile
+  - tables
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C WCAG Techniques
+  license: W3C Software License
+  status: active
+- id: ericwbailey
+  domain: Ericw Bailey's Website
+  url: ericwbailey.website
+  full_url: https://ericwbailey.website/
+  best_for: guideance for developers and designers
+  description: Working in the open Accessible and inclusive design Semantics and interoperability CSS architecture at scale Progressive enhancement Web performance Internationalization and localization.
+  authority_level: to_review
+  topic_tags:
+  - accessibility
+  - semantics
+  - css
+  - progressive enhancement
+  - performance
+  - open web
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: accessibility-github-com
+  domain: GitHub Accessibility
+  url: accessibility.github.com
+  full_url: https://accessibility.github.com
+  best_for: accessibility resources, documentation, best practices
+  description: GitHub's accessibility documentation and resources covering inclusive design practices, keyboard navigation, screen reader support, and WCAG compliance for GitHub products and general web development.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - keyboard
+  - screen-readers
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - audio-description
+  - pdf
+  - policy
+  - navigation
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: GitHub Accessibility
+  license: unknown
+  status: active
+- id: cariefisher-com
+  domain: Carie Fisher
+  url: cariefisher.com
+  full_url: https://cariefisher.com/
+  best_for: accessibility articles, tutorials, speaking resources
+  description: Personal site of Carie Fisher, accessibility advocate and developer, featuring articles, talks, and resources on web accessibility, inclusive design, and WCAG implementation.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - audio-description
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Carie Fisher
+  license: unknown
+  status: active
+- id: a11yweekly-com
+  domain: A11y Weekly
+  url: a11yweekly.com
+  full_url: https://a11yweekly.com/
+  best_for: weekly newsletter, curated accessibility content
+  description: Weekly newsletter featuring curated accessibility news, articles, tools, and resources from across the web accessibility community.
+  authority_level: to_review
+  topic_tags:
+  - testing
+  - captions
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: A11y Weekly
+  license: unknown
+  status: active
+- id: umn-webdesign-training
+  domain: University of Minnesota Duluth - Web Design
+  url: d.umn.edu/itss/training/online/webdesign/
+  full_url: https://www.d.umn.edu/itss/training/online/webdesign/index.html
+  best_for: web design training, accessibility education
+  description: University of Minnesota Duluth's online web design training materials covering accessibility, HTML, CSS, and inclusive web development practices.
+  authority_level: established
+  topic_tags:
+  - design
+  - development
+  - inclusive-design
+  - captions
+  - html
+  - css
+  - training
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
+- id: overlayfactsheet
+  domain: Overlay Fact Sheet
+  url: overlayfactsheet.com
+  full_url: https://overlayfactsheet.com/en/
+  best_for: accessibility overlays, overlay problems, automated accessibility tools
+  description: Comprehensive documentation explaining why accessibility overlays should not be used as a substitute for proper accessible design. Signed by over 800 accessibility professionals. Essential reading on the limitations and problems with overlay widgets that claim to automatically fix accessibility issues.
+  authority_level: to_review
+  topic_tags:
+  - overlays
+  - automation
+  - remediation
+  - widgets
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Karl Groves and overlay experts community
+  license: unknown
+  status: active
+- id: fluid-infusion-preferences
+  domain: Fluid Infusion Preferences Framework
+  url: docs.fluidproject.org/infusion/development/PreferencesFramework
+  full_url: https://docs.fluidproject.org/infusion/development/PreferencesFramework
+  best_for: user preferences, personalization, accessibility customization, inclusive design
+  description: Reference implementation of user preference framework that allows users to customize text size, line spacing, font, contrast options, table of contents, and enhanced inputs. Demonstrates best practices for legitimate user personalization without claiming to fix accessibility issues.
+  authority_level: to_review
+  topic_tags:
+  - personalization
+  - preferences
+  - user-control
+  - customization
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Fluid Project (IDRC)
+  license: BSD-3-Clause
+  status: active
+- id: paypal-skipto
+  domain: PayPal SkipTo
+  url: paypal.github.io/skipto
+  full_url: https://paypal.github.io/skipto/
+  best_for: skip navigation, landmarks menu, heading navigation, keyboard accessibility
+  description: Keyboard-accessible menu that lists all landmarks and headings on a page, making it easy for users to jump to different sections. Fills the gap where browsers don't provide easy page structure navigation. Triggered by keyboard shortcut (Alt+0 or Option+0).
+  authority_level: to_review
+  topic_tags:
+  - navigation
+  - skip-links
+  - keyboard
+  - landmarks
+  - headings
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: PayPal Accessibility Team
+  license: Apache-2.0
+  status: active
+- id: elevenways-media-queries
+  domain: Eleven Ways - Media Queries Article
+  url: elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries
+  full_url: https://elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries
+  best_for: CSS media queries, user preferences, inclusive design, prefers-reduced-motion
+  description: Comprehensive guide on using CSS media queries to create more inclusive websites by respecting user preferences for motion, color scheme, contrast, and transparency.
+  authority_level: to_review
+  topic_tags:
+  - css
+  - media-queries
+  - user-preferences
+  - motion
+  - contrast
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Eleven Ways
+  license: unknown
+  status: active
+- id: dockyard-media-queries
+  domain: DockYard - CSS Media Queries Accessibility
+  url: dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design
+  full_url: https://dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design
+  best_for: CSS media queries, accessibility optimization, responsive design, user preferences
+  description: Guide on using CSS media queries to optimize digital product design for accessibility, covering prefers-reduced-motion, prefers-color-scheme, prefers-contrast, and other user preference queries.
+  authority_level: to_review
+  topic_tags:
+  - css
+  - media-queries
+  - responsive-design
+  - user-preferences
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: DockYard
+  license: unknown
+  status: active
+- id: pmc-dyslexia-fonts
+  domain: PMC - Typography and Dyslexia
+  url: pmc.ncbi.nlm.nih.gov/articles/PMC5934461
+  full_url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5934461/
+  best_for: dyslexia fonts research, typography, reading accessibility
+  description: Research article examining the effectiveness of typeface on reading performance for readers with dyslexia. Provides scientific context on dyslexia-friendly font claims.
+  authority_level: authoritative
+  topic_tags:
+  - research
+  - dyslexia
+  - typography
+  - fonts
+  - readability
+  jurisdiction: US
+  wcag_version: []
+  last_reviewed: null
+  owner: PubMed Central / NIH
+  license: public-domain
+  status: active
+- id: heidi-gregory-dyslexia-fonts
+  domain: Heidi Gregory - Dyslexia Font Myth
+  url: heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth
+  full_url: https://www.heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth
+  best_for: dyslexia fonts, evidence-based practices, typography myths
+  description: Parent advocate and educator perspective on dyslexia-friendly fonts, examining research evidence and practical considerations for font selection in educational settings.
+  authority_level: to_review
+  topic_tags:
+  - dyslexia
+  - typography
+  - fonts
+  - education
+  - evidence-based
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Heidi Gregory
+  license: unknown
+  status: active
+- id: edutopia-dyslexia-fonts
+  domain: Edutopia - Do Dyslexia Fonts Actually Work
+  url: edutopia.org/article/do-dyslexia-fonts-actually-work
+  full_url: https://www.edutopia.org/article/do-dyslexia-fonts-actually-work
+  best_for: dyslexia fonts, education research, evidence-based practices
+  description: Educational resource examining research on whether specialized dyslexia fonts actually improve reading for students with dyslexia, providing balanced perspective on font choice.
+  authority_level: to_review
+  topic_tags:
+  - dyslexia
+  - typography
+  - fonts
+  - education
+  - research
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: George Lucas Educational Foundation
+  license: unknown
+  status: active
+- id: web-almanac-2024-accessibility
+  domain: Web Almanac 2024 - Accessibility Chapter
+  url: almanac.httparchive.org/en/2024/accessibility
+  full_url: https://almanac.httparchive.org/en/2024/accessibility
+  best_for: accessibility trends, web statistics, user personalization, overlay analysis
+  description: Annual report analyzing the state of web accessibility based on HTTP Archive data. Includes sections on user personalization widgets, overlay remediation, and current accessibility practices across millions of websites.
+  authority_level: authoritative
+  topic_tags:
+  - research
+  - statistics
+  - trends
+  - personalization
+  - overlays
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: HTTP Archive / W3C
+  license: Apache-2.0
+  status: active
