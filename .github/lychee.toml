@@ -1,4 +1,4 @@
-exclude_mail = true
+include_mail = false
 accept = [200, 206, 429]
 max_concurrency = 12
 
