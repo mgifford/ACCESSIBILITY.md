@@ -522,24 +522,6 @@ sources:
   owner: American Foundation for the Blind
   license: unknown
   status: active
-- id: alistapart-com
-  domain: alistapart.com
-  url: https://alistapart.com/
-  full_url: https://alistapart.com/
-  best_for: In-depth articles on web standards, design philosophy, interaction design, digital publishing accessibility.
-  description: Online magazine with in-depth articles on web standards, design, and accessibility (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - wcag
-  - design
-  - captions
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: null
-  owner: A List Apart
-  license: unknown
-  status: active
 - id: android-accessibility
   domain: Android Accessibility
   url: http://developer.android.com
@@ -616,6 +598,22 @@ sources:
   owner: Apple Accessibility HIG
   license: unknown
   status: active
+- id: atomica11y-com
+  domain: atomica11y.com
+  url: https://www.atomica11y.com/
+  full_url: https://www.atomica11y.com/
+  best_for: general accessibility
+  description: Accessibility resource and information site.
+  authority_level: to_review
+  topic_tags:
+  - wcag
+  - accessibility
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: null
+  license: unknown
+  status: active
 - id: autistic-self-advocacy-network-asan
   domain: Autistic Self Advocacy Network (ASAN)
   url: https://autisticadvocacy.org/
@@ -650,28 +648,6 @@ sources:
   wcag_version: []
   last_reviewed: null
   owner: Axe DevTools
-  license: unknown
-  status: active
-- id: axesslab-com
-  domain: axesslab.com
-  url: https://axesslab.com/
-  full_url: https://axesslab.com/
-  best_for: Inclusive design consultancy, accessibility testing focused on UX, user experience testing, European legal compliance.
-  description: Inclusive design and accessibility consultancy (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - keyboard
-  - testing
-  - design
-  - inclusive-design
-  - captions
-  - policy
-  - focus
-  - assistive-technology
-  jurisdiction: EU
-  wcag_version: []
-  last_reviewed: null
-  owner: null
   license: unknown
   status: active
 - id: barrierbreak-com
@@ -1294,25 +1270,6 @@ sources:
   owner: null
   license: unknown
   status: active
-- id: filamentgroup-com
-  domain: filamentgroup.com
-  url: https://www.filamentgroup.com/
-  full_url: https://www.filamentgroup.com/
-  best_for: general accessibility
-  description: Consultancy specializing in performance and inclusive web development (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - forms
-  - development
-  - inclusive-design
-  - captions
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: null
-  owner: null
-  license: unknown
-  status: active
 - id: freedom-scientific
   domain: Freedom Scientific
   url: https://www.freedomscientific.com/
@@ -1595,24 +1552,6 @@ sources:
   owner: null
   license: unknown
   status: active
-- id: inclusive-components
-  domain: Inclusive Components
-  url: inclusive-components.design
-  full_url: https://inclusive-components.design
-  best_for: code examples, development
-  description: A collection of articles and code examples demonstrating how to build inclusive web components (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - design
-  - development
-  - inclusive-design
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: null
-  owner: null
-  license: unknown
-  status: active
 - id: inclusive-design-guide
   domain: Inclusive Design Guide
   url: https://guide.inclusivedesign.ca/
@@ -1639,23 +1578,6 @@ sources:
   topic_tags:
   - design
   - inclusive-design
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: null
-  owner: null
-  license: unknown
-  status: active
-- id: inclusivedesign24-org
-  domain: inclusivedesign24.org
-  url: https://www.inclusivedesign24.org/
-  full_url: https://www.inclusivedesign24.org/
-  best_for: design, inclusive design
-  description: Annual free 24-hour virtual conference dedicated to inclusive design (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - design
-  - inclusive-design
-  - assistive-technology
   jurisdiction: global
   wcag_version: []
   last_reviewed: null
@@ -1715,25 +1637,6 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
-  owner: null
-  license: unknown
-  status: active
-- id: knowbility
-  domain: Knowbility
-  url: knowbility.org
-  full_url: https://knowbility.org
-  best_for: Education & Events, web standards, compliance
-  description: Non-profit promoting digital accessibility through education and consulting (Duplicate entry).
-  authority_level: to_review
-  topic_tags:
-  - wcag
-  - captions
-  - policy
-  - training
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
   last_reviewed: null
   owner: null
   license: unknown
@@ -2314,27 +2217,6 @@ sources:
   wcag_version: []
   last_reviewed: null
   owner: The A11Y Project
-  license: unknown
-  status: active
-- id: tpgi-com
-  domain: tpgi.com
-  url: https://www.tpgi.com/
-  full_url: https://www.tpgi.com/
-  best_for: Technical Auditing, jaws, compliance, web standards
-  description: The Paciello Group (TPGi), a leading accessibility consulting and software company (Duplicate entry).
-  authority_level: established
-  topic_tags:
-  - wcag
-  - screen-readers
-  - testing
-  - captions
-  - audio-description
-  - policy
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: null
-  owner: TPGi
   license: unknown
   status: active
 - id: u-s-department-of-labor-office-of-disability-employment-policy
