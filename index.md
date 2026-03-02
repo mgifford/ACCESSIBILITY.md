@@ -153,6 +153,11 @@ title: ACCESSIBILITY.md
         <p><a href="./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.html">examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE</a></p>
       </article>
       <article class="card">
+        <h3>Progressive Enhancement Best Practices</h3>
+        <p><a href="./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.html">examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES</a></p>
+        <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>
+      </article>
+      <article class="card">
         <h3>Prompt Starter</h3>
         <p><a href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">examples/ACCESSIBILITY_PROMPT_STARTER</a></p>
       </article>
