@@ -501,6 +501,8 @@ Minimum checks for color mode implementation:
 - [ ] Check that all interactive states (hover, active, disabled) work in both modes
 - [ ] Test with screen reader - verify no mode-specific issues
 - [ ] Verify color-blind simulation tools show sufficient non-color cues
+- [ ] For data tables with zebra striping: verify row background colors differ by approximately 5–10% luminance from the page background (not near-white stripes on a dark page)
+- [ ] Verify text on every zebra-stripe row background meets 4.5:1 contrast
 
 ### Automated testing
 
@@ -534,6 +536,123 @@ A color mode implementation is complete when:
 - User theme preference persists across sessions (if manual toggle provided)
 - No accessibility regressions when switching between modes
 - Manual and automated tests pass in both modes
+- Data table zebra stripes use subtle relative differences (5–10% from the page background) rather than hard-coded absolute colors
+
+---
+
+## 11. Data Tables and Zebra Striping
+
+Zebra striping (alternating row background colors) helps users track rows across wide tables. However, many implementations apply high-contrast absolute colors that work acceptably in light mode but become visually extreme in dark mode.
+
+### The problem with absolute zebra-stripe colors
+
+A common implementation might use `#ffffff` and `#f0f0f0` for light mode row stripes without updating the values for dark mode. When a dark page has a background of `#1a1a1a`, those same light stripe values create a jarring luminance jump that makes tables harder — not easier — to read, and can trigger discomfort for photosensitive users.
+
+**Avoid:**
+
+```css
+/* Bad: absolute colors that ignore the current page background */
+tbody tr:nth-child(even) { background-color: #ffffff; }
+tbody tr:nth-child(odd)  { background-color: #e0e0e0; }
+```
+
+In dark mode, these near-white stripes sit on a near-black page and produce excessive contrast that is tiring to scan.
+
+### Preferred pattern: subtle relative differences via CSS custom properties
+
+Keep stripe colors close to the page background — roughly 5% and 10% away — and update all three values together as part of your theme tokens:
+
+```css
+:root {
+  /* Light mode (default) */
+  --color-background:      #ffffff;
+  --color-table-row-even:  #f2f2f2;  /* ~5% darker than background  */
+  --color-table-row-odd:   #e5e5e5;  /* ~10% darker than background */
+  --color-text:            #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background:      #1a1a1a;
+    --color-table-row-even:  #272727;  /* ~5% lighter than background  */
+    --color-table-row-odd:   #343434;  /* ~10% lighter than background */
+    --color-text:            #e8e8e8;
+  }
+}
+
+/* Manual theme overrides (mirror the media query tokens above) */
+[data-theme="light"] {
+  --color-background:     #ffffff;
+  --color-table-row-even: #f2f2f2;
+  --color-table-row-odd:  #e5e5e5;
+}
+
+[data-theme="dark"] {
+  --color-background:     #1a1a1a;
+  --color-table-row-even: #272727;
+  --color-table-row-odd:  #343434;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+tbody tr:nth-child(even) { background-color: var(--color-table-row-even); }
+tbody tr:nth-child(odd)  { background-color: var(--color-table-row-odd);  }
+```
+
+### Alternative: `color-mix()` for purely relative stripes
+
+The CSS `color-mix()` function can compute stripe colors relative to the background at runtime, removing the need to maintain separate hex values per theme. Browser support is strong as of 2024.
+
+```css
+:root {
+  --color-background: #ffffff;
+  --color-text:       #1a1a1a;
+
+  /* Mix background with black (light mode) or white (dark mode) */
+  --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, black);
+  --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, black);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1a1a1a;
+    --color-text:       #e8e8e8;
+
+    --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, white);
+    --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, white);
+  }
+}
+```
+
+This approach automatically adapts if the base background value changes, reducing maintenance burden.
+
+### Forced-colors mode
+
+In forced-colors mode the browser replaces all author-defined background colors with system palette values. Table rows will lose their stripe backgrounds, which is expected and acceptable behavior. Ensure the table remains comprehensible without the stripes:
+
+- Add a visible border between rows as a supplementary visual separator
+- Do not rely solely on alternating background color to convey row grouping or meaning
+
+```css
+@media (forced-colors: active) {
+  tbody tr {
+    border-bottom: 1px solid CanvasText;
+  }
+}
+```
+
+### Requirements
+
+- Zebra stripe colors must be defined relative to the page background, not as absolute values
+- Text must meet 4.5:1 contrast against **both** stripe row backgrounds in all color modes
+- The luminance difference between adjacent stripes should be perceivable but not jarring — a 5–10% step from the page background is the recommended range
+- Stripe colors must be defined as CSS custom properties and updated together with other theme tokens
+- Tables must remain scannable when stripe colors are absent (forced-colors mode)
 
 ---
 
