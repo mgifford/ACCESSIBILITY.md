@@ -118,6 +118,11 @@ title: ACCESSIBILITY.md
     <h2>Reference Examples</h2>
     <div class="cards">
       <article class="card">
+        <h3>CI/CD Accessibility Best Practices</h3>
+        <p><a href="./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.html">examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES</a></p>
+        <p>GitHub Actions, GitLab CI, axe-core, pa11y, Lighthouse CI, and AccessLint integration patterns for accessibility automation</p>
+      </article>
+      <article class="card">
         <h3>Axe Rule Coverage</h3>
         <p><a href="./examples/AXE_RULES_COVERAGE.html">examples/AXE_RULES_COVERAGE</a></p>
       </article>
