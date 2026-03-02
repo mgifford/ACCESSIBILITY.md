@@ -44,6 +44,7 @@ This repository is organized to separate **content you adopt** from **project do
 │   ├── PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml  ← Pre-commit hooks
 │   ├── TRUSTED_SOURCES.yaml                  ← Vetted a11y resources
 │   ├── AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md ← Component guides
+│   ├── CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md
 │   ├── SVG_ACCESSIBILITY_BEST_PRACTICES.md
 │   ├── FORMS_ACCESSIBILITY_BEST_PRACTICES.md
 │   ├── KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md
@@ -105,7 +106,7 @@ An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering t
 * **Copy-Ready Samples:** Starter files for CI and local guardrails ([Workflow](./examples/A11Y_SHIFT_LEFT_WORKFLOW.yml), [pre-commit config](./examples/PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml)).
 * **Trusted Source Registry:** Machine-readable list of vetted accessibility references for AI retrieval and citation policies ([YAML](./examples/TRUSTED_SOURCES.yaml)), including [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured WCAG/ARIA/ATAG standards data and [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md) for procurement requirements.
 * **Link Integrity Checks:** Scheduled and PR-time validation of documentation links ([Workflow](./.github/workflows/link-check.yml)).
-* **Best Practice Reference:** Project-specific guidance for complex components like [audio/video](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md), [SVGs](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md), [Mermaid diagrams](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md), [keyboard interactions](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md), [light/dark modes](./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md), [user personalization](./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md), and [forms](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md).
+* **Best Practice Reference:** Project-specific guidance for complex components like [audio/video](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md), [content design](./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md), [SVGs](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md), [Mermaid diagrams](./examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md), [keyboard interactions](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md), [light/dark modes](./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md), [user personalization](./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md), and [forms](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md).
 * **Manual Testing Guide:** Comprehensive procedures for keyboard-only and screen reader testing, with step-by-step workflows for validating accessibility beyond automated tools ([Guide](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)).
 
 ---
@@ -200,6 +201,7 @@ pre-commit install
 Copy relevant guides to your project's documentation:
 
 - **Audio/Video**: [examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
+- **Content Design**: [examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md](./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Forms**: [examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
 - **SVGs**: [examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Keyboard navigation**: [examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
