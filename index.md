@@ -136,6 +136,11 @@ title: ACCESSIBILITY.md
         <p><a href="./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.html">examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES</a></p>
       </article>
       <article class="card">
+        <h3>Content Design Accessibility Best Practices</h3>
+        <p><a href="./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.html">examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES</a></p>
+        <p>Plain language, page structure, readability, and content style guidance aligned with accessibility goals</p>
+      </article>
+      <article class="card">
         <h3>Examples Index</h3>
         <p><a href="./examples/README.html">examples/README</a></p>
       </article>
