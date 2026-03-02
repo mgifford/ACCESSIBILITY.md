@@ -3,8 +3,48 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
-    <meta name="description" content="{{ site.description }}" />
+
+    {% assign page_title = page.title | default: site.title %}
+    {% if page.title %}
+      {% assign full_title = page.title | append: " · " | append: site.title %}
+    {% else %}
+      {% assign full_title = site.title %}
+    {% endif %}
+    {% assign page_description = page.description | default: site.description %}
+    {% assign page_url = site.url | append: site.baseurl | append: page.url %}
+    {% assign social_image_rel = page.image | default: site.social_image %}
+    {% assign social_image = site.url | append: site.baseurl | append: social_image_rel %}
+
+    <title>{{ full_title }}</title>
+    <meta name="description" content="{{ page_description }}" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ page_url }}" />
+
+    <!-- Open Graph — consumed by LinkedIn, Mastodon, and Bluesky -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ page_url }}" />
+    <meta property="og:site_name" content="{{ site.title }}" />
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta property="og:description" content="{{ page_description }}" />
+    <meta property="og:image" content="{{ social_image }}" />
+    <meta property="og:image:alt" content="{{ page_title }} — {{ site.description }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Mastodon: fediverse:creator enables author attribution in Mastodon 4.3+ -->
+    {% if site.mastodon_creator %}
+    <meta name="fediverse:creator" content="{{ site.mastodon_creator }}" />
+    {% endif %}
+
+    <!-- Twitter/X card metadata — also used by Bluesky for large-image card display -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ page_title }}" />
+    <meta name="twitter:description" content="{{ page_description }}" />
+    <meta name="twitter:image" content="{{ social_image }}" />
+    <meta name="twitter:image:alt" content="{{ page_title }} — {{ site.description }}" />
+
     <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}" />
   </head>
   <body>
@@ -18,6 +58,13 @@
         <p>
           <a href="{{ site.github_url }}">View on GitHub</a>
         </p>
+        {% if site.mastodon_url or site.bluesky_url %}
+        <p>
+          {% if site.mastodon_url %}<a href="{{ site.mastodon_url }}" rel="me">Mastodon</a>{% endif %}
+          {% if site.mastodon_url and site.bluesky_url %} &middot; {% endif %}
+          {% if site.bluesky_url %}<a href="{{ site.bluesky_url }}" rel="me">Bluesky</a>{% endif %}
+        </p>
+        {% endif %}
         <p>
           Community project encouraging engagement via GitHub Issues.
         </p>

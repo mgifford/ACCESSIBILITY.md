@@ -1,7 +1,7 @@
 title: ACCESSIBILITY.md
 description: The open standard for project accessibility transparency, governance, and AI-assisted inclusion.
 baseurl: "/ACCESSIBILITY.md"
-url: ""
+url: "https://mgifford.github.io"
 github_url: "https://github.com/mgifford/ACCESSIBILITY.md/"
 markdown: kramdown
 kramdown:
@@ -12,3 +12,23 @@ defaults:
       path: ""
     values:
       layout: default
+
+# Social sharing image (absolute path from baseurl root)
+# Must be a PNG or JPEG, 1200×630 px recommended for LinkedIn/Bluesky/Mastodon
+social_image: "/assets/images/social-preview.png"
+
+# Optional: Mastodon author attribution (fediverse:creator, Mastodon 4.3+)
+# Set to your Mastodon handle, e.g. "@mgifford@mastodon.social"
+# mastodon_creator: ""
+
+# Optional: Full Mastodon profile URL — used for rel="me" verification in the footer
+# e.g. "https://mastodon.social/@mgifford"
+# mastodon_url: ""
+
+# Optional: Bluesky handle for attribution
+# Set to your Bluesky handle, e.g. "mgifford.bsky.social"
+# bluesky_creator: ""
+
+# Optional: Full Bluesky profile URL — linked in the footer
+# e.g. "https://bsky.app/profile/mgifford.bsky.social"
+# bluesky_url: ""
