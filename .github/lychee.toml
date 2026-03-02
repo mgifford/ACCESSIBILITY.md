@@ -3,8 +3,11 @@ accept = [200, 206, 429]
 max_concurrency = 12
 
 # Known local placeholders that should not be treated as broken web links.
+# GitHub project/repo links are excluded because GitHub frequently returns 404
+# for automated link checkers even when the resource is publicly accessible.
 exclude = [
   "^http://localhost",
   "^http://127\\.0\\.0\\.1",
-  "^https://example\\.com"
+  "^https://example\\.com",
+  "^https://github\\.com"
 ]
