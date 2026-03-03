@@ -31,7 +31,7 @@ Manual testing should be performed:
 
 **Screen Readers (choose based on your platform):**
 - **Windows:** [NVDA](https://www.nvaccess.org/download/) (free, open source)
-- **Windows:** [JAWS](https://www.freedomscientific.com/products/software/jaws/) (commercial, free demo)
+- **Windows:** [JAWS](https://vispero.com/jaws-screen-reader-software/) (commercial, free demo)
 - **macOS:** VoiceOver (built-in, Cmd+F5 to toggle)
 - **iOS:** VoiceOver (built-in, Settings → Accessibility)
 - **Android:** TalkBack (built-in, Settings → Accessibility)
@@ -219,7 +219,7 @@ For each interactive element, verify:
 
 **Tools:**
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [Contrast Ratio by Lea Verou](https://contrast-ratio.com/)
+- [Contrast Ratio by Lea Verou](https://www.siegemedia.com/contrast-ratio)
 - Browser DevTools (Chrome/Firefox/Edge have built-in checkers)
 
 **Requirements:**

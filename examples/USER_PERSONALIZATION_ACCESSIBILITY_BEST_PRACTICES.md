@@ -378,7 +378,7 @@ The [Fluid Project](https://fluidproject.org/) is housed at the [Inclusive Desig
 ### Key Resources
 
 - [Fluid Infusion Preferences Framework Documentation](https://docs.fluidproject.org/infusion/development/PreferencesFramework)
-- [UI Options Demo](https://build.fluidproject.org/infusion/demos/prefsFramework/)
+- [UI Options Demo](https://build-infusion.fluidproject.org/demos/prefsFramework/)
 - [Fluid Project GitHub Organization](https://github.com/fluid-project)
 - [Fluid Project Website](https://fluidproject.org/)
 - [Inclusive Design Research Centre](https://idrc.ocadu.ca/)

@@ -21,8 +21,7 @@ Content design and accessibility are inseparable. A technically accessible page 
 
 ### Plain Language Resources
 
-- [Plain Language Guidelines (plainlanguage.gov)](https://www.plainlanguage.gov/guidelines/) - US government guidance
-- [Federal Plain Language Guidelines (PDF)](https://www.plainlanguage.gov/media/FederalPLGuidelines.pdf)
+- [Plain Language Guidelines (plainlanguage.gov)](https://digital.gov/guides/plain-language) - US government guidance
 
 ## 3. Page and Content Structure
 
@@ -140,7 +139,7 @@ Content is ready to publish when:
 
 ### Plain Language
 
-- [plainlanguage.gov Guidelines](https://www.plainlanguage.gov/guidelines/) - US Plain Language guidelines
+- [plainlanguage.gov Guidelines](https://digital.gov/guides/plain-language) - US Plain Language guidelines
 - [W3C Web Content Accessibility Guidelines 1.4.12 Text Spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html) - Resizable text guidance
 
 ### Content Design Principles

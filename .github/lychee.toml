@@ -9,5 +9,7 @@ exclude = [
   "^http://localhost",
   "^http://127\\.0\\.0\\.1",
   "^https://example\\.com",
-  "^https://github\\.com"
+  "^https://github\\.com",
+  # IDRC site has intermittent connectivity issues in CI environments
+  "^https://idrc\\.ocadu\\.ca"
 ]

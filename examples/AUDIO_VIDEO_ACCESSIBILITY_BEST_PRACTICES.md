@@ -418,7 +418,7 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 ### Additional Reading
 
 - [WebAIM Articles](https://webaim.org/articles/) - Comprehensive accessibility articles including captions and transcripts guidance
-- [National Association of the Deaf: Captioning Standards](https://nad.org/)
+- [National Association of the Deaf: Captioning Standards](https://www.nad.org/)
 - [BBC Accessibility Guidelines](https://www.bbc.co.uk/accessibility/forproducts/guides/) - BBC accessibility patterns for media and products
 - [Deque University](https://dequeuniversity.com/) - Accessibility training and resources including media accessibility
 

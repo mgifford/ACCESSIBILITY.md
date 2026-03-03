@@ -144,6 +144,6 @@ A feature built with progressive enhancement is complete when:
 - [Progressive Enhancement (MDN Web Docs Glossary)](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)
 - [Using progressive enhancement (GOV.UK Service Manual)](https://www.gov.uk/service-manual/technology/using-progressive-enhancement)
 - [It's about time I tried to explain what progressive enhancement actually is (Piccalilli)](https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/)
-- [Progressive Enhancement (Remix docs)](https://v2.remix.run/docs/discussion/progressive-enhancement)
+- [Progressive Enhancement (Remix docs)](https://v2.remix.run/docs/discussion/progressive-enhancement/)
 - [Understanding Progressive Enhancement (A List Apart)](https://alistapart.com/article/understandingprogressiveenhancement/)
 - [Graceful degradation versus progressive enhancement (W3C Wiki)](https://www.w3.org/wiki/Graceful_degradation_versus_progressive_enhancement)

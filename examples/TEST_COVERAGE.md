@@ -111,7 +111,7 @@ Each page is designed to trigger 3-5 specific error types, with no overlap excep
 
 ### W3C Specifications
 
-- **[WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)** — Official accessibility standards
+- **[WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG22/quickref/?versions=2.1)** — Official accessibility standards
 
 ### Machine-Readable Standards
 

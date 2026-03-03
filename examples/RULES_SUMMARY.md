@@ -182,7 +182,7 @@ Each page has **3-5 specific error types**:
 #### W3C Specifications
 
 - [WCAG 2.2 Guidelines](https://www.w3.org/WAI/WCAG22/quickref/)
-- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG22/quickref/?versions=2.1)
 - [WCAG 2.0 Guidelines](https://www.w3.org/TR/WCAG20/)
 
 #### Machine-Readable Standards

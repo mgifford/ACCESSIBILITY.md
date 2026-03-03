@@ -411,7 +411,7 @@ lighthouse-accessibility:
 
 ### GitLab Accessibility Testing Reports
 
-GitLab supports [accessibility testing reports](https://docs.gitlab.com/ee/ci/testing/accessibility_testing.html) natively. When you configure your pipeline to output a pa11y report in GitLab's accessibility report format, GitLab displays inline findings in the merge request UI:
+GitLab supports [accessibility testing reports](https://docs.gitlab.com/ci/testing/accessibility_testing/) natively. When you configure your pipeline to output a pa11y report in GitLab's accessibility report format, GitLab displays inline findings in the merge request UI:
 
 ```yaml
 accessibility:
@@ -599,6 +599,6 @@ Create labels in your issue tracker (for example: `accessibility`, `wcag-a`, `wc
 - Deque axe tools: <https://www.deque.com/axe/>
 - pa11y: <https://pa11y.org/>
 - Lighthouse CI: <https://github.com/GoogleChrome/lighthouse-ci>
-- GitLab Accessibility Testing: <https://docs.gitlab.com/ee/ci/testing/accessibility_testing.html>
+- GitLab Accessibility Testing: <https://docs.gitlab.com/ci/testing/accessibility_testing/>
 - CivicActions article on automated accessibility testing: <https://accessibility.civicactions.com/posts/how-we-scale-inclusive-website-content-with-automated-testing-and-open-source-tools>
 - OpenSource.com article on automated accessibility testing: <https://opensource.com/article/23/2/automated-accessibility-testing>
