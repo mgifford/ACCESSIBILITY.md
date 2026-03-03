@@ -394,6 +394,95 @@ A map feature is complete only when:
 
 ---
 
+## 14. Equivalent Purpose Evaluation for Digital Maps
+
+WCAG 2.2 SC 1.1.1 requires that non-text content have text alternatives that serve the **equivalent purpose**. For digital maps, this standard is particularly demanding because maps communicate multi-layered spatial information that cannot be captured by a brief description of visual appearance.
+
+Research on systematically evaluating equivalent purpose for digital maps is presented in [Systematically Evaluating Equivalent Purpose for Digital Maps (arXiv:2512.05310)](https://arxiv.org/abs/2512.05310). That work highlights the gap between the **visual representation** of a map — its colors, shapes, and spatial layout — and its **semantic representation**: the geographic meaning, relationships, and tasks the map supports. An effective text alternative bridges this gap by preserving meaning, not merely describing appearance.
+
+### The Visual–Semantic Gap
+
+A map's visual properties and semantic meaning are fundamentally different things:
+
+| Visual representation | Semantic representation |
+|---|---|
+| Blue line running north–south | A navigable transit route connecting the train station and the hospital |
+| Green polygon covering a district | An administrative boundary with specific planning or zoning significance |
+| Clustered pin icons near the waterfront | Multiple related points of interest sharing a category (e.g., accessible parking) |
+| Gradient fill across neighborhoods | A relative measure such as population density or flood risk level |
+| Dashed boundary line | A proposed or contested boundary, not yet formalized |
+
+Describing only the visual representation ("a blue line on a white background") fails the equivalent purpose test. A semantically equivalent alternative describes what the map *communicates* ("bus route 12, which is fully accessible with step-free boarding at all stops, connecting City Hall and Central Hospital").
+
+### Information Taxonomy for Maps
+
+Digital maps communicate information across multiple semantic layers. Text alternatives should address each layer that is relevant to the map's primary purpose:
+
+1. **Spatial/locational** — Where features are (proximity, adjacency, coordinates, address)
+2. **Directional/navigational** — How to move between places (routes, turn-by-turn directions, orientation)
+3. **Categorical/typological** — What type of feature something is (transit stop, hospital, park, boundary)
+4. **Relational** — How features relate to each other (connected by, adjacent to, part of, blocked by)
+5. **Quantitative/scalar** — Relative measures shown visually (density, magnitude, coverage, distance)
+6. **Contextual** — The frame of reference (geographic scope, scale, time period, data currency)
+
+Not every layer applies to every map. Begin by identifying which layers are essential to the map's purpose, then confirm your text alternative covers each relevant layer.
+
+**Example:** A transit accessibility map showing accessible bus stops across a city would require layers 1 (spatial — stop locations), 2 (navigational — routes between stops), 3 (categorical — stop type, e.g. accessible vs. not), 4 (relational — which stops connect which routes), and 6 (contextual — city name, date of data). Layer 5 (quantitative) would only apply if the map also encodes something like ridership density.
+
+### Systematic Evaluation Criteria
+
+Use the following criteria to evaluate whether a text alternative serves the equivalent purpose for a digital map.
+
+#### Purpose alignment
+
+- Does the text alternative enable users to accomplish the same primary tasks as the visual map?
+- Is the core purpose of the map (wayfinding, context-setting, data communication, spatial comparison) fully served by the text alternative?
+- Can a user who cannot see the map form the same understanding of the geographic situation?
+
+#### Semantic completeness
+
+- All named features visible on the map are identified in the text alternative.
+- Spatial relationships — adjacency, routes, containment, separation — are expressed in words or structured data.
+- Feature categories or types are identified, not just coordinates or addresses.
+- Any quantitative information (density gradients, distance scales, risk levels) is expressed numerically or descriptively.
+- The legend or key is described, including what each color, symbol, or pattern means.
+
+#### Navigational fidelity (for route and wayfinding maps)
+
+- Routes are described in sequence from start through intermediate points to destination.
+- Key decision points, turns, and landmarks are included.
+- Accessibility attributes of routes are stated (step-free, ramp access, kerb cuts, surface type).
+- Where accessible alternatives to inaccessible routes exist, they are described.
+
+#### Contextual framing
+
+- The geographic scope and approximate scale of the map are stated.
+- The time period or data currency is noted where relevant (e.g., "as of March 2025").
+- The authority or source of the underlying data is identified for maps used in decision-making.
+
+### Selecting the Right Alternative Format
+
+Matching the text alternative format to the map's dominant semantic layer improves comprehension and usability:
+
+| Map purpose | Recommended alternative format |
+|---|---|
+| Show locations of services or facilities | Structured table: name, address, accessibility features |
+| Describe a route or navigation path | Ordered list of step-by-step directions |
+| Convey spatial and directional relationships | Prose with explicit directional language (north, adjacent, across from) |
+| Show quantitative distribution across areas | Data table with region names, values, and units |
+| Show administrative or boundary zones | List of zones with attributes and what they mean |
+| Show multiple overlapping data layers | Separate structured alternative for each layer, plus a combined summary |
+
+### Applying Equivalent Purpose in Practice
+
+1. **Identify the map's purpose first.** What task is the user expected to accomplish with this map? Start from purpose, not visual content.
+2. **List the semantic layers present.** Which of the six taxonomy layers (spatial, directional, categorical, relational, quantitative, contextual) are active in this map?
+3. **Draft the alternative for each layer.** Address each relevant layer in the text alternative.
+4. **Test task completion.** Ask: can a user relying solely on the text alternative complete the same tasks as a user who can see the map?
+5. **Iterate with users.** Equivalent purpose evaluation is most reliable when tested with blind and low-vision users who navigate by the text alternative alone.
+
+---
+
 ## References
 
 ### Standards
@@ -405,6 +494,10 @@ A map feature is complete only when:
 - [WCAG 2.2 Success Criterion 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) — All functionality operable via keyboard
 - [WCAG 2.2 Success Criterion 2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) — Logical focus order
 - [WCAG 2.2 Success Criterion 2.4.11 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) — Visible focus indicators
+
+### Research
+
+- [Systematically Evaluating Equivalent Purpose for Digital Maps (arXiv:2512.05310)](https://arxiv.org/abs/2512.05310) — Systematic framework for evaluating whether text alternatives for digital maps serve the equivalent purpose as defined by WCAG 1.1.1, addressing the gap between visual and semantic map representation
 
 ### Guidance and Community Resources
 
