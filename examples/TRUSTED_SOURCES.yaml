@@ -2936,6 +2936,28 @@ sources:
   owner: maptime community
   license: unknown
   status: active
+- id: arxiv-equivalent-purpose-digital-maps
+  domain: arXiv
+  url: arxiv.org/abs/2512.05310
+  full_url: https://arxiv.org/abs/2512.05310
+  best_for: maps accessibility, equivalent purpose, text alternatives for maps, visual-semantic representation, WCAG 1.1.1
+  description: Research paper presenting a systematic framework for evaluating equivalent purpose for digital maps, examining the gap between visual and semantic map representation to help practitioners assess whether text alternatives truly serve the same purpose as the visual map under WCAG 1.1.1.
+  authority_level: practitioner
+  topic_tags:
+  - maps
+  - alternative-text
+  - equivalent-purpose
+  - wcag
+  - evaluation
+  - research
+  - semantic-representation
+  jurisdiction: global
+  wcag_version:
+  - '2.2'
+  last_reviewed: null
+  owner: arXiv contributors
+  license: arXiv non-exclusive license
+  status: active
 - id: w3c-coga-indoor-navigation
   domain: W3C COGA
   url: w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html
