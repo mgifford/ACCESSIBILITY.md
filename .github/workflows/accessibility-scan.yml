@@ -1,0 +1,35 @@
+name: Accessibility Scan (Scheduled)
+
+# Scans the live GitHub Pages site every Monday and on demand.
+# Requires a Personal Access Token stored as secret GH_TOKEN
+# with `issues: write` and `contents: read` scopes.
+# Set the target URL as a repository variable ACCESSIBILITY_SCAN_URL;
+# if not set, defaults to https://<owner>.github.io/<repo>/ derived from
+# the repository context.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  accessibility-scanner:
+    name: GitHub Accessibility Scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run GitHub Accessibility Scanner
+        uses: github/accessibility-scanner@v2
+        with:
+          url: ${{ vars.ACCESSIBILITY_SCAN_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          repo_token: ${{ secrets.GH_TOKEN }}
+          # For authenticated pages:
+          # login_url: ${{ vars.ACCESSIBILITY_LOGIN_URL }}
+          # username: ${{ secrets.ACCESSIBILITY_USERNAME }}
+          # password: ${{ secrets.ACCESSIBILITY_PASSWORD }}

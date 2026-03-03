@@ -78,6 +78,8 @@ jobs:
 ```
 
 > **Note:** The built-in `GITHUB_TOKEN` does not have sufficient permissions for this action's issue creation workflows. Create a Personal Access Token (PAT) or a fine-grained token with `repo` scope, then store it as a repository secret named `GH_TOKEN`. Do not confuse this with the automatically provided `secrets.GITHUB_TOKEN`.
+>
+> **Repository variable tip:** Store the target URL as a repository variable (`ACCESSIBILITY_SCAN_URL`) rather than hardcoding it in the workflow. This makes the workflow reusable across forks and lets you update the URL without editing YAML. For public GitHub Pages sites the URL pattern is `https://<owner>.github.io/<repo>/` where owner is the organization or username.
 
 See [GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md](./GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md) for full governance guidance.
 
@@ -462,9 +464,100 @@ This displays inline accessibility findings in the GitLab merge request UI.
 
 ### Documentation site (GitHub Pages / Netlify)
 
-1. **PR gate**: Lighthouse CI (accessibility score ≥ 0.9)
+1. **PR gate**: Lighthouse CI (accessibility score ≥ 0.9) — see Jekyll build example below
 2. **PR gate**: pa11y-ci for URL-by-URL coverage
 3. **Scheduled**: `github/accessibility-scanner@v2`
+
+> **No preview deployment?** If your documentation site deploys only on merge to `main` (as with GitHub Pages), PR-time Lighthouse must build the site locally. Use the Jekyll example below. For sites with preview deployments (Netlify, Vercel), point Lighthouse at the preview URL instead.
+
+#### Jekyll / GitHub Pages — Lighthouse CI with local build
+
+For Jekyll sites, set up Ruby before running the Lighthouse CLI. The `bundle exec jekyll build` command writes output to `_site/`, which Lighthouse CI can serve directly via `staticDistDir`.
+
+**Workflow (`.github/workflows/lighthouse.yml`):**
+
+```yaml
+name: Lighthouse CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse accessibility audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      - name: Run Lighthouse CI
+        run: lhci autorun
+```
+
+**Configuration (`.lighthouserc.json`):**
+
+```json
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./_site",
+      "numberOfRuns": 1
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}
+```
+
+Add `.lighthouseci/` to `.gitignore` to exclude Lighthouse CI output from version control.
+
+> **Start with `warn`, then enforce.** Use `"warn"` while resolving existing issues so the pipeline stays green. Switch to `"error"` once the site consistently scores ≥ 0.9.
+
+> **Upload privacy.** The `"filesystem"` upload target keeps Lighthouse results on the runner and never sends them to Google's `temporary-public-storage`. This is the recommended choice for documentation or accessibility-focused projects where data minimization matters.
+
+#### Scanning the live site instead of building locally
+
+For scheduled scans—or when a preview deployment is available—skip the build step and scan the live URL directly:
+
+```yaml
+      - name: Run Lighthouse CI against live site
+        run: |
+          npm install -g @lhci/cli
+          lhci collect --url=https://example.github.io/your-repo/
+          lhci assert --config=.lighthouserc.json
+```
+
+This is simpler and catches any deployment-pipeline regressions that a local build would miss. Combine it with a `github/accessibility-scanner` workflow (see section 1) for the deepest scheduled coverage.
 
 ---
 
@@ -488,7 +581,7 @@ For Lighthouse CI:
 "categories:accessibility": ["error", { minScore: 0.9 }]
 ```
 
-Increase the target over time as technical debt is resolved.
+Increase the target over time as technical debt is resolved. When introducing Lighthouse CI to an existing project with known issues, start with `"warn"` to keep the pipeline green, then switch to `"error"` once scores are consistently ≥ 0.9.
 
 ### Use labels and SLAs
 

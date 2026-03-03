@@ -1,0 +1,17 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./_site",
+      "numberOfRuns": 1
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}
