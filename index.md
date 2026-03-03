@@ -163,6 +163,11 @@ title: ACCESSIBILITY.md
         <p><a href="./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.html">examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE</a></p>
       </article>
       <article class="card">
+        <h3>Maps Accessibility Best Practices</h3>
+        <p><a href="./examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.html">examples/MAPS_ACCESSIBILITY_BEST_PRACTICES</a></p>
+        <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
+      </article>
+      <article class="card">
         <h3>Progressive Enhancement Best Practices</h3>
         <p><a href="./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.html">examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES</a></p>
         <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>

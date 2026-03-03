@@ -2875,3 +2875,105 @@ sources:
   owner: HTTP Archive / W3C
   license: Apache-2.0
   status: active
+- id: sparkgeo-web-maps-accessibility
+  domain: Sparkgeo
+  url: sparkgeo.com/blog/the-accessibility-of-web-maps
+  full_url: https://sparkgeo.com/blog/the-accessibility-of-web-maps/
+  best_for: web map accessibility, interactive maps, WCAG compliance for maps
+  description: Practical guidance on making web-based interactive maps accessible, covering WCAG requirements, keyboard navigation, alternative text, and color contrast for cartographic content.
+  authority_level: community
+  topic_tags:
+  - maps
+  - interactive-maps
+  - wcag
+  - keyboard
+  - color-contrast
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Sparkgeo
+  license: unknown
+  status: active
+- id: accessibilityoz-interactive-maps
+  domain: AccessibilityOz
+  url: accessibilityoz.com/factsheets/interactive-maps/interactive-map-accessibility-principles
+  full_url: https://www.accessibilityoz.com/factsheets/interactive-maps/interactive-map-accessibility-principles/
+  best_for: interactive map accessibility, map accessibility principles, WCAG maps
+  description: Factsheet outlining core accessibility principles for interactive maps, including keyboard operability, screen reader support, and alternatives to visual map data.
+  authority_level: practitioner
+  topic_tags:
+  - maps
+  - interactive-maps
+  - screen-reader
+  - keyboard
+  - wcag
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: AccessibilityOz
+  license: unknown
+  status: active
+- id: maptime-map-accessibility-guidelines
+  domain: maptime
+  url: github.com/maptime/map-accessibility-guidelines
+  full_url: https://github.com/maptime/map-accessibility-guidelines
+  best_for: map accessibility guidelines, cartography accessibility, open source maps
+  description: Community-developed guidelines for making maps accessible, covering alternative text, color, keyboard navigation, and structured data alternatives for cartographic content.
+  authority_level: community
+  topic_tags:
+  - maps
+  - cartography
+  - guidelines
+  - open-source
+  - alternative-text
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: maptime community
+  license: unknown
+  status: active
+- id: w3c-coga-indoor-navigation
+  domain: W3C COGA
+  url: w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html
+  full_url: https://w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html
+  best_for: indoor navigation, wayfinding, cognitive accessibility, indoor maps
+  description: W3C Cognitive and Learning Disabilities Accessibility Task Force research module on technology-assisted indoor navigation and wayfinding, covering cognitive needs in spatial orientation systems.
+  authority_level: authoritative
+  topic_tags:
+  - maps
+  - indoor-navigation
+  - wayfinding
+  - cognitive
+  - wcag
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C COGA Task Force
+  license: W3C Document License
+  status: active
+- id: uva-library-web-accessibility-maps
+  domain: University of Virginia Libraries
+  url: guides.lib.virginia.edu/c.php?g=1248895
+  full_url: https://guides.lib.virginia.edu/c.php?g=1248895
+  best_for: maps accessibility, library maps, geographic information systems accessibility
+  description: University of Virginia Libraries guide on web accessibility for maps and geographic content, providing practical recommendations for accessible map alternatives in educational and research contexts.
+  authority_level: practitioner
+  topic_tags:
+  - maps
+  - education
+  - research
+  - gis
+  - alternative-text
+  jurisdiction: us
+  wcag_version:
+  - '2.1'
+  last_reviewed: null
+  owner: University of Virginia Libraries
+  license: unknown
+  status: active
