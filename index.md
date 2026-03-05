@@ -168,6 +168,11 @@ title: ACCESSIBILITY.md
         <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
       </article>
       <article class="card">
+        <h3>Opquast Digital Quality Best Practices</h3>
+        <p><a href="./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.html">examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES</a></p>
+        <p>245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and web quality — based on the <a href="https://checklists.opquast.com/en/digital-quality/">Opquast Digital Quality Checklist</a></p>
+      </article>
+      <article class="card">
         <h3>Progressive Enhancement Best Practices</h3>
         <p><a href="./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.html">examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES</a></p>
         <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>

@@ -53,6 +53,7 @@ Consult these guides when working with specific elements:
 - **Manual testing**: [examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - **Maps**: [examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md](./examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Progressive enhancement**: [examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md](./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
+- **Digital quality (Opquast)**: [examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md](./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
 
 ## Testing and Validation
 

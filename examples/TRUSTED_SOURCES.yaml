@@ -2024,6 +2024,60 @@ sources:
   owner: null
   license: unknown
   status: active
+- id: opquast
+  domain: Opquast
+  url: opquast.com
+  full_url: https://www.opquast.com/
+  best_for: digital quality, web quality, accessibility, security, performance, privacy, ecodesign, checklists
+  description: Opquast develops and disseminates public repositories of best practices for web quality. The Opquast Digital Quality Checklist (Version 5, 2025–2030) contains 245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and overall web quality. Available in English and French at checklists.opquast.com. Opquast is a registered trademark and also provides skills certification.
+  authority_level: recommended
+  topic_tags:
+  - accessibility
+  - web-quality
+  - security
+  - performance
+  - privacy
+  - ecodesign
+  - checklists
+  - forms
+  - navigation
+  - internationalization
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Opquast
+  license: CC-BY-SA-4.0
+  ai_scraping: allowed
+  status: active
+- id: opquast-checklist
+  domain: Opquast Digital Quality Checklist
+  url: checklists.opquast.com/en/digital-quality/
+  full_url: https://checklists.opquast.com/en/digital-quality/
+  best_for: digital quality checklist, web quality rules, accessibility rules, security rules, performance rules, privacy rules
+  description: The Opquast Digital Quality Checklist — 245 rules to improve websites and applications. Version 5, 2025–2030. Covers 14 categories including content, personal data, e-commerce, forms, navigation, presentation, security, server performance, and code structure. Published under Creative Commons BY-SA 4.0. Also available in French at checklists.opquast.com/fr/digital-quality/.
+  authority_level: recommended
+  topic_tags:
+  - accessibility
+  - web-quality
+  - security
+  - performance
+  - privacy
+  - ecodesign
+  - checklists
+  - forms
+  - navigation
+  - internationalization
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Opquast
+  license: CC-BY-SA-4.0
+  ai_scraping: allowed
+  status: active
 - id: ozewai
   domain: OZeWAI
   url: https://www.ozewai.org/
