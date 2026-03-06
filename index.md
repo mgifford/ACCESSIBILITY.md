@@ -137,6 +137,11 @@ title: ACCESSIBILITY.md
         <p>Includes <a href="https://github.com/mgifford/wai-yaml-ld">wai-yaml-ld</a> for machine-readable WCAG standards</p>
       </article>
       <article class="card">
+        <h3>Anchor Links Accessibility Best Practices</h3>
+        <p><a href="./examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.html">examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES</a></p>
+        <p>Descriptive link text, focus management, skip links, smooth-scroll animation with <code>prefers-reduced-motion</code>, and WCAG criteria for in-page links</p>
+      </article>
+      <article class="card">
         <h3>Audio/Video Accessibility Best Practices</h3>
         <p><a href="./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.html">examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES</a></p>
       </article>
