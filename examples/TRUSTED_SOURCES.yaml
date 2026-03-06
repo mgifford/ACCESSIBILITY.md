@@ -3053,3 +3053,64 @@ sources:
   owner: University of Virginia Libraries
   license: unknown
   status: active
+- id: codersblock-anchor-links
+  domain: codersblock.com
+  url: codersblock.com/blog/anchor-links-and-how-to-make-them-awesome
+  full_url: https://codersblock.com/blog/anchor-links-and-how-to-make-them-awesome/
+  best_for: anchor links, in-page navigation, smooth scroll, CSS, JavaScript
+  description: Practical guide to building anchor links, covering URL fragments, scroll offsets, smooth-scroll animation, and making heading links visible on hover.
+  authority_level: practitioner
+  topic_tags:
+  - anchor-links
+  - navigation
+  - css
+  - javascript
+  - smooth-scroll
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Will Boyd
+  license: unknown
+  status: active
+- id: amberwilson-anchor-links-accessible
+  domain: amberwilson.co.uk
+  url: amberwilson.co.uk/blog/are-your-anchor-links-accessible
+  full_url: https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/
+  best_for: anchor links accessibility, focus management, WCAG, skip links
+  description: Accessibility-focused guide to anchor links, covering descriptive link text, focus management after navigation, keyboard support, and WCAG success criteria.
+  authority_level: practitioner
+  topic_tags:
+  - anchor-links
+  - focus-management
+  - keyboard
+  - wcag
+  - skip-links
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Amber Wilson
+  license: unknown
+  status: active
+- id: css-tricks-prefers-reduced-motion
+  domain: CSS-Tricks
+  url: css-tricks.com/almanac/rules/m/media/prefers-reduced-motion
+  full_url: https://css-tricks.com/almanac/rules/m/media/prefers-reduced-motion/
+  best_for: prefers-reduced-motion, CSS media queries, vestibular disorders, animation accessibility
+  description: Reference article on the prefers-reduced-motion CSS media query, with examples for disabling or reducing animation for users who have requested reduced motion in their OS settings.
+  authority_level: practitioner
+  topic_tags:
+  - css
+  - animation
+  - prefers-reduced-motion
+  - media-queries
+  - vestibular
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: CSS-Tricks / DigitalOcean
+  license: unknown
+  status: active
