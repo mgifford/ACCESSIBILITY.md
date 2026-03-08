@@ -72,4 +72,4 @@ Constraints:
 - GitHub accessibility agents guide: https://accessibility.github.com/documentation/guide/getting-started-with-agents/
 - Existing prompt starter: [examples/ACCESSIBILITY_PROMPT_STARTER.md](../examples/ACCESSIBILITY_PROMPT_STARTER.md)
 - Existing template: [ACCESSIBILITY-template.md](../ACCESSIBILITY-template.md)
-- GitHub Copilot coding agent documentation: https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request
+- GitHub Copilot coding agent documentation: [Using Copilot to help you work on a pull request](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request)

@@ -5,7 +5,7 @@ Each file maps directly to a GitHub Issue that can be created by a maintainer.
 
 ## Motivation
 
-These proposals were generated after reviewing [GitHub's accessibility agents guide](https://accessibility.github.com/documentation/guide/getting-started-with-agents/)
+These proposals were generated after reviewing [GitHub's accessibility agents guide: Getting Started with Agents](https://accessibility.github.com/documentation/guide/getting-started-with-agents/)
 and identifying ways this project could uniquely benefit from GitHub Copilot coding agent capabilities.
 
 ## Open Proposals
