@@ -3169,3 +3169,24 @@ sources:
   owner: Accessible Community
   license: unknown
   status: active
+- id: niagaracollege-accessibilityhub
+  domain: Niagara College Accessibility Hub
+  url: https://accessibilityhub.niagaracollege.ca/
+  full_url: https://accessibilityhub.niagaracollege.ca/
+  best_for: charts and graphs accessibility, web accessibility guidance, digital accessibility, inclusive design
+  description: Accessibility Hub from Niagara College providing practical guidance on web accessibility topics including charts, graphs, forms, and multimedia for educators and web developers.
+  authority_level: to_review
+  topic_tags:
+  - charts
+  - data-visualization
+  - web-accessibility
+  - inclusive-design
+  - wcag
+  jurisdiction: canada
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Niagara College
+  license: unknown
+  status: active

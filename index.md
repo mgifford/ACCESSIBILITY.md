@@ -193,6 +193,11 @@ title: ACCESSIBILITY.md
         <p><a href="./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.html">examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE</a></p>
       </article>
       <article class="card">
+        <h3>Charts and Graphs Accessibility Best Practices</h3>
+        <p><a href="./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.html">examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES</a></p>
+        <p>Accessible static and interactive charts, text alternatives, color-independent encoding, keyboard-navigable data visualizations, and WCAG 2.2 compliance guidance</p>
+      </article>
+      <article class="card">
         <h3>Maps Accessibility Best Practices</h3>
         <p><a href="./examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.html">examples/MAPS_ACCESSIBILITY_BEST_PRACTICES</a></p>
         <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
