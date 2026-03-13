@@ -161,6 +161,29 @@ section h2 {
   background: var(--card);
 }
 
+a.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.card {
+    transition: none;
+  }
+}
+
+a.card:hover {
+  border-color: var(--text);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}
+
+a.card:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
 .card h3 {
   margin-top: 0;
   margin-bottom: 0.35rem;

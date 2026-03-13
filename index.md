@@ -142,117 +142,153 @@ title: ACCESSIBILITY.md
   <div class="wrap">
     <h2>Reference Examples</h2>
     <div class="cards">
+      <a class="card" href="./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>CI/CD Accessibility Best Practices</h3>
+          <p>GitHub Actions, GitLab CI, axe-core, pa11y, Lighthouse CI, and AccessLint integration patterns for accessibility automation</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/AXE_RULES_COVERAGE.html">
+        <article>
+          <h3>Axe Rule Coverage</h3>
+          <p>Complete reference of axe-core accessibility rules, categories, and WCAG mappings</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.html">
+        <article>
+          <h3>Shift-left Automation</h3>
+          <p>Move accessibility testing earlier in your development workflow to catch issues sooner</p>
+        </article>
+      </a>
       <article class="card">
-        <h3>CI/CD Accessibility Best Practices</h3>
-        <p><a href="./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.html">examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>GitHub Actions, GitLab CI, axe-core, pa11y, Lighthouse CI, and AccessLint integration patterns for accessibility automation</p>
-      </article>
-      <article class="card">
-        <h3>Axe Rule Coverage</h3>
-        <p><a href="./examples/AXE_RULES_COVERAGE.html">examples/AXE_RULES_COVERAGE</a></p>
-      </article>
-      <article class="card">
-        <h3>Shift-left Automation</h3>
-        <p><a href="./examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.html">examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION</a></p>
-      </article>
-      <article class="card">
-        <h3>Trusted Sources</h3>
-        <p><a href="./examples/TRUSTED_SOURCES.yaml">examples/TRUSTED_SOURCES.yaml</a></p>
+        <h3><a href="./examples/TRUSTED_SOURCES.yaml">Trusted Sources</a></h3>
         <p>Vetted accessibility resources with <a href="./.github/TRUSTED_SOURCES_MAINTENANCE.html">automated monthly maintenance</a></p>
         <p>Includes <a href="https://github.com/mgifford/wai-yaml-ld">wai-yaml-ld</a> for machine-readable WCAG standards</p>
       </article>
+      <a class="card" href="./examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Anchor Links Accessibility Best Practices</h3>
+          <p>Descriptive link text, focus management, skip links, smooth-scroll animation with <code>prefers-reduced-motion</code>, and WCAG criteria for in-page links</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Audio/Video Accessibility Best Practices</h3>
+          <p>Captions, transcripts, audio descriptions, and accessible media player implementation</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Content Design Accessibility Best Practices</h3>
+          <p>Plain language, page structure, readability, and content style guidance aligned with accessibility goals</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/README.html">
+        <article>
+          <h3>Examples Index</h3>
+          <p>Browse all accessibility best practice guides and examples in this repository</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Light/Dark Mode Best Practices</h3>
+          <p>Color scheme support, contrast requirements, and system preference integration</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>User Personalization Best Practices</h3>
+          <p>User preference controls, CSS media queries, and avoiding accessibility overlays</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.html">
+        <article>
+          <h3>Manual Accessibility Testing Guide</h3>
+          <p>Screen reader, keyboard, and cognitive testing techniques with step-by-step checklists</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Charts and Graphs Accessibility Best Practices</h3>
+          <p>Accessible static and interactive charts, text alternatives, color-independent encoding, keyboard-navigable data visualizations, and WCAG 2.2 compliance guidance</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Maps Accessibility Best Practices</h3>
+          <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
+        </article>
+      </a>
       <article class="card">
-        <h3>Anchor Links Accessibility Best Practices</h3>
-        <p><a href="./examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.html">examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>Descriptive link text, focus management, skip links, smooth-scroll animation with <code>prefers-reduced-motion</code>, and WCAG criteria for in-page links</p>
-      </article>
-      <article class="card">
-        <h3>Audio/Video Accessibility Best Practices</h3>
-        <p><a href="./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.html">examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES</a></p>
-      </article>
-      <article class="card">
-        <h3>Content Design Accessibility Best Practices</h3>
-        <p><a href="./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.html">examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>Plain language, page structure, readability, and content style guidance aligned with accessibility goals</p>
-      </article>
-      <article class="card">
-        <h3>Examples Index</h3>
-        <p><a href="./examples/README.html">examples/README</a></p>
-      </article>
-      <article class="card">
-        <h3>Light/Dark Mode Best Practices</h3>
-        <p><a href="./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.html">examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES</a></p>
-      </article>
-      <article class="card">
-        <h3>User Personalization Best Practices</h3>
-        <p><a href="./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.html">examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>User preference controls, CSS media queries, and avoiding accessibility overlays</p>
-      </article>
-      <article class="card">
-        <h3>Manual Accessibility Testing Guide</h3>
-        <p><a href="./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.html">examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE</a></p>
-      </article>
-      <article class="card">
-        <h3>Charts and Graphs Accessibility Best Practices</h3>
-        <p><a href="./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.html">examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>Accessible static and interactive charts, text alternatives, color-independent encoding, keyboard-navigable data visualizations, and WCAG 2.2 compliance guidance</p>
-      </article>
-      <article class="card">
-        <h3>Maps Accessibility Best Practices</h3>
-        <p><a href="./examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.html">examples/MAPS_ACCESSIBILITY_BEST_PRACTICES</a></p>
-        <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
-      </article>
-      <article class="card">
-        <h3>Opquast Digital Quality Best Practices</h3>
-        <p><a href="./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.html">examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES</a></p>
+        <h3><a href="./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.html">Opquast Digital Quality Best Practices</a></h3>
         <p>245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and web quality — based on the <a href="https://checklists.opquast.com/en/digital-quality/">Opquast Digital Quality Checklist</a></p>
       </article>
-      <article class="card">
-        <h3>Progressive Enhancement Best Practices</h3>
-        <p><a href="./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.html">examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES</a></p>
-        <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>
-      </article>
-      <article class="card">
-        <h3>Prompt Starter</h3>
-        <p><a href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">examples/ACCESSIBILITY_PROMPT_STARTER</a></p>
-      </article>
-      <article class="card">
-        <h3>Prompt Generator Tool</h3>
-        <p><a href="./prompt-generator.html">Open the prompt generator</a></p>
-      </article>
-      <article class="card">
-        <h3>Action Playbook</h3>
-        <p><a href="./action-playbook.html">Practical accessibility workflow guide</a></p>
-      </article>
-      <article class="card">
-        <h3>Accessibility Commitment</h3>
-        <p><a href="./ACCESSIBILITY.html">ACCESSIBILITY.md - Our accessibility standards and metrics</a></p>
-      </article>
-      <article class="card">
-        <h3>Sustainability Policy</h3>
-        <p><a href="./SUSTAINABILITY.html">SUSTAINABILITY.md - Digital sustainability and AI usage</a></p>
-      </article>
-      <article class="card">
-        <h3>AI Agent Instructions</h3>
-        <p><a href="./AGENTS.html">AGENTS.md - AI coding assistant guidance</a></p>
-      </article>
-      <article class="card">
-        <h3>Browser Support Policy</h3>
-        <p><a href="./BROWSER_SUPPORT.html">BROWSER_SUPPORT.md - Browser version support guarantees</a></p>
-      </article>
-      <article class="card">
-        <h3>Contributing Guide</h3>
-        <p><a href="./CONTRIBUTING.html">CONTRIBUTING.md - How to contribute to this project</a></p>
-      </article>
-      <article class="card">
-        <h3>Procurement Requirements</h3>
-        <p><a href="https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md">CivicActions Open Requirements Library</a></p>
-        <p>Section 508 compliance requirements for government contracts and RFPs</p>
-      </article>
-      <article class="card">
-        <h3>Comparison with Similar Projects</h3>
-        <p><a href="./COMPARISON_WITH_KREERC.html">COMPARISON_WITH_KREERC.md - Analysis of different approaches to accessibility documentation</a></p>
-      </article>
+      <a class="card" href="./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.html">
+        <article>
+          <h3>Progressive Enhancement Best Practices</h3>
+          <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">
+        <article>
+          <h3>Prompt Starter</h3>
+          <p>Ready-to-use AI prompts for common accessibility tasks in development workflows</p>
+        </article>
+      </a>
+      <a class="card" href="./prompt-generator.html">
+        <article>
+          <h3>Prompt Generator Tool</h3>
+          <p>Interactive tool to generate accessibility prompt templates for AI coding assistants</p>
+        </article>
+      </a>
+      <a class="card" href="./action-playbook.html">
+        <article>
+          <h3>Action Playbook</h3>
+          <p>Practical accessibility workflow guide</p>
+        </article>
+      </a>
+      <a class="card" href="./ACCESSIBILITY.html">
+        <article>
+          <h3>Accessibility Commitment</h3>
+          <p>Our accessibility standards and metrics</p>
+        </article>
+      </a>
+      <a class="card" href="./SUSTAINABILITY.html">
+        <article>
+          <h3>Sustainability Policy</h3>
+          <p>Digital sustainability and AI usage guidelines</p>
+        </article>
+      </a>
+      <a class="card" href="./AGENTS.html">
+        <article>
+          <h3>AI Agent Instructions</h3>
+          <p>AI coding assistant guidance for this project</p>
+        </article>
+      </a>
+      <a class="card" href="./BROWSER_SUPPORT.html">
+        <article>
+          <h3>Browser Support Policy</h3>
+          <p>Browser version support guarantees</p>
+        </article>
+      </a>
+      <a class="card" href="./CONTRIBUTING.html">
+        <article>
+          <h3>Contributing Guide</h3>
+          <p>How to contribute to this project</p>
+        </article>
+      </a>
+      <a class="card" href="https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md">
+        <article>
+          <h3>Procurement Requirements <span aria-label="(external site)">(↗)</span></h3>
+          <p>Section 508 compliance requirements for government contracts and RFPs</p>
+        </article>
+      </a>
+      <a class="card" href="./COMPARISON_WITH_KREERC.html">
+        <article>
+          <h3>Comparison with Similar Projects</h3>
+          <p>Analysis of different approaches to accessibility documentation</p>
+        </article>
+      </a>
     </div>
   </div>
 </section>
