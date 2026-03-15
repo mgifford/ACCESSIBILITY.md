@@ -6,6 +6,7 @@ name: Accessibility Scan (Scheduled)
 # Set the target URL as a repository variable ACCESSIBILITY_SCAN_URL;
 # if not set, defaults to https://<owner>.github.io/<repo>/ derived from
 # the repository context.
+# Multiple URLs can be provided as a newline-separated list in ACCESSIBILITY_SCAN_URL.
 
 on:
   schedule:
@@ -27,8 +28,8 @@ jobs:
       - name: Run GitHub Accessibility Scanner
         uses: github/accessibility-scanner@v2
         with:
-          url: ${{ vars.ACCESSIBILITY_SCAN_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
-          repo_token: ${{ secrets.GH_TOKEN }}
+          urls: ${{ vars.ACCESSIBILITY_SCAN_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          token: ${{ secrets.GH_TOKEN }}
           # For authenticated pages:
           # login_url: ${{ vars.ACCESSIBILITY_LOGIN_URL }}
           # username: ${{ secrets.ACCESSIBILITY_USERNAME }}
