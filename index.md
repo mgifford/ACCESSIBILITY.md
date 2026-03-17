@@ -219,6 +219,12 @@ title: ACCESSIBILITY.md
           <p>Accessible static and interactive maps, keyboard-operable controls, text alternatives, and indoor wayfinding guidance</p>
         </article>
       </a>
+      <a class="card" href="./examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Tooltip Accessibility Best Practices</h3>
+          <p>ARIA tooltip pattern, keyboard interaction, WCAG 1.4.13 compliance, mobile considerations, and design system references</p>
+        </article>
+      </a>
       <article class="card">
         <h3><a href="./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.html">Opquast Digital Quality Best Practices</a></h3>
         <p>245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and web quality — based on the <a href="https://checklists.opquast.com/en/digital-quality/">Opquast Digital Quality Checklist</a></p>

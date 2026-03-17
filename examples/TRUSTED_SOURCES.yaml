@@ -3190,3 +3190,90 @@ sources:
   owner: Niagara College
   license: unknown
   status: active
+- id: userway-blog
+  domain: UserWay Blog
+  url: userway.org/blog
+  full_url: https://userway.org/blog/
+  best_for: tooltip accessibility, ARIA patterns, practical accessibility guidance
+  description: Practical accessibility guidance from UserWay, including articles on accessible UI components such as tooltips, covering ARIA roles, keyboard interaction, and WCAG compliance.
+  authority_level: practitioner
+  topic_tags:
+  - tooltip
+  - aria
+  - keyboard-navigation
+  - wcag
+  - components
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: UserWay
+  license: unknown
+  status: active
+- id: carbon-design-system
+  domain: Carbon Design System
+  url: carbondesignsystem.com
+  full_url: https://carbondesignsystem.com
+  best_for: design system components, tooltip accessibility, IBM accessibility patterns
+  description: IBM's open-source design system providing accessible component patterns including tooltips, data tables, and complex UI elements, with dedicated accessibility guidance pages.
+  authority_level: established
+  topic_tags:
+  - design-system
+  - tooltip
+  - components
+  - aria
+  - keyboard-navigation
+  - accessibility
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: IBM
+  license: Apache-2.0
+  status: active
+- id: redhat-ux
+  domain: Red Hat UX Patterns
+  url: ux.redhat.com
+  full_url: https://ux.redhat.com
+  best_for: enterprise UI accessibility, tooltip accessibility, PatternFly component guidance
+  description: Red Hat's UX patterns library (PatternFly) providing accessibility guidance for enterprise UI components including tooltips, with ARIA implementation details.
+  authority_level: established
+  topic_tags:
+  - design-system
+  - tooltip
+  - components
+  - aria
+  - accessibility
+  - enterprise
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Red Hat
+  license: MIT
+  status: active
+- id: salt-design-system
+  domain: Salt Design System
+  url: saltdesignsystem.com
+  full_url: https://www.saltdesignsystem.com
+  best_for: tooltip accessibility, financial UI components, J.P. Morgan design patterns
+  description: J.P. Morgan's Salt Design System providing accessibility guidance for financial application UI components including tooltips and complex data widgets.
+  authority_level: established
+  topic_tags:
+  - design-system
+  - tooltip
+  - components
+  - aria
+  - accessibility
+  - finance
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: J.P. Morgan
+  license: Apache-2.0
+  status: active
