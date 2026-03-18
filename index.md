@@ -98,13 +98,17 @@ title: ACCESSIBILITY.md
 │   ├── Component best practices (SVG, forms, keyboard, diagrams)
 │   └── Automation guides (axe-core, shift-left testing)
 │
+├── skills/                         ← AI agent skills (install globally)
+│   ├── opquast-digital-quality.skill  ← Downloadable ZIP archive
+│   └── opquast-digital-quality/    ← Human-readable source
+│
 ├── .github/workflows/              ← This repo's automation (reference)
 ├── _layouts/, _config.yml          ← Jekyll site (for documentation)
 └── README.md                       ← Complete adoption guide</code></pre>
       <p>
         <strong>Key:</strong><br>
         ✅ Copy to your project: <code>ACCESSIBILITY-template.md</code>, files in <code>examples/</code><br>
-        🤖 Install globally in AI agents: <code>ACCESSIBILITY.skill</code><br>
+        🤖 Install globally in AI agents: <code>ACCESSIBILITY.skill</code>, skills in <code>skills/</code><br>
         📖 Read for guidance: <code>README.md</code>, <code>AGENTS.md</code>, <code>CONTRIBUTING.md</code><br>
         🛠️ Jekyll/docs site: <code>_layouts/</code>, <code>_config.yml</code>, <code>assets/</code>, <code>index.md</code>
       </p>
@@ -309,6 +313,41 @@ title: ACCESSIBILITY.md
           <p>Analysis of different approaches to accessibility documentation</p>
         </article>
       </a>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2>Skills</h2>
+    <div class="prose">
+      <p>
+        Skills are portable AI agent instruction files. Each skill encodes a set of best practices,
+        rules, and code patterns so that AI coding assistants (GitHub Copilot, Claude, Cursor, Codex,
+        and others) automatically apply those standards when generating or reviewing code.
+      </p>
+      <p>
+        Skills are stored in the <a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills"><code>skills/</code> directory</a>.
+        Each skill ships in two formats: a single downloadable <code>.skill</code> ZIP archive for easy
+        installation, and an expanded directory of Markdown files for human review and contribution.
+      </p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/opquast-digital-quality">Opquast Digital Quality</a></h3>
+        <p>
+          244 web quality rules across 14 categories — content, security, forms, performance, privacy,
+          and more. Complements WCAG 2.2 as a holistic quality baseline.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/opquast-digital-quality.skill">Download <code>opquast-digital-quality.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/opquast-digital-quality/SKILL.md">Browse source</a>
+        </p>
+      </article>
+    </div>
+    <div class="prose steps-footer">
+      <p><strong>For installation instructions, see the <a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills#how-to-use-these-skills">skills README</a>.</strong></p>
     </div>
   </div>
 </section>
