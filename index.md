@@ -279,7 +279,7 @@ title: ACCESSIBILITY.md
           <p>Portable <code>.skill</code> file for global installation in Codex, Claude Code, and other AI coding assistants</p>
         </article>
       </a>
-      <a class="card" href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/opquast-digital-quality/SKILL.md">
+      <a class="card" href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/opquast-digital-quality/SKILL.md">
         <article>
           <h3>Opquast Digital Quality Skill <span aria-label="(GitHub)">(↗)</span></h3>
           <p>Installable AI agent skill covering all 244 Opquast rules across 14 categories: content, security, forms, performance, and more</p>

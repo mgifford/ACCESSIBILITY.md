@@ -53,11 +53,14 @@ This repository is organized to separate **content you adopt** from **project do
 ├── COMPARISON_WITH_KREERC.md       ← Comparison with similar projects
 ├── README.md                       ← This file
 │
-├── opquast-digital-quality/        ← Opquast Digital Quality AI skill
-│   ├── SKILL.md                    ← Concise skill (14 categories, 244 rules)
-│   └── references/
-│       ├── rules-part1.md          ← Rules 1–135 (categories 1–7)
-│       └── rules-part2.md          ← Rules 136–244 (categories 8–14)
+├── skills/                         ← Portable AI agent skills
+│   ├── README.md                   ← Skills index and usage guide
+│   ├── opquast-digital-quality.skill ← Downloadable ZIP (single file install)
+│   └── opquast-digital-quality/   ← Expanded human-readable source
+│       ├── SKILL.md                ← Concise skill (14 categories, 244 rules)
+│       └── references/
+│           ├── rules-part1.md      ← Rules 1–172 (categories 1–9)
+│           └── rules-part2.md      ← Rules 173–244 (categories 10–14)
 │
 ├── examples/                       ← Copy these to your project
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml          ← GitHub Actions workflow
@@ -91,7 +94,7 @@ This repository is organized to separate **content you adopt** from **project do
 
 **Key:**
 - ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, `ACCESSIBILITY.skill`, files in `examples/`
-- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` or `opquast-digital-quality/SKILL.md` — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
+- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` or `skills/opquast-digital-quality.skill` — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
 - 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
 
@@ -192,7 +195,7 @@ Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessi
 Two portable skills are available for global installation:
 
 - **[`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill)** — full accessibility governance framework (WCAG 2.2 AA, semantic HTML, ARIA, CI/CD)
-- **[`opquast-digital-quality/SKILL.md`](./opquast-digital-quality/SKILL.md)** — Opquast Digital Quality framework (245 rules across 14 categories: content, security, forms, performance, and more)
+- **[`skills/opquast-digital-quality.skill`](./skills/opquast-digital-quality.skill)** — Opquast Digital Quality framework (244 rules across 14 categories: content, security, forms, performance, and more); see [`skills/README.md`](./skills/README.md) for all available skills
 
 Ask any agent (Claude Code, Codex, Opencode, etc.) to install either or both directly:
 
@@ -209,7 +212,7 @@ TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.
 To install the Opquast skill for Codex:
 
 ```bash
-TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.md/archive/refs/heads/main.zip" -o "$TMP_DIR/main.zip" && unzip -q "$TMP_DIR/main.zip" -d "$TMP_DIR" && sudo mkdir -p /etc/codex/skills/opquast-digital-quality && sudo cp -R "$TMP_DIR/ACCESSIBILITY.md-main/opquast-digital-quality" /etc/codex/skills/ && rm -rf "$TMP_DIR"
+TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.md/archive/refs/heads/main.zip" -o "$TMP_DIR/main.zip" && unzip -q "$TMP_DIR/main.zip" -d "$TMP_DIR" && sudo mkdir -p /etc/codex/skills/opquast-digital-quality && sudo cp "$TMP_DIR/ACCESSIBILITY.md-main/skills/opquast-digital-quality.skill" /etc/codex/skills/opquast-digital-quality/ && rm -rf "$TMP_DIR"
 ```
 
 > **Security note:** Review downloaded files before running `sudo cp`. Inspect the extracted files in `$TMP_DIR` after the download step. Only run `sudo` commands after verifying the file contents are as expected.

@@ -4,7 +4,7 @@
 
 This file provides guidance for AI agents (GitHub Copilot, Cursor, Claude, GPT-4, etc.) to maintain project standards and quality.
 
-For global installation of this project's accessibility guidance as an AI agent skill, see [`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill) in the repository root. For the Opquast Digital Quality skill (245 rules, 14 categories), see [`opquast-digital-quality/SKILL.md`](./opquast-digital-quality/SKILL.md).
+For global installation of this project's accessibility guidance as an AI agent skill, see [`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill) in the repository root. For the Opquast Digital Quality skill (245 rules, 14 categories), see [`skills/opquast-digital-quality/SKILL.md`](./skills/opquast-digital-quality/SKILL.md) or download the portable [`skills/opquast-digital-quality.skill`](./skills/opquast-digital-quality.skill) archive.
 
 ## Primary references
 
