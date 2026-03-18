@@ -1,0 +1,211 @@
+---
+name: accessibility-md
+description: Web accessibility governance framework for WCAG 2.2 AA compliance, covering semantic HTML, ARIA, keyboard navigation, color contrast, CI/CD automation, and component-specific best practices. Use for any web project to ensure inclusive, accessible development.
+license: MIT
+metadata:
+  author: mgifford/ACCESSIBILITY.md contributors
+  version: "1.0"
+  repository: https://github.com/mgifford/ACCESSIBILITY.md
+---
+
+# Accessibility Framework for AI Agents
+
+This skill provides accessibility guidance for AI coding agents based on the [mgifford/ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) framework. Follow these instructions for every web project task.
+
+> **Important:** AI training data spans over twenty years of mostly inaccessible web design. This skill explicitly counters those patterns. When in doubt, consult official [W3C/WCAG resources](https://www.w3.org/WAI/standards-guidelines/wcag/) and defer to human experts — especially people with disabilities.
+
+## Core Requirement
+
+Target **WCAG 2.2 Level AA** conformance for all web work. Document any deviations explicitly and explain the barrier they may create.
+
+## Code Comments and WCAG References
+
+Add code comments that explain accessibility implementations based on the relevant WCAG 2.2 success criterion and level. Include the expected user flow for assistive technology users when helpful.
+
+```html
+<!-- WCAG 1.1.1 Non-text Content (Level A): alt text describes image content for screen readers -->
+<img src="chart.png" alt="Bar chart showing 40% increase in Q3 revenue compared to Q2">
+```
+
+## Semantic HTML First
+
+Use native HTML elements before reaching for ARIA or JavaScript. Native elements have built-in accessibility semantics, keyboard support, and browser compatibility:
+
+- **Buttons**: `<button>` (not `<div onclick>` or `<span role="button">`)
+- **Forms**: `<form>`, `<label>`, `<input>`, `<fieldset>`, `<legend>`
+- **Navigation**: `<nav>`, `<header>`, `<main>`, `<footer>`, `<aside>`
+- **Tables**: `<table>`, `<th scope="col/row">`, `<caption>` for data tables
+- **Dialogs**: `<dialog>` element where supported
+- **Interactive disclosure**: `<details>` / `<summary>`
+
+Maintain a logical heading hierarchy (`<h1>` → `<h2>` → `<h3>`). Never skip heading levels for visual styling purposes.
+
+## ARIA — Use Only When Necessary
+
+ARIA supplements HTML when no native element suffices. Incorrect ARIA creates barriers. Rules:
+
+1. No ARIA is better than bad ARIA
+2. Document every ARIA choice with a comment explaining why native HTML was insufficient
+3. Never use `role="button"` on `<a>` elements — use a `<button>` or ensure the link has an `href`
+4. Use `aria-live` regions sparingly; prefer native status messages
+5. Test ARIA patterns with real screen readers (NVDA + Firefox, VoiceOver + Safari)
+
+## Keyboard Accessibility
+
+Every interactive element must be reachable and operable via keyboard alone:
+
+- **Focus order** must follow visual/logical reading order
+- **Focus indicators** must be visible — never use `outline: none` without a custom replacement that meets 3:1 contrast ratio
+- **Custom widgets** must implement the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) keyboard patterns
+- **`tabindex`**: use only negative values (`tabindex="-1"`) on custom focusable elements; never assign positive `tabindex` values
+
+Add **skip links** before navigation and large content blocks (5+ items). Format: `"Skip [thing]"` e.g. `"Skip navigation"`.
+
+```html
+<!-- Skip link — visible on focus, hidden otherwise (WCAG 2.4.1 Bypass Blocks, Level A) -->
+<a class="skip-link" href="#main-content">Skip navigation</a>
+```
+
+## Color and Contrast
+
+Calculate contrast ratio using: **(L1 + 0.05) / (L2 + 0.05)** where L1 is the lighter color's relative luminance and L2 is the darker.
+
+| Text type | Minimum ratio |
+|-----------|--------------|
+| Standard text (< 18pt or < 14pt bold) | 4.5:1 |
+| Large text (≥ 18pt or ≥ 14pt bold) | 3:1 |
+| UI components and graphical objects | 3:1 |
+
+Never convey information **by color alone** — always pair color with text, pattern, or icon.
+
+Support `prefers-color-scheme` and `prefers-contrast` media queries. See [Light/Dark Mode guide](./examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Text Alternatives
+
+- **Images**: Provide `alt` text describing content and function. Use `alt=""` for purely decorative images.
+- **Icons**: If icon-only, add visually hidden label and `aria-hidden="true"` on the icon element.
+- **Audio/Video**: Provide captions (synchronized), transcripts, and audio descriptions for visual content. See [Audio/Video guide](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md).
+- **SVG**: Title and description elements or `aria-label`. See [SVG guide](./examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md).
+- **Charts/Graphs**: Text summary plus accessible data table. See [Charts guide](./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md).
+
+Keep alt text concise and descriptive. Avoid "image of" or "picture of" prefixes.
+
+## Forms
+
+- Every `<input>`, `<select>`, `<textarea>` must have an associated `<label>` (not just `placeholder`)
+- Group related fields with `<fieldset>` and `<legend>`
+- Communicate validation errors in text, not color alone, and programmatically associate errors with their fields using `aria-describedby`
+- Avoid the `disabled` attribute — prefer hiding controls or providing contextual guidance
+- Mark required fields with text (not just with `*` color); explain the convention
+
+See [Forms guide](./examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Required HTML Document Setup
+
+```html
+<!-- WCAG 3.1.1 Language of Page (Level A) -->
+<html lang="en">
+
+<!-- WCAG 2.4.2 Page Titled (Level A) — update dynamically for SPAs -->
+<title>Page Title — Site Name</title>
+```
+
+For multilingual content: add `lang` attribute to any text block (not single words) in a foreign language. Update `<title>` dynamically based on content in single-page applications.
+
+## Touch and Pointer Accessibility
+
+- Minimum touch target size: 24×24 CSS pixels (WCAG 2.5.8, AA); aim for 44×44 pixels
+- Every mouse/gesture interaction (drag-and-drop, swipe) requires a keyboard or single-pointer alternative
+- Support `prefers-reduced-motion` for animations and transitions
+
+## User Preferences
+
+Respect CSS media queries before adding custom controls:
+- `prefers-reduced-motion` — disable or reduce animations
+- `prefers-color-scheme` — dark/light mode
+- `prefers-contrast` — high contrast mode
+- `forced-colors` — Windows High Contrast mode
+
+See [User Personalization guide](./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Anti-Patterns to Avoid
+
+| Anti-pattern | Why it fails | Correct approach |
+|---|---|---|
+| `<div onclick="...">` | Not keyboard accessible, no semantics | Use `<button>` |
+| `outline: none` without replacement | Keyboard users lose focus indicator | Provide custom visible focus style |
+| `aria-label` hiding visible label | Creates mismatch for voice control users | Match or supplement visible label text |
+| `role="button"` on `<a href>` | Conflicting semantics | Use `<button>` or keep as link |
+| Color-only error feedback | Fails WCAG 1.4.1 | Add text or icon alongside color |
+| `placeholder` as sole label | Disappears on input | Always use `<label>` |
+| Positive `tabindex` values | Disrupts natural focus order | Use DOM order; `tabindex="-1"` only |
+| `onclick` without `onkeydown/onkeyup` | Keyboard users cannot activate | Use `<button>` or handle key events |
+| Generic link text ("click here", "read more") | Meaningless out of context | Use descriptive link text |
+| Auto-playing audio/video | Disrupts screen reader audio | Require explicit user action to play |
+
+## CI/CD Automation
+
+Integrate automated accessibility checks into every PR. Recommended tools:
+
+- **[axe-core](https://github.com/dequelabs/axe-core)** — catches ~57% of WCAG issues automatically
+- **[Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci)** — performance + accessibility scoring
+- **[pa11y](https://pa11y.org/)** — command-line accessibility testing
+- **GitHub Accessibility Scanner** — AI-powered scans with issue creation
+
+Automated tools do not replace manual testing. See [CI/CD guide](./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Manual Testing
+
+Automated tests catch fewer than 40% of real-world accessibility issues. Always conduct:
+
+1. **Keyboard-only navigation** — tab through every interactive element
+2. **Screen reader testing** — NVDA + Firefox (Windows), VoiceOver + Safari (macOS/iOS)
+3. **Zoom testing** — 200% zoom without horizontal scrolling (WCAG 1.4.4)
+4. **Color contrast verification** — use a contrast checker for all new colors
+5. **Reflow testing** — 320px viewport without horizontal scroll
+
+Engage users with disabilities for real-world evaluation. See [Manual Testing Guide](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md).
+
+## Continuous Maintenance
+
+Treat accessibility as an ongoing requirement, not a one-time audit:
+
+- **New images**: Always add `alt` text or `alt=""`
+- **New colors**: Verify contrast ratio before committing
+- **New content**: Maintain heading hierarchy and landmark structure
+- **Each PR**: Run automated checks; review keyboard and focus behavior
+- **Content changes**: Verify link text remains descriptive
+
+## Component-Specific Guidance
+
+For detailed patterns, consult the component guides:
+
+| Component | Guide |
+|---|---|
+| Anchor links | [ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Audio/Video | [AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Charts/Graphs | [CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) |
+| CI/CD | [CI_CD_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Content Design | [CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Forms | [FORMS_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Keyboard | [KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Light/Dark mode | [LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Maps | [MAPS_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Mermaid diagrams | [MERMAID_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Progressive enhancement | [PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md) |
+| SVG | [SVG_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md) |
+| Tooltips | [TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md) |
+| User Personalization | [USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) |
+
+## Authoritative References
+
+When guidelines conflict or a situation is unclear, consult:
+
+- [WCAG 2.2 Specification](https://www.w3.org/TR/WCAG22/) — W3C official
+- [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) — W3C official
+- [WAI Tutorials](https://www.w3.org/WAI/tutorials/) — W3C official
+- [TRUSTED_SOURCES.yaml](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/examples/TRUSTED_SOURCES.yaml) — project-vetted references
+
+---
+
+This skill does not cover every accessibility requirement. When unsure, document the uncertainty and recommend human expert review — particularly from people with lived disability experience, whose knowledge is irreplaceable.

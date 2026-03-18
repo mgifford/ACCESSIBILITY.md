@@ -45,12 +45,19 @@ This repository is organized to separate **content you adopt** from **project do
 [Repository Root]
 ├── ACCESSIBILITY-template.md       ← Start here: Copy this template
 ├── ACCESSIBILITY.md                ← Our own accessibility commitment
+├── ACCESSIBILITY.skill             ← AI agent skill (global installation)
 ├── AGENTS.md                       ← AI agent instructions (copy/adapt)
 ├── CONTRIBUTING.md                 ← How to contribute to this project
 ├── SUSTAINABILITY.md               ← Sustainability policy
 ├── BROWSER_SUPPORT.md              ← Browser support guidelines
 ├── COMPARISON_WITH_KREERC.md       ← Comparison with similar projects
 ├── README.md                       ← This file
+│
+├── opquast-digital-quality/        ← Opquast Digital Quality AI skill
+│   ├── SKILL.md                    ← Concise skill (14 categories, 244 rules)
+│   └── references/
+│       ├── rules-part1.md          ← Rules 1–135 (categories 1–7)
+│       └── rules-part2.md          ← Rules 136–244 (categories 8–14)
 │
 ├── examples/                       ← Copy these to your project
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml          ← GitHub Actions workflow
@@ -83,7 +90,8 @@ This repository is organized to separate **content you adopt** from **project do
 ```
 
 **Key:**
-- ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, files in `examples/`
+- ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, `ACCESSIBILITY.skill`, files in `examples/`
+- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` or `opquast-digital-quality/SKILL.md` — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
 - 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
 
@@ -177,7 +185,36 @@ Learn more: [SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md](./examples/SHIFT_LEFT_ACCES
 
 ### Step 3: Configure AI coding assistants
 
-Help your AI tools (GitHub Copilot, Cursor, Claude, etc.) respect accessibility standards:
+Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessibility standards:
+
+**Install the AI agent skill globally (recommended):**
+
+Two portable skills are available for global installation:
+
+- **[`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill)** — full accessibility governance framework (WCAG 2.2 AA, semantic HTML, ARIA, CI/CD)
+- **[`opquast-digital-quality/SKILL.md`](./opquast-digital-quality/SKILL.md)** — Opquast Digital Quality framework (245 rules across 14 categories: content, security, forms, performance, and more)
+
+Ask any agent (Claude Code, Codex, Opencode, etc.) to install either or both directly:
+
+```text
+Install the skill from https://github.com/mgifford/ACCESSIBILITY.md globally.
+```
+
+For [Codex](https://github.com/openai/codex) (OpenAI's AI coding agent CLI), run this one-liner to install the accessibility skill globally into `/etc/codex/skills`:
+
+```bash
+TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.md/archive/refs/heads/main.zip" -o "$TMP_DIR/main.zip" && unzip -q "$TMP_DIR/main.zip" -d "$TMP_DIR" && sudo mkdir -p /etc/codex/skills/accessibility-md && sudo cp "$TMP_DIR/ACCESSIBILITY.md-main/ACCESSIBILITY.skill" /etc/codex/skills/accessibility-md/ && rm -rf "$TMP_DIR"
+```
+
+To install the Opquast skill for Codex:
+
+```bash
+TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.md/archive/refs/heads/main.zip" -o "$TMP_DIR/main.zip" && unzip -q "$TMP_DIR/main.zip" -d "$TMP_DIR" && sudo mkdir -p /etc/codex/skills/opquast-digital-quality && sudo cp -R "$TMP_DIR/ACCESSIBILITY.md-main/opquast-digital-quality" /etc/codex/skills/ && rm -rf "$TMP_DIR"
+```
+
+> **Security note:** Review downloaded files before running `sudo cp`. Inspect the extracted files in `$TMP_DIR` after the download step. Only run `sudo` commands after verifying the file contents are as expected.
+
+**For project-level configuration:**
 
 **For Cursor or similar tools:**
 1. Copy [AGENTS.md](./AGENTS.md) to your repository root

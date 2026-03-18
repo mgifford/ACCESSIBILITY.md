@@ -48,3 +48,8 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 ## Action Playbook
 
 - [Action Playbook](../action-playbook.md) - Practical workflow guide for teams and AI agents
+
+## AI Agent Skill
+
+- [ACCESSIBILITY.skill](../ACCESSIBILITY.skill) - Portable AI agent skill for global installation in Codex, Claude Code, and other AI coding assistants
+- [opquast-digital-quality/SKILL.md](../opquast-digital-quality/SKILL.md) - Opquast Digital Quality skill (rules 1–244 across 14 categories), with detailed rule references in [references/rules-part1.md](../opquast-digital-quality/references/rules-part1.md) and [references/rules-part2.md](../opquast-digital-quality/references/rules-part2.md)

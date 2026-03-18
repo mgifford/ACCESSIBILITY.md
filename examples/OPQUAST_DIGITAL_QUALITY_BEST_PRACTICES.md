@@ -10,6 +10,8 @@ This guide translates the [Opquast Digital Quality Checklist](https://checklists
 
 > The Opquast rules are published under [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Rule numbers in this guide correspond directly to Version 5 (2025–2030). See [opquast.com](https://www.opquast.com/) for the authoritative source.
 
+> **AI agent skill:** An installable skill file is available at [`opquast-digital-quality/SKILL.md`](../opquast-digital-quality/SKILL.md) for global use in Codex, Claude Code, and other AI coding assistants. Detailed rule references are split across [`references/rules-part1.md`](../opquast-digital-quality/references/rules-part1.md) (rules 1–135) and [`references/rules-part2.md`](../opquast-digital-quality/references/rules-part2.md) (rules 136–244).
+
 ---
 
 ## 1. Content
