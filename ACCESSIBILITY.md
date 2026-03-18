@@ -1,10 +1,10 @@
 # Accessibility Commitment (ACCESSIBILITY.md)
 
-## 1. Our Commitment
+## 1. Our commitment
 
 We believe accessibility is a subset of quality. This project commits to **WCAG 2.2 AA** standards for all documentation and example code. We track our progress publicly to remain accountable to our users.
 
-## 2. Real-Time Health Metrics
+## 2. Real-time health metrics
 
 | Metric | Status / Value |
 | :--- | :--- |
@@ -13,7 +13,7 @@ We believe accessibility is a subset of quality. This project commits to **WCAG 
 | **A11y PRs Merged (MTD)** | Tracked in [project insights](https://github.com/mgifford/ACCESSIBILITY.md/pulse) |
 | **Browser Support** | Last 2 major versions of Chrome, Firefox, Safari - [View Policy](./BROWSER_SUPPORT.md) |
 
-## 3. Contributor Requirements (The Guardrails)
+## 3. Contributor requirements (the guardrails)
 
 To contribute to this repo, you must follow these guidelines:
 
@@ -27,7 +27,7 @@ To contribute to this repo, you must follow these guidelines:
 - **Link Validation:** All documentation links must pass our automated link checker
 - **Inclusive Language:** Use person-centered, respectful language throughout
 
-## 4. Reporting & Severity Taxonomy
+## 4. Reporting and severity taxonomy
 
 Please use our [issue templates](https://github.com/mgifford/ACCESSIBILITY.md/issues/new) when reporting issues. We prioritize based on:
 
@@ -36,7 +36,7 @@ Please use our [issue templates](https://github.com/mgifford/ACCESSIBILITY.md/is
 - **Medium:** Documentation clarity issues or incomplete examples
 - **Low:** Minor improvements, typos, or enhancements
 
-## 5. Automated Check Coverage
+## 5. Automated check coverage
 
 We track our automated testing rules against the [Axe Rules Reference](./examples/AXE_RULES_REFERENCE.md). 
 
@@ -46,9 +46,9 @@ Our documentation includes:
 - Pre-commit hook samples ([PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml](./examples/PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml))
 - CI/CD workflow examples ([A11Y_SHIFT_LEFT_WORKFLOW.yml](./examples/A11Y_SHIFT_LEFT_WORKFLOW.yml))
 
-## 6. Browser & Assistive Technology Testing
+## 6. Browser and assistive technology testing
 
-### Browser Support Guarantees
+### Browser support guarantees
 
 This project supports the **last 2 major versions** of all major browser engines:
 - **Chrome/Chromium** (including Edge, Brave, Opera)
@@ -57,7 +57,7 @@ This project supports the **last 2 major versions** of all major browser engines
 
 See our comprehensive [Browser Support Policy](./BROWSER_SUPPORT.md) for version details, testing requirements, and implementation guidance.
 
-### Assistive Technology Testing
+### Assistive technology testing
 
 Contributors are encouraged to test documentation and examples with:
 
@@ -68,11 +68,11 @@ Contributors are encouraged to test documentation and examples with:
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on reporting assistive technology test results.
 
-## 7. Machine-Readable Standards
+## 7. Machine-readable standards
 
 This project leverages [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for machine-readable accessibility standards, enabling AI agents to provide standards-grounded guidance. All vetted sources are documented in [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml).
 
-### Respecting Content Creator Preferences
+### Respecting content creator preferences
 
 While we maintain a list of trusted accessibility sources, we recognize and respect that not all content creators want their work scraped or used for AI training. Our [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) includes an `ai_scraping` field to indicate each source's preferences:
 
@@ -87,21 +87,21 @@ While we maintain a list of trusted accessibility sources, we recognize and resp
 
 **For human contributors:** When adding new sources to TRUSTED_SOURCES.yaml, check the website's robots.txt, terms of service, or public statements about AI scraping, and set the `ai_scraping` field accordingly.
 
-## 8. Known Limitations
+## 8. Known limitations
 
 As a documentation repository:
 - We provide guidance and templates but cannot test actual implementations
 - Examples are illustrative and may need adaptation for specific contexts
 - We rely on community feedback to identify gaps and outdated patterns
 
-## 9. Getting Help
+## 9. Getting help
 
 - **Questions:** Open a [discussion](https://github.com/mgifford/ACCESSIBILITY.md/discussions)
 - **Bugs or gaps:** Open an [issue](https://github.com/mgifford/ACCESSIBILITY.md/issues)
 - **Contributions:** See [CONTRIBUTING.md](./CONTRIBUTING.md)
 - **Accommodations:** Request via `accessibility-accommodation` label
 
-## 10. Continuous Improvement
+## 10. Continuous improvement
 
 We regularly review and update:
 - WCAG conformance as standards evolve

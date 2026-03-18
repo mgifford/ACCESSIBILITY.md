@@ -1,8 +1,29 @@
-# STYLE.md: Unified Design & Content Standards
+# STYLE.md: Unified design and content standards
 
 ---
 
-## 1. Core Philosophy
+## Scope: documentation files vs. the website
+
+This guide covers two distinct surfaces that share the same project:
+
+| Surface | Files | Audience |
+| :--- | :--- | :--- |
+| **GitHub Pages site** | `index.md`, `_layouts/`, `assets/`, pages with front matter | Public visitors browsing the site |
+| **Repository documentation** | `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `ACCESSIBILITY.md`, `SUSTAINABILITY.md`, `BROWSER_SUPPORT.md`, `examples/*.md` | Contributors, adopters, and AI agents reading files directly on GitHub |
+
+**What applies everywhere (documentation and website):**
+- Section 2 — Content and voice standards (plain language, active voice, sentence-case headings, American English)
+- Section 4 — Accessibility and semantic logic (heading hierarchy, alt text)
+- Section 5 — Instructions for AI agents
+
+**What applies to the website only:**
+- Section 3 — Design foundations (CSS tokens, typography, breakpoints, page layout patterns)
+
+Even though documentation files are rendered as plain Markdown rather than styled HTML, they share the same voice, tone, and heading conventions as the site. This keeps the project a unified whole for every reader, regardless of which surface they encounter first.
+
+---
+
+## 1. Core philosophy
 We design for the user, not the institution. Our goal is to reduce cognitive load through consistency, clarity, and radical accessibility.
 
 1. **User-First:** Start with user needs, not organizational structure.
@@ -12,10 +33,10 @@ We design for the user, not the institution. Our goal is to reduce cognitive loa
 
 ---
 
-## 2. Content & Voice Standards
+## 2. Content and voice standards
 Derived from *UK GDS* and *Digital.gov* standards.
 
-### 2.1 Voice and Tone
+### 2.1 Voice and tone
 We use an **Authoritative Peer** tone: professional and knowledgeable, but accessible and supportive.
 
 | Context | Tone | Strategy |
@@ -24,7 +45,7 @@ We use an **Authoritative Peer** tone: professional and knowledgeable, but acces
 | **Technical/Legal** | Precise | Be unambiguous; explain "why" if a rule is complex. |
 | **Error States** | Calm/Helpful | Don't blame the user. Provide a clear path to resolution. |
 
-### 2.2 Plain Language & Word Choice
+### 2.2 Plain language and word choice
 Avoid "Government-ese" or "Corporate-speak." AI agents must prioritize these substitutions:
 
 | Avoid (Bureaucratic) | Use (Plain Language) |
@@ -36,12 +57,12 @@ Avoid "Government-ese" or "Corporate-speak." AI agents must prioritize these sub
 | Notwithstanding | Despite / Even though |
 | Requirements | Rules / What you need |
 
-### 2.3 Grammar & Mechanics
+### 2.3 Grammar and mechanics
 * **Active Voice:** "The department issued the permit" NOT "The permit was issued by the department."
 * **Sentence Case:** Use sentence case for all headings and buttons (e.g., "Save and continue," not "Save and Continue").
 * **Lists:** Use bullets for items. Use numbered lists only for sequential steps.
 
-### 2.4 Spelling Convention
+### 2.4 Spelling convention
 This project uses **American English** as its default spelling standard.
 
 | Variant | Example spellings | When to use |
@@ -56,10 +77,10 @@ To change the spelling variant for a derived project, update the `lang` attribut
 
 ---
 
-## 3. Design Foundations (Tokens & UI)
+## 3. Design foundations (tokens and UI)
 Inspired by the *California Design System* and *Home Office Digital* patterns.
 
-### 3.1 Design Tokens (CSS/Variables)
+### 3.1 Design tokens (CSS/variables)
 Use these tokens to maintain a "Single Source of Truth." The canonical values live in `assets/css/site.css` and are the authoritative source; this table documents the design intent.
 
 **Light mode (`:root` defaults)**
@@ -79,14 +100,14 @@ Use these tokens to maintain a "Single Source of Truth." The canonical values li
 
 Both light and dark values are defined via a single `@media (prefers-color-scheme: dark)` override block — no extra class is needed. See Section 3.4 for all user-preference media queries.
 
-### 3.2 Typography & Readability
+### 3.2 Typography and readability
 * **Font Stack:** `Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif` — system fonts are the fallback; no external font load is required.
 * **Font Scaling:** Use `rem` units to respect user browser settings. Never use `px` for font sizes.
 * **Fluid type:** Use `clamp()` for headings so they scale smoothly: e.g. `clamp(2.1rem, 5vw, 3.8rem)`.
 * **Line Length:** Keep body text between 45–75 characters per line (`max-width: 760px` for `.prose` blocks).
 * **Line Height:** Minimum `1.6` for body text; `1.2` or lower for display headings.
 
-### 3.3 Responsive Design: Mobile-First
+### 3.3 Responsive design: mobile-first
 Write base CSS for the smallest screen first, then progressively enhance with `min-width` media queries.
 
 **Breakpoint ladder**
@@ -137,7 +158,7 @@ Write base CSS for the smallest screen first, then progressively enhance with `m
 }
 ```
 
-### 3.4 User Preferences
+### 3.4 User preferences
 Always honor CSS media query preferences before adding JavaScript-driven controls. These queries make the design user-centered at zero cost.
 
 | Media query | Behavior to implement | Status in `site.css` |
@@ -176,7 +197,7 @@ See also: `ACCESSIBILITY.md`, and the [User Personalization Best Practices](exam
 
 ---
 
-## 3.5 Page Layout Patterns
+## 3.5 Page layout patterns
 
 The site uses two layout templates defined in `_layouts/`:
 
@@ -209,7 +230,7 @@ All three children share horizontal padding of `1rem` to keep text flush with th
 
 ---
 
-## 4. Accessibility & Semantic Logic
+## 4. Accessibility and semantic logic
 This section implements the mandates in `ACCESSIBILITY.md` [[ACCESSIBILITY.md]],
 
 
@@ -219,7 +240,7 @@ This section implements the mandates in `ACCESSIBILITY.md` [[ACCESSIBILITY.md]],
 
 ---
 
-## 5. Instructions for AI Agents
+## 5. Instructions for AI agents
 **Meta-Prompting Rules:** When generating content or code, the Agent must:
 
 1. **Verify Tokens:** Only use the CSS variables defined in Section 3.1.
@@ -231,7 +252,7 @@ Also see: [[AGENTS.md]]
 
 ---
 
-## 6. References & Inspiration
+## 6. References and inspiration
 * [UK GDS Style Guide](https://www.gov.uk/guidance/style-guide/a-to-z)
 * [California Design System](https://designsystem.webstandards.ca.gov/)
 * [18F Content Guide](https://content-guide.18f.gov/)

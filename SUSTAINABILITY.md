@@ -120,7 +120,7 @@ Workflow policy:
 
 ### Hosting efficiency
 
-- Leverage GitHub Pages CDN for efficient content delivery
+- Use GitHub Pages CDN for efficient content delivery
 - Minimize custom builds and preprocessing
 - Use static site generation (Jekyll) for efficiency
 
