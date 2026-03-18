@@ -19,7 +19,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick start
 
 **New to this project?** Here's what you need:
 
@@ -37,7 +37,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 
 ---
 
-## 📁 Repository Structure
+## 📁 Repository structure
 
 This repository is organized to separate **content you adopt** from **project documentation**:
 
@@ -89,7 +89,7 @@ This repository is organized to separate **content you adopt** from **project do
 
 ---
 
-## 🚀 Why This Exists
+## 🚀 Why this exists
 
 Modern software is built by two groups: **Humans** and **AI Agents**. Currently, neither has a reliable place to look for a project's accessibility "Source of Truth."
 
@@ -99,21 +99,21 @@ Modern software is built by two groups: **Humans** and **AI Agents**. Currently,
 
 ---
 
-## 🛠 The Framework
+## 🛠 The framework
 
 An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering three core pillars:
 
-### 1. Transparency & Disclosure
+### 1. Transparency and disclosure
 * **Conformance Level:** Current WCAG status (e.g., 2.2 AA).
 * **Known Gaps:** Honest disclosure of current barriers.
 * **Assistive Tech:** Actively tested with.
 
-### 2. Operational Governance
+### 2. Operational governance
 * **Taxonomy:** Standardized labels for issues (e.g., `accessibility`, `color-contrast`).
 * **Definition of Done:** Requirement that no PR is merged without passing a11y linting.
 * **Severity Matrix:** How a11y bugs are prioritized compared to feature requests.
 
-### 3. Automated Guardrails (The AI Bridge)
+### 3. Automated guardrails (the AI bridge)
 * **CI/CD Integration:** Links to workflows running `axe-core` or `Lighthouse`.
 * **Axe Rules Coverage:** Explicit mapping of which rules are automated ([Example](./examples/AXE_RULES_COVERAGE.md)).
 * **GitHub Accessibility Scanner:** AI-powered accessibility scans with issue creation via `github/accessibility-scanner` ([Integration Guide](./examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)).
@@ -126,7 +126,7 @@ An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering t
 
 ---
 
-## 📊 The "Living Metric" Table
+## 📊 The "living metric" table
 We recommend including a dynamic table in your file to track progress. This turns a static statement into a measurable pulse.
 
 | Metric | Status / Source |
@@ -138,11 +138,11 @@ We recommend including a dynamic table in your file to track progress. This turn
 
 ---
 
-## 📖 How to Adopt This in Your Project
+## 📖 How to adopt this in your project
 
 This repository provides templates and guidance to help you implement `ACCESSIBILITY.md` in your own projects.
 
-### Step 1: Add ACCESSIBILITY.md to Your Repository
+### Step 1: Add ACCESSIBILITY.md to your repository
 
 **Option A: Start with the template**
 1. Copy [ACCESSIBILITY-template.md](./ACCESSIBILITY-template.md) to your repository root
@@ -154,7 +154,7 @@ This repository provides templates and guidance to help you implement `ACCESSIBI
 - Visit [prompt-generator.md](./prompt-generator.md) for a form-based tool
 - Or use [examples/ACCESSIBILITY_PROMPT_STARTER.md](./examples/ACCESSIBILITY_PROMPT_STARTER.md) for guidance
 
-### Step 2: Set Up GitHub Workflows (CI/CD Automation)
+### Step 2: Set up GitHub workflows (CI/CD automation)
 
 Copy the workflows that match your needs from the `examples/` directory:
 
@@ -175,7 +175,7 @@ cp examples/A11Y_SHIFT_LEFT_WORKFLOW.yml .github/workflows/
 
 Learn more: [SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md](./examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md)
 
-### Step 3: Configure AI Coding Assistants
+### Step 3: Configure AI coding assistants
 
 Help your AI tools (GitHub Copilot, Cursor, Claude, etc.) respect accessibility standards:
 
@@ -196,7 +196,7 @@ Help your AI tools (GitHub Copilot, Cursor, Claude, etc.) respect accessibility 
 
 See the full guide: [AGENTS.md](./AGENTS.md)
 
-### Step 4: Add Pre-Commit Hooks (Optional but Recommended)
+### Step 4: Add pre-commit hooks (optional but recommended)
 
 Catch accessibility issues before they're committed:
 
@@ -211,7 +211,7 @@ pip install pre-commit
 pre-commit install
 ```
 
-### Step 5: Add Component-Specific Best Practices
+### Step 5: Add component-specific best practices
 
 Copy relevant guides to your project's documentation:
 
@@ -232,7 +232,7 @@ Copy relevant guides to your project's documentation:
 - **Progressive enhancement**: [examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md](./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
 - **Digital quality (Opquast)**: [examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md](./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
 
-### Step 6: Reference Trusted Sources
+### Step 6: Reference trusted sources
 
 Copy the vetted accessibility resources list:
 
@@ -245,7 +245,7 @@ This provides:
 - Procurement requirements via [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md)
 - Curated accessibility references for AI systems
 
-### Resources for This Repository
+### Resources for this repository
 
 **Contributing to this project:**
 * **[CONTRIBUTING.md](./CONTRIBUTING.md):** How to contribute, including accessibility accommodations
@@ -262,9 +262,9 @@ This provides:
 
 ---
 
-## 🔄 Automated Quality Maintenance
+## 🔄 Automated quality maintenance
 
-### TRUSTED_SOURCES.yaml Monthly Maintenance
+### TRUSTED_SOURCES.yaml monthly maintenance
 
 The [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) file is automatically maintained via a [monthly GitHub Action](./.github/workflows/maintain-trusted-sources.yml) that:
 
@@ -281,7 +281,7 @@ This ensures the trusted resources list remains high-quality and up-to-date with
 
 ---
 
-## 🤖 AI Agent Integration
+## 🤖 AI agent integration
 
 To ensure your AI coding assistant respects your accessibility standards, add this to your `.cursorrules`, `AGENTS.md`, or system prompt:
 
@@ -289,7 +289,7 @@ To ensure your AI coding assistant respects your accessibility standards, add th
 
 For a comprehensive guide on AI agent instructions for this project, see [AGENTS.md](./AGENTS.md).
 
-### Machine-Readable Standards for AI
+### Machine-readable standards for AI
 
 For LLMs to provide more accurate, standards-grounded accessibility guidance, consider using [**wai-yaml-ld**](https://github.com/mgifford/wai-yaml-ld) as a structured source of truth. This repository provides machine-readable YAML/JSON-LD artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that help AI agents:
 * Map implementation choices to specific standards relationships

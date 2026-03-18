@@ -1,10 +1,10 @@
-# AI Agent Instructions
+# AI agent instructions
 
 > **System instructions for AI coding assistants contributing to this project.**
 
 This file provides guidance for AI agents (GitHub Copilot, Cursor, Claude, GPT-4, etc.) to maintain project standards and quality.
 
-## Primary References
+## Primary references
 
 Before proposing or writing changes, read these project policy files:
 
@@ -12,7 +12,7 @@ Before proposing or writing changes, read these project policy files:
 2. **[SUSTAINABILITY.md](./SUSTAINABILITY.md)** - Sustainability policy, asset optimization, and AI usage guidelines
 3. **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution process, including involvement of people with disabilities
 
-## Core Requirements
+## Core requirements
 
 ### Accessibility
 - All documentation and code examples must comply with **WCAG 2.2 Level AA** standards
@@ -30,14 +30,14 @@ Before proposing or writing changes, read these project policy files:
 - Avoid documentation duplication
 - Disclose AI usage in pull requests
 
-### Documentation Quality
+### Documentation quality
 - Keep changes minimal and request-scoped
 - Ensure all links are valid (checked by CI)
 - Follow existing patterns and project structure
 - Use practical, actionable language with examples
 - Update cross-references when adding new pages
 
-## Component-Specific Guidance
+## Component-specific guidance
 
 Consult these guides when working with specific elements:
 
@@ -58,18 +58,18 @@ Consult these guides when working with specific elements:
 - **Progressive enhancement**: [examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md](./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
 - **Digital quality (Opquast)**: [examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md](./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
 
-## Testing and Validation
+## Testing and validation
 
 - **Link checking**: Runs automatically on PRs
 - **Accessibility examples**: Must follow published best practices
 - **Code examples**: Must pass hypothetical axe-core checks
 - **Documentation**: Must be clear, accurate, and well-structured
 
-## Machine-Readable Standards
+## Machine-readable standards
 
 This project uses [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for machine-readable WCAG/ARIA/ATAG standards. See [examples/TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) for vetted references.
 
-### AI Scraping Policy for Trusted Sources
+### AI scraping policy for trusted sources
 
 **CRITICAL: Respect content creator preferences on AI scraping.**
 
@@ -91,7 +91,7 @@ When referencing sources from TRUSTED_SOURCES.yaml, always check the `ai_scrapin
 3. Instead, suggest the source as a reference for human contributors
 4. Respect robots.txt and content creator preferences even for unlisted sources
 
-## Priority Taxonomy
+## Priority taxonomy
 
 When identifying issues, use this severity scale:
 
@@ -102,7 +102,7 @@ When identifying issues, use this severity scale:
 
 Never suggest changes that introduce Critical or High severity accessibility issues.
 
-## Quick Decision Framework
+## Quick decision framework
 
 If uncertain about an approach:
 
@@ -111,7 +111,7 @@ If uncertain about an approach:
 3. Review [CONTRIBUTING.md](./CONTRIBUTING.md)
 4. When in doubt, choose the more accessible and sustainable option
 
-## Continuous Improvement
+## Continuous improvement
 
 Help maintain quality by:
 
