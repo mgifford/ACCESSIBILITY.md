@@ -176,6 +176,39 @@ See also: `ACCESSIBILITY.md`, and the [User Personalization Best Practices](exam
 
 ---
 
+## 3.5 Page Layout Patterns
+
+The site uses two layout templates defined in `_layouts/`:
+
+| Layout | File | Use for |
+| :--- | :--- | :--- |
+| `default` | `_layouts/default.html` | Home page and pages with custom full-width HTML sections (hero, cards, steps) |
+| `prose` | `_layouts/prose.html` | All markdown-rendered content pages (guides in `examples/`, reference docs) |
+
+### Prose layout
+
+Apply `layout: prose` (set automatically via `_config.yml` for `examples/`) to any page whose content is rendered from Markdown. The `prose` layout:
+
+* Adds a **breadcrumb nav** ("← Home") so users can return to the index.
+* Wraps content in `.wrap` (max-width `1100px`, centered) and `.prose-body` (max-width `760px`).
+* Provides consistent typography for all standard Markdown elements: headings, lists, code blocks, blockquotes, tables.
+
+> **AI agents:** When creating a new Markdown guide in `examples/`, do **not** add `layout:` to the file's front matter — the `_config.yml` scope rule applies `prose` automatically.
+
+### Code-card pattern
+
+The `.code-card` component on the home page follows this padding convention:
+
+```css
+.code-card h2   { padding: 0.75rem 1rem; }   /* title bar */
+.code-card p    { padding: 0.5rem 1rem; }    /* subtitle / link line */
+.code-card pre  { padding: 1rem; }           /* code block */
+```
+
+All three children share horizontal padding of `1rem` to keep text flush with the card interior — never touching the card border.
+
+---
+
 ## 4. Accessibility & Semantic Logic
 This section implements the mandates in `ACCESSIBILITY.md` [[ACCESSIBILITY.md]],
 

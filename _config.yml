@@ -12,6 +12,10 @@ defaults:
       path: ""
     values:
       layout: default
+  - scope:
+      path: "examples"
+    values:
+      layout: prose
 
 # Social sharing image (absolute path from baseurl root)
 # Must be a PNG or JPEG, 1200×630 px recommended for LinkedIn/Bluesky/Mastodon
