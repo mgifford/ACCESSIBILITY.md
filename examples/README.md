@@ -52,4 +52,4 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 ## AI Agent Skill
 
 - [ACCESSIBILITY.skill](../ACCESSIBILITY.skill) - Portable AI agent skill for global installation in Codex, Claude Code, and other AI coding assistants
-- [opquast-digital-quality/SKILL.md](../opquast-digital-quality/SKILL.md) - Opquast Digital Quality skill (rules 1–244 across 14 categories), with detailed rule references in [references/rules-part1.md](../opquast-digital-quality/references/rules-part1.md) and [references/rules-part2.md](../opquast-digital-quality/references/rules-part2.md)
+- [skills/opquast-digital-quality.skill](../skills/opquast-digital-quality.skill) - Opquast Digital Quality skill (ZIP archive, single-file install); source at [skills/opquast-digital-quality/SKILL.md](../skills/opquast-digital-quality/SKILL.md) with detailed rule references in [references/rules-part1.md](../skills/opquast-digital-quality/references/rules-part1.md) and [references/rules-part2.md](../skills/opquast-digital-quality/references/rules-part2.md); see [skills/README.md](../skills/README.md) for all available skills
