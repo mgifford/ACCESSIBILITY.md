@@ -45,6 +45,7 @@ This repository is organized to separate **content you adopt** from **project do
 [Repository Root]
 ├── ACCESSIBILITY-template.md       ← Start here: Copy this template
 ├── ACCESSIBILITY.md                ← Our own accessibility commitment
+├── ACCESSIBILITY.skill             ← AI agent skill (global installation)
 ├── AGENTS.md                       ← AI agent instructions (copy/adapt)
 ├── CONTRIBUTING.md                 ← How to contribute to this project
 ├── SUSTAINABILITY.md               ← Sustainability policy
@@ -83,7 +84,8 @@ This repository is organized to separate **content you adopt** from **project do
 ```
 
 **Key:**
-- ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, files in `examples/`
+- ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, `ACCESSIBILITY.skill`, files in `examples/`
+- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
 - 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
 
@@ -177,7 +179,27 @@ Learn more: [SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md](./examples/SHIFT_LEFT_ACCES
 
 ### Step 3: Configure AI coding assistants
 
-Help your AI tools (GitHub Copilot, Cursor, Claude, etc.) respect accessibility standards:
+Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessibility standards:
+
+**Install the AI agent skill globally (recommended):**
+
+The [`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill) file packages this framework's guidance into a portable AI agent skill that can be installed once and applied across all your projects.
+
+Ask any agent (Claude Code, Codex, Opencode, etc.) to install it directly:
+
+```text
+Install the skill from https://github.com/mgifford/ACCESSIBILITY.md globally.
+```
+
+For [Codex](https://github.com/openai/codex), run this one-liner to install globally into `/etc/codex/skills`:
+
+```bash
+TMP_DIR="$(mktemp -d)" && curl -fsSL "https://github.com/mgifford/ACCESSIBILITY.md/archive/refs/heads/main.zip" -o "$TMP_DIR/main.zip" && unzip -q "$TMP_DIR/main.zip" -d "$TMP_DIR" && sudo mkdir -p /etc/codex/skills/accessibility-md && sudo cp "$TMP_DIR/ACCESSIBILITY.md-main/ACCESSIBILITY.skill" /etc/codex/skills/accessibility-md/ && rm -rf "$TMP_DIR"
+```
+
+> **Security note:** Review the downloaded file before running `sudo cp`. You can inspect `$TMP_DIR/ACCESSIBILITY.md-main/ACCESSIBILITY.skill` after the download step. Only run `sudo` commands after verifying the file contents are as expected.
+
+**For project-level configuration:**
 
 **For Cursor or similar tools:**
 1. Copy [AGENTS.md](./AGENTS.md) to your repository root

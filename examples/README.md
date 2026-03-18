@@ -48,3 +48,7 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 ## Action Playbook
 
 - [Action Playbook](../action-playbook.md) - Practical workflow guide for teams and AI agents
+
+## AI Agent Skill
+
+- [ACCESSIBILITY.skill](../ACCESSIBILITY.skill) - Portable AI agent skill for global installation in Codex, Claude Code, and other AI coding assistants

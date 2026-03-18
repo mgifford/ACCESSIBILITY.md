@@ -88,6 +88,7 @@ title: ACCESSIBILITY.md
       <p>This repository is organized to help you quickly find what to adopt vs. what to reference:</p>
       <pre class="structure-code"><code class="language-plaintext">[Repository Root]
 ├── ACCESSIBILITY-template.md       ← Start here: Copy this template
+├── ACCESSIBILITY.skill             ← AI agent skill (global installation)
 ├── AGENTS.md                       ← AI agent instructions
 │
 ├── examples/                       ← Copy these to your project
@@ -103,6 +104,7 @@ title: ACCESSIBILITY.md
       <p>
         <strong>Key:</strong><br>
         ✅ Copy to your project: <code>ACCESSIBILITY-template.md</code>, files in <code>examples/</code><br>
+        🤖 Install globally in AI agents: <code>ACCESSIBILITY.skill</code><br>
         📖 Read for guidance: <code>README.md</code>, <code>AGENTS.md</code>, <code>CONTRIBUTING.md</code><br>
         🛠️ Jekyll/docs site: <code>_layouts/</code>, <code>_config.yml</code>, <code>assets/</code>, <code>index.md</code>
       </p>
@@ -271,6 +273,12 @@ title: ACCESSIBILITY.md
           <p>AI coding assistant guidance for this project</p>
         </article>
       </a>
+      <a class="card" href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/ACCESSIBILITY.skill">
+        <article>
+          <h3>AI Agent Skill <span aria-label="(GitHub)">(↗)</span></h3>
+          <p>Portable <code>.skill</code> file for global installation in Codex, Claude Code, and other AI coding assistants</p>
+        </article>
+      </a>
       <a class="card" href="./BROWSER_SUPPORT.html">
         <article>
           <h3>Browser Support Policy</h3>
@@ -319,7 +327,7 @@ title: ACCESSIBILITY.md
       <article class="step">
         <h3>3. Configure AI Agents</h3>
         <p>
-          Add <a href="./AGENTS.html">AGENTS.md</a> or create <code>.cursorrules</code> to ensure AI coding assistants follow accessibility standards. Include component-specific best practices.
+          Install <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/ACCESSIBILITY.skill"><code>ACCESSIBILITY.skill</code></a> globally in Codex, Claude Code, or other AI coding assistants. Or copy <a href="./AGENTS.html">AGENTS.md</a> / create <code>.cursorrules</code> for project-level configuration.
         </p>
       </article>
       <article class="step">
