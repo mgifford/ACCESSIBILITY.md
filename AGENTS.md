@@ -31,6 +31,7 @@ Before proposing or writing changes, read these project policy files:
 - Minimize large binary assets
 - Avoid documentation duplication
 - Disclose AI usage in pull requests
+- When AI tools are used to build or modify this repository, update the **[AI Disclosure section in `README.md`](#-ai-disclosure)** to reflect which LLM(s) were used and for what purpose. Only list tools that were actually used — do not speculate.
 
 ### Documentation quality
 - Keep changes minimal and request-scoped

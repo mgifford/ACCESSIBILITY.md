@@ -339,6 +339,30 @@ For LLMs to provide more accurate, standards-grounded accessibility guidance, co
 
 ---
 
+## 🤖 AI Disclosure
+
+This section documents which AI tools have been used in the development and maintenance of this repository, and in what capacity. Per this project's [AGENTS.md](./AGENTS.md) and [SUSTAINABILITY.md](./SUSTAINABILITY.md), AI usage must be disclosed transparently.
+
+> This project is a **documentation and template repository**. No AI runs at runtime when users read or adopt these files, and no browser-based AI is embedded in the project itself.
+
+### LLMs used to build this project
+
+| Tool | Provider | Used for |
+|------|----------|----------|
+| **GitHub Copilot Coding Agent** | GitHub / Microsoft (Claude models via Anthropic) | Creating and maintaining documentation files, adding best-practice guides, refactoring content, managing pull requests, and performing repository maintenance tasks |
+
+### Notes
+
+- **Runtime AI**: None. This is a static documentation project; no AI is invoked when users read or use the files.
+- **Browser-based AI**: None. No client-side or browser-based AI features are embedded in this project.
+- **Human oversight**: All AI-generated content is reviewed by the repository maintainer before merging. The README already notes: *"Most of the content on this site was generated with AI assistance and has not yet been fully validated in real-world conditions."*
+
+### How to update this disclosure
+
+If you use an AI tool when contributing to this repository, please add or update the entry in the table above in your pull request. See [AGENTS.md](./AGENTS.md) for the full instruction.
+
+---
+
 ## 🤝 Contributing
 
 We are looking for feedback on the taxonomy and automation workflows. 
