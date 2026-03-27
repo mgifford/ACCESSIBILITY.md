@@ -55,12 +55,25 @@ This repository is organized to separate **content you adopt** from **project do
 │
 ├── skills/                         ← Portable AI agent skills
 │   ├── README.md                   ← Skills index and usage guide
-│   ├── opquast-digital-quality.skill ← Downloadable ZIP (single file install)
-│   └── opquast-digital-quality/   ← Expanded human-readable source
-│       ├── SKILL.md                ← Concise skill (14 categories, 244 rules)
-│       └── references/
-│           ├── rules-part1.md      ← Rules 1–172 (categories 1–9)
-│           └── rules-part2.md      ← Rules 173–244 (categories 10–14)
+│   ├── ACCESSIBILITY-general.skill ← ┐
+│   ├── anchor-links.skill          │
+│   ├── audio-video.skill           │
+│   ├── charts-graphs.skill         │
+│   ├── content-design.skill        │ Downloadable .skill ZIP archives
+│   ├── forms.skill                 │ (one per topic, for easy install)
+│   ├── keyboard.skill              │
+│   ├── light-dark-mode.skill       │
+│   ├── maps.skill                  │
+│   ├── mermaid.skill               │
+│   ├── opquast-digital-quality.skill│
+│   ├── print.skill                 │
+│   ├── progressive-enhancement.skill│
+│   ├── svg.skill                   │
+│   ├── tooltips.skill              │
+│   ├── user-personalization.skill  ← ┘
+│   └── <skill-name>/              ← Expanded human-readable source
+│       ├── SKILL.md               ← Agent-actionable rules + DoD checklist
+│       └── SYNC.md                ← Tracks source file and last sync SHA
 │
 ├── examples/                       ← Copy these to your project
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml          ← GitHub Actions workflow
@@ -94,9 +107,19 @@ This repository is organized to separate **content you adopt** from **project do
 
 **Key:**
 - ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, `ACCESSIBILITY.skill`, files in `examples/`
-- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` or `skills/opquast-digital-quality.skill` — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
+- 🤖 **Install globally in AI agents**: `ACCESSIBILITY.skill` or any `skills/<name>.skill` archive — see [AI Agent Skills](#-ai-agent-skills) and [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
 - 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
+
+### Skills vs Examples
+
+| | `examples/` | `skills/` |
+|---|---|---|
+| **Audience** | Humans: developers, designers, auditors | AI agents: Claude, Copilot, Cursor, Codex |
+| **Format** | Full best practices guide with rationale, code, testing steps | Distilled, agent-actionable rules + Definition of Done checklist |
+| **Source of truth** | ✅ Always authoritative | Derived from `examples/`; kept in sync via CI |
+| **How to use** | Read when learning or auditing | Paste into AI project instructions or install as `.skill` archive |
+| **Contribution** | Open a PR with a new or updated guide | Derive a skill from an existing example; CI tracks drift |
 
 ---
 
@@ -192,10 +215,10 @@ Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessi
 
 **Install the AI agent skill globally (recommended):**
 
-Two portable skills are available for global installation:
+16 topic-specific `.skill` archives are available for global installation alongside the full governance skill:
 
 - **[`ACCESSIBILITY.skill`](./ACCESSIBILITY.skill)** — full accessibility governance framework (WCAG 2.2 AA, semantic HTML, ARIA, CI/CD)
-- **[`skills/opquast-digital-quality.skill`](./skills/opquast-digital-quality.skill)** — Opquast Digital Quality framework (244 rules across 14 categories: content, security, forms, performance, and more); see [`skills/README.md`](./skills/README.md) for all available skills
+- **[`skills/<name>.skill`](./skills/)** — topic skills (forms, keyboard, maps, SVG, etc.); see [`skills/README.md`](./skills/README.md) for the full list and direct download links
 
 Ask any agent (Claude Code, Codex, Opencode, etc.) to install either or both directly:
 
@@ -336,6 +359,128 @@ For LLMs to provide more accurate, standards-grounded accessibility guidance, co
 * Separate normative vs informative references
 * Produce auditable, standards-aligned recommendations
 * Explain the reasoning behind accessibility advice
+
+---
+
+## 🧩 AI Agent Skills
+
+Skills are portable AI agent instruction files. Each skill encodes a set of best
+practices, rules, and code patterns so that AI coding assistants (GitHub Copilot,
+Claude, Cursor, Codex, and others) automatically apply those standards when
+generating or reviewing code.
+
+Skills are stored in the [`skills/` directory](./skills/). Each skill ships in
+two formats: a single downloadable `.skill` ZIP archive for easy installation, and
+an expanded directory of Markdown files for human review and contribution.
+
+### Available Skills
+
+| Skill | What it covers |
+|---|---|
+| [ACCESSIBILITY-general](./skills/ACCESSIBILITY-general/SKILL.md) | Project-wide non-negotiables, WCAG 2.2 AA, AI scraping policy, contribution guide |
+| [anchor-links](./skills/anchor-links/SKILL.md) | Skip links, descriptive link text, smooth-scroll + `prefers-reduced-motion`, focus management |
+| [audio-video](./skills/audio-video/SKILL.md) | Captions, transcripts, audio descriptions, Able Player |
+| [charts-graphs](./skills/charts-graphs/SKILL.md) | Text alternatives, data tables, color independence, SVG chart markup, color-blind-safe palettes |
+| [content-design](./skills/content-design/SKILL.md) | Plain language, heading hierarchy, link text, images, tables, reading level |
+| [forms](./skills/forms/SKILL.md) | Labels, grouping, autocomplete, validation, error summary, async feedback |
+| [keyboard](./skills/keyboard/SKILL.md) | Focus visibility, focus order, expected key behaviors, dialog management |
+| [light-dark-mode](./skills/light-dark-mode/SKILL.md) | CSS custom properties, dual-mode contrast, toggle button, forced-colors, zebra stripes |
+| [maps](./skills/maps/SKILL.md) | Static map alt text, keyboard controls, accessible markers and popups, structured text alternatives |
+| [mermaid](./skills/mermaid/SKILL.md) | `%%accTitle`/`%%accDescr` metadata, Pattern 11 SVG output, semantic flowchart structure |
+| [print](./skills/print/SKILL.md) | `@media print`, hiding nav/UI, revealing link URLs, print typography, page breaks |
+| [progressive-enhancement](./skills/progressive-enhancement/SKILL.md) | Three-layer HTML/CSS/JS approach, forms without JS, SSR, feature detection |
+| [svg](./skills/svg/SKILL.md) | Accessible names, decorative hiding, `currentColor`, forced-colors, contrast |
+| [tooltips](./skills/tooltips/SKILL.md) | ARIA tooltip pattern, hover + focus triggers, WCAG 1.4.13, toggletip for mobile |
+| [user-personalization](./skills/user-personalization/SKILL.md) | CSS media queries, avoiding overlays, font/spacing controls, persisting preferences |
+| [opquast-digital-quality](./skills/opquast-digital-quality/SKILL.md) | 244 web quality rules: content, security, forms, performance, privacy |
+
+### How to Install Skills
+
+#### Claude Code (CLI) — Global Installation
+
+Claude Code reads `.skill` ZIP archives from its global skills directory.
+
+```bash
+# Download a skill archive
+curl -L https://github.com/mgifford/ACCESSIBILITY.md/raw/main/skills/forms.skill \
+  -o ~/.claude/skills/forms.skill
+
+# Repeat for any other skills you want globally available:
+curl -L https://github.com/mgifford/ACCESSIBILITY.md/raw/main/skills/keyboard.skill \
+  -o ~/.claude/skills/keyboard.skill
+```
+
+Claude Code loads all `.skill` archives from `~/.claude/skills/` automatically on startup.
+For the full list of available `.skill` archives, see the [`skills/` directory](./skills/).
+
+#### Claude.ai (Browser) — Project Instructions
+
+The easiest way to use these skills with Claude in the browser:
+
+1. Go to **[claude.ai](https://claude.ai)** and open or create a **Project**
+2. Click **Project instructions** (the pencil icon or "Set project instructions")
+3. Copy and paste the contents of one or more `SKILL.md` files into the instructions field
+4. Claude will apply those rules for every conversation in that project
+
+**Recommended starting point:** Copy [`skills/ACCESSIBILITY-general/SKILL.md`](./skills/ACCESSIBILITY-general/SKILL.md)
+into your project instructions for project-wide coverage, then add topic skills
+(e.g., `forms`, `keyboard`) as needed.
+
+> **Tip:** Claude.ai Projects support long instructions. You can paste multiple skill
+> files end-to-end. Keep the most important skills at the top.
+
+#### AGENTS.md — Project-Level (Any AI Agent)
+
+Add references to your project's `AGENTS.md` so any AI agent working on the repo
+knows which skills to load before starting work:
+
+```markdown
+## Skills
+
+Before working on forms or validation: read `skills/forms/SKILL.md`
+Before working on color themes: read `skills/light-dark-mode/SKILL.md`
+Before working on interactive components: read `skills/keyboard/SKILL.md`
+For all accessibility work in this project: read `skills/ACCESSIBILITY-general/SKILL.md`
+```
+
+#### Cursor / GitHub Copilot / Other Agents
+
+Add skill references to `.cursorrules` or your agent's system prompt config:
+
+```
+When implementing forms, apply rules from skills/forms/SKILL.md.
+When implementing interactive UI, apply rules from skills/keyboard/SKILL.md.
+When implementing color themes, apply rules from skills/light-dark-mode/SKILL.md.
+```
+
+### Keeping Skills in Sync with Examples
+
+Each skill's `SYNC.md` records which `examples/` file it was derived from and the
+git SHA at the last sync. The [`skill-sync-check.yml`](./.github/workflows/skill-sync-check.yml)
+GitHub Action runs automatically when any `examples/` file changes. If a skill's
+recorded SHA is stale, it posts a diff comment on the PR (or opens an issue on push
+to `main`) so maintainers know exactly what changed and what to review.
+
+To update a skill after its source changes:
+1. Review the diff linked in the CI issue/comment
+2. Update `skills/<skill-name>/SKILL.md` to reflect new requirements
+3. Set `last_synced_commit` in `skills/<skill-name>/SYNC.md` to the current SHA
+4. Rebuild the archive: `cd skills && zip -r <skill-name>.skill <skill-name>/`
+
+### Contributing a New Skill
+
+1. Identify a stable, reviewed file in `examples/`
+2. Create `skills/your-topic/` containing:
+   - `SKILL.md` — distilled, agent-actionable rules (not a prose copy of the example)
+   - `SYNC.md` — set `canonical_source` to the example path; leave `last_synced_commit` blank
+   - `README.md` — what the skill covers and how to install it
+3. Build the ZIP: `cd skills && zip -r your-topic.skill your-topic/`
+4. Add a row to the Skills table above and in `skills/README.md`
+5. Open a PR — the sync check will track drift automatically from that point
+
+> **Design principle:** Skills are distillations, not mirrors. A skill contains required
+> patterns, ARIA usage, and Definition of Done checklists. It does not replicate prose
+> rationale or external references — those belong in the `examples/` source.
 
 ---
 
