@@ -138,4 +138,5 @@ Update `aria-valuenow` on range inputs as value changes.
 ## References
 
 - [Full best practices guide](../../examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Able Player](https://ableplayer.github.io/ableplayer/)

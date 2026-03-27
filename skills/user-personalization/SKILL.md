@@ -156,4 +156,5 @@ When personalization controls change the page, announce the change:
 ## References
 
 - [Full best practices guide](../../examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Overlay Fact Sheet](https://overlayfactsheet.com/en/)

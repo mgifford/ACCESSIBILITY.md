@@ -131,3 +131,4 @@ Move focus to `#error-summary` after failed submit.
 ## References
 
 - [Full best practices guide](../../examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)

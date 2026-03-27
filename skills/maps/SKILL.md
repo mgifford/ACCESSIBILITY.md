@@ -178,3 +178,4 @@ For maps showing location lists, provide an adjacent accessible table:
 ## References
 
 - [Full best practices guide](../../examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)

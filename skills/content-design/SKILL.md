@@ -135,4 +135,5 @@ Warn users when links open in new tabs:
 ## References
 
 - [Full best practices guide](../../examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Plain Language Guidelines](https://digital.gov/guides/plain-language)

@@ -179,3 +179,4 @@ Use serif typefaces for body text. Set `orphans`/`widows` to prevent isolated li
 ## References
 
 - [Full best practices guide](../../examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
