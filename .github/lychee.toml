@@ -11,5 +11,7 @@ exclude = [
   "^https://example\\.com",
   "^https://github\\.com",
   # IDRC site has intermittent connectivity issues in CI environments
-  "^https://idrc\\.ocadu\\.ca"
+  "^https://idrc\\.ocadu\\.ca",
+  # Personal blog with intermittent availability in CI environments
+  "^https://codersblock\\.com"
 ]

@@ -462,7 +462,7 @@ For each issue found:
 
 - [WebAIM: Screen Reader Testing](https://webaim.org/articles/screenreader_testing/)
 - [W3C: Easy Checks - First Review](https://www.w3.org/WAI/test-evaluate/preliminary/)
-- [A11Y Project: How to Test](https://www.a11yproject.com/checklist/#how-to-test)
+- [A11Y Project: Checklist](https://www.a11yproject.com/checklist/)
 
 ### 12.2 Screen Reader Resources
 
