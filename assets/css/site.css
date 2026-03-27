@@ -12,6 +12,7 @@
   --notice-bg: #fffbeb;
   --notice-border-top: #d97706;
   --notice-border-bottom: #fcd34d;
+  --scroll-offset: 4rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -82,6 +83,45 @@ body {
 a {
   color: inherit;
   text-underline-offset: 2px;
+}
+
+/* ── Skip link ── */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--button);
+  color: var(--button-text);
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 0 0 4px 4px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skip-link {
+    transition: top 0.1s ease;
+  }
+}
+
+/* ── Smooth scroll (only when user has not requested reduced motion) ── */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Anchor targets: offset for sticky header ── */
+
+:target {
+  scroll-margin-top: var(--scroll-offset);
 }
 
 .page-shell {
@@ -386,6 +426,63 @@ textarea {
 .prose-body h4 {
   margin: 1.2rem 0 0.4rem;
   font-size: 1rem;
+}
+
+/* Headings that have an id can be anchor targets */
+.prose-body h1[id],
+.prose-body h2[id],
+.prose-body h3[id],
+.prose-body h4[id] {
+  scroll-margin-top: var(--scroll-offset);
+}
+
+/* Focus style when a heading is programmatically focused via tabindex="-1" */
+.prose-body h1[tabindex="-1"]:focus,
+.prose-body h2[tabindex="-1"]:focus,
+.prose-body h3[tabindex="-1"]:focus,
+.prose-body h4[tabindex="-1"]:focus {
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Anchor permalink icon appended to headings by JavaScript */
+.anchor-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.4em;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anchor-link {
+    transition: opacity 0.15s ease, color 0.15s ease;
+  }
+}
+
+.prose-body h1:hover .anchor-link,
+.prose-body h2:hover .anchor-link,
+.prose-body h3:hover .anchor-link,
+.prose-body h4:hover .anchor-link,
+.prose-body h1:focus-within .anchor-link,
+.prose-body h2:focus-within .anchor-link,
+.prose-body h3:focus-within .anchor-link,
+.prose-body h4:focus-within .anchor-link {
+  opacity: 1;
+}
+
+.anchor-link:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.anchor-link:hover {
+  color: var(--text);
 }
 
 .prose-body p,

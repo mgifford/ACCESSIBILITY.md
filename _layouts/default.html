@@ -55,6 +55,7 @@
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="page-shell">
       <header class="site-header">
         <div class="wrap site-header-inner">
@@ -73,7 +74,7 @@
           </button>
         </div>
       </header>
-      <main>{{ content }}</main>
+      <main id="main-content" tabindex="-1">{{ content }}</main>
       <footer class="site-footer">
         <p>
           <strong>ACCESSIBILITY.md</strong> is an open documentation standard for

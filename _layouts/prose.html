@@ -15,3 +15,48 @@ layout: default
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    // Inject accessible heading anchor permalink links into all .prose-body headings that have an id.
+    // The anchor icon is visible on hover/focus, and uses aria-label for screen reader context.
+    var headings = document.querySelectorAll(
+      '.prose-body h1[id], .prose-body h2[id], .prose-body h3[id], .prose-body h4[id]'
+    );
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    headings.forEach(function (heading) {
+      var id = heading.getAttribute('id');
+      var text = heading.textContent.trim();
+
+      // Allow programmatic focus when this heading is the anchor target
+      heading.setAttribute('tabindex', '-1');
+
+      // Build the anchor link
+      var a = document.createElement('a');
+      a.className = 'anchor-link';
+      a.href = '#' + id;
+      a.setAttribute('aria-label', 'Link to \u201c' + text + '\u201d section');
+      a.innerHTML =
+        '<svg aria-hidden="true" focusable="false" width="16" height="16" ' +
+        'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>' +
+        '<path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>' +
+        '</svg>';
+
+      // On click: update URL fragment, scroll to heading, then focus it
+      a.addEventListener('click', function (event) {
+        event.preventDefault();
+        history.pushState(null, '', '#' + id);
+        heading.scrollIntoView({
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+          block: 'start'
+        });
+        heading.focus({ preventScroll: true });
+      });
+
+      heading.appendChild(a);
+    });
+  })();
+</script>
