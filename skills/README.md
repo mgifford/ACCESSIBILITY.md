@@ -8,22 +8,22 @@ Each skill distills a full example into agent-actionable rules.
 
 | Skill | Derived from | Install |
 |---|---|---|
-| [ACCESSIBILITY-general](./ACCESSIBILITY-general/SKILL.md) | `AGENTS.md` + project-wide | General project skill |
-| [anchor-links](./anchor-links/SKILL.md) | `examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [audio-video](./audio-video/SKILL.md) | `examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [charts-graphs](./charts-graphs/SKILL.md) | `examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [content-design](./content-design/SKILL.md) | `examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [forms](./forms/SKILL.md) | `examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [keyboard](./keyboard/SKILL.md) | `examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [light-dark-mode](./light-dark-mode/SKILL.md) | `examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [maps](./maps/SKILL.md) | `examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [mermaid](./mermaid/SKILL.md) | `examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [print](./print/SKILL.md) | `examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [progressive-enhancement](./progressive-enhancement/SKILL.md) | `examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md` | ✅ |
-| [svg](./svg/SKILL.md) | `examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [tooltips](./tooltips/SKILL.md) | `examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [user-personalization](./user-personalization/SKILL.md) | `examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md` | ✅ |
-| [opquast-digital-quality](./opquast-digital-quality/SKILL.md) | Opquast checklist (external) | ✅ |
+| [ACCESSIBILITY-general](./ACCESSIBILITY-general/SKILL.md) | `AGENTS.md` + project-wide | [ACCESSIBILITY-general.skill](./ACCESSIBILITY-general.skill) |
+| [anchor-links](./anchor-links/SKILL.md) | `examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md` | [anchor-links.skill](./anchor-links.skill) |
+| [audio-video](./audio-video/SKILL.md) | `examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md` | [audio-video.skill](./audio-video.skill) |
+| [charts-graphs](./charts-graphs/SKILL.md) | `examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md` | [charts-graphs.skill](./charts-graphs.skill) |
+| [content-design](./content-design/SKILL.md) | `examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md` | [content-design.skill](./content-design.skill) |
+| [forms](./forms/SKILL.md) | `examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md` | [forms.skill](./forms.skill) |
+| [keyboard](./keyboard/SKILL.md) | `examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md` | [keyboard.skill](./keyboard.skill) |
+| [light-dark-mode](./light-dark-mode/SKILL.md) | `examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md` | [light-dark-mode.skill](./light-dark-mode.skill) |
+| [maps](./maps/SKILL.md) | `examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md` | [maps.skill](./maps.skill) |
+| [mermaid](./mermaid/SKILL.md) | `examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md` | [mermaid.skill](./mermaid.skill) |
+| [print](./print/SKILL.md) | `examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md` | [print.skill](./print.skill) |
+| [progressive-enhancement](./progressive-enhancement/SKILL.md) | `examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md` | [progressive-enhancement.skill](./progressive-enhancement.skill) |
+| [svg](./svg/SKILL.md) | `examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md` | [svg.skill](./svg.skill) |
+| [tooltips](./tooltips/SKILL.md) | `examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md` | [tooltips.skill](./tooltips.skill) |
+| [user-personalization](./user-personalization/SKILL.md) | `examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md` | [user-personalization.skill](./user-personalization.skill) |
+| [opquast-digital-quality](./opquast-digital-quality/SKILL.md) | Opquast checklist (external) | [opquast-digital-quality.skill](./opquast-digital-quality.skill) |
 
 ## How to Install Skills
 
