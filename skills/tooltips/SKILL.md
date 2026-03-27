@@ -153,4 +153,5 @@ Toggle `aria-expanded` and `hidden` together on click.
 ## References
 
 - [Full best practices guide](../../examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [WCAG 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)

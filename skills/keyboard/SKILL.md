@@ -140,4 +140,5 @@ dialog.addEventListener('keydown', (e) => {
 ## References
 
 - [Full best practices guide](../../examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)

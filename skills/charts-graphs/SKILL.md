@@ -157,4 +157,5 @@ Use colorblind-safe palettes: Okabe-Ito or ColorBrewer. Avoid red/green as sole 
 ## References
 
 - [Full best practices guide](../../examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Okabe-Ito colorblind-safe palette](https://jfly.uni-koeln.de/color/)

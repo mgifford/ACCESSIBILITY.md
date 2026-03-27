@@ -131,3 +131,4 @@ Use `aria-live` regions only after confirming base content is accessible without
 ## References
 
 - [Full best practices guide](../../examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)

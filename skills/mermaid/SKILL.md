@@ -136,5 +136,6 @@ Test diagram colors in both light mode and dark mode:
 ## References
 
 - [Full best practices guide](../../examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Accessible SVG flowcharts — Léonie Watson](https://tink.uk/accessible-svg-flowcharts/)
 - [Accessible SVGs: Perfect Patterns — Carie Fisher](https://cariefisher.com/a11y-svg-updated/)

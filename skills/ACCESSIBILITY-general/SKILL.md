@@ -146,4 +146,5 @@ Never propose changes that introduce Critical or High severity issues.
 - Sustainability policy: `SUSTAINABILITY.md`
 - Contribution guide: `CONTRIBUTING.md`
 - Trusted sources: `examples/TRUSTED_SOURCES.yaml`
+- [Curated general accessibility references](references/references.md)
 - Machine-readable WCAG: [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld)

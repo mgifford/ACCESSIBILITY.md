@@ -145,4 +145,5 @@ Must be first focusable element in DOM, visible when focused:
 ## References
 
 - [Full best practices guide](../../examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [WCAG 2.2 Understanding 2.4.4](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)

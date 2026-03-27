@@ -257,6 +257,7 @@ Before marking color mode work complete, verify:
 ## References
 
 - [Full best practices guide](../../examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [WCAG 2.2 Understanding 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
 - [CSS prefers-color-scheme](https://www.w3.org/TR/mediaqueries-5/#prefers-color-scheme)
 - [CSS forced-colors](https://www.w3.org/TR/mediaqueries-5/#forced-colors)

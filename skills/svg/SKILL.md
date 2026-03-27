@@ -139,4 +139,5 @@ If the SVG itself is interactive:
 ## References
 
 - [Full best practices guide](../../examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Curated reference sources](references/references.md)
 - [Accessible SVG flowcharts (Léonie Watson)](https://tink.uk/accessible-svg-flowcharts/)
