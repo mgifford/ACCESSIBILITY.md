@@ -6,7 +6,7 @@ Read by `.github/workflows/skill-sync-check.yml` to detect drift.
 ## Source
 
 ```yaml
-canonical_source: examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md
+canonical_source: examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md
 last_synced_commit: "9b31008b9155af601ebd96f04c4cfac40fca0d93"
 last_synced_date: "2026-03-27"
 skill_maintainer: ""
@@ -20,13 +20,13 @@ When the canonical source changes and CI flags drift:
 2. Review the diff linked in the GitHub issue/PR comment
 3. Update `SKILL.md` to reflect new requirements, changed patterns, or removed guidance
 4. Set `last_synced_commit` to the current commit SHA
-5. Rebuild: `cd skills && zip -r maps.skill maps/`
+5. Rebuild: `cd skills && zip -r opquast-digital-quality.skill opquast-digital-quality/`
 
 ## What Stays in Sync
 
 - All Definition of Done checklist items
 - Required patterns (HTML/CSS/JS structure, ARIA usage)
-- New WCAG criteria or browser behavior changes
+- New Opquast rule changes or category updates
 - Removal of previously recommended patterns
 
 ## What Does NOT Need to Mirror the Source

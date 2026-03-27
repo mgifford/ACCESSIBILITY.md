@@ -7,8 +7,8 @@ Read by `.github/workflows/skill-sync-check.yml` to detect drift.
 
 ```yaml
 canonical_source: examples/TOOLTIP_ACCESSIBILITY_BEST_PRACTICES.md
-last_synced_commit: ""
-last_synced_date: ""
+last_synced_commit: "9b31008b9155af601ebd96f04c4cfac40fca0d93"
+last_synced_date: "2026-03-27"
 skill_maintainer: ""
 ```
 

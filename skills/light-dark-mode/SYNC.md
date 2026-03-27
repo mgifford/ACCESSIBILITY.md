@@ -7,8 +7,8 @@ It is read by the `skill-sync-check.yml` GitHub Action to detect drift.
 
 ```yaml
 canonical_source: examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md
-last_synced_commit: ""   # filled in automatically by the sync workflow
-last_synced_date: ""     # filled in automatically by the sync workflow
+last_synced_commit: "9b31008b9155af601ebd96f04c4cfac40fca0d93"   # filled in automatically by the sync workflow
+last_synced_date: "2026-03-27"     # filled in automatically by the sync workflow
 skill_maintainer: ""     # optional: GitHub username
 ```
 

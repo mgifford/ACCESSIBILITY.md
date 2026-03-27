@@ -4,10 +4,15 @@ on:
   pull_request:
     paths:
       - "examples/**/*.md"
+      - "AGENTS.md"
+      - "ACCESSIBILITY.md"
   push:
     branches: [main]
     paths:
       - "examples/**/*.md"
+      - "AGENTS.md"
+      - "ACCESSIBILITY.md"
+  workflow_dispatch:
 
 permissions:
   contents: read
