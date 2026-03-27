@@ -340,6 +340,126 @@ title: ACCESSIBILITY.md
     </div>
     <div class="cards">
       <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/ACCESSIBILITY-general">ACCESSIBILITY General</a></h3>
+        <p>
+          Learn to use the ACCESSIBILITY.md framework — when to load topic-specific skills, how to apply
+          examples, and what the project's non-negotiable accessibility requirements are.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/ACCESSIBILITY-general.skill">Download <code>ACCESSIBILITY-general.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/ACCESSIBILITY-general/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/anchor-links">Anchor Links</a></h3>
+        <p>
+          Create accessible in-page anchor links with meaningful text, reachable targets, visible focus
+          indicators, and support for <code>prefers-reduced-motion</code>.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/anchor-links.skill">Download <code>anchor-links.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/anchor-links/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/audio-video">Audio / Video</a></h3>
+        <p>
+          Provide captions, transcripts, and accessible controls for all audio and video content so
+          every user can access the full meaning of multimedia.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/audio-video.skill">Download <code>audio-video.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/audio-video/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/charts-graphs">Charts &amp; Graphs</a></h3>
+        <p>
+          Provide text alternatives that convey the same data and insights as every chart or graph,
+          covering static images, SVGs, canvas, and JavaScript charting libraries.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/charts-graphs.skill">Download <code>charts-graphs.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/charts-graphs/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/content-design">Content Design</a></h3>
+        <p>
+          Write clear, well-structured content at approximately Grade 8 reading level using plain language
+          and logical organization for the widest possible audience.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/content-design.skill">Download <code>content-design.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/content-design/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/forms">Forms</a></h3>
+        <p>
+          Build forms with associated labels, clear instructions, and error messages that work with
+          assistive technologies, keyboard-only input, and varying cognitive needs.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/forms.skill">Download <code>forms.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/forms/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/keyboard">Keyboard Interactions</a></h3>
+        <p>
+          Ensure all interactive elements are keyboard-accessible with visible focus indicators
+          so every user can operate the interface without a mouse or touch input.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/keyboard.skill">Download <code>keyboard.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/keyboard/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/light-dark-mode">Light / Dark Mode</a></h3>
+        <p>
+          Support light and dark themes with WCAG 2.2 AA color contrast in all modes — including
+          <code>forced-colors</code> / high-contrast — using CSS custom properties.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/light-dark-mode.skill">Download <code>light-dark-mode.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/light-dark-mode/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/maps">Maps</a></h3>
+        <p>
+          Provide text alternatives and keyboard-accessible controls for static and interactive maps
+          so all users can access the essential geographic information.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/maps.skill">Download <code>maps.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/maps/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/mermaid">Mermaid Diagrams</a></h3>
+        <p>
+          Add accessibility titles and descriptions to Mermaid diagrams so screen readers can convey
+          the diagram's meaning using SVG output conforming to ARIA Pattern 11.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/mermaid.skill">Download <code>mermaid.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/mermaid/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
         <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/opquast-digital-quality">Opquast Digital Quality</a></h3>
         <p>
           244 web quality rules across 14 categories — content, security, forms, performance, privacy,
@@ -349,6 +469,66 @@ title: ACCESSIBILITY.md
           <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/opquast-digital-quality.skill">Download <code>opquast-digital-quality.skill</code></a>
           &nbsp;·&nbsp;
           <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/opquast-digital-quality/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/print">Print Styles</a></h3>
+        <p>
+          Design print stylesheets that keep content useful, readable, and complete — because
+          printing is an accessibility feature for many users.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/print.skill">Download <code>print.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/print/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/progressive-enhancement">Progressive Enhancement</a></h3>
+        <p>
+          Build with semantic HTML first, then layer CSS and JavaScript enhancements so every user
+          can access core content regardless of browser capability or network speed.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/progressive-enhancement.skill">Download <code>progressive-enhancement.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/progressive-enhancement/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/svg">SVG Graphics</a></h3>
+        <p>
+          Make SVGs perceivable with accessible names and descriptions so screen reader users receive
+          the same information as sighted users.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/svg.skill">Download <code>svg.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/svg/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/tooltips">Tooltips</a></h3>
+        <p>
+          Create keyboard-accessible tooltips with supplementary content that works for all input methods
+          and is not the sole source of critical information.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/tooltips.skill">Download <code>tooltips.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/tooltips/SKILL.md">Browse source</a>
+        </p>
+      </article>
+      <article class="card">
+        <h3><a href="https://github.com/mgifford/ACCESSIBILITY.md/tree/main/skills/user-personalization">User Personalization</a></h3>
+        <p>
+          Enable user preference controls — font size, contrast, motion — without using accessibility
+          overlays as a substitute for proper accessible design.
+        </p>
+        <p>
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/user-personalization.skill">Download <code>user-personalization.skill</code></a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/mgifford/ACCESSIBILITY.md/blob/main/skills/user-personalization/SKILL.md">Browse source</a>
         </p>
       </article>
     </div>
