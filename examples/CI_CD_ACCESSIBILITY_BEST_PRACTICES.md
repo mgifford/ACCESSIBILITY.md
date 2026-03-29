@@ -4,12 +4,12 @@ title: CI/CD Accessibility Best Practices
 
 # CI/CD Accessibility & Performance Best Practices
 
-Integrating accessibility (a11y) and performance checks into your CI/CD pipeline ensures that regressions are caught before they reach a single user. This guide emphasizes a **"Zero-Debt" strategy**: achieving $100\%$ scores on all pages, across all devices and user preferences.
+Integrating accessibility (a11y) and performance checks into your CI/CD pipeline ensures that regressions are caught before they reach a single user. This guide emphasizes a **"Zero-Debt" strategy**: achieving $100% scores on all pages, across all devices and user preferences.
 
 ## The Strategy: Local-First & AI-Aligned
 
 Automation is the baseline, not the ceiling. Our strategy uses:
-- **Lighthouse CI** for high-level "quality gates" ($100\%$ scores).
+- **Lighthouse CI** for high-level "quality gates" ($100% scores).
 - **Playwright + axe-core** for dynamic elements, mobile emulation, and theme testing (Light/Dark).
 - **Local Audits** as the default developer workflow to reduce CI noise.
 - **Structured Data (JSON)** to ensure findings are "AI-ready" for automated remediation.
@@ -37,9 +37,9 @@ Add these to your `package.json` to normalize testing:
 
 ---
 
-## 2. Lighthouse CI (The $100\%$ Gate)
+## 2. Lighthouse CI (The $100% Gate)
 
-We enforce a strict $100\%$ score for both Accessibility and Performance. If a page drops to $99\%$, the build fails.
+We enforce a strict $100% score for both Accessibility and Performance. If a page drops to $99%, the build fails.
 
 **Configuration (`.lighthouserc.js`):**
 ```javascript
@@ -161,8 +161,8 @@ jobs:
 
 ## Governance & SLAs
 
-- **Critical Failures:** Any page with a Lighthouse Accessibility score under $100\%$ blocks the build.
-- **Performance Budget:** Any page with a Lighthouse Performance score under $100\%$ blocks the build.
+- **Critical Failures:** Any page with a Lighthouse Accessibility score under $100% blocks the build.
+- **Performance Budget:** Any page with a Lighthouse Performance score under $100% blocks the build.
 - **Triage:** Failures from scheduled scans must be converted into GitHub Issues. If an issue remains open, subsequent scheduled scans are paused to prevent alert fatigue.
 
 ---
