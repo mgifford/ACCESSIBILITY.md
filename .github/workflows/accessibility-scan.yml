@@ -1,6 +1,8 @@
 name: Accessibility Scan (Scheduled)
 
-# Scans the live GitHub Pages site every Monday and on demand.
+# Scans the live GitHub Pages site once a month and on demand.
+# Skips the scan if there are already open accessibility issues to prevent
+# alert fatigue (as recommended in CI_CD_ACCESSIBILITY_BEST_PRACTICES.md).
 # Optionally configure a Personal Access Token as secret GH_TOKEN
 # with fine-grained permissions: contents:write, issues:write, pull_requests:write.
 # Falls back to the automatic GITHUB_TOKEN if GH_TOKEN is not set.
@@ -11,7 +13,7 @@ name: Accessibility Scan (Scheduled)
 
 on:
   schedule:
-    - cron: "0 6 * * 1"   # Every Monday at 06:00 UTC
+    - cron: "0 0 1 * *"   # First day of every month at 00:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -27,12 +29,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check for existing open accessibility issues
+        id: check_issues
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(gh issue list --label "accessibility" --state open --json number --jq '. | length')
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
       - name: Run GitHub Accessibility Scanner
-        uses: github/accessibility-scanner@v2
+        if: steps.check_issues.outputs.count == '0'
+        uses: github/accessibility-scanner@v3
         with:
           urls: ${{ vars.ACCESSIBILITY_SCAN_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
           repository: ${{ github.repository }}
-          token: ${{ secrets.GH_TOKEN || github.token }}
+          token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           cache_key: accessibility-scan-results
           # For authenticated pages:
           # login_url: ${{ vars.ACCESSIBILITY_LOGIN_URL }}
