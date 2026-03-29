@@ -50,7 +50,6 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 
 - [Action Playbook](../action-playbook.md) - Practical workflow guide for teams and AI agents
 
-## AI Agent Skill
+## AI Agent Skills
 
-- [ACCESSIBILITY.skill](../ACCESSIBILITY.skill) - Portable AI agent skill for global installation in Codex, Claude Code, and other AI coding assistants
-- [skills/opquast-digital-quality.skill](../skills/opquast-digital-quality.skill) - Opquast Digital Quality skill (ZIP archive, single-file install); source at [skills/opquast-digital-quality/SKILL.md](../skills/opquast-digital-quality/SKILL.md) with detailed rule references in [references/rules-part1.md](../skills/opquast-digital-quality/references/rules-part1.md) and [references/rules-part2.md](../skills/opquast-digital-quality/references/rules-part2.md); see [skills/README.md](../skills/README.md) for all available skills
+AI agent skills have moved to their own repository: [accessibility-skills](https://github.com/mgifford/accessibility-skills). Topic-specific `.skill` archives are available there for global installation in Codex, Claude Code, and other AI coding assistants.
