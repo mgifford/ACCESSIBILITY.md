@@ -99,45 +99,123 @@ for (const theme of themes) {
 
 ## 4. GitHub Actions
 
-### A. Manual & Scheduled Accessibility Scanner
-This workflow uses the `github/accessibility-scanner`. It is designed to run manually or monthly, but only if there are no existing open accessibility issues.
+### A. Monthly Accessibility Scanner with Alert-Fatigue Guard
+This workflow uses the `github/accessibility-scanner`. It runs on the **first day of every month** and on demand, but **only when there are no existing open accessibility issues**. This prevents alert fatigue by pausing scans while known issues are still being resolved.
 
-**Workflow (`.github/workflows/scheduled-scan.yml`):**
+**Workflow (`.github/workflows/accessibility-scan.yml`):**
 ```yaml
-name: GitHub Accessibility Scanner
+name: Accessibility Scan (Scheduled)
 
 on:
-  workflow_dispatch: # Manual trigger
   schedule:
-    - cron: '0 0 1 * *' # Monthly
+    - cron: "0 0 1 * *"   # First day of every month at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
-  a11y-scan:
+  accessibility-scanner:
+    name: GitHub Accessibility Scanner
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
     steps:
-      - name: Check for existing open a11y issues
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for existing open accessibility issues
         id: check_issues
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          # Count open issues with the 'accessibility' label
           COUNT=$(gh issue list --label "accessibility" --state open --json number --jq '. | length')
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
-      - name: Run Scanner
+      - name: Run GitHub Accessibility Scanner
         if: steps.check_issues.outputs.count == '0'
         uses: github/accessibility-scanner@v3
         with:
-          url: ${{ vars.SITE_URL }}
-          repo_token: ${{ secrets.GH_TOKEN }}
+          urls: ${{ vars.ACCESSIBILITY_SCAN_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          cache_key: accessibility-scan-results
 ```
 
-> **Note:** This requires a `GH_TOKEN` secret with `repo` permissions to allow the scanner to create issues.
+> **Notes:**
+> - The `GH_TOKEN` secret is optional; the workflow falls back to the automatic `GITHUB_TOKEN`.
+> - Set `ACCESSIBILITY_SCAN_URL` as a repository variable to override the default GitHub Pages URL. Multiple URLs can be provided as a newline-separated list.
+> - Running less frequently (monthly rather than weekly) means fewer unnecessary API calls and quieter notifications when the site is in good shape.
 
-### B. Full Deep Crawl (AI-Ready)
+### B. Lighthouse Accessibility Audit on Every PR
+Catch regressions before they merge. This workflow builds the Jekyll site and runs a Lighthouse audit on every pull request and push to `main`.
+
+**Workflow (`.github/workflows/lighthouse.yml`):**
+```yaml
+name: Lighthouse CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse accessibility audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      - name: Run Lighthouse CI
+        run: lhci autorun
+```
+
+**Configuration (`.lighthouserc.json`):**
+```json
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./_site",
+      "numberOfRuns": 1
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}
+```
+
+> **Tip:** Start with `"warn"` while resolving existing issues, then tighten to `"error"` with `"minScore": 1` once you achieve a clean baseline (see Section 2 above).
+
+### C. Full Deep Crawl (AI-Ready)
 A manual trigger to generate a full JSON report of the site's state for AI analysis.
 
 ```yaml

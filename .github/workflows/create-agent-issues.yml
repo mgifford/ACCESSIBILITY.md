@@ -17,6 +17,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - ".github/issue-proposals/**"
 
 permissions:
   issues: write
