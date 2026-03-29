@@ -26,6 +26,7 @@ Read these files before making any changes:
 See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-guidance) for the full list. Quick links:
 
 - [Anchor links](../examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [ARIA live regions](../examples/ARIA_LIVE_REGIONS_BEST_PRACTICES.md)
 - [Audio/Video](../examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Charts and graphs](../examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [CI/CD pipelines](../examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
@@ -35,9 +36,13 @@ See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-g
 - [Light/Dark mode](../examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Maps](../examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Mermaid diagrams](../examples/MERMAID_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Navigation](../examples/NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Plain language](../examples/PLAIN_LANGUAGE_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Progressive enhancement](../examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
 - [Print styles](../examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md)
 - [SVG graphics](../examples/SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Tables](../examples/TABLES_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Touch and pointer](../examples/TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.md)
 - [User Personalization](../examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Manual testing guide](../examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [Digital quality (Opquast)](../examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
