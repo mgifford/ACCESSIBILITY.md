@@ -4,65 +4,161 @@ title: Progressive Enhancement Best Practices
 
 # Progressive Enhancement Best Practices
 
-This document defines project-level expectations for building accessible, resilient web experiences using progressive enhancement.
+## Core Mandate
 
-## 1. Core Principle
+Start with a solid foundation that works for every user, then layer enhancements.
+Every user — regardless of browser capability, network speed, assistive technology,
+or JavaScript availability — must be able to access core content and complete core
+tasks.
 
-Start with a solid foundation that works for every user, then layer enhancements for users whose browsers and devices support them. Every user—regardless of browser capability, network speed, assistive technology, or JavaScript availability—must be able to access core content and complete core tasks.
+Progressive enhancement is also a sustainability practice. Pages that work without
+JavaScript are dramatically lighter: fewer bytes transferred, less CPU spent on
+parsing and executing scripts, and less energy consumed per page view. See
+[SUSTAINABILITY.md](https://github.com/mgifford/SUSTAINABILITY.md) and the
+[Web Sustainability Guidelines](https://www.w3.org/TR/web-sustainability-guidelines/).
 
-Progressive enhancement is the opposite of graceful degradation. Rather than building a feature-rich experience and trying to keep it working for less capable environments, you build the baseline first and enhance from there.
+---
 
-## 2. The Three Layers
+## Severity Scale
 
-### Layer 1: Semantic HTML (structure and content)
+| Level | Meaning |
+| --- | --- |
+| **Critical** | Core content or task inaccessible without JS/CSS |
+| **Serious** | Core content accessible but significantly degraded without JS/CSS |
+| **Moderate** | Enhancement degrades gracefully but with friction |
+| **Minor** | Best-practice gap; marginal impact |
 
-- Use meaningful, semantic HTML elements that convey structure without CSS or JavaScript.
-- All core content must be readable in plain HTML.
-- Forms must be submittable with native browser behavior (no JavaScript required for form submission).
-- Navigation must function as standard links.
-- Headings, lists, tables, and landmark elements must accurately reflect document structure.
+---
 
-### Layer 2: CSS (visual presentation)
+## The Three Layers
 
-- Enhance the visual presentation with CSS, applied after the semantic HTML is in place.
-- Use external stylesheets so they can be disabled without affecting content availability.
-- Respect user preferences with CSS media queries: `prefers-reduced-motion`, `prefers-color-scheme`, `prefers-contrast`, `forced-colors`.
-- Ensure the page remains usable if stylesheets fail to load.
+### Layer 1 — Semantic HTML (always required)
 
-### Layer 3: JavaScript (interactivity and behavior)
+**Failure here is Critical.**
 
-- Add scripted interactivity only after the HTML and CSS layers are complete and functional.
-- Use JavaScript to enhance the experience, not to gate access to core content or tasks.
-- Apply JavaScript-dependent classes, attributes, or behaviors from scripts, not markup (for example, add `js-enhanced` class with JS rather than relying on it in static HTML).
-- Handle errors gracefully: if a script fails, the underlying HTML layer must still work.
-- Use feature detection (for example, `if ('fetch' in window)`) rather than browser detection.
+* All core content readable in plain HTML — no CSS or JS required
+* Forms submittable with native browser behaviour
+* Navigation functions as standard links
+* Headings, lists, tables, and landmarks accurately reflect document structure
 
-## 3. Accessibility Benefits
+### Layer 2 — CSS (enhance presentation)
 
-Progressive enhancement directly supports accessibility:
+**Failure here is Moderate to Serious.**
 
-- **Assistive technology compatibility**: Semantic HTML is the most robust foundation for screen readers, braille displays, and other assistive technologies.
-- **Keyboard operability**: Native HTML elements (links, buttons, form controls) have built-in keyboard support, reducing the need for custom ARIA.
-- **Resilience to script blockers**: Security policies, privacy tools, or corporate firewalls may block scripts; a progressively enhanced page continues to function.
-- **Low-bandwidth and offline scenarios**: Users on poor connections or using service-worker offline modes still reach essential content.
-- **Cognitive load**: Simpler HTML-first experiences are often easier to navigate and understand.
+* External stylesheets that can be disabled without losing content
+* Respect user preferences: `prefers-reduced-motion`, `prefers-color-scheme`,
+  `prefers-contrast`, `forced-colors`
+* Page remains usable if stylesheets fail to load
 
-## 4. Implementation Patterns
+### Layer 3 — JavaScript (enhance interactivity)
 
-### Forms
+**JS that gates core content or tasks is Critical.**
+
+* JS enhances; it does not gate access to core content or tasks
+* Apply JS-dependent classes/behaviours from scripts, not static markup
+* Handle script failure gracefully — the HTML layer must still work
+* Use feature detection, not browser detection:
+
+```js
+if ('fetch' in window && 'querySelector' in document) {
+  // apply enhanced experience
+}
+```
+
+### Layer 3 extension — Service Workers (offline capability)
+
+Service Workers are a Layer 3 enhancement: they require JavaScript, are
+registered by a script, and must degrade gracefully when unavailable (private
+browsing, unsupported browsers, HTTPS not available).
+
+When implemented, they extend both accessibility and sustainability:
+
+* **Accessibility**: users on unreliable connections (common in rural areas,
+  low-income households, and developing regions) can continue to access
+  previously loaded content offline
+* **Sustainability**: cached responses eliminate repeat network requests,
+  reducing data transfer and server energy per page view
+
+```js
+// Register Service Worker only if supported — classic PE feature detection
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch((err) => {
+    // Registration failure: page continues to work normally without it
+    console.warn('Service Worker registration failed:', err);
+  });
+}
+```
+
+**Offline fallback pattern:**
+
+```js
+// sw.js — cache-first with network fallback
+const CACHE_NAME = 'v1';
+const OFFLINE_URL = '/offline.html';
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.addAll([OFFLINE_URL, '/', '/styles.css'])
+    )
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(OFFLINE_URL))
+    );
+  }
+});
+```
+
+The offline fallback page (`/offline.html`) must itself be a valid Layer 1
+HTML document — semantic, readable without CSS or JS.
+
+Service Worker caching strategies (cache-first, network-first, stale-while-
+revalidate) should be chosen based on content update frequency. Avoid caching
+strategies that serve stale content for content that changes frequently without
+a cache-invalidation plan.
+
+---
+
+## Critical: Core Content Must Not Require JavaScript
+
+Rendering page content exclusively in JavaScript is **Critical** — users with
+JS disabled, AT users encountering compatibility issues, and low-bandwidth users
+are completely excluded.
+
+* Deliver complete HTML from the server; hydrate interactivity in the browser
+* Core content must be in the initial HTML response
+* When using React/Vue/Angular/Svelte: configure SSR or static generation
+* Avoid SPA patterns that require JS to render any visible content
+
+Every byte of JavaScript that is not needed to access core content is unnecessary
+energy consumption. Prefer server rendering — it transfers HTML once; a JS bundle
+transfers code that must then be parsed, compiled, and executed on every visit.
+
+---
+
+## Critical: Forms Must Work Without JavaScript
 
 ```html
 <!-- Layer 1: works without JS -->
 <form action="/search" method="get">
   <label for="query">Search</label>
-  <input id="query" name="q" type="search" />
+  <input id="query" name="q" type="search">
   <button type="submit">Search</button>
 </form>
 ```
 
-Enhance with JavaScript for instant results (fetch API), autocomplete suggestions, or inline validation—while keeping the server-processed form as the fallback.
+Enhance with JS for instant results, autocomplete, or inline validation —
+while keeping the server-processed form as fallback.
 
-### Navigation
+**A form that cannot be submitted without JS is Critical.**
+
+---
+
+## Critical: Navigation Must Work Without JavaScript
 
 ```html
 <!-- Layer 1: plain links always work -->
@@ -74,76 +170,73 @@ Enhance with JavaScript for instant results (fetch API), autocomplete suggestion
 </nav>
 ```
 
-Enhance with JavaScript for dropdown menus or animated transitions, while ensuring all links remain keyboard and screen-reader accessible.
+Enhance with JS for dropdowns or animated transitions.
 
-### Dynamic content updates
+---
 
-- Fetch updated content with JavaScript when available.
-- Fall back to full-page navigation (standard links or form posts) when JavaScript is unavailable.
-- Use `aria-live` regions only after confirming the base content is accessible without them.
-
-### Cutting the mustard (capability detection)
-
-Test for a set of modern features before applying enhancements:
+## Serious: Dynamic Content Must Have a Fallback Route
 
 ```js
-if ('querySelector' in document && 'addEventListener' in window) {
-  // apply enhanced experience
+if ('fetch' in window) {
+  loadContentAsync(url);
+} else {
+  // Standard link navigation works automatically
 }
 ```
 
-This pattern, popularized by the BBC, allows older or less capable browsers to receive the core HTML experience while modern browsers get the full enhancement.
+Use `aria-live` regions only after confirming the base content is accessible
+without them.
 
-## 5. What to Avoid
+---
 
-- Do not render page content exclusively in JavaScript; ensure core content exists in the HTML response.
-- Do not use `display:none` or `visibility:hidden` on content that must be accessible to all users at the HTML layer.
-- Do not require JavaScript to navigate between pages unless a full server-rendered fallback route exists.
-- Do not assume a script will execute successfully; always handle failure states.
-- Do not conflate progressive enhancement with adding polyfills—polyfills patch missing features, while progressive enhancement builds around their absence.
+## Moderate: CSS User Preferences Must Be Respected
 
-## 6. Relationship with Graceful Degradation
+`prefers-reduced-motion`, `prefers-color-scheme`, `prefers-contrast`, and
+`forced-colors` are Layer 2 responsibilities. Ignoring them is **Moderate** at
+minimum; ignoring `prefers-reduced-motion` for fast or flashing animations can
+reach **Serious**.
 
-| Approach | Starting point | Direction |
-| :--- | :--- | :--- |
-| Progressive enhancement | Simple baseline (HTML) | Build up capabilities |
-| Graceful degradation | Full-featured experience | Provide fallbacks |
+---
 
-The W3C describes these as two sides of the same coin, but progressive enhancement is generally preferred because it leads to more robust, accessible, and maintainable code by design.
+## What to Avoid
 
-## 7. Server-Side and Framework Considerations
+* Rendering page content exclusively in JavaScript — **Critical**
+* `display:none` / `visibility:hidden` on content required at the HTML layer — **Critical**
+* Requiring JS to navigate between pages without a server-rendered fallback — **Critical**
+* `user-scalable=no` — **Serious** (prevents zoom for low-vision users)
+* Assuming scripts will execute — always handle failure states
+* Polyfills as a substitute for progressive enhancement (they patch features;
+  PE builds around their absence)
+* Shipping large JS bundles for functionality that could be server-rendered —
+  this is both an accessibility risk and a sustainability cost
 
-- **Server-side rendering (SSR)** is the natural partner to progressive enhancement: deliver complete HTML from the server, then hydrate interactivity in the browser.
-- When using frameworks (React, Vue, Angular, Svelte), configure SSR or static site generation so core content is available in the initial HTML response.
-- Frameworks such as Remix are designed around progressive enhancement: forms and navigation work without JavaScript and are enhanced when it is available.
-- Avoid single-page application patterns that require JavaScript to render any visible content.
+---
 
-## 8. Testing Expectations
+## Definition of Done Checklist
 
-Minimum checks for each feature:
+* [ ] Core content readable with JavaScript disabled
+* [ ] Core tasks completable with JavaScript disabled
+* [ ] Forms submit via native browser behaviour
+* [ ] Navigation works as standard HTML links
+* [ ] CSS respects `prefers-reduced-motion`, `prefers-color-scheme`, `prefers-contrast`
+* [ ] Script failure handled gracefully
+* [ ] Feature detection used (not browser detection)
+* [ ] SSR or static generation configured for JS frameworks
+* [ ] Service Worker registered with feature detection and silent failure handling
+* [ ] Offline fallback page is valid Layer 1 HTML
+* [ ] Caching strategy documented and matched to content update frequency
+* [ ] Tested: disable JS → verify core content; disable CSS → verify logical reading order
 
-- Disable JavaScript in the browser and verify core content is readable and core tasks are completable.
-- Disable CSS and verify content has a logical reading order.
-- Test with a keyboard only (no mouse) with JavaScript enabled and disabled.
-- Test with a screen reader (NVDA/Firefox, JAWS/Chrome, VoiceOver/Safari) to confirm the HTML layer is understandable.
-- Test on a throttled (3G) network connection.
-- Run automated accessibility checks (axe-core) on the base HTML layer.
+---
 
-## 9. Definition of Done
+## Key WCAG Criteria
 
-A feature built with progressive enhancement is complete when:
+* 2.1.1 Keyboard (A) — native elements have built-in keyboard support
+* 4.1.2 Name, Role, Value (A)
 
-- Core content and task completion work with JavaScript disabled.
-- The page is usable with CSS disabled (logical reading order, visible content).
-- Enhancements do not break the base experience.
-- The feature passes keyboard navigation checks at each layer.
-- Automated and manual accessibility checks pass at the HTML layer.
+> **Note:** WCAG 4.1.1 Parsing was **removed in WCAG 2.2** (August 2023).
+> Modern browsers handle parsing errors uniformly. Valid semantic HTML remains
+> important as a progressive enhancement foundation, but it is no longer a
+> testable WCAG criterion. Do not cite it in audits or compliance statements.
 
-## 10. Further Reading
-
-- [Progressive Enhancement (MDN Web Docs Glossary)](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement)
-- [Using progressive enhancement (GOV.UK Service Manual)](https://www.gov.uk/service-manual/technology/using-progressive-enhancement)
-- [It's about time I tried to explain what progressive enhancement actually is (Piccalilli)](https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/)
-- [Progressive Enhancement (Remix docs)](https://v2.remix.run/docs/discussion/progressive-enhancement/)
-- [Understanding Progressive Enhancement (A List Apart)](https://alistapart.com/article/understandingprogressiveenhancement/)
-- [Graceful degradation versus progressive enhancement (W3C Wiki)](https://www.w3.org/wiki/Graceful_degradation_versus_progressive_enhancement)
+---

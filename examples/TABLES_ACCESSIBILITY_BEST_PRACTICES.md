@@ -4,22 +4,62 @@ title: Tables Accessibility Best Practices
 
 # Tables Accessibility Best Practices
 
-This document defines project-level requirements for accessible HTML data tables.
-
-## 1. Core Principle
+## Core Mandate
 
 Tables communicate relationships between data. Sighted users scan rows and columns
 visually; screen reader users navigate cell by cell and rely on header announcements
 for context. Without proper markup, every cell is an orphaned data point.
 
-**Never use tables for layout.** Use CSS (Grid or Flexbox) instead. Layout tables
-that remain in a codebase must have `role="presentation"` and must linearise without
-loss of meaning.
+**Never use tables for layout.** Use CSS (Grid, Flexbox) instead.
+Layout tables that remain in a codebase must have `role="presentation"` and
+must linearise without loss of meaning.
 
-## 2. `<th>` Elements with `scope`
+---
 
-A table with only `<td>` cells is a critical issue — screen readers announce raw data
-with no context. All `<th>` elements must have an explicit `scope` attribute.
+## Severity Scale
+
+| Level | Meaning |
+|---|---|
+| **Critical** | Table data is completely uninterpretable by screen reader users |
+| **Serious** | Headers missing or misassociated; complex table with no navigation aid |
+| **Moderate** | `<caption>` missing; zebra stripes lost in forced-colours without fallback |
+| **Minor** | `<thead>`/`<tbody>` absent; `summary` attribute used (deprecated) |
+
+---
+
+## Assistive Technology Context
+
+Tables are rendered differently across AT combinations. Test with:
+
+| AT | Browser | Notes |
+|---|---|---|
+| NVDA | Chrome | Reads headers on cell entry; table navigation via `T` key |
+| JAWS | Chrome | Similar to NVDA; `Ctrl+Alt+Arrow` navigates cells |
+| VoiceOver | Safari (macOS) | `VO+Arrow` navigates; announces scope-based headers reliably |
+| VoiceOver | Safari (iOS) | Swipe navigation; complex tables challenging |
+| TalkBack | Chrome (Android) | Linear reading; simpler tables work better |
+| Voice Control | Any | Navigation by table elements less common; focus on operability |
+| Screen magnification | Any | Wide tables require horizontal scroll — use responsive patterns |
+| Reader Mode | Firefox/Edge/Safari | Strips CSS; table structure must be semantically meaningful |
+| Edge Read Aloud | Edge | Reads table content linearly; `<caption>` helps orientation |
+
+**Reader Mode note:** Firefox, Safari, and Edge all have reader modes that
+reformat page content. Tables survive reader mode best when `<caption>` is
+present and structure is simple. Complex multi-level tables may be stripped
+or reflowed unexpectedly — provide a text summary for high-complexity tables.
+
+---
+
+## Critical: Every Data Table Must Have `<th>` with `scope`
+
+A table with only `<td>` cells is **Critical** — screen readers announce raw
+data with no context about what each cell means.
+
+**All `<th>` elements must have a `scope` attribute.** While screen readers
+may infer `col` or `row` from layout, explicit `scope` is unambiguous and
+required for reliable AT support.
+
+### Simple table — one set of column headers
 
 ```html
 <table>
@@ -49,13 +89,16 @@ with no context. All `<th>` elements must have an explicit `scope` attribute.
 </table>
 ```
 
-`scope="col"` on column headers; `scope="row"` on row headers. When both are present,
-the screen reader announces both before the data cell.
+`scope="col"` on column headers; `scope="row"` on row headers.
+When both are present, the screen reader announces both before the data cell.
 
-## 3. `<caption>` on Every Data Table
+---
 
-Every data table must have a `<caption>`. Without it, screen reader users navigating
-multiple tables on one page cannot distinguish which table they are in.
+## Critical: `<caption>` on Every Data Table
+
+A table without `<caption>` is **Moderate** in isolation but **Serious** when
+multiple tables appear on one page — users cannot distinguish which table they
+are in. Make `<caption>` a universal requirement.
 
 ```html
 <table>
@@ -64,13 +107,16 @@ multiple tables on one page cannot distinguish which table they are in.
 </table>
 ```
 
-`<caption>` must be the first child of `<table>`, before `<thead>`. It is announced
-by screen readers when the user enters the table and helps users in Reader Mode identify
-the table's purpose after CSS is stripped.
+`<caption>` is the first child of `<table>` — before `<thead>`. It is
+announced by screen readers when the user enters the table. It also helps
+users in Reader Mode identify the table's purpose after CSS is stripped.
 
-## 4. Spanned Headers
+---
 
-When a header spans multiple columns or rows, use `colgroup` or `rowgroup` scope values:
+## Serious: Spanned Headers — `scope="colgroup"` / `scope="rowgroup"`
+
+When a header spans multiple columns or rows, use `colgroup` or `rowgroup`
+scope values:
 
 ```html
 <table>
@@ -100,14 +146,17 @@ When a header spans multiple columns or rows, use `colgroup` or `rowgroup` scope
 </table>
 ```
 
-Test spanned tables with NVDA+Chrome and JAWS+Chrome — screen reader handling of
-complex headers can be inconsistent.
+**Test spanned tables with NVDA+Chrome and JAWS+Chrome** — some screen readers
+still handle complex spanned headers inconsistently. If testing reveals problems,
+simplify the table structure before reaching for `headers`/`id`.
 
-## 5. When to Use `headers` + `id`
+---
 
-The `headers` and `id` approach associates individual cells with specific header cells
-by ID reference. Use it only for tables so complex that `scope` alone causes headers
-to apply to the wrong cells.
+## Serious: When to Use `headers` + `id` (Rarely)
+
+The `headers` and `id` approach associates individual cells with specific
+header cells by ID reference. Use it **only** for tables so complex that
+`scope` causes headers to apply to the wrong cells.
 
 ```html
 <table>
@@ -125,15 +174,20 @@ to apply to the wrong cells.
 </table>
 ```
 
-A table complex enough to require this approach may be functionally inaccessible in
-practice — reading three or four headers before each cell is confusing when heard.
-Prefer simplifying the table structure.
+**Caution:** Even when `headers`/`id` is technically correct, a table complex
+enough to need it may be functionally inaccessible — reading three or four
+headers before each cell is confusing in practice. Prefer simplifying the table.
+Per WebAIM: "If there are multiple levels of row and/or column headers being
+read, it will not likely be functionally accessible or understandable to a
+screen reader user."
 
-## 6. `<thead>`, `<tbody>`, `<tfoot>`
+---
 
-These elements have no direct assistive technology benefit on their own, but `<thead>`
-enables `display: table-header-group` in print CSS, repeating column headers on every
-printed page.
+## Moderate: `<thead>`, `<tbody>`, `<tfoot>`
+
+These semantic elements have no direct AT benefit on their own, but `<thead>`
+enables `display: table-header-group` in print CSS, repeating column headers
+on every printed page — important for multi-page tables.
 
 ```html
 <table>
@@ -150,12 +204,15 @@ printed page.
 </table>
 ```
 
-## 7. Responsive Tables
+---
 
-Wide tables require horizontal scrolling for low-vision users who zoom. Always wrap
-tables in a scrollable container — never clip overflow silently.
+## Moderate: Responsive Tables
+
+Wide tables require horizontal scrolling for low-vision users who zoom.
+Always wrap tables in a scrollable container — never clip overflow silently:
 
 ```html
+<!-- Scrollable container with accessible label -->
 <div role="region"
      aria-labelledby="table-caption-id"
      tabindex="0"
@@ -167,10 +224,10 @@ tables in a scrollable container — never clip overflow silently.
 </div>
 ```
 
-`tabindex="0"` makes the scroll container keyboard-focusable. `role="region"` with
-`aria-labelledby` announces it as a named landmark.
+`tabindex="0"` makes the scroll container keyboard-focusable so keyboard users
+can scroll it. `role="region"` + `aria-labelledby` announces it as a landmark.
 
-For small screens, a card-based layout is an alternative:
+For small screens, consider a card-based alternative layout via CSS:
 
 ```css
 @media (max-width: 600px) {
@@ -190,9 +247,11 @@ When using the card pattern, add `data-label` attributes to each `<td>`:
 <td data-label="January">$12,400</td>
 ```
 
-## 8. Sortable Columns
+---
 
-Interactive sortable columns must be keyboard operable and announce their sort state:
+## Moderate: Sortable Columns
+
+Interactive sortable columns must be keyboard operable and announce state:
 
 ```html
 <th scope="col">
@@ -205,13 +264,16 @@ Interactive sortable columns must be keyboard operable and announce their sort s
 </th>
 ```
 
-`aria-sort` values: `ascending`, `descending`, `none`, `other`. Test with NVDA and
-JAWS — announcement varies across screen readers.
+`aria-sort` values: `ascending`, `descending`, `none`, `other`.
+Place `aria-sort` on the `<th>`, not the `<button>` — or on both if needed
+for maximum AT compatibility. Test with NVDA and JAWS; announcement varies.
 
-## 9. Colour in Tables
+---
 
-Zebra stripes (alternating row backgrounds) vanish in forced-colours mode and when
-printing with backgrounds off. Provide fallback borders:
+## Moderate: Colour in Tables
+
+Zebra stripes (alternating row backgrounds) are a common pattern that vanishes
+in forced-colours mode and when printing with backgrounds off:
 
 ```css
 @media print {
@@ -223,12 +285,15 @@ printing with backgrounds off. Provide fallback borders:
 }
 ```
 
-Never use background colour alone to convey meaning (for example, red rows = overdue).
+Never use background colour alone to convey meaning (e.g., red rows = overdue).
 Always pair colour with a text label or icon.
 
-## 10. Layout Tables
+---
 
-Legacy layout tables must be marked to remove them from table navigation mode:
+## Layout Tables — What to Do With Them
+
+Layout tables in legacy codebases must be marked to remove them from table
+navigation mode:
 
 ```html
 <table role="presentation">
@@ -236,42 +301,53 @@ Legacy layout tables must be marked to remove them from table navigation mode:
 </table>
 ```
 
-`role="presentation"` removes table semantics from the assistive technology tree.
-The content must still linearise logically when read top-to-bottom, left-to-right.
+`role="presentation"` removes table semantics from the AT tree. The content
+must still linearise logically when read top-to-bottom, left-to-right.
 Verify by disabling CSS and reading the page linearly.
 
-## 11. CMS and Framework Notes
+---
 
-- **Drupal**: Configure CKEditor to require `<caption>` and `scope` attributes. The
-  Drupal Accessibility Coding Standards require WCAG 2.1 AA compliance for contributed
-  modules — table markup in contrib must follow these rules.
-- **WordPress and other CMS**: Block editors often generate tables without `<caption>`
-  or `scope`. Audit CMS-generated markup and configure the editor to add missing attributes.
-- **Generated tables** (DataTables.js, AG Grid, etc.): Verify the library outputs
-  `<th scope="col">`, `<caption>`, and `<thead>`. Many do not by default.
+## CMS and Framework Notes
 
-## 12. Testing Expectations
+**Drupal:** The CKEditor rich text editor in Drupal includes a table plugin.
+Configure it to require `<caption>` and `scope` attributes via editor configuration.
+The [Drupal Accessibility Coding Standards](https://www.drupal.org/docs/getting-started/accessibility/accessibility-coding-standards)
+require WCAG 2.1 AA compliance for contributed modules and themes — table
+markup in contrib must follow these rules.
 
-- Tab into the table and verify column and row headers are announced before each cell
-  (NVDA+Chrome: `T` key to navigate to table; JAWS: `Ctrl+Alt+Arrow` to navigate cells).
-- Open the page in Firefox or Safari Reader Mode — table structure must remain meaningful.
-- Test at 200% zoom — wide tables must scroll, not clip.
-- Verify sortable column buttons are keyboard operable and `aria-sort` updates correctly.
+**WordPress, other CMS:** Block editors often generate tables without `<caption>`
+or `scope`. Audit CMS-generated table markup and configure the editor or post-process
+the output to add missing attributes.
 
-## 13. Definition of Done
+**Generated tables (charts/dashboards):** When JS libraries generate tables
+from data (e.g., DataTables.js, AG Grid), verify the library outputs `<th scope="col">`,
+`<caption>`, and `<thead>`. Many do not by default — check configuration options.
 
-A table change is not complete unless:
+---
 
-- No tables used for layout; existing layout tables have `role="presentation"`.
-- Every data table has a `<caption>` as its first child.
-- All `<th>` elements have an explicit `scope` attribute.
-- `<thead>` and `<tbody>` are present.
-- Spanned headers use `colgroup` or `rowgroup` scope values.
-- Wide tables are wrapped in a scrollable container with `role="region"`, `aria-labelledby`, and `tabindex="0"`.
-- Sortable columns use `aria-sort` and are keyboard operable.
-- Colour-only row distinction has print and forced-colours fallback.
-- Tested with NVDA+Chrome, JAWS+Chrome, and VoiceOver+Safari.
-- Tested in Reader Mode — structure remains meaningful.
+## Definition of Done Checklist
+
+* [ ] No tables used for layout — CSS used instead; existing layout tables have `role="presentation"`
+* [ ] Every data table has a `<caption>` as its first child
+* [ ] All `<th>` elements have explicit `scope` attribute (`col`, `row`, `colgroup`, or `rowgroup`)
+* [ ] `<thead>` present; `<tbody>` present
+* [ ] Spanned headers use `colgroup`/`rowgroup` scope values
+* [ ] `headers`/`id` used only where `scope` is genuinely insufficient
+* [ ] Wide tables wrapped in `role="region"` + `aria-labelledby` + `tabindex="0"` scrollable container
+* [ ] Sortable columns use `aria-sort` on `<th>`; sort controls keyboard-operable
+* [ ] Colour-only row distinction has print + forced-colours fallback
+* [ ] `data-label` attributes added for responsive card layout
+* [ ] Tested: NVDA+Chrome, JAWS+Chrome, VoiceOver+Safari
+* [ ] Tested: Reader Mode (Firefox or Safari) — structure remains meaningful
+
+---
+
+## Key WCAG Criteria
+
+* 1.3.1 Info and Relationships (A) — **Critical if headers absent**
+* 1.3.2 Meaningful Sequence (A) — table must linearise logically
+* 1.4.1 Use of Color (A) — colour not sole encoding in table cells
+* 2.1.1 Keyboard (A) — sortable columns keyboard operable
 
 ---
 
