@@ -4,6 +4,8 @@
 
 Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md`** defines the inclusive state of a project. It is a human and machine-readable manifest that tracks a project’s commitment to accessibility (a11y) through metrics, guardrails, and automated enforcement.
 
+> **Looking for the Claude Skills approach?** If you want to add accessibility guidance to a project via an `AGENTS.skills`, see the companion repo: **[mgifford/accessibility-skil](https://github.com/mgifford/accessibility-skills/)l**. 
+
 ---
 
 > [!WARNING]
@@ -84,7 +86,6 @@ This repository is organized to separate **content you adopt** from **project do
 
 **Key:**
 - ✅ **Copy to your project**: `ACCESSIBILITY-template.md`, files in `examples/`
-- 🤖 **Install AI agent skills globally**: See the [accessibility-skills](https://github.com/mgifford/accessibility-skills) repository — see [Step 3: Configure AI coding assistants](#step-3-configure-ai-coding-assistants) below
 - 📖 **Read for guidance**: `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `COMPARISON_WITH_KREERC.md`
 - 🛠️ **Jekyll/docs site**: `_layouts/`, `_config.yml`, `assets/`, `index.md`
 
@@ -179,10 +180,6 @@ Learn more: [SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md](./examples/SHIFT_LEFT_ACCES
 ### Step 3: Configure AI coding assistants
 
 Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessibility standards:
-
-**Install AI agent skills globally (recommended):**
-
-AI agent skills have moved to their own dedicated repository: **[accessibility-skills](https://github.com/mgifford/accessibility-skills)**. Topic-specific skill archives are available there for global installation in Claude Code, Codex, and other AI coding assistants.
 
 **For project-level configuration:**
 
@@ -311,6 +308,8 @@ For LLMs to provide more accurate, standards-grounded accessibility guidance, co
 AI agent skills have moved to a dedicated repository: **[accessibility-skills](https://github.com/mgifford/accessibility-skills)**.
 
 Topic-specific `.skill` archives (forms, keyboard, maps, SVG, and more) are available there for global installation in Claude Code, Codex, and other AI coding assistants.
+
+We will do our best to keep the instructions consistent whichever way you use this. 
 
 ---
 
