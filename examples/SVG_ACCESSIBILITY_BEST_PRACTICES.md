@@ -4,104 +4,261 @@ title: SVG Accessibility Best Practices
 
 # SVG Accessibility Best Practices
 
-This document defines accessibility practices for SVG files used on the web.
+## Core Mandate
 
-Accessibility testing tools generate false positives when rules are enforced without context. The practices below are focused on actual outcomes: perceptible meaning, operability, and compatibility with assistive technologies.
+Outcome-based, not checklist-driven. Measure against real usage context: is the
+SVG perceivable, operable, and compatible with assistive technologies?
+
+Pattern recommendations in this skill are grounded in cross-browser/screen reader
+testing by Carie Fisher (published on Smashing Magazine, updated at
+<https://cariefisher.com/a11y-svg-updated/>). When a pattern is labelled
+**"Best in Show"**, **"Use Caution"**, or **"Not Recommended"** below, those
+labels reflect her testing results across OS/browser/screen reader combinations.
 
 ---
 
-## 1. Accessible Name and Description
+## Severity Scale
 
-### Required when the SVG conveys meaning or function
+| Level | Meaning |
+| --- | --- |
+| **Critical** | SVG conveys essential information with no accessible alternative |
+| **Serious** | SVG is interactive but unreachable or unlabelled for AT users |
+| **Moderate** | AT experience degraded but content still partially accessible |
+| **Minor** | Best-practice gap; marginal impact |
 
-An SVG should expose an accessible name if it:
+---
 
-- Conveys information that is not redundant with adjacent text
-- Is used as a standalone graphic or icon
-- Functions as a button, link, or control
+## Decorative SVGs — Hide Completely from AT
 
-Use one of these patterns:
+A decorative SVG that is not hidden from AT is a **Moderate** issue — it adds
+noise to the accessibility tree and forces screen reader users to listen to
+meaningless announcements.
 
-#### Preferred pattern: `<title>` + `<desc>` referenced via `aria-labelledby`
+**Both attributes are required:**
 
-```svg
-<svg role="img" aria-labelledby="svgTitle svgDesc">
-  <title id="svgTitle">No DRM</title>
-  <desc id="svgDesc">An emblem indicating content without digital rights management.</desc>
+```html
+<svg aria-hidden="true" focusable="false">
+  <!-- decorative icon — no title, no desc, no role needed -->
 </svg>
 ```
 
-#### Acceptable simpler pattern when only a single label is needed
+* `aria-hidden="true"` removes the SVG from the accessibility tree entirely
+* `focusable="false"` is required for IE/Edge legacy compatibility where SVGs
+  become focusable by default and appear in the tab order
 
-```svg
-<svg role="img" aria-label="Download icon">
+**Never use `role="presentation"` as a substitute for `aria-hidden="true"`**
+on decorative SVGs. `role="presentation"` does not reliably suppress AT
+announcement across all browser/screen reader combinations.
+
+**When is an SVG decorative?** If the same meaning is conveyed by adjacent
+visible text, or if the image is purely ornamental (borders, backgrounds,
+flourishes), it is decorative. If removing it would leave a user without
+information or context they need, it is meaningful.
+
+---
+
+## Meaningful SVGs — Choosing the Right Pattern
+
+Based on Carie Fisher's testing across NVDA, JAWS, VoiceOver (macOS and iOS),
+TalkBack, and Narrator:
+
+### SVG as `<img>` (external file reference)
+
+Use `<img>` for simple, uncomplicated images. The SVG file loads separately —
+this is lighter and easier to maintain for icons used in multiple places, but
+offers less control over internals.
+
+**Best in Show — `<img>` patterns:**
+
+```html
+<!-- Pattern 2: <img> + role="img" + alt — RECOMMENDED -->
+<img role="img" class="icon" alt="Download" src="download.svg">
+
+<!-- Pattern 3: <img> + role="img" + aria-label — RECOMMENDED -->
+<img role="img" class="icon" aria-label="Download" src="download.svg">
 ```
 
-Avoid:
+**Use Caution:**
 
-- Empty or generic names (noise for screen reader users)
-- Duplicating visible text as the accessible name unless it adds meaning
-- Using CSS `content:` to provide accessible names
-
----
-
-## 2. Preserve IDs Used by Accessibility and References
-
-Do not remove or rename IDs that are referenced by:
-
-- `aria-labelledby`
-- `aria-describedby`
-- `<use href="#...">`
-- CSS selectors (when the SVG relies on internal styling for interaction or states)
-- URL references like `clip-path="url(#...)"`, `mask="url(#...)"`, `filter="url(#...)"`
-
-If an ID is referenced, it must remain consistent and resolvable after optimization.
-
----
-
-## 3. Role and Decorative Handling
-
-### Meaningful SVGs
-
-Use `role="img"` when the SVG represents a complete meaningful graphic.
-
-### Decorative SVGs
-
-If an SVG is purely decorative and already accompanied by accessible text, hide it from assistive technology:
-
-```svg
-<svg aria-hidden="true" focusable="false">
+```html
+<!-- Pattern 4: <img> + role="img" + aria-labelledby
+     Works in most combinations but has gaps in some screen readers -->
+<p id="cap1" class="visually-hidden">Download report</p>
+<img role="img" aria-labelledby="cap1" src="download.svg">
 ```
 
-Avoid using `role="presentation"` unless you are intentionally suppressing semantics and the SVG is truly decorative.
+**Not Recommended:**
+
+```html
+<!-- Pattern 1: <img> + alt alone — inconsistent results, omit role="img" -->
+<img alt="Download" src="download.svg">
+```
 
 ---
 
-## 4. Keyboard and Focus Behavior
+### Inline SVG — simple label only
 
-Only required when the SVG itself is interactive.
+Use inline `<svg>` when you need control over colours, animation, or internals.
 
-If an SVG is used as an interactive control, it must be:
+**Best in Show — inline SVG patterns (simple label):**
 
-- Focusable (prefer a semantic `<button>`/`<a>` wrapper; otherwise `tabindex="0"`)
-- Operable by keyboard (activation handled by the surrounding control)
-- Provided with a visible focus indication (do not rely solely on UA defaults)
+```html
+<!-- Pattern 5: <svg> + role="img" + <title> — RECOMMENDED -->
+<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>Download</title>
+  <!-- paths -->
+</svg>
 
-If the SVG is not interactive (purely an image), do not force focus behavior into it.
+<!-- Pattern 8: <svg> + role="img" + <title> + aria-labelledby — RECOMMENDED -->
+<svg role="img" aria-labelledby="dl-title" viewBox="0 0 24 24">
+  <title id="dl-title">Download</title>
+  <!-- paths -->
+</svg>
+```
+
+**Use Caution:**
+
+```html
+<!-- Pattern 7: aria-describedby pointing to <title> — less reliable than
+     aria-labelledby; some screen readers do not expose the description -->
+<svg role="img" aria-describedby="dl-title7" viewBox="0 0 24 24">
+  <title id="dl-title7">Download</title>
+</svg>
+```
+
+**Not Recommended:**
+
+```html
+<!-- Pattern 6: <svg> + role="img" + <text> — poor results across screen readers -->
+<svg role="img" viewBox="0 0 24 24">
+  <text class="visually-hidden" font-size="0">Download</text>
+</svg>
+```
 
 ---
 
-## 5. Forced-Colors (High Contrast) Support
+### Inline SVG — extended description (complex/informational images)
 
-SVGs must remain perceivable in forced-colors mode.
+Use when the SVG conveys more than a name can carry: diagrams, illustrations,
+charts, infographics.
 
-Requirements:
+**Best in Show — inline SVG with extended description:**
 
-- Do not rely solely on subtle transparency, gradients, or filters to convey meaning
-- Ensure the icon remains understandable in monochrome
-- If internal styles are used, provide a forced-colors mapping when necessary
+```html
+<!-- Pattern 11: <svg> + role="img" + <title> + <desc> + aria-labelledby
+     pointing to BOTH IDs — RECOMMENDED for complex SVGs -->
+<svg role="img"
+     aria-labelledby="chart-title chart-desc"
+     viewBox="0 0 400 300">
+  <title id="chart-title">Q1 2024 Website Visitors</title>
+  <desc id="chart-desc">
+    Bar chart. January 12,400. February 15,800.
+    March 19,200 — highest, up 54% from January.
+  </desc>
+  <!-- chart paths -->
+</svg>
+```
 
-Example:
+Note: Pattern 11 sometimes reads both `<title>` and `<desc>` consecutively,
+which can sound slightly repetitive. This is acceptable — it did not suppress
+or ignore any content in testing, unlike the "Use Caution" patterns below.
+
+**Use Caution (all have gaps in at least one major screen reader combination):**
+
+```html
+<!-- Pattern 9: <title> + <text> -->
+<!-- Pattern 10: <title> + <desc> without aria-labelledby -->
+<!-- Pattern 12: <title> + <desc> + aria-describedby -->
+```
+
+For Pattern 10 and 12 specifically: `<desc>` alone, and `aria-describedby`
+pointing to `<desc>`, are not reliably exposed across all combinations.
+Always use `aria-labelledby` referencing both IDs (Pattern 11) for complex SVGs.
+
+---
+
+## Animated SVGs — `prefers-reduced-motion`
+
+**Rapid SVG animation is a Critical safety issue** if it flashes at 3+ Hz
+(WCAG 2.3.1 — Three Flashes or Below Threshold). Vestibular disorders can be
+triggered by any sustained motion; seizure thresholds are lower.
+
+Always wrap SVG animations in a `prefers-reduced-motion` check:
+
+```css
+/* Default: respect the preference — run animation only if user has not
+   requested reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .animated-icon {
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* Explicit reduction: stop all SVG animation */
+@media (prefers-reduced-motion: reduce) {
+  svg * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+For SVG animations controlled via JavaScript (e.g., GSAP, Anime.js):
+
+```js
+const prefersReduced = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches;
+
+if (!prefersReduced) {
+  // Start animation
+  gsap.to('.icon-path', { rotation: 360, repeat: -1, duration: 1 });
+} else {
+  // Show static final state instead
+  element.classList.add('animation-complete');
+}
+```
+
+For inline `<svg>` with `<animate>` or `<animateTransform>` elements, use
+`begin="indefinite"` as the default and only trigger the animation when
+`prefers-reduced-motion: no-preference` is confirmed:
+
+```html
+<svg viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="40">
+    <animate id="spin-anim"
+             attributeName="r" from="40" to="45"
+             dur="0.5s" repeatCount="indefinite"
+             begin="indefinite"/>
+  </circle>
+</svg>
+```
+
+```js
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.getElementById('spin-anim').beginElement();
+}
+```
+
+---
+
+## Required: `currentColor` for Theme Compatibility
+
+```html
+<svg viewBox="0 0 24 24" class="icon" aria-hidden="true" focusable="false">
+  <path fill="currentColor" d="…"/>
+</svg>
+```
+
+Hardcoded colour values that do not respond to theme changes are **Moderate** —
+the SVG may become invisible or low-contrast in dark mode or forced-colours mode.
+
+---
+
+## Required: Forced-Colors Support
+
+Only needed when the SVG would lose meaning without it:
 
 ```css
 @media (forced-colors: active) {
@@ -110,83 +267,88 @@ Example:
 }
 ```
 
-If the SVG is still clearly perceivable without a special forced-colors block, do not add one just to satisfy a checklist.
+Use semantic system colour keywords: `Canvas`, `CanvasText`, `LinkText`,
+`ButtonFace`, `ButtonText`, `Highlight`, `HighlightText`.
 
 ---
 
-## 6. Contrast Requirements (Graphical Objects)
+## Required: Non-text Contrast
 
-For non-text graphical elements that convey meaning (including focus indicators):
-
-- Maintain at least 3:1 contrast against adjacent colors.
-
-This is a perceptual outcome, not a “pattern check.” A tool warning is not proof of failure.
-
----
-
-## 7. ViewBox and Scaling
-
-Include `viewBox` whenever the SVG is intended to scale responsively.
-
-Do not remove `viewBox` for optimization unless you have a verified reason and you have tested responsive rendering.
+Meaningful graphical elements (not decorative) require minimum 3:1 contrast
+against adjacent colours (WCAG 1.4.11). This is **Moderate** if failing —
+the SVG is still present, but low-contrast elements may be unperceivable for
+low-vision users who do not use forced-colours mode.
 
 ---
 
-## 8. What Must Not Be Removed During Optimization
+## Required: Preserve `viewBox`
 
-Do not remove the following if they contribute to meaning or behavior:
-
-- `viewBox`
-- `<title>` when it contributes to the accessible name
-- `<desc>` when it contributes to the accessible description
-- IDs referenced by accessibility attributes or URL references (`url(#...)`)
-- Internal `<style>` that implements interaction states, reduced-motion handling, or forced-colors handling
+Do not remove `viewBox` during optimisation — it is required for responsive
+scaling. Its removal is **Minor** in most fixed-dimension contexts but will
+break fluid layouts.
 
 ---
 
-## 9. What Is Not Required (Avoiding False Positives)
+## Do NOT Remove During Optimisation
 
-To avoid chasing false positives, these are not blanket requirements:
+Optimisation tools (SVGO and similar) may remove elements that are required
+for accessibility. Configure your optimiser to preserve:
 
-- A `<desc>` for every SVG (if the name already communicates what is needed)
-- A separate `<title>` when `aria-label` is sufficient and stable
-- Focus styling inside every SVG (only for interactive SVGs)
-- A forced-colors media query block when the SVG remains perceivable without it
-- Forcing `role="img"` on decorative SVGs (they should be hidden instead)
-
-Accessibility must be measured against real usage context, not static rules alone.
-
----
-
-## 10. Outcome-Based Testing
-
-Automated checks are useful, but they are not the source of truth.
-
-Validate SVG accessibility by:
-
-- Testing with a screen reader (NVDA/JAWS/VoiceOver)
-- Verifying keyboard navigation and focus visibility
-- Checking forced-colors/high-contrast modes
-- Ensuring reduced-motion users are respected when animation exists
+* `viewBox`
+* `<title>` when contributing to accessible name
+* `<desc>` when contributing to accessible description
+* IDs referenced by `aria-labelledby`, `aria-describedby`, `<use href="#…">`,
+  `clip-path="url(#…)"`, `mask="url(#…)"`, `filter="url(#…)"`
+* Internal `<style>` elements implementing interaction states, reduced-motion,
+  or forced-colours rules
 
 ---
 
-## Summary
+## Interactive SVGs
 
-- Add semantics when the SVG is meaningful.
-- Hide SVGs that are decorative.
-- Preserve IDs and references.
-- Use contrast and forced-colors support as outcome-driven requirements.
-- Prefer real testing over checklist-driven noise.
+If the SVG itself is interactive (clickable regions, toggle buttons):
+
+* **Prefer a `<button>` or `<a>` wrapper** over raw SVG `tabindex` — native
+  elements provide keyboard, ARIA semantics, and AT support for free
+* Ensure keyboard activation (Enter/Space for buttons, Enter for links)
+* Provide visible focus indication
+* An interactive SVG unreachable by keyboard is **Critical**
 
 ---
 
-## Related Guides
+## What Is NOT Required
 
-SVG accessibility is closely connected to these guides in this project:
+* A `<desc>` for every SVG — Pattern 8 (`<title>` + `aria-labelledby`) is
+  sufficient when a name alone fully conveys the meaning
+* Focus styling inside non-interactive SVGs
+* A `forced-colors` block when the SVG remains perceivable without it
+* `role="img"` on decorative SVGs — use `aria-hidden="true"` instead
 
-- [Charts and Graphs Accessibility Best Practices](CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) — Applies SVG accessibility patterns to data visualizations. See especially the SVG-based charts section for `<title>`, `<desc>`, `aria-labelledby`, and `role="img"` usage in chart contexts.
-- [Mermaid Accessibility Best Practices](MERMAID_ACCESSIBILITY_BEST_PRACTICES.md) — Covers authoring of Mermaid diagrams whose SVG output must satisfy the same accessibility requirements documented here.
+---
+
+## Definition of Done Checklist
+
+* [ ] Decorative SVGs: `aria-hidden="true" focusable="false"`, no `<title>`, no `<desc>`
+* [ ] Meaningful `<img>` SVGs: Pattern 2 or 3 (`role="img"` + `alt` or `aria-label`)
+* [ ] Meaningful inline SVGs (simple): Pattern 8 (`role="img"` + `<title>` + `aria-labelledby`)
+* [ ] Meaningful inline SVGs (complex): Pattern 11 (`role="img"` + `<title>` + `<desc>` + `aria-labelledby` both IDs)
+* [ ] All referenced IDs preserved through any optimisation pass
+* [ ] `currentColor` used for fills/strokes
+* [ ] `viewBox` present
+* [ ] Non-text elements meet 3:1 contrast
+* [ ] Animated SVGs: animation only runs under `prefers-reduced-motion: no-preference`
+* [ ] Rapidly flashing content: does not flash at 3+ Hz regardless of preference
+* [ ] Interactive SVGs: keyboard operable, visible focus, prefer native wrapper elements
+* [ ] Tested with screen reader on recommended OS/browser combination
+
+---
+
+## Key WCAG Criteria
+
+* 1.1.1 Non-text Content (A) — **Critical if meaningful SVG has no text alternative**
+* 1.4.11 Non-text Contrast (AA)
+* 2.3.1 Three Flashes or Below Threshold (A) — **Critical for flashing/strobing animations**
+* 4.1.2 Name, Role, Value (A)
 
 ---
 

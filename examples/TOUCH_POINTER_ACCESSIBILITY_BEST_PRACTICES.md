@@ -4,26 +4,50 @@ title: Touch and Pointer Accessibility Best Practices
 
 # Touch and Pointer Accessibility Best Practices
 
-This document defines project-level requirements for accessible touch, pointer, and
-gesture-based interaction following WCAG 2.5.x criteria.
-
-## 1. Core Principle
+## Core Mandate
 
 WCAG 2.5.x criteria (introduced in WCAG 2.1 and extended in 2.2) address pointer,
 touch, and motion-based interaction. These criteria exist because:
 
-- Motor disabilities affect both keyboard use and pointer/touch precision.
-- Touch screens have different interaction affordances than a mouse.
-- Many users alternate between keyboard and touch (tablets, convertibles).
-- Voice control users activate elements by speaking visible labels — these must match.
+- Motor disabilities affect both keyboard use and pointer/touch precision
+- Touch screens have different interaction affordances than mouse
+- Many users alternate between keyboard and touch (tablets, convertibles)
+- Voice control users activate elements by speaking visible labels — these must match
 
-Pointer and keyboard requirements are complementary. This guide covers pointer and
-touch specifics; see [KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
-for keyboard requirements.
+The full WCAG 2.5 set is listed in the criteria table. This skill covers the
+most implementation-relevant patterns.
 
-## 2. Never Block Zoom
+---
 
-Blocking browser zoom is a critical issue — it prevents low-vision users from
+## Severity Scale
+
+| Level | Meaning |
+|---|---|
+| **Critical** | Functionality only available via multi-point gesture with no single-pointer alternative; `user-scalable=no` prevents zoom |
+| **Serious** | Drag-to-reorder with no keyboard/single-pointer alternative; touch target under 24×24px for primary actions |
+| **Moderate** | Mousedown/touchdown action with no up-event cancellation; motion gesture without UI alternative |
+| **Minor** | Target under 44×44px for non-primary actions; spacing between targets too small |
+
+---
+
+## Assistive Technology Context
+
+| AT | How pointer/touch requirements apply |
+|---|---|
+| NVDA / JAWS | Primarily keyboard users — see `keyboard/SKILL.md`. Pointer events don't affect screen reader operation directly |
+| VoiceOver (iOS) | Touch-based AT; uses tap, double-tap, swipe — standard HTML interactive elements work natively |
+| TalkBack (Android) | Touch-based AT; double-tap to activate; swipe to navigate |
+| Voice Control (iOS/macOS) | Activates elements by speaking visible labels; target size matters less than label accuracy |
+| Dragon NaturallySpeaking | Click by number or by name; label accuracy critical |
+| Switch access | Scans interactive elements; target size and order matter |
+| Screen magnification | Small targets are harder to hit at high zoom; spacing prevents mis-taps |
+| Stylus / eye gaze | Precision varies; larger targets with more spacing reduce error rate |
+
+---
+
+## Critical: Never Block Zoom (`user-scalable=no`)
+
+Blocking browser zoom is **Critical** — it prevents low-vision users from
 enlarging content to a usable size.
 
 ```html
@@ -35,13 +59,17 @@ enlarging content to a usable size.
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
-Some libraries and frameworks add `user-scalable=no` automatically. Audit your
-viewport meta tag on every project.
+Some libraries and frameworks add `user-scalable=no` automatically (Bootstrap
+historically did this in mobile CSS). Audit your viewport meta tag on every
+project.
 
-## 3. Single-Pointer Alternatives for Multi-Point Gestures (WCAG 2.5.1)
+---
 
-Any functionality that uses multi-point gestures (pinch-to-zoom, two-finger rotate,
-three-finger swipe) must also be available via a single-pointer interaction.
+## Critical: Single-Pointer Alternatives for Multi-Point Gestures (WCAG 2.5.1)
+
+Any functionality that uses multi-point gestures (pinch-to-zoom, two-finger
+rotate, three-finger swipe) **must** also be available via a single-pointer
+interaction.
 
 ```html
 <!-- Map with pinch zoom — provide button alternatives -->
@@ -51,18 +79,21 @@ three-finger swipe) must also be available via a single-pointer interaction.
 </div>
 ```
 
-Path-based gestures (swipe, draw) must also have a single-tap or button alternative:
-- **Swipe-to-delete:** also provide a delete button.
-- **Swipe-to-reveal:** also provide a menu or button.
-- **Draw to sign:** also accept a typed name where legally permitted.
+Path-based gestures (swipe, draw) must also have a single-tap or button
+alternative. Examples:
+- **Swipe-to-delete:** also provide a delete button
+- **Swipe-to-reveal:** also provide a menu or button
+- **Draw to sign:** also accept typed name as an alternative where legally permitted
 
-## 4. Drag with No Alternative (WCAG 2.5.7)
+---
+
+## Critical: Drag with No Alternative (WCAG 2.5.7 — WCAG 2.2)
 
 Drag-and-drop interfaces must provide a single-pointer (click/tap) or keyboard
-alternative. Drag with no alternative is a serious to critical issue.
+alternative. **Drag with no alternative is Serious to Critical.**
 
 ```html
-<!-- Reorderable list — provide up/down buttons as a drag alternative -->
+<!-- Reorderable list — provide up/down buttons as drag alternative -->
 <ul id="priority-list">
   <li>
     <span class="drag-handle" aria-hidden="true">⠿</span>
@@ -73,13 +104,15 @@ alternative. Drag with no alternative is a serious to critical issue.
 </ul>
 ```
 
-The alternative does not need to look like the drag interaction — it just needs to
-produce the same result (reordering, moving between columns, etc.).
+The alternative does not need to look like the drag — it just needs to
+provide the same result (reordering, moving between columns, etc.).
 
-## 5. Target Size Minimum (WCAG 2.5.8)
+---
 
-Interactive targets must be at least 24×24 CSS pixels (WCAG 2.2 AA requirement).
-The recommended size for primary actions is 44×44 px.
+## Serious: Target Size Minimum (WCAG 2.5.8 — WCAG 2.2)
+
+Interactive targets must be at least **24×24 CSS pixels** (AA requirement).
+**Below 24×24 is Serious.** The recommended size for primary actions is **44×44px**.
 
 ```css
 /* Minimum — WCAG 2.5.8 AA */
@@ -95,9 +128,9 @@ button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
 }
 ```
 
-When a target is smaller than 44×44 px, ensure its offset (the spacing around it)
-makes up the difference — a 20×20 px icon button with 12 px padding on all sides
-meets the 44×44 guideline.
+When a target is smaller than 44×44px, ensure its **offset** (the spacing
+around it) makes up the difference — a 20×20px icon button with 12px padding
+on all sides meets the 44×44 guideline.
 
 ```css
 /* Small icon button — padding provides target space */
@@ -108,14 +141,17 @@ meets the 44×44 guideline.
 }
 ```
 
-Target size exceptions in WCAG 2.5.8 cover inline text links in running prose, where
-requiring 44 px height would break text flow.
+For inline text links, target size exceptions apply — the WCAG exception
+covers inline links in a sentence (where requiring 44px height would break
+text flow).
 
-## 6. Pointer Cancellation (WCAG 2.5.2)
+---
 
-Actions triggered on `mousedown` or `touchstart` (the "down" event) cannot be
-cancelled. Actions must complete on the "up" event so users can abort by moving the
-pointer away before releasing.
+## Serious: Pointer Cancellation (WCAG 2.5.2)
+
+Actions triggered on `mousedown` or `touchstart` (the "down" event) cannot
+be cancelled. Actions must complete on the "up" event (`mouseup`, `touchend`,
+`click`) so users can abort by moving the pointer away.
 
 ```js
 // Wrong — fires on mousedown, cannot be cancelled
@@ -126,13 +162,17 @@ button.addEventListener('click', () => deleteItem());
 ```
 
 For drag operations, completion on `drop` (the up-event equivalent) is correct.
+Custom gesture libraries should use up-events for final action.
 
-## 7. Motion Actuation Alternative (WCAG 2.5.4)
+---
+
+## Serious: Motion Actuation Alternative (WCAG 2.5.4)
 
 Functionality activated by device motion (shake, tilt) must have a UI alternative.
 Users must also be able to disable the motion trigger to prevent accidental activation.
 
 ```js
+// Device motion — always provide UI alternative
 if (window.DeviceMotionEvent) {
   window.addEventListener('devicemotion', handleShake);
 }
@@ -148,10 +188,12 @@ document.getElementById('disable-motion').addEventListener('change', (e) => {
 });
 ```
 
-## 8. Adaptive Target Sizing with CSS Media Queries
+---
 
-Use the `pointer` media query to provide larger targets on touch (coarse-pointer)
-devices:
+## Moderate: Adaptive Target Sizing with CSS Media Queries
+
+Use `pointer` media query to provide larger targets on coarse-pointer (touch)
+devices and tighter targets on fine-pointer (mouse) devices:
 
 ```css
 /* Base: fine pointer (mouse) */
@@ -171,13 +213,17 @@ devices:
 ```
 
 `@media (pointer: coarse)` targets touch screens and styluses.
-`@media (any-pointer: coarse)` also matches when a coarse pointer is available
-(for example, a laptop with a touchscreen).
+`@media (pointer: fine)` targets mouse and trackpad.
+`@media (any-pointer: coarse)` also matches when a coarse pointer is *available*
+(e.g., a laptop with a touchscreen) — use when you want to offer touch-friendly
+sizing even on hybrid devices.
 
-## 9. Touch Target Spacing
+---
 
-Adjacent small targets need spacing to prevent mis-taps — particularly important
-for users with tremor or at high magnification.
+## Moderate: Touch Target Spacing
+
+Adjacent small targets need spacing to prevent mis-taps — particularly
+important for users with tremor, motor difficulties, or at high magnification.
 
 ```css
 /* Spacing between adjacent icon buttons */
@@ -188,23 +234,36 @@ for users with tremor or at high magnification.
 /* Checkbox/radio spacing */
 .option-group label {
   display: block;
-  padding: 8px 0;
+  padding: 8px 0; /* vertical spacing between options */
 }
 ```
 
-## 10. Touch-Specific Interaction Patterns
+WCAG 2.5.8 allows targets smaller than 24×24px if the offset (spacing to
+adjacent targets) ensures the total space per target is at least 24×24px.
 
-- **Swipe carousels:** must have prev/next button alternatives; auto-advancing must
-  pause on focus, hover, and touch; `prefers-reduced-motion` must disable animation.
-- **Pull-to-refresh:** must have a button alternative; must not be the only way to
-  refresh content.
-- **Long-press context menus:** must have a right-click or button alternative for
-  desktop users; must not be the only way to access important actions.
+---
 
-## 11. Label in Name for Voice Control (WCAG 2.5.3)
+## Moderate: Touch-Specific Interaction Patterns
 
-Voice Control users (Dragon NaturallySpeaking, iOS Voice Control) activate elements
-by speaking their visible label. The accessible name must contain the visible text.
+**Swipe carousels:** must have prev/next button alternatives; auto-advancing
+must pause on focus/hover/touch; `prefers-reduced-motion` must disable animation.
+
+**Pull-to-refresh:** must have a button alternative; must not be the only
+way to refresh content.
+
+**Long-press context menus:** must have a right-click or button alternative
+for desktop users; must not be the only way to access important actions.
+
+**Custom touch gestures (swipe, pinch in a non-map context):** document them
+clearly; always provide single-pointer alternatives.
+
+---
+
+## Moderate: Label in Name for Voice Control (WCAG 2.5.3)
+
+Voice Control users (Dragon NaturallySpeaking, iOS Voice Control) activate
+elements by speaking their visible label. **The accessible name must contain
+the visible text.**
 
 ```html
 <!-- Serious violation: aria-label overrides visible text -->
@@ -213,18 +272,21 @@ by speaking their visible label. The accessible name must contain the visible te
 
 <!-- Correct: accessible name contains visible text -->
 <button aria-label="Send application form">Send</button>
-
 <!-- Or simply: -->
 <button>Send</button>
+<!-- If context makes "Send" clear, no aria-label needed -->
 ```
 
-The accessible name must begin with or contain the visible text string. Adding
-context after the visible text is fine: "Send application" is correct when the
-visible label is "Send".
+The accessible name must **begin with** or **contain** the visible text string.
+Adding context before or after is fine: "Send application" ✓, "Submit" when
+visible text is "Send" ✗.
 
-## 12. `touch-action` CSS Property
+---
 
-Explicitly declare `touch-action` on elements that handle their own touch events:
+## Minor: `touch-action` CSS Property
+
+Explicitly declare `touch-action` on elements that handle their own touch
+events to prevent browser interference:
 
 ```css
 /* Allow vertical scroll but prevent horizontal swipe (carousel) */
@@ -233,36 +295,42 @@ Explicitly declare `touch-action` on elements that handle their own touch events
 /* Custom drag element — prevent default browser panning */
 .draggable { touch-action: none; }
 
-/* Do not suppress all touch actions on standard interactive elements */
+/* Do not suppress all touch actions on interactive elements */
 button { touch-action: auto; /* default */ }
 ```
 
-Overusing `touch-action: none` can block scrolling on touch devices — use it only
-on elements that genuinely handle their own touch events.
+Overusing `touch-action: none` can block scrolling on touch devices — only
+use it on elements that genuinely handle their own touch events.
 
-## 13. Testing Expectations
+---
 
-- Verify viewport meta tag does not include `user-scalable=no` or `maximum-scale`.
-- Test all multi-gesture interactions for single-pointer alternatives.
-- Test all drag-and-drop interfaces for button or keyboard alternatives.
-- Measure interactive target sizes — minimum 24×24 px, recommended 44×44 px.
-- Test with iOS VoiceOver (touch navigation) and TalkBack (Android).
-- Test with voice control: speak visible labels to activate elements.
+## Definition of Done Checklist
 
-## 14. Definition of Done
+* [ ] `user-scalable=no` and `maximum-scale` not in viewport meta tag
+* [ ] All multi-point gesture functionality has single-pointer alternative
+* [ ] All drag functionality has button/keyboard alternative
+* [ ] Interactive targets: minimum 24×24px; primary controls 44×44px recommended
+* [ ] Small targets have offset spacing to reach 24px effective area
+* [ ] Actions fire on up-event (`click`, `mouseup`, `touchend`); not down-event
+* [ ] Device motion functionality has UI alternative and can be disabled
+* [ ] `@media (pointer: coarse)` used for adaptive touch-friendly sizing
+* [ ] Swipe carousels have prev/next buttons; auto-advance pauses on focus
+* [ ] Voice Control tested: all interactive elements activatable by speaking visible text
+* [ ] `aria-label` values begin with or contain visible label text (WCAG 2.5.3)
+* [ ] `touch-action` set only on elements that handle their own touch events
+* [ ] Tested: iOS VoiceOver (touch), TalkBack (Android), iOS Voice Control
 
-A feature is not complete unless:
+---
 
-- `user-scalable=no` and `maximum-scale` are not in the viewport meta tag.
-- All multi-point gesture functionality has a single-pointer alternative.
-- All drag functionality has a button or keyboard alternative.
-- Interactive targets are at minimum 24×24 px; primary controls are 44×44 px.
-- Actions fire on up-events (`click`, `mouseup`, `touchend`), not down-events.
-- Device motion functionality has a UI alternative and can be disabled.
-- `@media (pointer: coarse)` used for adaptive touch-friendly sizing.
-- Swipe carousels have prev/next buttons; auto-advance pauses on focus.
-- `aria-label` values begin with or contain visible label text.
-- Tested with iOS VoiceOver (touch), TalkBack (Android), and iOS Voice Control.
+## Key WCAG Criteria
+
+* 1.4.4 Resize Text (AA) — **Critical if zoom blocked**
+* 2.5.1 Pointer Gestures (A) — **Serious if multi-point gesture has no alternative**
+* 2.5.2 Pointer Cancellation (A) — **Serious if actions fire on down-event**
+* 2.5.3 Label in Name (A) — **Serious for voice control users**
+* 2.5.4 Motion Actuation (A)
+* 2.5.7 Dragging Movements (AA, WCAG 2.2) — **Serious if drag has no alternative**
+* 2.5.8 Target Size Minimum (AA, WCAG 2.2) — **Serious below 24×24px**
 
 ---
 

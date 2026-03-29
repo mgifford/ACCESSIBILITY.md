@@ -1,0 +1,226 @@
+name: Check sync with accessibility-skills
+
+on:
+  schedule:
+    # Run weekly on Monday at 08:00 UTC
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+    inputs:
+      threshold_lines:
+        description: 'Minimum changed lines to flag a file as diverged'
+        required: false
+        type: number
+        default: 10
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-sync:
+    name: Compare SKILL.md files with local BEST_PRACTICES files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Download SKILL.md files from accessibility-skills
+        run: |
+          mkdir -p /tmp/skill-sync
+          BASE="https://raw.githubusercontent.com/mgifford/accessibility-skills/main"
+          declare -A MAPPING=(
+            ["anchor-links"]="ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES"
+            ["aria-live-regions"]="ARIA_LIVE_REGIONS_BEST_PRACTICES"
+            ["audio-video"]="AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES"
+            ["charts-graphs"]="CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES"
+            ["content-design"]="CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES"
+            ["forms"]="FORMS_ACCESSIBILITY_BEST_PRACTICES"
+            ["keyboard"]="KEYBOARD_ACCESSIBILITY_BEST_PRACTICES"
+            ["light-dark-mode"]="LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES"
+            ["maps"]="MAPS_ACCESSIBILITY_BEST_PRACTICES"
+            ["mermaid"]="MERMAID_ACCESSIBILITY_BEST_PRACTICES"
+            ["navigation"]="NAVIGATION_ACCESSIBILITY_BEST_PRACTICES"
+            ["opquast-digital-quality"]="OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES"
+            ["plain-language"]="PLAIN_LANGUAGE_ACCESSIBILITY_BEST_PRACTICES"
+            ["print"]="PRINT_ACCESSIBILITY_BEST_PRACTICES"
+            ["progressive-enhancement"]="PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES"
+            ["svg"]="SVG_ACCESSIBILITY_BEST_PRACTICES"
+            ["tables"]="TABLES_ACCESSIBILITY_BEST_PRACTICES"
+            ["tooltips"]="TOOLTIP_ACCESSIBILITY_BEST_PRACTICES"
+            ["touch-pointer"]="TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES"
+            ["user-personalization"]="USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES"
+          )
+          for skill_dir in "${!MAPPING[@]}"; do
+            local_name="${MAPPING[$skill_dir]}"
+            STATUS=$(curl -sI "${BASE}/${skill_dir}/SKILL.md" | head -1 | tr -d '\r')
+            if echo "$STATUS" | grep -q "200"; then
+              curl -sf "${BASE}/${skill_dir}/SKILL.md" \
+                -o "/tmp/skill-sync/${skill_dir}.md" || true
+              echo "${skill_dir}:${local_name}" >> /tmp/skill-sync/mapping.txt
+            else
+              echo "SKIP ${skill_dir} (not found upstream)"
+            fi
+          done
+
+      - name: Compare files and generate report
+        id: compare
+        run: |
+          python3 << 'PYTHON'
+          import os, subprocess, json
+
+          THRESHOLD = int(os.environ.get('THRESHOLD', '10'))
+          LOCAL_DIR = 'examples'
+          SKILL_DIR = '/tmp/skill-sync'
+
+          mapping_file = os.path.join(SKILL_DIR, 'mapping.txt')
+          if not os.path.exists(mapping_file):
+              print("No mapping file found, nothing to compare.")
+              open('/tmp/report.md', 'w').write("No SKILL.md files were downloaded.")
+              exit(0)
+
+          diverged = []
+          ok = []
+
+          with open(mapping_file) as f:
+              for line in f:
+                  line = line.strip()
+                  if not line:
+                      continue
+                  skill_dir, local_name = line.split(':', 1)
+                  skill_file = os.path.join(SKILL_DIR, f'{skill_dir}.md')
+                  local_file = os.path.join(LOCAL_DIR, f'{local_name}.md')
+
+                  if not os.path.exists(local_file):
+                      diverged.append({
+                          'skill': skill_dir,
+                          'local': local_name,
+                          'changed_lines': -1,
+                          'note': 'Local file missing'
+                      })
+                      continue
+
+                  result = subprocess.run(
+                      ['diff', '-u', local_file, skill_file],
+                      capture_output=True, text=True
+                  )
+                  # Count added lines in SKILL.md not present in local
+                  added = sum(1 for l in result.stdout.split('\n')
+                              if l.startswith('+') and not l.startswith('+++'))
+                  removed = sum(1 for l in result.stdout.split('\n')
+                                if l.startswith('-') and not l.startswith('---'))
+
+                  skill_bytes = os.path.getsize(skill_file)
+                  local_bytes = os.path.getsize(local_file)
+                  delta = skill_bytes - local_bytes
+
+                  if added > THRESHOLD or removed > THRESHOLD:
+                      diverged.append({
+                          'skill': skill_dir,
+                          'local': local_name,
+                          'added': added,
+                          'removed': removed,
+                          'skill_bytes': skill_bytes,
+                          'local_bytes': local_bytes,
+                          'delta': delta,
+                      })
+                  else:
+                      ok.append(skill_dir)
+
+          # Generate report
+          lines = []
+          lines.append('## accessibility-skills sync report\n')
+          lines.append(f'**Date:** {os.popen("date -u +%Y-%m-%d").read().strip()}\n')
+          lines.append(f'**Threshold:** {THRESHOLD} changed lines\n\n')
+
+          if diverged:
+              lines.append(f'### ⚠️ {len(diverged)} file(s) have diverged\n')
+              lines.append('| File | SKILL.md lines added | SKILL.md lines removed | Size delta |\n')
+              lines.append('|------|----------------------|------------------------|------------|\n')
+              for d in sorted(diverged, key=lambda x: abs(x.get('delta', 0)), reverse=True):
+                  if d.get('note'):
+                      lines.append(f"| `{d['skill']}` | — | — | {d['note']} |\n")
+                  else:
+                      lines.append(
+                          f"| `{d['skill']}` | +{d['added']} | -{d['removed']} | "
+                          f"{'+' if d['delta'] >= 0 else ''}{d['delta']} bytes |\n"
+                      )
+              lines.append('\n**Action required:** Review the diverged files and merge any improvements.\n')
+              lines.append('Compare locally:\n```sh\ncurl -sL https://raw.githubusercontent.com/mgifford/accessibility-skills/main/SKILL_DIR/SKILL.md \\\n  | diff examples/LOCAL_NAME.md -\n```\n')
+          else:
+              lines.append('### ✅ All files are in sync (within threshold)\n')
+
+          if ok:
+              lines.append(f'\n### ✓ In sync ({len(ok)} files)\n')
+              lines.append(', '.join(f'`{s}`' for s in sorted(ok)) + '\n')
+
+          report = ''.join(lines)
+          open('/tmp/report.md', 'w').write(report)
+          print(report)
+
+          # Set output for next step
+          open(os.environ['GITHUB_OUTPUT'], 'a').write(
+              f"has_diverged={'true' if diverged else 'false'}\n"
+          )
+          open(os.environ['GITHUB_OUTPUT'], 'a').write(
+              f"diverged_count={len(diverged)}\n"
+          )
+          PYTHON
+        env:
+          THRESHOLD: ${{ inputs.threshold_lines || 10 }}
+
+      - name: Create or update GitHub issue on divergence
+        if: steps.compare.outputs.has_diverged == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('/tmp/report.md', 'utf8');
+            const count = '${{ steps.compare.outputs.diverged_count }}';
+
+            const title = `accessibility-skills sync: ${count} file(s) need review`;
+            const body = [
+              report,
+              '',
+              '---',
+              '_This issue was automatically created by the [sync-check-accessibility-skills workflow](' +
+              `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/workflows/sync-check-accessibility-skills.yml).`,
+              'Close this issue once the diverged files have been reviewed and any improvements merged._'
+            ].join('\n');
+
+            // Look for an existing open issue with the same label
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'sync-check',
+              state: 'open',
+            });
+
+            if (issues.length > 0) {
+              // Update the existing issue with a comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues[0].number,
+                body: `### Updated sync report\n\n${report}`,
+              });
+              console.log(`Updated existing issue #${issues[0].number}`);
+            } else {
+              // Create new issue
+              const { data: issue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['sync-check', 'documentation'],
+              });
+              console.log(`Created issue #${issue.number}: ${issue.html_url}`);
+            }
+
+      - name: Print report summary
+        run: cat /tmp/report.md
