@@ -247,6 +247,36 @@ title: ACCESSIBILITY.md
           <p>Build accessible, resilient web experiences starting from a solid HTML foundation</p>
         </article>
       </a>
+      <a class="card" href="./examples/ARIA_LIVE_REGIONS_BEST_PRACTICES.html">
+        <article>
+          <h3>ARIA Live Regions Best Practices</h3>
+          <p>Polite vs assertive announcements, injection timing, role="status" and role="alert" patterns, and framework-specific timing for dynamic content updates</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Navigation Accessibility Best Practices</h3>
+          <p>Landmark structure, skip links, aria-current, disclosure dropdowns, breadcrumbs, pagination, and mobile hamburger navigation</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/PLAIN_LANGUAGE_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Plain Language Accessibility Best Practices</h3>
+          <p>Sentence length, active voice, reading level targets, abbreviation expansion, and structure-first writing for cognitive accessibility</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/TABLES_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Tables Accessibility Best Practices</h3>
+          <p>Semantic table markup with th scope, captions, responsive patterns, sortable columns, and accessible layout-table remediation</p>
+        </article>
+      </a>
+      <a class="card" href="./examples/TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Touch and Pointer Accessibility Best Practices</h3>
+          <p>Target size minimums, pointer cancellation, drag alternatives, motion actuation, and WCAG 2.5.x criteria for touch and pointer interactions</p>
+        </article>
+      </a>
       <a class="card" href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">
         <article>
           <h3>Prompt Starter</h3>
