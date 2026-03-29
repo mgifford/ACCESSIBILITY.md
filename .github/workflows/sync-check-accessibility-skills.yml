@@ -189,9 +189,30 @@ jobs:
               '',
               '---',
               '_This issue was automatically created by the [sync-check-accessibility-skills workflow](' +
-              `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/workflows/sync-check-accessibility-skills.yml).`,
+              `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/workflows/sync-check-accessibility-skills.yml). ` +
               'Close this issue once the diverged files have been reviewed and any improvements merged._'
             ].join('\n');
+
+            // Ensure labels exist (create them if not)
+            const labelsToCreate = [
+              { name: 'sync-check', color: 'f9d0c4', description: 'Tracks sync between this repo and accessibility-skills' },
+              { name: 'documentation', color: '0075ca', description: 'Documentation improvements or fixes' },
+            ];
+            for (const label of labelsToCreate) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                });
+              } catch {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ...label,
+                });
+              }
+            }
 
             // Look for an existing open issue with the same label
             const { data: issues } = await github.rest.issues.listForRepo({
