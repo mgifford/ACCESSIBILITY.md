@@ -103,6 +103,7 @@ for (const theme of themes) {
 This workflow uses the `github/accessibility-scanner`. It runs on the **first day of every month** and on demand, but **only when there are no existing open accessibility issues**. This prevents alert fatigue by pausing scans while known issues are still being resolved.
 
 **Workflow (`.github/workflows/accessibility-scan.yml`):**
+{% raw %}
 ```yaml
 name: Accessibility Scan (Scheduled)
 
@@ -141,6 +142,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
           cache_key: accessibility-scan-results
 ```
+{% endraw %}
 
 > **Notes:**
 > - The `GH_TOKEN` secret is optional; the workflow falls back to the automatic `GITHUB_TOKEN`.
