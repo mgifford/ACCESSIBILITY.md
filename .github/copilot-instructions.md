@@ -20,6 +20,7 @@ Read these files before making any changes:
 - When adding a new guide to `examples/`, update `examples/README.md`, `README.md`, `index.md`, and `AGENTS.md`.
 - Before fetching any external URL, check `examples/TRUSTED_SOURCES.yaml` for the `ai_scraping` field; if it is `prohibited`, do **not** access the content.
 - Disclose AI usage in pull request descriptions.
+- **Jekyll/Liquid safety**: Wrap any YAML/workflow code block that contains GitHub Actions `${{ }}` syntax in `{% raw %}` / `{% endraw %}` tags to prevent Jekyll from misinterpreting them as Liquid template expressions.
 
 ## Component-Specific Guides
 

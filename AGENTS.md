@@ -39,6 +39,7 @@ Before proposing or writing changes, read these project policy files:
 - Follow existing patterns and project structure
 - Use practical, actionable language with examples
 - Update cross-references when adding new pages
+- **Jekyll/Liquid safety**: Any markdown file rendered by Jekyll that includes GitHub Actions YAML expressions inside code blocks **must** wrap those code blocks with Liquid raw/endraw block tags to prevent Jekyll from misinterpreting them as Liquid template variables and breaking the site build. See the "Monthly Accessibility Scanner" workflow example in `examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md` for the correct pattern.
 
 ## Component-specific guidance
 
