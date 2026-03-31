@@ -160,6 +160,15 @@ For automated scans, include aggregate counts:
 
 Frequency informs prioritisation. A single critical failure may warrant immediate action; a low-severity issue across hundreds of pages may need a systematic fix.
 
+**Frequency amplifies effective severity.** A "Low" rated issue that appears on every page of a site, or on a heavily trafficked page or a top user task (such as sign-in, checkout, or search), should be treated with higher urgency than its base severity suggests. When assigning priority, consider both the raw severity rating and the reach of the issue:
+
+| Situation | Suggested priority adjustment |
+|-----------|-------------------------------|
+| Low severity, appears on every page | Treat as Medium |
+| Medium severity, appears on every page | Treat as High |
+| Low/Medium severity, on a top-task page | Escalate by one severity level |
+| Low/Medium severity, on a high-traffic landing page | Escalate by one severity level |
+
 ## 3. Recommended Additional Fields
 
 These fields are not always required but significantly improve report quality.
@@ -270,6 +279,58 @@ Provide a concrete remediation if possible.
   <span class="visually-hidden">Close cookie consent dialog</span>
 </button>
 ```
+
+### 3.9 Personalisation and Context
+
+Accessibility failures are not always reproducible on every page load. Many issues only surface under specific user settings, device types, or navigation paths. Always record the personalisation state and context at the time of discovery.
+
+**Colour scheme and display preferences**
+
+Note whether the issue occurs in light mode, dark mode, or both, and whether any OS-level display settings are active.
+
+```
+Colour scheme:    Light mode / Dark mode / System default
+Forced Colors:    Active (Windows High Contrast) / Inactive
+Contrast mode:    Standard / Increased contrast (macOS)
+```
+
+**CSS media features**
+
+Some failures only appear when specific CSS media features are active. Record any active preferences.
+
+```
+prefers-color-scheme:   light / dark
+prefers-reduced-motion: reduce / no-preference
+prefers-contrast:       more / less / forced / no-preference
+forced-colors:          active / none
+```
+
+See the [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) guide for more detail.
+
+**Viewport and device type**
+
+Layout, component visibility, and interaction patterns often differ between mobile and desktop. Specify the device context when the issue is viewport-specific.
+
+```
+Viewport:   375 × 812 px (iPhone 14, Safari iOS 17)
+Viewport:   1440 × 900 px (MacBook Pro, Chrome 124)
+Device:     Mobile — iOS 17 / Android 14
+Device:     Desktop — Windows 11 / macOS 14
+Orientation: Portrait / Landscape
+```
+
+**Navigation path and UI state**
+
+The route taken to reach a page — and any UI interactions performed before the failure — can determine whether a problem appears at all. Record the user journey when it is relevant.
+
+```
+Arrived via:   Direct URL / Search results link / Internal navigation from [page]
+Preceded by:   Clicked "Add to cart" on product page, then navigated to checkout
+UI state:      Modal open / Accordion expanded / Dropdown active
+Login state:   Authenticated (standard user role) / Guest / Admin
+```
+
+Together, these contextual details help developers reproduce failures that only appear under specific personalisation settings, on specific device classes, or after specific interaction sequences.
 
 ## 4. Structured Report Templates
 
@@ -467,6 +528,47 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
 }
 ```
 
+### 4.4 EARL: Evaluation and Report Language
+
+[EARL (Evaluation and Report Language)](https://www.w3.org/WAI/standards-guidelines/earl/) is a W3C standard for expressing test results in a machine-readable format. It uses RDF (Resource Description Framework) to describe which subject (a web page or resource) was tested, which assertion (a WCAG criterion or rule) was evaluated, and what the outcome was.
+
+Use EARL when you need interoperable, tool-agnostic accessibility reports that can be processed by different systems — for example, aggregating results from multiple testing tools, feeding a compliance dashboard, or archiving audit evidence.
+
+**Minimal EARL example (Turtle syntax):**
+
+```turtle
+@prefix earl: <http://www.w3.org/ns/earl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a earl:Assertion ;
+   earl:assertedBy <https://example.com/tools/axe-runner> ;
+   earl:subject <https://example.com/checkout?step=2> ;
+   earl:test <http://www.w3.org/TR/WCAG21/#non-text-content> ;
+   earl:result [
+     a earl:TestResult ;
+     earl:outcome earl:failed ;
+     dcterms:description "Close button contains only an SVG icon with no accessible name." ;
+     dcterms:date "2025-06-01T10:30:00Z"^^xsd:dateTime
+   ] ;
+   earl:mode earl:automatic .
+```
+
+**Key EARL concepts:**
+
+| Term | Meaning |
+|------|---------|
+| `earl:Assertion` | A single test result (subject + test + outcome) |
+| `earl:subject` | The URL or resource that was tested |
+| `earl:test` | The criterion or rule being tested (WCAG SC, ACT rule, etc.) |
+| `earl:outcome` | `earl:passed`, `earl:failed`, `earl:cantTell`, `earl:inapplicable`, or `earl:untested` |
+| `earl:mode` | How the test was performed: `earl:automatic`, `earl:manual`, or `earl:semiAuto` |
+| `earl:assertedBy` | The tool or person that produced the assertion |
+
+EARL output can be produced by tools such as [Alfa](https://github.com/Siteimprove/alfa), [Axe Reporter EARL](https://github.com/dequelabs/axe-reporter-earl), and [ACT-Rules implementations](https://act-rules.github.io/). The W3C [WCAG-EM Report Tool](https://www.w3.org/WAI/eval/report-tool/) also exports EARL.
+
+For further reading, see [EARL overview on W3C WAI](https://www.w3.org/WAI/standards-guidelines/earl/).
+
 ## 5. Guidance for Automated Tools and AI Agents
 
 When a script or AI agent generates accessibility reports, apply these rules.
@@ -599,6 +701,7 @@ Before filing or submitting an accessibility bug report, verify each item:
 - [ ] Steps to reproduce are numbered and complete
 - [ ] Expected and actual behaviours are stated separately
 - [ ] Testing environment (browser, OS, AT, tool) is documented
+- [ ] Personalisation context is recorded (colour scheme, CSS media features, viewport, navigation path)
 - [ ] Impact on specific disability groups is described
 - [ ] Duplicate violations are aggregated, not filed individually
 - [ ] For automated output: confidence level is included where relevant
@@ -637,5 +740,6 @@ The following resources informed this guide:
 - [Template: Reporting Accessibility Issues](https://accessibility.huit.harvard.edu/template-reporting-accessibility-issues) — Harvard University
 - [Accessibility Insights for Web](https://github.com/microsoft/accessibility-insights-web) — Microsoft
 - [ACT Rules Community Group](https://act-rules.github.io/) — W3C
+- [EARL: Evaluation and Report Language](https://www.w3.org/WAI/standards-guidelines/earl/) — W3C WAI (machine-readable standard for expressing accessibility test results)
 - [AXE Rules Coverage](./AXE_RULES_COVERAGE.md) — This repository
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md) — This repository
