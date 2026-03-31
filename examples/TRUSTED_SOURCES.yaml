@@ -3374,3 +3374,96 @@ sources:
   owner: YesLogic Pty Ltd
   license: commercial
   status: active
+- id: ecampus-ontario-accessibility
+  domain: eCampus Ontario Accessibility
+  url: https://accessibility.ecampusontario.ca/
+  full_url: https://accessibility.ecampusontario.ca/accessibility/best-practices/alt-text/
+  best_for: Alternative text best practices, higher education accessibility guidance
+  description: eCampus Ontario digital accessibility resources covering alt text, documents, multimedia, and more for post-secondary education.
+  authority_level: established
+  topic_tags:
+  - alt-text
+  - images
+  - higher-education
+  - wcag
+  jurisdiction: canada
+  wcag_version:
+  - "2.1"
+  last_reviewed: null
+  owner: eCampus Ontario
+  license: unknown
+  status: active
+- id: psu-accessibility-images
+  domain: Penn State University Accessibility — Images
+  url: https://accessibility.psu.edu/
+  full_url: https://accessibility.psu.edu/images/alttext/
+  best_for: Image alt text guidance, higher education accessibility
+  description: Penn State University's accessibility knowledge base covering alt text, image types, and WCAG compliance for web content.
+  authority_level: established
+  topic_tags:
+  - alt-text
+  - images
+  - higher-education
+  - wcag
+  jurisdiction: us
+  wcag_version:
+  - "2.1"
+  last_reviewed: null
+  owner: Penn State University
+  license: unknown
+  status: active
+- id: utoronto-alt-text-guide
+  domain: University of Toronto — Alt Text Best Practices Guide
+  url: https://people.utoronto.ca/
+  full_url: https://people.utoronto.ca/wp-content/uploads/2023/11/Alt-Text-Best-Practices-Guide-PSEC.pdf
+  best_for: Alt text best practices, higher education accessibility documentation
+  description: Comprehensive alt text best practices guide from the University of Toronto People, Equity and Culture team covering image types, writing tips, and decision frameworks.
+  authority_level: established
+  topic_tags:
+  - alt-text
+  - images
+  - higher-education
+  - wcag
+  jurisdiction: canada
+  wcag_version:
+  - "2.1"
+  last_reviewed: "2023-11-01"
+  owner: University of Toronto
+  license: unknown
+  status: active
+- id: asu-accessibility-images
+  domain: Arizona State University Accessibility — Images
+  url: https://accessibility.asu.edu/
+  full_url: https://accessibility.asu.edu/articles/images
+  best_for: Image accessibility, alt text guidance for higher education
+  description: Arizona State University accessibility resources covering image alt text requirements, decorative images, and WCAG compliance.
+  authority_level: established
+  topic_tags:
+  - alt-text
+  - images
+  - higher-education
+  - wcag
+  jurisdiction: us
+  wcag_version:
+  - "2.1"
+  last_reviewed: null
+  owner: Arizona State University
+  license: unknown
+  status: active
+- id: udayton-accessibility-alt-text
+  domain: University of Dayton Online Learning — Accessibility Tips
+  url: https://udayton.edu/
+  full_url: https://udayton.edu/blogs/onlinelearning/2026/accessibility-tip-2.php
+  best_for: Alt text writing tips, practical accessibility guidance
+  description: University of Dayton online learning accessibility blog covering practical tips for writing effective alt text and making images accessible.
+  authority_level: to_review
+  topic_tags:
+  - alt-text
+  - images
+  - higher-education
+  jurisdiction: us
+  wcag_version: []
+  last_reviewed: null
+  owner: University of Dayton
+  license: unknown
+  status: active

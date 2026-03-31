@@ -184,6 +184,12 @@ title: ACCESSIBILITY.md
           <p>Plain language, page structure, readability, and content style guidance aligned with accessibility goals</p>
         </article>
       </a>
+      <a class="card" href="./examples/IMAGE_ALT_TEXT_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Image Alt Text Accessibility Best Practices</h3>
+          <p>Alt text decision tree, decorative vs. informative images, complex image descriptions, and WCAG 1.1.1 compliance guidance</p>
+        </article>
+      </a>
       <a class="card" href="./examples/README.html">
         <article>
           <h3>Examples Index</h3>
