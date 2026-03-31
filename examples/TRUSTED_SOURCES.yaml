@@ -2465,6 +2465,28 @@ sources:
   owner: WAI-Tools Project
   license: W3C Software License
   status: active
+- id: wai-earl
+  domain: W3C EARL (Evaluation and Report Language)
+  url: https://www.w3.org/WAI/standards-guidelines/earl/
+  full_url: https://www.w3.org/WAI/standards-guidelines/earl/
+  best_for: accessibility test results, machine-readable reports, interoperable reporting, bug reporting
+  description: W3C standard format for expressing accessibility test results in a machine-readable RDF format. Used to create interoperable, tool-agnostic accessibility evaluation reports.
+  authority_level: authoritative
+  topic_tags:
+  - testing
+  - reporting
+  - rdf
+  - evaluation
+  - machine-readable
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C
+  license: W3C Document License
+  status: active
 - id: wai-yaml-ld
   domain: wai-yaml-ld
   url: https://github.com/mgifford/wai-yaml-ld
