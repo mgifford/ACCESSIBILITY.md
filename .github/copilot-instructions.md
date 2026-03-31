@@ -31,6 +31,7 @@ See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-g
 - [Audio/Video](../examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Charts and graphs](../examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [CI/CD pipelines](../examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Color contrast](../examples/COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Content Design](../examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Forms](../examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Image alt text](../examples/IMAGE_ALT_TEXT_ACCESSIBILITY_BEST_PRACTICES.md)

@@ -202,6 +202,12 @@ title: ACCESSIBILITY.md
           <p>Color scheme support, contrast requirements, and system preference integration</p>
         </article>
       </a>
+      <a class="card" href="./examples/COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Color Contrast Accessibility Best Practices</h3>
+          <p>WCAG 2.2 AA contrast requirements for text, non-text elements, and focus indicators; APCA introduction; forced-colors mode; and CSS patterns for accessible color palettes</p>
+        </article>
+      </a>
       <a class="card" href="./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.html">
         <article>
           <h3>User Personalization Best Practices</h3>
