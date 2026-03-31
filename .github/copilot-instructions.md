@@ -33,6 +33,7 @@ See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-g
 - [CI/CD pipelines](../examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Content Design](../examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Forms](../examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Image alt text](../examples/IMAGE_ALT_TEXT_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Keyboard interactions](../examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Light/Dark mode](../examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Maps](../examples/MAPS_ACCESSIBILITY_BEST_PRACTICES.md)
