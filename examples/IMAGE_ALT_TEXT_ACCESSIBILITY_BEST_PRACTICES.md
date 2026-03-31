@@ -92,6 +92,12 @@ Too many images are incorrectly marked as decorative. An image is decorative onl
 - Removing it would not affect a user's understanding of the content
 - It is not the only means of conveying an action (buttons, links)
 
+**A practical judgment test:** Can you imagine a person who can see the image remarking on its content? If so, the image has told them something and needs a text alternative. For example, if a child looking at a holiday brochure would say "that swimming pool has a cool slide!", the slide image conveys meaning and needs alt text.
+
+**If you find yourself debating whether an image is decorative, that is usually a sign that it is not.** Genuine decorative images are obvious — borders, spacers, background textures. Images that prompt discussion almost always carry meaning worth describing.
+
+**Content authors decide, not templates.** The person closest to the content — the author publishing the page — is best placed to judge whether an image warrants a text alternative. Enforcing `alt=""` via a CMS template is a fast path to WCAG failures, because the template cannot know what the image shows or why the author included it. If an author cannot explain why an image is on the page, that is a signal the image may not belong there at all — not that it is decorative.
+
 When in doubt, provide alt text. The cost of unnecessary alt text is low; the cost of missing alt text can be complete loss of meaning.
 
 ### 4.3 Functional Images
@@ -243,7 +249,202 @@ When an image and text are together inside the same link.
 | Screenshot of error | `"screenshot"` | `"Error message: 'Your session has expired. Please log in again.'"` |
 | Infographic | `"infographic about web accessibility"` | Short summary alt + adjacent long description |
 
-## 6. Context-Sensitive Alt Text
+## 6. Common Bad Alt Text Patterns
+
+The patterns below are detected by automated accessibility tools including [Sa11y](https://sa11y.netlify.app/), [Editoria11y](https://editoria11y.princeton.edu/), axe-core, and the [CivicActions alt-text scanner](https://github.com/CivicActions/site-evaluation-tools/blob/main/python/alt-text-scan.py). Automated detection only gets you so far — human review is always needed to confirm whether a description is meaningful in context.
+
+### 6.1 Missing or Absent Alt Attribute
+
+When the `alt` attribute is completely absent, most screen readers announce the image's filename or URL — rarely useful, often confusing.
+
+```html
+<!-- WRONG: No alt attribute — screen reader reads the filename -->
+<img src="Q3-revenue-chart-final-v2.png">
+
+<!-- RIGHT: Meaningful alt text -->
+<img src="Q3-revenue-chart-final-v2.png"
+     alt="Bar chart: Q3 2024 revenue reached $4.2M, up 18% from Q2">
+
+<!-- RIGHT: Empty alt for confirmed decorative images -->
+<img src="decorative-wave-border.png" alt="">
+```
+
+### 6.2 Filename or CMS-Injected Alt Text
+
+CMSs sometimes auto-populate the `alt` attribute with the filename, a URL fragment, or an injected message. None of these communicate meaning to users.
+
+```html
+<!-- WRONG: Filename echoed as alt text -->
+<img src="golden-retriever.jpg" alt="golden-retriever.jpg">
+<img src="hero-banner.png"      alt="hero-banner.png">
+
+<!-- WRONG: CMS-generated placeholder message -->
+<img src="dog.png"
+     alt="This image has an empty alt attribute; its file name is dog.png">
+
+<!-- RIGHT: Replace with a human-authored description -->
+<img src="golden-retriever.jpg"
+     alt="Golden retriever running through autumn leaves in a park">
+```
+
+### 6.3 Generic Single-Word Placeholders
+
+Single words that label the medium rather than the content are meaningless. The following values are flagged as errors by multiple accessibility checkers:
+
+```html
+<!-- WRONG: Medium label instead of a description -->
+<img src="photo.jpg"   alt="image">
+<img src="photo.jpg"   alt="photo">
+<img src="photo.jpg"   alt="graphic">
+<img src="photo.jpg"   alt="chart">
+<img src="photo.jpg"   alt="alt">         <!-- meta-placeholder -->
+<img src="spacer.gif"  alt="spacer">      <!-- use alt="" instead -->
+<img src="divider.png" alt="decorative">  <!-- use alt="" instead -->
+
+<!-- RIGHT: Empty alt for genuinely decorative images -->
+<img src="spacer.gif"  alt="">
+
+<!-- RIGHT: Meaningful description for informative images -->
+<img src="photo.jpg"   alt="Two engineers reviewing a system diagram on a whiteboard">
+```
+
+### 6.4 Draft and Placeholder Text
+
+Placeholder values intended for later completion that were never replaced ship silently as accessibility failures.
+
+```html
+<!-- WRONG: Unreplaced draft values -->
+<img src="portrait.jpg" alt="TBD">
+<img src="portrait.jpg" alt="TODO">
+<img src="portrait.jpg" alt="placeholder">
+<img src="portrait.jpg" alt="untitled">
+<img src="portrait.jpg" alt="null">
+<img src="portrait.jpg" alt="none">
+<img src="portrait.jpg" alt="alt text">   <!-- meta-placeholder -->
+<img src="portrait.jpg" alt="undefined">  <!-- CMS error output -->
+
+<!-- RIGHT: Write the description before publishing -->
+<img src="portrait.jpg"
+     alt="Dr. Amara Osei, Professor of Environmental Science, at the lab bench">
+```
+
+### 6.5 "Type" Prefix Phrases
+
+Starting alt text with "image of", "photo of", "graphic of", or "picture of" wastes characters and creates a poor listening experience — screen readers already identify the element as an image.
+
+```html
+<!-- WRONG: Redundant medium prefix -->
+<img src="team-photo.jpg" alt="Image of the team">
+<img src="team-photo.jpg" alt="Photo of team members">
+<img src="team-photo.jpg" alt="Graphic of our team">
+<img src="team-photo.jpg" alt="Picture of employees">
+
+<!-- RIGHT: Begin with the meaningful content immediately -->
+<img src="team-photo.jpg"
+     alt="The Civic Innovations team of 12 staff gathered outside City Hall">
+```
+
+### 6.6 Machine-Generated or CMS-Injected Codes
+
+Some CMSs generate cryptic identifiers or database keys as alt text. These are machine-readable but meaningless to people.
+
+```html
+<!-- WRONG: System-generated codes -->
+<img src="img_4521.jpg" alt="$700VIDEOSABOUTTURTLESALL2SECONDSLONG">
+<img src="banner.png"   alt="node--article--field-image--hero--full">
+<img src="photo.png"    alt="IMG_20241103_145832">
+
+<!-- RIGHT: A human-readable description -->
+<img src="img_4521.jpg"
+     alt="Sea turtles swimming over a coral reef in the Caribbean">
+```
+
+### 6.7 Alt Text That Duplicates a Figcaption
+
+When an image inside a `<figure>` has an `alt` that exactly copies the `<figcaption>`, screen readers announce the same text twice. [Sa11y](https://sa11y.netlify.app/) flags this pattern specifically.
+
+The correct approach depends on context:
+
+- **If the figcaption fully describes the image:** Use `alt=""` so screen readers proceed directly to the caption.
+- **If the image adds meaning beyond the caption:** Write a *complementary* alt that adds context rather than copying the caption word for word.
+
+```html
+<!-- WRONG: Alt text is a verbatim copy of the figcaption -->
+<figure>
+  <img src="annual-report-cover.jpg"
+       alt="2024 Annual Report cover showing the city skyline at dusk">
+  <figcaption>2024 Annual Report cover showing the city skyline at dusk</figcaption>
+</figure>
+<!-- Screen reader announces: "2024 Annual Report cover showing the city
+     skyline at dusk. Image. 2024 Annual Report cover showing the city
+     skyline at dusk." — needlessly repetitive -->
+
+<!-- RIGHT option 1: Caption fully describes — use empty alt -->
+<figure>
+  <img src="annual-report-cover.jpg" alt="">
+  <figcaption>2024 Annual Report cover showing the city skyline at dusk</figcaption>
+</figure>
+
+<!-- RIGHT option 2: Alt adds complementary context not in the caption -->
+<figure>
+  <img src="annual-report-cover.jpg"
+       alt="Warm orange and purple hues silhouette the downtown skyline at dusk">
+  <figcaption>2024 Annual Report: A year of growth for the city</figcaption>
+</figure>
+```
+
+### 6.8 Name-Only Alt for Person Portraits
+
+A portrait image with only the subject's name as alt text provides minimal context. Why is this image on the page? What does it tell a screen reader user that the surrounding text does not?
+
+```html
+<!-- POOR: Name only — barely more useful than no alt text -->
+<img src="j-smith.jpg" alt="J Smith">
+
+<!-- BETTER: Include role and context relevant to the page -->
+<img src="j-smith.jpg"
+     alt="Dr. Jane Smith, Chief Medical Officer, presenting at the 2024 health summit">
+
+<!-- ACCEPTABLE: Adjacent figcaption is sufficiently descriptive -->
+<figure>
+  <img src="j-smith.jpg" alt="">
+  <figcaption>Dr. Jane Smith, Chief Medical Officer</figcaption>
+</figure>
+```
+
+> **Judgment note:** The name "J Smith" read in isolation tells a screen reader user only that an image exists of someone by that name. But when accompanied by a descriptive adjacent caption, an empty alt is often the right choice to avoid double-announcing the name.
+
+### 6.9 Excessively Long Alt Text for Simple Images
+
+Alt text that runs longer than approximately 250 characters degrades the screen reader experience for simple images. For complex images requiring extensive description, use a long description technique instead (see [Section 4.4 — Complex Images](#44-complex-images)).
+
+```html
+<!-- WRONG: Paragraph-length alt for a simple button image -->
+<img src="login-button.png"
+     alt="This is the login button which allows registered users of our platform
+          to securely authenticate using their email address and password
+          credentials in order to gain access to their personalized dashboard
+          and account settings. Please click this button if you already have
+          an account with us.">
+
+<!-- RIGHT: Concise and functional -->
+<img src="login-button.png" alt="Log in to your account">
+```
+
+### 6.10 Keyword-Stuffed Alt Text
+
+Padding alt text with SEO keywords harms screen reader users without benefiting search rankings.
+
+```html
+<!-- WRONG: Keyword list masquerading as alt text -->
+<img src="shoes.jpg"
+     alt="buy shoes online cheap shoes discount shoes running shoes sale shoes free shipping">
+
+<!-- RIGHT: Describe what the image shows -->
+<img src="shoes.jpg" alt="Blue and white running shoes with cushioned sole">
+```
+
+## 7. Context-Sensitive Alt Text
 
 The same image can require different alt text in different contexts. Always consider the surrounding content.
 
@@ -263,7 +464,7 @@ The same image can require different alt text in different contexts. Always cons
 <img src="golden-retriever.jpg" alt="">
 ```
 
-## 7. CSS Background Images
+## 8. CSS Background Images
 
 CSS background images declared with `background-image` do not support `alt` text. Use them only for decorative purposes. If a CSS background image conveys meaning, replace it with an `<img>` element with proper alt text.
 
@@ -282,7 +483,7 @@ CSS background images declared with `background-image` do not support `alt` text
 <img src="award-badge.png" alt="Winner: Best Accessibility Tool 2024">
 ```
 
-## 8. Automated Testing vs. Human Review
+## 9. Automated Testing vs. Human Review
 
 | What Automated Tools Can Detect | What Requires Human Review |
 |---------------------------------|---------------------------|
@@ -291,10 +492,14 @@ CSS background images declared with `background-image` do not support `alt` text
 | Alt text that equals the file name | Whether a decorative image actually needs alt text |
 | Alt text over a length threshold | Whether long descriptions are accurate |
 | Repeated alt text on distinct images | Whether the level of detail is appropriate |
+| Suspicious prefix phrases ("image of", "photo of") | Whether the description conveys the right meaning |
+| Known placeholder values ("TBD", "null", "undefined") | Whether content-author intent was decorative or informative |
+| Alt text identical to adjacent figcaption | Whether the alt or the caption should be kept (or both) |
+| Machine-generated CMS codes as alt text | Whether the replacement description is accurate |
 
 Automated tools such as axe-core detect structural alt text issues. Human review is always required to evaluate quality.
 
-## 9. Definition of Done Checklist
+## 10. Definition of Done Checklist
 
 Before publishing any page with images:
 
@@ -302,16 +507,20 @@ Before publishing any page with images:
 - [ ] Decorative images use `alt=""` and are confirmed to add no meaning
 - [ ] Functional images (links, buttons) describe the action or destination
 - [ ] Alt text does not begin with "image of", "picture of", or "photo of"
-- [ ] Alt text does not repeat the file name or generic label ("image", "photo")
+- [ ] Alt text does not repeat the file name or generic label ("image", "photo", "graphic", "chart")
+- [ ] Alt text is not a draft placeholder ("TBD", "TODO", "null", "none", "undefined", "placeholder")
+- [ ] Alt text is not a machine-generated code or CMS-injected message
 - [ ] Complex images (charts, diagrams) have both a short alt and a long description
 - [ ] Images of text reproduce the exact text in the alt attribute
 - [ ] Grouped images convey combined meaning via one image's alt (others are `alt=""`)
 - [ ] Linked images with adjacent link text use `alt=""` on the image
+- [ ] Figures with a `<figcaption>` do not duplicate the caption verbatim in the `alt`
+- [ ] Portrait images include the person's role and context, not just their name
 - [ ] CSS background images are decorative (meaningful images use `<img>`)
 - [ ] Alt text has been reviewed in context, not just in isolation
 - [ ] Alt text has been tested with a screen reader (NVDA + Firefox or VoiceOver + Safari)
 
-## 10. Key WCAG Criteria
+## 11. Key WCAG Criteria
 
 | Criterion | Level | Requirement |
 |-----------|-------|-------------|
@@ -320,7 +529,7 @@ Before publishing any page with images:
 | [1.4.9 Images of Text (No Exception)](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text-no-exception.html) | AAA | Images of text are used only for decoration or where essential |
 | [4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) | A | All UI components have accessible names and roles |
 
-## 11. Testing Alt Text
+## 12. Testing Alt Text
 
 ### Manual Testing with Screen Readers
 
@@ -348,7 +557,7 @@ axe --tags wcag2a,wcag2aa https://example.com
 # image-alt, image-redundant-alt, input-image-alt, area-alt, object-alt
 ```
 
-## 12. References
+## 13. References
 
 ### Authoritative Standards
 
@@ -365,6 +574,15 @@ axe --tags wcag2a,wcag2aa https://example.com
 - [How to Write Great Alt Text](https://www.nngroup.com/articles/write-alt-text/) (Nielsen Norman Group)
 - [Describe Content Images](https://accessibility.huit.harvard.edu/describe-content-images) (Harvard University HUIT)
 - [Image Alt Text Best Practices](https://help.siteimprove.com/support/solutions/articles/80000863904-accessibility-image-alt-text-best-practices) (Siteimprove)
+- [Decorative Images](https://www.w3.org/WAI/tutorials/images/decorative/) (W3C WAI Images Tutorial)
+
+### Accessibility Checkers That Inspect Alt Text
+
+- [Sa11y](https://sa11y.netlify.app/) — flags suspicious alt text, alt matching figcaption, and placeholder patterns
+- [Editoria11y](https://editoria11y.princeton.edu/) — flags missing alt, filename alt, placeholder alt, and machine-generated codes
+- [axe-core](https://github.com/dequelabs/axe-core) — rules: `image-alt`, `image-redundant-alt`, `input-image-alt`, `area-alt`, `object-alt`
+- [CivicActions alt-text scanner](https://github.com/CivicActions/site-evaluation-tools/blob/main/python/alt-text-scan.py) — scans sites for suspicious and meaningless alt text patterns
+- [Drupal Alt Text Validation module](https://www.drupal.org/project/alt_text_validation) — CMS-level validation of alt text patterns
 
 ### Educational Institutions
 
