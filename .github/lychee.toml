@@ -13,5 +13,9 @@ exclude = [
   # IDRC site has intermittent connectivity issues in CI environments
   "^https://idrc\\.ocadu\\.ca",
   # Personal blog with intermittent availability in CI environments
-  "^https://codersblock\\.com"
+  "^https://codersblock\\.com",
+  # Medium returns 403 to automated link checkers even for valid articles
+  "^https://medium\\.com",
+  # npmjs.com returns 403 to automated link checkers even for valid packages
+  "^https://www\\.npmjs\\.com"
 ]
