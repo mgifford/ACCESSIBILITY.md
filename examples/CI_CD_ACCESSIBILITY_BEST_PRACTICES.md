@@ -239,6 +239,145 @@ jobs:
 
 ---
 
+## 5. Accessibility Tree Testing
+
+Automated WCAG rule checks (axe-core, Lighthouse) verify that markup follows accessibility rules, but they cannot tell you what a screen reader *actually announces* to the user. **Accessibility tree testing** queries the browser's internal representation of the page — the same structure assistive technologies consume — so you can assert on the exact names, roles, and properties that users experience.
+
+> **When to use:** Add accessibility tree tests whenever you need to verify *how* content is announced — especially for complex components such as SVG diagrams, custom widgets, dynamic live regions, and navigation landmarks.
+
+### 5.1 Playwright Aria Snapshots
+
+Playwright exposes the accessibility tree as a YAML snapshot via `toMatchAriaSnapshot()` (added in Playwright v1.46). This is distinct from axe-core rule checks: instead of asking "does this pass WCAG rule X?", you ask "is this exactly what a screen reader user would hear?"
+
+**Install:**
+```bash
+npm install -D @playwright/test
+```
+
+**Snapshot test example:**
+```typescript
+// tests/a11y-tree.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('main navigation is correctly announced', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('nav[aria-label="Main navigation"]'))
+    .toMatchAriaSnapshot(`
+      - navigation "Main navigation":
+          - list:
+              - listitem:
+                  - link "Home"
+              - listitem:
+                  - link "About"
+              - listitem:
+                  - link "Contact"
+    `);
+});
+
+test('SVG diagram is exposed as a labelled image', async ({ page }) => {
+  await page.goto('/diagrams');
+  // Decorative SVGs and unlabelled images will FAIL this test,
+  // surfacing real barriers for screen reader users.
+  await expect(page.locator('svg[role="img"]').first())
+    .toMatchAriaSnapshot(`
+      - img "User Authentication Flowchart":
+    `);
+});
+```
+
+**Generating snapshots from the command line:**
+
+Run the test with `--update-snapshots` once to generate the baseline:
+```bash
+npx playwright test tests/a11y-tree.spec.ts --update-snapshots
+```
+
+After intentional accessibility tree changes, regenerate the snapshot and review the diff the same way you review visual regression diffs.
+
+**Semantic queries with `getByRole`:**
+
+Querying by ARIA role and accessible name mirrors how assistive technology users locate elements. Use these queries in your existing Playwright tests to verify that accessible names are present and correct:
+
+```typescript
+test('form controls have meaningful accessible names', async ({ page }) => {
+  await page.goto('/contact');
+
+  await expect(page.getByRole('textbox', { name: 'Email address' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Send message' })).toBeEnabled();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Contact Us');
+});
+```
+
+> **Note:** `getByRole()` queries fail when accessible names are missing or wrong, providing earlier feedback than a manual screen reader audit.
+
+For more detail on Playwright's accessibility tree API, see the [Playwright aria snapshots documentation](https://playwright.dev/docs/aria-snapshots).
+
+### 5.2 Guidepup — Virtual Screen Reader Testing
+
+[Guidepup](https://www.guidepup.dev) provides reliable automation for screen reader workflows. Its virtual screen reader lets you unit-test the exact text that would be read aloud, without needing a real screen reader installed.
+
+**Install:**
+```bash
+npm install -D @guidepup/virtual-screen-reader @guidepup/jest
+```
+
+**Unit test example (Jest):**
+```typescript
+// tests/sr.test.ts
+import { virtual } from '@guidepup/virtual-screen-reader';
+
+describe('Screen reader announcement', () => {
+  it('announces the dialog title and action buttons', async () => {
+    document.body.innerHTML = `
+      <dialog open aria-labelledby="dlg-title">
+        <h2 id="dlg-title">Confirm deletion</h2>
+        <p>This action cannot be undone.</p>
+        <button>Delete</button>
+        <button>Cancel</button>
+      </dialog>
+    `;
+
+    await virtual.start({ container: document.body });
+    const spoken = await virtual.spokenPhraseLog();
+
+    expect(spoken).toContain('Confirm deletion');
+    expect(spoken).toContain('Delete, button');
+    expect(spoken).toContain('Cancel, button');
+
+    await virtual.stop();
+  });
+});
+```
+
+**GitHub Actions setup:**
+```yaml
+- name: Set up Guidepup
+  uses: guidepup/setup-action@v2
+
+- name: Run virtual screen reader tests
+  run: npx jest tests/sr.test.ts
+```
+
+> **Note:** The [Guidepup Setup action](https://github.com/marketplace/actions/guidepup-setup) also enables automation of real VoiceOver (macOS) and NVDA (Windows) when needed.
+
+### 5.3 Comparing Testing Approaches
+
+Use these approaches together to achieve full coverage. No single tool catches everything.
+
+| Approach | Finds WCAG rule violations | Finds announcement quality issues | Works for SVG / canvas | CI-friendly |
+|:---|:---:|:---:|:---:|:---:|
+| axe-core (Section 3) | ✅ | ❌ | Limited | ✅ |
+| Lighthouse (Section 2) | ✅ | ❌ | ❌ | ✅ |
+| Playwright aria snapshots | Partial | ✅ | ✅ | ✅ |
+| Guidepup virtual screen reader | ❌ | ✅ | ✅ | ✅ |
+| Manual screen reader testing | Partial | ✅ | ✅ | ❌ |
+
+### 5.4 Future Standard: WebDriver BiDi
+
+Playwright's aria snapshot feature currently relies on the Chromium accessibility API. The W3C WebDriver BiDi specification is [working to standardise accessibility tree access across all browsers](https://github.com/w3c/webdriver-bidi/issues/443), which will make these tests cross-browser in the future.
+
+---
+
 ## Governance & SLAs
 
 - **Critical Failures:** Any page with a Lighthouse Accessibility score under $100% blocks the build.

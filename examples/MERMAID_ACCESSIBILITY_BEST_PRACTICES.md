@@ -277,6 +277,7 @@ Mermaid diagrams are closely related to these guides in this project:
 
 - [SVG Accessibility Best Practices](SVG_ACCESSIBILITY_BEST_PRACTICES.md) — Mermaid diagrams are exported as SVG. The SVG accessibility rules for `<title>`, `<desc>`, `role="img"`, `aria-labelledby`, forced-colors, and ID preservation all apply to Mermaid output.
 - [Charts and Graphs Accessibility Best Practices](CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) — Mermaid is commonly used to create flowcharts and sequence diagrams; the charts guide covers text alternatives, data table fallbacks, color encoding, and interactive accessibility requirements that apply when Mermaid diagrams are used as data visualizations.
+- [CI/CD Accessibility Best Practices — Section 5](CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#5-accessibility-tree-testing) — To verify that Mermaid SVG output is correctly announced by screen readers, use Playwright aria snapshots or Guidepup's virtual screen reader. Section 5 of the CI/CD guide explains how to assert the accessibility tree structure (e.g., `role="img"` with the correct accessible name) in automated tests.
 
 ---
 
