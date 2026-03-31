@@ -339,6 +339,7 @@ Together, these contextual details help developers reproduce failures that only 
 ```markdown
 ## Accessibility Issue: [Brief Description]
 
+**Bug ID:** `[PREFIX-xxxxxxxx]` (instance) / `[PREFIX-xxxxxxxx]` (pattern)
 **URL:** [Full URL where issue was found]
 **XPath:** `[Shortest unique XPath]`
 **Full DOM path:** `[Full ancestor chain XPath]`
@@ -346,6 +347,7 @@ Together, these contextual details help developers reproduce failures that only 
 **Rule:** [Tool name] — [Rule ID]
 **Severity:** [Critical / High / Medium / Low]
 **Frequency:** [Number of instances; pages affected]
+**Screen type:** [desktop / mobile] | **Colour mode:** [light / dark]
 
 ### HTML Snippet
 
@@ -400,6 +402,29 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
   "type": "object",
   "required": ["url", "wcag_sc", "severity", "rule_id", "xpath", "html_snippet"],
   "properties": {
+    "instance_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]+-[0-9a-f]{8}$",
+      "examples": ["DRU-a3f1b2c4"],
+      "description": "Stable identifier for this specific violation on this page. Hash of page path + CSS selector + rule ID + screen type. Same element, same rule, same page, same viewport class = same ID."
+    },
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]+-[0-9a-f]{8}$",
+      "examples": ["DRU-f7e3a1b2"],
+      "description": "Stable identifier for the underlying template-level pattern across pages. Hash of CSS selector + rule ID + screen type (no page path). Multiple pages sharing the same component will share this ID."
+    },
+    "screen_type": {
+      "type": "string",
+      "enum": ["desktop", "mobile"],
+      "description": "Inferred from viewport width: < 768 px = mobile, >= 768 px = desktop. Uses the MOBILE_BREAKPOINT constant (768) defined in the implementation."
+    },
+    "color_mode": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "default": "light",
+      "description": "Colour scheme active during the scan. Dark mode support is a future extension; default to 'light'."
+    },
     "url": {
       "type": "string",
       "format": "uri",
@@ -494,6 +519,10 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
 
 ```json
 {
+  "instance_id": "DRU-a3f1b2c4",
+  "pattern_id": "DRU-f7e3a1b2",
+  "screen_type": "desktop",
+  "color_mode": "light",
   "url": "https://example.com/checkout?step=2",
   "xpath": "//button[contains(@class,'close-btn')]",
   "xpath_full": "/html/body/div[@id='cookie-banner']/button[contains(@class,'close-btn')]",
@@ -639,6 +668,146 @@ Template:
 [INSERT MARKDOWN TEMPLATE HERE]
 ```
 
+### 5.8 Generate Stable Unique Identifiers for Violations
+
+Assigning a stable identifier to each violation enables automated pipelines to track whether a fix was deployed, detect regressions, and deduplicate results across multiple scan runs.
+
+**Two levels of identification**
+
+| Level | Inputs to hash | Purpose |
+|-------|---------------|---------|
+| `instance_id` | page path + CSS selector + rule ID + screen type | Uniquely identifies one occurrence of a violation on one specific page. Same element, same rule, same page, same viewport class = same ID. |
+| `pattern_id` | CSS selector + rule ID + screen type | Identifies the recurring template-level pattern across pages. Multiple pages sharing the same component will share a `pattern_id`. |
+
+**Identifier format:** `[PREFIX]-[8-char-hex]` (e.g. `DRU-a3f1b2c4`)
+
+The prefix is project-specific (e.g. `DRU` for a Drupal site, `A11Y` as a generic default) and can be set in your scanner configuration.
+
+**Screen type detection**
+
+Infer screen type from the viewport width reported in the axe-core result. The `MOBILE_BREAKPOINT` constant is defined in the implementation block below; anything under 768 px is treated as mobile.
+
+**Colour mode**
+
+Default to `light` for current scans. Dark mode is a placeholder for future support when testing toolchains support `prefers-color-scheme: dark` emulation.
+
+**JavaScript implementation (Node.js, using `crypto`)**
+
+```javascript
+const crypto = require('crypto');
+
+/** Viewport width threshold below which a device is treated as mobile. */
+const MOBILE_BREAKPOINT = 768;
+
+/**
+ * Detect screen type from an axe-core viewport object.
+ * @param {{ width: number }} viewport
+ * @returns {'mobile'|'desktop'}
+ */
+function detectScreenType(viewport) {
+  return viewport && viewport.width < MOBILE_BREAKPOINT ? 'mobile' : 'desktop';
+}
+
+/**
+ * Normalise an axe-core node.target value to a single CSS selector string.
+ * @param {string|string[]} target - axe-core node.target
+ * @returns {string}
+ */
+function normalizeSelector(target) {
+  return Array.isArray(target) ? target.join(' > ') : String(target);
+}
+
+/**
+ * Generate a stable instance ID for one violation on one page.
+ * Uses SHA-256; only the first 8 hex characters are kept.
+ * @param {string} pagePath   - URL path (e.g. '/checkout')
+ * @param {string} selector   - CSS selector of the failing element
+ * @param {string} ruleId     - axe-core rule ID (e.g. 'button-name')
+ * @param {string} screenType - 'desktop' or 'mobile'
+ * @param {string} [prefix='A11Y'] - Project prefix (e.g. 'DRU')
+ * @returns {string} e.g. 'DRU-a3f1b2c4'
+ */
+function generateInstanceId(pagePath, selector, ruleId, screenType, prefix = 'A11Y') {
+  const input = `${pagePath}|${selector}|${ruleId}|${screenType}`;
+  const hash = crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
+  return `${prefix}-${hash}`;
+}
+
+/**
+ * Generate a pattern ID that identifies the same issue across multiple pages.
+ * Uses SHA-256; only the first 8 hex characters are kept.
+ * @param {string} selector   - CSS selector of the failing element
+ * @param {string} ruleId     - axe-core rule ID
+ * @param {string} screenType - 'desktop' or 'mobile'
+ * @param {string} [prefix='A11Y'] - Project prefix
+ * @returns {string} e.g. 'DRU-f7e3a1b2'
+ */
+function generatePatternId(selector, ruleId, screenType, prefix = 'A11Y') {
+  const input = `${selector}|${ruleId}|${screenType}`;
+  const hash = crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
+  return `${prefix}-${hash}`;
+}
+```
+
+**Annotating axe-core results**
+
+```javascript
+const { URL } = require('url');
+
+/**
+ * Annotate every violation node in an axe-core results object
+ * with instance_id, pattern_id, screen_type, and color_mode.
+ *
+ * @param {object} axeResults  - Full axe.run() result object
+ * @param {string} [prefix='A11Y'] - Project prefix for IDs
+ * @param {string} [colorMode='light'] - 'light' or 'dark' (dark mode: future extension)
+ * @returns {Array<object>} Flat array of annotated violation nodes
+ */
+function annotateViolations(axeResults, prefix = 'A11Y', colorMode = 'light') {
+  const pagePath = new URL(axeResults.url).pathname;
+  const viewport = { width: axeResults.testEnvironment.windowWidth };
+  const screenType = detectScreenType(viewport);
+
+  return axeResults.violations.flatMap(violation =>
+    violation.nodes.map(node => {
+      const selector = normalizeSelector(node.target);
+      return {
+        ...node,
+        rule_id:     violation.id,
+        instance_id: generateInstanceId(pagePath, selector, violation.id, screenType, prefix),
+        pattern_id:  generatePatternId(selector, violation.id, screenType, prefix),
+        screen_type: screenType,
+        color_mode:  colorMode,
+      };
+    })
+  );
+}
+```
+
+**Example output (single annotated node)**
+
+```json
+{
+  "instance_id": "DRU-a3f1b2c4",
+  "pattern_id":  "DRU-f7e3a1b2",
+  "screen_type": "desktop",
+  "color_mode":  "light",
+  "rule_id":     "button-name",
+  "target":      [".cookie-banner > button.close-btn"],
+  "html":        "<button class=\"close-btn\"><svg aria-hidden=\"true\"></svg></button>"
+}
+```
+
+**Why CSS selector, not XPath?**
+
+The CSS selector (from `node.target`) is used in the hash rather than the XPath because:
+
+- axe-core reports CSS selectors natively via `node.target`
+- CSS selectors are stable across XPath conversion logic changes
+- The hash remains consistent even if XPath generation evolves
+
+Include both the CSS selector and XPath in the report; use only the CSS selector as the hash input.
+
 ## 6. Reporting Accessibility Issues to External Organisations
 
 When reporting accessibility barriers to a third-party organisation (a vendor, government service, or public website), adapt the report to the audience.
@@ -690,6 +859,8 @@ Thank you for your attention to this matter.
 Before filing or submitting an accessibility bug report, verify each item:
 
 - [ ] URL is exact and publicly accessible (or a test account is provided)
+- [ ] Unique bug identifiers (`instance_id` and `pattern_id`) are generated and included
+- [ ] Screen type (`desktop` / `mobile`) and colour mode (`light` / `dark`) are recorded
 - [ ] XPath (simplified) uniquely identifies the element
 - [ ] Full DOM path XPath is included
 - [ ] HTML snippet is minimal and self-contained
