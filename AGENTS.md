@@ -45,6 +45,7 @@ Before proposing or writing changes, read these project policy files:
 
 Consult these guides when working with specific elements:
 
+- **Accessibility bug reporting**: [examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](./examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - **Anchor links**: [examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md](./examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md)
 - **ARIA live regions**: [examples/ARIA_LIVE_REGIONS_BEST_PRACTICES.md](./examples/ARIA_LIVE_REGIONS_BEST_PRACTICES.md)
 - **Audio/Video**: [examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md](./examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)

@@ -220,6 +220,12 @@ title: ACCESSIBILITY.md
           <p>Screen reader, keyboard, and cognitive testing techniques with step-by-step checklists</p>
         </article>
       </a>
+      <a class="card" href="./examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.html">
+        <article>
+          <h3>Accessibility Bug Reporting Best Practices</h3>
+          <p>Structured templates, JSON schema, and guidance for writing reproducible accessibility bug reports optimised for automated tools and AI agents</p>
+        </article>
+      </a>
       <a class="card" href="./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.html">
         <article>
           <h3>Charts and Graphs Accessibility Best Practices</h3>
