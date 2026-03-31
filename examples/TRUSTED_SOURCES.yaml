@@ -3467,3 +3467,83 @@ sources:
   owner: University of Dayton
   license: unknown
   status: active
+- id: digitala11y-bug-reporting
+  domain: DigitalA11y
+  url: digitala11y.com
+  full_url: https://www.digitala11y.com/how-where-to-report-accessibility-bugs/
+  best_for: accessibility bug reporting, issue filing, reporting accessibility violations
+  description: Practical guide on how and where to report accessibility bugs, covering internal and external reporting channels, tools, and templates.
+  authority_level: to_review
+  topic_tags:
+  - bug-reporting
+  - testing
+  - wcag
+  - issue-tracking
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: DigitalA11y
+  license: unknown
+  status: active
+- id: act-rules-github
+  domain: ACT Rules Community Group
+  url: act-rules.github.io
+  full_url: https://act-rules.github.io/rules/
+  best_for: ACT rules, accessibility conformance testing, automated rule mapping, WCAG success criteria
+  description: W3C Accessibility Conformance Testing (ACT) rules provide a standardised, machine-readable format for accessibility test rules. Enables consistent mapping between automated tool results and WCAG success criteria.
+  authority_level: authoritative
+  topic_tags:
+  - act-rules
+  - automated-testing
+  - wcag
+  - conformance
+  - rule-mapping
+  jurisdiction: global
+  wcag_version:
+  - '2.0'
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: W3C ACT Rules Community Group
+  license: CC-BY-4.0
+  status: active
+- id: openconcept-impactful-reports
+  domain: OpenConcept Consulting
+  url: medium.com/openconcept-stories
+  full_url: https://medium.com/openconcept-stories/writing-impactful-accessibility-reports-d6cdd84356fd
+  best_for: accessibility reporting, writing accessibility bug reports, accessibility audit reports
+  description: Article by Mike Gifford on writing impactful accessibility reports that are actionable, clear, and prioritised for development teams.
+  authority_level: to_review
+  topic_tags:
+  - bug-reporting
+  - accessibility-audits
+  - reporting
+  - best-practices
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: null
+  owner: Mike Gifford / OpenConcept Consulting
+  license: unknown
+  status: active
+- id: github-readme-fix-a11y-bugs
+  domain: GitHub README Guides
+  url: github.com/readme/guides
+  full_url: https://github.com/readme/guides/fix-accessibility-bugs
+  best_for: accessibility bug fixing, developer workflow, automated testing, accessibility engineering
+  description: Guide by Mike Gifford on how developers can find, prioritise, and fix accessibility bugs, including workflow integration and tool recommendations.
+  authority_level: to_review
+  topic_tags:
+  - bug-fixing
+  - automated-testing
+  - developer-workflow
+  - accessibility-engineering
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: null
+  owner: Mike Gifford / GitHub
+  license: unknown
+  status: active

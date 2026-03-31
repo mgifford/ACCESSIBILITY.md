@@ -26,6 +26,7 @@ Read these files before making any changes:
 
 See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-guidance) for the full list. Quick links:
 
+- [Accessibility bug reporting](../examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Anchor links](../examples/ANCHOR_LINKS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [ARIA live regions](../examples/ARIA_LIVE_REGIONS_BEST_PRACTICES.md)
 - [Audio/Video](../examples/AUDIO_VIDEO_ACCESSIBILITY_BEST_PRACTICES.md)
