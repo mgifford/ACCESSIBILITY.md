@@ -304,6 +304,12 @@ For LLMs to provide more accurate, standards-grounded accessibility guidance, co
 * Produce auditable, standards-aligned recommendations
 * Explain the reasoning behind accessibility advice
 
+### Research: AI and digital accessibility
+
+For a broad view of where AI intersects with accessibility research, Robert Dodd's analysis of 137 academic papers is a useful starting point:
+
+> **[The Current State of Digital Accessibility Research and AI: What 137 Papers Tell Us](https://www.linkedin.com/pulse/current-state-digital-accessibility-research-ai-what-137-robert-dodd-qb7ie)** — Robert Dodd surveys the academic literature to map research trends, gaps, and opportunities where AI tools are being applied to digital accessibility.
+
 ---
 
 ## 🧩 AI Agent Skills

@@ -1723,6 +1723,24 @@ sources:
   owner: Level Access
   license: unknown
   status: active
+- id: robert-dodd-ai-accessibility-research
+  domain: linkedin.com
+  url: https://www.linkedin.com/pulse/current-state-digital-accessibility-research-ai-what-137-robert-dodd-qb7ie
+  full_url: https://www.linkedin.com/pulse/current-state-digital-accessibility-research-ai-what-137-robert-dodd-qb7ie
+  best_for: AI, accessibility research, academic research
+  description: Robert Dodd's analysis of 137 academic papers mapping current research trends, gaps, and opportunities at the intersection of AI and digital accessibility.
+  authority_level: to_review
+  topic_tags:
+  - ai
+  - research
+  - wcag
+  - assistive-technology
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-04-05'
+  owner: Robert Dodd
+  license: unknown
+  status: active
 - id: linkedin-accessibility
   domain: LinkedIn Accessibility
   url: linkedin.com/accessibility
