@@ -354,6 +354,10 @@ We are looking for feedback on the taxonomy and automation workflows.
 * **Have a better workflow?** Send a PR.
 * **Using this?** Let us know so we can add you to the "Adopters" list.
 
+## Related Projects
+- [Intopia's Web Accessibility Skill](https://github.com/Intopia/intopia-web-accessibility-skill/)
+- [Mike Mai's Agent Skills](https://github.com/mikemai2awesome/agent-skills) 
+
 ## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).
