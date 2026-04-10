@@ -340,7 +340,7 @@ use it on elements that genuinely handle their own touch events.
 - [WCAG 2.2 Understanding 2.5.8 Target Size Minimum](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
 - [WCAG 2.2 Understanding 2.5.7 Dragging Movements](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html)
 - [MDN — Pointer events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
-- [MDN — touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action)
+- [MDN — touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action)
 - [ESDC — Touch input accessibility (Government of Canada)](https://bati-itao.github.io/learning/esdc-self-paced-web-accessibility-course/module10/touch-input.html)
 
 ### Machine-Readable Standards

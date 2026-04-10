@@ -338,7 +338,7 @@ This formula is based on the sRGB color space. It has limitations for colors of 
 |:---|:---|
 | [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) | Quick manual checks — text contrast |
 | [Accessible Colors](https://accessible-colors.com/) | Find the closest accessible color |
-| [Colour Contrast Analyser (TPGi)](https://www.tpgi.com/color-contrast-checker/) | Desktop app for sampling on-screen colors |
+| [Colour Contrast Analyser (TPGi)](https://vispero.com/lp/color-contrast-checker/) | Desktop app for sampling on-screen colors |
 | [axe DevTools](https://www.deque.com/axe/devtools/) | Browser extension with contrast violation detection |
 | [Colour Contrast Checker (Deque)](https://dequeuniversity.com/rules/axe/4.9/color-contrast) | Automated rule documentation |
 | [apcacontrast.com](https://apcacontrast.com/) | APCA-based contrast evaluation |
