@@ -1,0 +1,6 @@
+---
+layout: null
+---
+{% assign candidates = site.pages | where_exp: "p", "p.title and p.title != ''" | sort: "title" %}{% assign indexed_pages = "" | split: "" %}{% for p in candidates %}{% unless p.url contains "search-index" %}{% assign indexed_pages = indexed_pages | push: p %}{% endunless %}{% endfor %}[{% for p in indexed_pages %}
+  {"id": {{ forloop.index }}, "title": {{ p.title | jsonify }}, "url": {{ p.url | relative_url | jsonify }}, "content": {{ p.content | strip_html | normalize_whitespace | truncatewords: 150 | jsonify }}}{% unless forloop.last %},{% endunless %}
+{% endfor %}]
