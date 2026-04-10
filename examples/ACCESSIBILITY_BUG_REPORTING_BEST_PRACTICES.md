@@ -693,6 +693,7 @@ Default to `light` for current scans. Dark mode is a placeholder for future supp
 
 **JavaScript implementation (Node.js, using `crypto`)**
 
+{% raw %}
 ```javascript
 const crypto = require('crypto');
 
@@ -748,6 +749,7 @@ function generatePatternId(selector, ruleId, screenType, prefix = 'A11Y') {
   return `${prefix}-${hash}`;
 }
 ```
+{% endraw %}
 
 **Annotating axe-core results**
 
