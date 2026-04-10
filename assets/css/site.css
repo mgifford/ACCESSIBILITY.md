@@ -665,3 +665,206 @@ textarea {
 [data-theme="light"] .moon-icon {
   display: block;
 }
+
+/* ── Screen-reader-only utility ── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Site header title ── */
+
+.site-header-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--text);
+  white-space: nowrap;
+  margin-right: auto;
+}
+
+.site-header-title:hover,
+.site-header-title:focus-visible {
+  text-decoration: underline;
+}
+
+.site-header-title:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Header search form ── */
+
+.header-search-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.header-search-form input[type="search"] {
+  width: clamp(8rem, 20vw, 18rem);
+  border: none;
+  border-radius: 0;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.9rem;
+  background: transparent;
+  color: var(--text);
+  /* Remove browser-default search cancel button on webkit */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.header-search-form input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.header-search-form input[type="search"]:focus {
+  outline: none;
+}
+
+.header-search-form:focus-within {
+  outline: 2px solid var(--text);
+  outline-offset: 0;
+}
+
+.header-search-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.5rem;
+  border: none;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 0;
+}
+
+.header-search-form button:hover {
+  background: var(--bg-soft);
+  color: var(--text);
+}
+
+/* ── Search page ── */
+
+.search-page {
+  padding: 2.5rem 0 4rem;
+}
+
+.search-page h1 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+}
+
+.search-form-standalone {
+  margin-bottom: 2rem;
+}
+
+.search-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+.search-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  max-width: 600px;
+}
+
+.search-input-row input[type="search"] {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input-row input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-input-row input[type="search"]:focus {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.search-submit-btn {
+  white-space: nowrap;
+  padding: 0.65rem 1.2rem;
+  border-radius: 0.5rem;
+}
+
+.search-hint {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0.35rem 0 0;
+}
+
+.search-no-results {
+  color: var(--muted);
+  margin-top: 1rem;
+}
+
+.search-result-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-result-item {
+  border-top: 1px solid var(--line);
+  padding: 1rem 0;
+}
+
+.search-result-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.search-result-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: var(--text);
+}
+
+.search-result-title:hover {
+  color: var(--muted);
+}
+
+.search-result-title:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.search-result-excerpt {
+  margin: 0.3rem 0 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 680px;
+}

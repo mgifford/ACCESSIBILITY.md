@@ -59,6 +59,35 @@
     <div class="page-shell">
       <header class="site-header">
         <div class="wrap site-header-inner">
+          <!-- Site title / home link -->
+          <a href="{{ '/' | relative_url }}" class="site-header-title" aria-label="{{ site.title }} home">{{ site.title }}</a>
+
+          <!-- Inline header search — submits to /search/ with ?q= -->
+          <form
+            class="header-search-form"
+            action="{{ '/search' | relative_url }}"
+            method="get"
+            role="search"
+          >
+            <label for="header-search-input" class="sr-only">Search site</label>
+            <input
+              id="header-search-input"
+              type="search"
+              name="q"
+              placeholder="Search…"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <button type="submit" aria-label="Submit search">
+              <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+          </form>
+
           <!-- Theme toggle: placed last in header for proper keyboard tab order -->
           <!-- aria-label is updated by the inline script below before first interaction -->
           <button id="theme-toggle" aria-label="Switch to dark mode" type="button">
