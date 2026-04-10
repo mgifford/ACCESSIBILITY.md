@@ -344,7 +344,7 @@ An anchor link implementation is complete when:
 
 - [Anchor Links and How to Make Them Awesome (codersblock.com)](https://codersblock.com/blog/anchor-links-and-how-to-make-them-awesome/)
 - [Are Your Anchor Links Accessible? (Amber Wilson)](https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/)
-- [prefers-reduced-motion (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+- [prefers-reduced-motion (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)
 - [Understanding Success Criterion 2.4.1 Bypass Blocks (W3C)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html)
 - [Understanding Success Criterion 2.4.4 Link Purpose (W3C)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
 - [CSS Tricks: prefers-reduced-motion](https://css-tricks.com/almanac/rules/m/media/prefers-reduced-motion/)

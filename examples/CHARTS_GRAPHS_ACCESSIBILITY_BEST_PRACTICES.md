@@ -533,7 +533,7 @@ Charts and graphs are closely related to these guides in this project:
 
 - [Harvard University IT: Data Visualization, Charts and Graphs Accessibility](https://accessibility.huit.harvard.edu/data-viz-charts-graphs)
 - [A11y Collective: Accessible Charts](https://www.a11y-collective.com/blog/accessible-charts/)
-- [Berkeley DAP: Graphs, Charts and Complex Images](https://dap.berkeley.edu/learn/concepts/graphs-charts-and-complex-images)
+- [Berkeley DAP: Graphs, Charts and Complex Images](https://dap.berkeley.edu/websites/web-accessibility-basics/images/graphs-charts-and-complex-images)
 - [Niagara College Accessibility Hub: Charts and Graphs](https://accessibilityhub.niagaracollege.ca/articles/websites/charts-and-graphs/)
 - [UK Government Analysis Function: Charts — A Checklist](https://analysisfunction.civilservice.gov.uk/policy-store/charts-a-checklist/)
 - [Vispero: Making Data Visualizations Accessible](https://vispero.com/resources/making-data-visualizations-accessible/)

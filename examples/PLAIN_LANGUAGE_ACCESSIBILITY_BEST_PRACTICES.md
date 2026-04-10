@@ -306,7 +306,7 @@ Run these checks before publishing:
 ## References
 
 - [Plain Language Guidelines — digital.gov](https://digital.gov/guides/plain-language/)
-- [Plainlanguage.gov](https://www.plainlanguage.gov/)
+- [Plainlanguage.gov](https://digital.gov/guides/plain-language)
 - [Hemingway Editor](https://hemingwayapp.com/)
 - [WCAG 2.2 Understanding 3.1.5 Reading Level](https://www.w3.org/WAI/WCAG22/Understanding/reading-level.html)
 - [Berkeley Web Accessibility — Plain language](https://dap.berkeley.edu/websites/web-accessibility-basics/what-plain-language)

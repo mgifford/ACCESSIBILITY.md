@@ -14,6 +14,8 @@ exclude = [
   "^https://idrc\\.ocadu\\.ca",
   # Personal blog with intermittent availability in CI environments
   "^https://codersblock\\.com",
+  # Personal blog with intermittent availability in CI environments
+  "^https://barish\\.me",
   # Medium returns 403 to automated link checkers even for valid articles
   "^https://medium\\.com",
   # npmjs.com returns 403 to automated link checkers even for valid packages

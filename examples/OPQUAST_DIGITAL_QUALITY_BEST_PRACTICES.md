@@ -6,7 +6,7 @@ title: Opquast Digital Quality Best Practices
 
 This guide translates the [Opquast Digital Quality Checklist](https://checklists.opquast.com/en/digital-quality/) into AI-actionable development requirements. The checklist contains 245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and overall web quality.
 
-**Full checklist:** [checklists.opquast.com/en/digital-quality/](https://checklists.opquast.com/en/digital-quality/) (English) | [checklists.opquast.com/fr/digital-quality/](https://checklists.opquast.com/fr/digital-quality/) (French)
+**Full checklist:** [checklists.opquast.com/en/digital-quality/](https://checklists.opquast.com/en/digital-quality/) (English) | [checklists.opquast.com/fr/digital-quality/](https://checklists.opquast.com/fr/qualite-numerique/) (French)
 
 > The Opquast rules are published under [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Rule numbers in this guide correspond directly to Version 5 (2025–2030). See [opquast.com](https://www.opquast.com/) for the authoritative source.
 
@@ -752,7 +752,7 @@ Use the Opquast framework as a holistic quality baseline and layer WCAG testing 
 ## References and Further Reading
 
 - **Opquast Digital Quality Checklist (English):** [checklists.opquast.com/en/digital-quality/](https://checklists.opquast.com/en/digital-quality/)
-- **Opquast Digital Quality Checklist (French):** [checklists.opquast.com/fr/digital-quality/](https://checklists.opquast.com/fr/digital-quality/)
+- **Opquast Digital Quality Checklist (French):** [checklists.opquast.com/fr/digital-quality/](https://checklists.opquast.com/fr/qualite-numerique/)
 - **Opquast website:** [opquast.com](https://www.opquast.com/)
 - **Opquast certification:** Learn and certify Opquast skills at [opquast.com](https://www.opquast.com/)
 - **License:** Opquast rules are published under [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
