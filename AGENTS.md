@@ -78,6 +78,58 @@ Consult these guides when working with specific elements:
 - **Code examples**: Must pass hypothetical axe-core checks
 - **Documentation**: Must be clear, accurate, and well-structured
 
+## GitHub Copilot agent mode
+
+When running as a coding agent (multi-step autonomous mode), apply the following structured workflow in addition to the core requirements above.
+
+### Pre-flight checks (always run first)
+
+1. Read `ACCESSIBILITY.md` to understand the project's current conformance level and known gaps.
+2. If the task touches a component type listed in the component-specific guidance section, read that guide before writing any code.
+3. Check `examples/TRUSTED_SOURCES.yaml` before fetching or citing any external URL.
+4. Identify which WCAG 2.2 AA Success Criterion the task relates to before proposing a solution.
+
+### Task decomposition
+
+Break any UI change into sequential layers. Complete and verify each layer before moving to the next:
+
+| Layer | What to check |
+|-------|--------------|
+| **HTML structure** | Semantic elements, heading hierarchy, landmark roles |
+| **ARIA attributes** | Only valid roles/states/properties permitted on the host element (validate against ARIA spec) |
+| **Keyboard behaviour** | Tab order matches visual order; every interactive element is reachable by keyboard and has a visible focus indicator |
+| **Visual presentation** | Colour contrast meets WCAG 1.4.3/1.4.11; focus indicators meet 2.4.11; motion respects `prefers-reduced-motion` |
+
+#### WCAG principle → agent task patterns
+
+| WCAG Principle | What to check |
+|----------------|--------------|
+| **Perceivable (1.x)** | Every non-text element has a text alternative. If purpose is ambiguous, mark as `<!-- TODO: verify alt -->` and explain in the PR. |
+| **Operable (2.x)** | Every interactive element is keyboard-operable. No keyboard trap. Focus indicator is always visible. |
+| **Understandable (3.x)** | Error messages identify the field, describe the error, and suggest a correction. State is never communicated by colour alone. |
+| **Robust (4.x)** | ARIA usage is valid for the host element. Dynamic content updates are announced without forcibly moving focus. |
+
+### Stopping conditions
+
+Stop and request human review if any of these apply:
+
+- You cannot determine whether a change affects keyboard navigation without running the application.
+- The fix requires modifying more than three files.
+- The change involves colour contrast and design-system tokens are not present in the repository.
+- The component relies on a third-party library whose source is inaccessible.
+- The correct WCAG Success Criterion is ambiguous.
+- Multiple "Low" severity findings cluster on a single critical user journey (treat as "Critical" and escalate).
+
+### Required PR output
+
+Every agent-authored PR must include:
+
+- The WCAG Success Criterion (e.g., `WCAG 1.1.1 Non-text Content`) for each accessibility change.
+- A before/after code snippet for each modified element.
+- A list of automated checks run, or the note "not run – requires live environment".
+- A list of manual checks required before merge.
+- AI usage disclosure per the Sustainability policy above.
+
 ## Machine-readable standards
 
 This project uses [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for machine-readable WCAG/ARIA/ATAG standards. See [examples/TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml) for vetted references.
