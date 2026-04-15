@@ -51,6 +51,45 @@ See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-g
 - [Manual testing guide](../examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [Digital quality (Opquast)](../examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
 
+## GitHub Copilot agent mode
+
+When running as a coding agent (multi-step autonomous mode), follow these additional rules.
+
+### Pre-flight checks (run before every task)
+
+1. Read `ACCESSIBILITY.md` to understand the project's current conformance level and known gaps.
+2. If the task touches a component type listed above, read that component guide first.
+3. Check `examples/TRUSTED_SOURCES.yaml` before fetching any external URL.
+
+### Task decomposition
+
+Break UI changes into sequential layers and verify each before moving to the next:
+
+1. **HTML structure** — semantic elements, heading hierarchy, landmark roles
+2. **ARIA attributes** — only valid roles/states/properties permitted on the host element
+3. **Keyboard behaviour** — Tab order follows visual order; every interactive element is reachable and operable
+4. **Visual presentation** — colour contrast, focus indicators, motion/animation
+
+### Stopping conditions
+
+Stop and request human review if:
+
+- You cannot determine whether a change affects keyboard navigation without running the application.
+- The fix requires modifying more than three files.
+- The change involves colour contrast and design-system tokens are not present in the repository.
+- The component relies on a third-party library whose source is inaccessible.
+- The correct WCAG Success Criterion is ambiguous.
+
+### Required PR output
+
+Every agent-authored PR must include:
+
+- The WCAG Success Criterion reference for each accessibility change made.
+- A before/after code snippet for each modified element.
+- A list of automated checks run (or "not run – requires live environment").
+- A list of manual checks required before merge.
+- AI usage disclosure.
+
 ## Quick Decision Framework
 
 When uncertain about an approach:

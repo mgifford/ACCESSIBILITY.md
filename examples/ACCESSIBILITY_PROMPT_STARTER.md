@@ -18,11 +18,11 @@ Project context (if it is not specified, please draw out [PROJECT_NAME], [REPO_U
 - Product type: [WEB_APP / MOBILE / LIBRARY / DOCS / OTHER]
 - Main users: [WHO USES THIS]
 - Primary UI technologies: [TECH STACK]
-- Current accessibility target: Latest W3C WAI Reccomendation, currently WCAG 2.2 AA
+- Current accessibility target: Latest W3C WAI Recommendation, currently WCAG 2.2 AA
 
 Process requirements:
 1) If key information is missing, ask clarifying questions first (max 8).
-2) If a repository URL is provided, infer reasonable defaults from visible docs, then clearly mark assumptions.
+2) If a repository URL is provided, read visible docs and infer reasonable defaults. Clearly mark every inferred value as **[ASSUMED: reason]** so reviewers can verify or correct it. Do not invent metrics — use "Unknown – measure within 30 days" for missing data.
 3) Keep language specific and operational, not generic policy text.
 4) Include explicit sections for:
    - Conformance target and scope
