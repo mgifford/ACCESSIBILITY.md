@@ -50,6 +50,7 @@ See [AGENTS.md § Component-Specific Guidance](../AGENTS.md#component-specific-g
 - [User Personalization](../examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Manual testing guide](../examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [Digital quality (Opquast)](../examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
+- [Copilot agent mode](../examples/COPILOT_AGENT_MODE_GUIDE.md)
 
 ## GitHub Copilot agent mode
 

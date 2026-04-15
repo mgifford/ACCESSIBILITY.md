@@ -296,6 +296,12 @@ title: ACCESSIBILITY.md
           <p>Ready-to-use AI prompts for common accessibility tasks in development workflows</p>
         </article>
       </a>
+      <a class="card" href="./examples/COPILOT_AGENT_MODE_GUIDE.html">
+        <article>
+          <h3>Copilot Agent Mode Guide</h3>
+          <p>Structure AGENTS.md for GitHub Copilot agent mode: dual-audience templates, WCAG-grounded task patterns, stopping conditions, and PR output format</p>
+        </article>
+      </a>
       <a class="card" href="./prompt-generator.html">
         <article>
           <h3>Prompt Generator Tool</h3>
