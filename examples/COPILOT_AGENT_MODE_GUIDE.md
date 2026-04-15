@@ -365,7 +365,7 @@ The agent should:
 
 | Criterion | Pass |
 |-----------|------|
-| All three `<input>` fields have programmatically associated `<label>` elements | ✅ |
+| Both `<input>` fields have programmatically associated `<label>` elements | ✅ |
 | `<div>` button replaced with native `<button type="submit">` | ✅ |
 | Placeholder text not used as the sole label | ✅ |
 | PR description includes WCAG criterion references | ✅ |
