@@ -589,7 +589,6 @@ axe --tags wcag2a,wcag2aa https://example.com
 - [Alternative Text and Long Description Best Practices](https://accessibility.ecampusontario.ca/accessibility/best-practices/alt-text/) (eCampus Ontario)
 - [Accessibility — Images and Alt Text](https://accessibility.asu.edu/articles/images) (Arizona State University)
 - [Image Alt Text](https://accessibility.psu.edu/images/alttext/) (Penn State University)
-- [Alt Text Best Practices Guide](https://people.utoronto.ca/wp-content/uploads/2023/11/Alt-Text-Best-Practices-Guide-PSEC.pdf) (University of Toronto)
 - [Accessibility Tip: Writing Alt Text](https://udayton.edu/blogs/onlinelearning/2026/accessibility-tip-2.php) (University of Dayton)
 
 ### Machine-Readable Standards

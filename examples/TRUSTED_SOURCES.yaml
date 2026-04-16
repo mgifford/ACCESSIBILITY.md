@@ -3470,7 +3470,8 @@ sources:
   last_reviewed: "2023-11-01"
   owner: University of Toronto
   license: unknown
-  status: active
+  status: inactive
+  status_note: PDF URL returns HTTP 202 (link checker failure as of 2026-04-16); removed from active references
 - id: asu-accessibility-images
   domain: Arizona State University Accessibility — Images
   url: https://accessibility.asu.edu/
