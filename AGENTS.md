@@ -70,6 +70,7 @@ Consult these guides when working with specific elements:
 - **Print styles**: [examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md](./examples/PRINT_ACCESSIBILITY_BEST_PRACTICES.md)
 - **Progressive enhancement**: [examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md](./examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
 - **Digital quality (Opquast)**: [examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md](./examples/OPQUAST_DIGITAL_QUALITY_BEST_PRACTICES.md)
+- **Copilot agent mode**: [examples/COPILOT_AGENT_MODE_GUIDE.md](./examples/COPILOT_AGENT_MODE_GUIDE.md)
 
 ## Testing and validation
 
@@ -81,6 +82,8 @@ Consult these guides when working with specific elements:
 ## GitHub Copilot agent mode
 
 When running as a coding agent (multi-step autonomous mode), apply the following structured workflow in addition to the core requirements above.
+
+For a deeper guide — including dual-audience `AGENTS.md` templates, worked WCAG examples for each principle, stopping conditions, and PR output format — see **[examples/COPILOT_AGENT_MODE_GUIDE.md](./examples/COPILOT_AGENT_MODE_GUIDE.md)**.
 
 ### Pre-flight checks (always run first)
 
