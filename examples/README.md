@@ -46,13 +46,15 @@ This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 
 ## YAML / Workflow Assets
 
+- [AGENT_BOOTSTRAP_WORKFLOW.yml](./AGENT_BOOTSTRAP_WORKFLOW.yml) - GitHub Actions `workflow_dispatch` that launches the Copilot coding agent to auto-generate ACCESSIBILITY.md
 - [A11Y_SHIFT_LEFT_WORKFLOW.yml](./A11Y_SHIFT_LEFT_WORKFLOW.yml)
 - [BROWSER_TESTING_WORKFLOW.yml](./BROWSER_TESTING_WORKFLOW.yml) - Multi-browser accessibility testing
 - [PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml](./PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml)
 - [TRUSTED_SOURCES.yaml](./TRUSTED_SOURCES.yaml) - Vetted accessibility resources with automated monthly maintenance. Includes procurement requirements from [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md). See [maintenance documentation](../.github/TRUSTED_SOURCES_MAINTENANCE.md).
 
-## Prompt Starter
+## Prompt Starters and Agent Tasks
 
+- [COPILOT_BOOTSTRAP_AGENT_PROMPT.md](./COPILOT_BOOTSTRAP_AGENT_PROMPT.md) - Structured task description for the Copilot coding agent bootstrap workflow
 - [ACCESSIBILITY_PROMPT_STARTER.md](./ACCESSIBILITY_PROMPT_STARTER.md)
 
 ## Action Playbook

@@ -179,6 +179,27 @@ If uncertain about an approach:
 3. Review [CONTRIBUTING.md](./CONTRIBUTING.md)
 4. When in doubt, choose the more accessible and sustainable option
 
+## Bootstrap agent pattern
+
+Use the **Copilot coding agent bootstrap workflow** to generate a first-draft
+`ACCESSIBILITY.md` for any new project without manual template-filling:
+
+1. Copy [`examples/AGENT_BOOTSTRAP_WORKFLOW.yml`](./examples/AGENT_BOOTSTRAP_WORKFLOW.yml)
+   to `.github/workflows/` in the target repository.
+2. Trigger the workflow via **Actions → Bootstrap ACCESSIBILITY.md →
+   Run workflow**.
+3. The agent reads the repository, infers the tech stack and CI/CD setup, fills
+   in [`ACCESSIBILITY-template.md`](./ACCESSIBILITY-template.md), and opens a
+   **draft pull request** — it never commits directly to `main`.
+4. Review the draft PR and verify every `[ASSUMED: …]` annotation before
+   merging.
+
+The full agent task description (the structured prompt the agent follows) lives
+in [`examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md`](./examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md).
+
+> **Requires** a GitHub Copilot Individual, Business, or Enterprise
+> subscription with the Copilot coding agent feature enabled.
+
 ## Continuous improvement
 
 Help maintain quality by:
