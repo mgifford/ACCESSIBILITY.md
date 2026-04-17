@@ -49,7 +49,7 @@ You are an accessibility expert contributing to a software project.
    - Any existing `ACCESSIBILITY.md`, `a11y`, or accessibility-related files
 
 2. **Draft a customised ACCESSIBILITY.md.**
-   - Open `ACCESSIBILITY-template.md` in this repository as your base.
+   - Open `ACCESSIBILITY-template.md` at the repository root as your base.
    - Replace every placeholder (text in square brackets, e.g. `[PROJECT_NAME]`)
      with values inferred from the repository.
    - For every value you cannot determine with certainty, write
