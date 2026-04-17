@@ -157,6 +157,15 @@ This repository provides templates and guidance to help you implement `ACCESSIBI
 - Visit [prompt-generator.md](./prompt-generator.md) for a form-based tool
 - Or use [examples/ACCESSIBILITY_PROMPT_STARTER.md](./examples/ACCESSIBILITY_PROMPT_STARTER.md) for guidance
 
+**Option C: Bootstrap with a Copilot coding agent** *(recommended for maintainers rolling out ACCESSIBILITY.md at scale)*
+1. Copy [examples/AGENT_BOOTSTRAP_WORKFLOW.yml](./examples/AGENT_BOOTSTRAP_WORKFLOW.yml) to `.github/workflows/` in your repository
+2. Trigger it via **Actions → Bootstrap ACCESSIBILITY.md → Run workflow**
+3. The Copilot coding agent analyses your repo, fills in the template, and opens a **draft PR** for human review
+4. Review the draft PR, verify every `[ASSUMED: …]` annotation, and merge
+
+> **Requires** a GitHub Copilot Individual, Business, or Enterprise subscription with the coding agent feature enabled.
+> See [examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md](./examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md) for the full agent task description and permissions guide.
+
 ### Step 2: Set up GitHub workflows (CI/CD automation)
 
 Copy the workflows that match your needs from the `examples/` directory:

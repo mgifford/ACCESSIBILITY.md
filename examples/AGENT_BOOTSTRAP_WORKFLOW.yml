@@ -1,0 +1,88 @@
+# Bootstrap ACCESSIBILITY.md using GitHub Copilot coding agent
+#
+# HOW TO USE
+# ----------
+# 1. Copy this file to .github/workflows/bootstrap-accessibility.yml in your
+#    repository.
+# 2. Trigger it from the Actions tab → "Bootstrap ACCESSIBILITY.md" →
+#    "Run workflow".
+# 3. The Copilot coding agent will analyse your repository, fill in
+#    ACCESSIBILITY-template.md, and open a **draft** pull request for review.
+#
+# REQUIREMENTS
+# ------------
+# - A GitHub Copilot Individual, Business, or Enterprise subscription with the
+#   Copilot coding agent feature enabled.
+# - The following repository settings enabled:
+#     Settings → Copilot → "Allow Copilot to create and approve pull requests"
+# - The GITHUB_TOKEN permissions below (granted automatically by GitHub
+#   Actions; no additional secrets are required).
+#
+# AGENT TASK
+# ----------
+# The full agent task description lives in:
+#   examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md
+# The workflow passes it verbatim to the Copilot coding agent.
+
+name: Bootstrap ACCESSIBILITY.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_only:
+        description: >-
+          Open the pull request as a draft (recommended – prevents accidental
+          merge before human review).
+        type: boolean
+        default: true
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bootstrap:
+    name: Run Copilot bootstrap agent
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------------
+      # Extract the agent task description from the examples directory.
+      # COPILOT_BOOTSTRAP_AGENT_PROMPT.md contains human-readable prose
+      # plus exactly one ```text … ``` code block that holds the task.
+      # Only that block is passed to the agent; all surrounding Markdown
+      # and frontmatter is stripped.
+      # ------------------------------------------------------------------
+      - name: Extract agent task description
+        id: task
+        run: |
+          {
+            echo 'body<<AGENT_TASK_EOF'
+            awk '/^```text$/{found=1; next} /^```$/{if(found) exit} found{print}' \
+              examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md
+            echo 'AGENT_TASK_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      # ------------------------------------------------------------------
+      # Assign the task to the Copilot coding agent.
+      #
+      # The `github/copilot-agent` action (public preview) accepts a
+      # `task` input containing the full task description and then
+      # autonomously plans and executes the steps required to complete it,
+      # including creating branches, committing files, and opening PRs.
+      #
+      # See: https://docs.github.com/en/copilot/using-github-copilot/
+      #      using-github-copilot-for-pull-requests/
+      #      using-copilot-to-help-you-work-on-a-pull-request
+      # ------------------------------------------------------------------
+      - name: Assign task to Copilot coding agent
+        uses: github/copilot-agent@v1
+        with:
+          task: ${{ steps.task.outputs.body }}
+          # The agent opens its own PR. Pass the draft flag from the
+          # workflow_dispatch input so reviewers control this behaviour.
+          pr_draft: ${{ inputs.draft_only }}
