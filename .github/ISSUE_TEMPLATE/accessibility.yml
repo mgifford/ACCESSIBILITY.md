@@ -6,16 +6,50 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve accessibility! This template helps you report accessibility issues in a way that makes them easier to reproduce and fix.
-        
-        **Tip**: Include as much detail as you can, but don't worry if you can't fill everything out. Any information helps!
+        Thanks for helping improve accessibility! Please fill in as much detail as you can so the issue can be reproduced and fixed.
 
   - type: input
-    id: issue-title
+    id: target-url
     attributes:
-      label: Issue Summary
-      description: Brief description of the accessibility issue
-      placeholder: "e.g., Ensure role attribute has an appropriate value for the element"
+      label: URL or Location
+      description: Where did you encounter this issue? Include the full URL or describe the page/component.
+      placeholder: "e.g., https://example.com/checkout or Local: http://localhost:3000/dashboard"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can someone else reproduce this issue?
+      placeholder: |
+        1. Navigate to [URL]
+        2. [Describe the action, e.g. "Tab to the submit button"]
+        3. Observe that [what goes wrong]
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected and Actual Behaviour
+      description: What should happen, and what actually happens?
+      placeholder: |
+        Expected: The button has an accessible name announced by the screen reader.
+        Actual: The screen reader announces "unlabeled button".
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, and assistive technology (if applicable).
+      placeholder: |
+        - Browser: Chrome 124 / Firefox 125 / Safari 17
+        - OS: Windows 11 / macOS 14 / iOS 17
+        - Screen reader: NVDA 2024.1 / VoiceOver / N/A
+        - Testing tool: axe DevTools / Lighthouse / Manual
     validations:
       required: true
 
@@ -32,94 +66,24 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: description
-    attributes:
-      label: Issue Description
-      description: Describe the accessibility problem. If you know the specific rule or guideline, include it here.
-      placeholder: |
-        Example:
-        Issue: Ensure role attribute has an appropriate value for the element (aria-allowed-role)
-        Reference: https://dequeuniversity.com/rules/axe/4.10/aria-allowed-role
-        
-        The issue prevents screen reader users from understanding the purpose of the element...
-    validations:
-      required: true
-
   - type: input
-    id: target-url
+    id: wcag-criterion
     attributes:
-      label: Target URL or Application
-      description: Where did you encounter this issue?
-      placeholder: "e.g., https://example.com/search?q=youtube or Local environment: http://localhost:3000/dashboard"
+      label: WCAG Success Criterion (if known)
+      description: e.g., 1.1.1 Non-text Content, 2.4.3 Focus Order
+      placeholder: "e.g., 4.1.2 Name, Role, Value (Level A)"
     validations:
       required: false
 
   - type: textarea
     id: code-snippet
     attributes:
-      label: Code Snippet
-      description: HTML/code showing the issue (if available)
+      label: HTML Snippet (if available)
+      description: Minimal HTML fragment showing the issue.
       placeholder: |
-        <div role="invalid-role">
-          <button>Click me</button>
-        </div>
+        <button>
+          <img src="close.svg">
+        </button>
       render: html
     validations:
       required: false
-
-  - type: textarea
-    id: steps-to-reproduce
-    attributes:
-      label: Steps to Reproduce
-      description: How can someone else reproduce this issue?
-      placeholder: |
-        1. Navigate to [URL]
-        2. Tab to the search input
-        3. Observe that...
-    validations:
-      required: false
-
-  - type: checkboxes
-    id: rule-categories
-    attributes:
-      label: Rule Categories
-      description: Select any that apply (if known)
-      options:
-        - label: "ARIA (roles, attributes, properties)"
-        - label: "Forms (labels, inputs, validation)"
-        - label: "Keyboard Navigation"
-        - label: "Color Contrast"
-        - label: "Semantic HTML"
-        - label: "Text Alternatives (alt text, captions)"
-        - label: "Focus Management"
-        - label: "Best Practice"
-
-  - type: textarea
-    id: assistive-technology
-    attributes:
-      label: Assistive Technology Testing
-      description: If you tested with assistive technology, please share details
-      placeholder: |
-        - Screen reader: NVDA 2024.1 with Chrome 120 on Windows 11
-        - Behavior: The button is announced as "unlabeled" instead of "Search"
-        - Keyboard only: Unable to reach the element with Tab key
-    validations:
-      required: false
-
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional Context
-      description: Any other information that might help (screenshots, recordings, expected behavior, etc.)
-    validations:
-      required: false
-
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Submission Guidelines
-      description: Please confirm
-      options:
-        - label: "I have searched for similar issues before submitting"
-          required: false
