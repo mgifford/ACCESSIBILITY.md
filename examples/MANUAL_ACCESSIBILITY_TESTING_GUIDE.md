@@ -14,6 +14,7 @@ This guide provides practical procedures for manual accessibility testing. While
 - Focus management in dynamic interfaces
 - Context and orientation for assistive technology users
 - Real-world usability barriers
+- Forced colors mode (Windows High Contrast and similar) — automated tools cannot simulate OS-level color overrides
 
 ## 2. When Manual Testing Is Required
 
@@ -255,6 +256,143 @@ For each interactive element, verify:
 - [ ] Focus indicator is not removed (unless replaced with better style)
 - [ ] Focus indicator doesn't obscure content
 
+### 6.4 Forced Colors Mode Testing
+
+**Why automated tools miss this:**
+
+Forced colors mode is triggered by an OS-level accessibility setting that replaces all author-defined colors with a constrained system palette. Automated tools cannot reliably test for it because:
+
+- They don't simulate the OS color override that happens outside the browser
+- They can't detect which elements become invisible when custom colors are stripped
+- They cannot assess whether focus indicators, icons, or custom controls survive the color substitution
+
+**What forced colors mode is:**
+
+When a user enables a high contrast theme in Windows (or a similar OS contrast setting), the browser activates the `forced-colors: active` CSS media query. The browser overrides `color`, `background-color`, `border-color`, `fill`, `stroke`, and related properties with a small set of CSS system color keywords. This allows people who require very high contrast or specific color combinations to use the web comfortably.
+
+The relevant WCAG success criteria are:
+- **1.4.1 Use of Color** (Level A) — information must not be conveyed by color alone
+- **1.4.11 Non-text Contrast** (Level AA) — UI components and focus indicators must retain sufficient contrast
+- **1.4.3 Contrast (Minimum)** (Level AA) — text contrast requirements still apply through system colors
+
+---
+
+**How to enable or emulate forced colors mode:**
+
+*Real OS settings (most accurate — always verify with these before release):*
+
+- **Windows 11:** Settings → Accessibility → Contrast themes → choose a theme (e.g., "Aquatic", "Desert", "Dusk", or "Night sky") → Apply
+- **Windows 10:** Settings → Ease of Access → High Contrast → turn on "Turn on high contrast"
+- Use `Alt + Left Shift + Print Screen` as a keyboard shortcut to toggle High Contrast on Windows
+
+*Browser DevTools emulation (convenient during development):*
+
+- **Chrome / Edge DevTools:** Open DevTools (F12) → More Tools (⋮) menu → Rendering → scroll to "Emulate CSS media feature forced-colors" → select `active`
+- **Firefox:** Navigate to `about:config` → search `ui.forcedColors` → set the integer value to `1` (set back to `-1` to reset)
+
+*Dedicated browser tool:*
+
+- [Polypane](https://polypane.app/) includes a forced colors emulation panel in its accessibility toolset
+
+---
+
+**What to look for during testing:**
+
+Test these elements while forced colors mode is active:
+
+**Text and backgrounds:**
+- [ ] All text is still readable against its background
+- [ ] Body text (`CanvasText`) contrasts clearly against the page background (`Canvas`)
+
+**Interactive controls:**
+- [ ] Buttons have a visible boundary (system `ButtonBorder` color provides an outline)
+- [ ] Links are distinguishable from surrounding body text
+- [ ] Form fields (inputs, textareas, selects) have visible borders
+
+**Focus indicators:**
+- [ ] Keyboard focus outlines are still visible (`outline` is preserved; `box-shadow` may not be)
+- [ ] No custom focus styles have silently disappeared
+
+**Icons and images:**
+- [ ] SVG icons remain visible (icons using `fill: none` or a hardcoded `fill` color may vanish — use `currentColor`)
+- [ ] Background images that convey meaning are still perceivable, or a text/ARIA alternative is present
+
+**Custom controls:**
+- [ ] CSS-only custom checkboxes and radio buttons are still visible and distinguishable
+- [ ] Toggle buttons show their current state through text, ARIA attributes, or an outline — not color alone
+
+**Information not relying on color:**
+- [ ] Error states are identifiable without relying on red vs. green
+- [ ] Required fields are marked with text or icons, not only color
+- [ ] Charts or data visualizations use pattern/texture/label alternatives
+
+---
+
+**Common issues and fixes:**
+
+| Issue | What you see in forced colors mode | Fix |
+|-------|------------------------------------|-----|
+| `box-shadow` focus ring | Focus indicator disappears | Replace with `outline` |
+| SVG icon invisible | Empty space where icon was | Use `currentColor` for `fill`/`stroke` |
+| Custom checkbox / radio invisible | Checkbox area appears blank | Provide `forced-color-adjust` override or visible border |
+| Background image removed | Missing visual context | Add visible text, caption, or `aria-label` |
+| Error marked by color only | Error looks identical to normal state | Add icon, text label, or `aria-invalid` |
+| `border: none` on input | Input is invisible | Add `border: 1px solid ButtonBorder` in forced-colors block |
+
+---
+
+**Patching broken elements:**
+
+Use these CSS system color keywords inside `@media (forced-colors: active)` to restore visibility without overriding the user's theme:
+
+| Keyword | Represents |
+|---------|------------|
+| `Canvas` | Page / application background |
+| `CanvasText` | Body text |
+| `ButtonFace` | Button background |
+| `ButtonText` | Text on buttons |
+| `ButtonBorder` | Border of interactive elements |
+| `Highlight` | Background of selected / focused item |
+| `HighlightText` | Text on selected / focused item |
+| `LinkText` | Unvisited hyperlink text |
+| `VisitedText` | Visited hyperlink text |
+| `GrayText` | Disabled text |
+
+Example:
+
+```css
+/* Restore a custom focus ring that uses box-shadow */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+/* Restore a CSS-only checkbox that disappears */
+@media (forced-colors: active) {
+  .custom-checkbox::before {
+    forced-color-adjust: none;
+    border: 2px solid ButtonBorder;
+    background-color: ButtonFace;
+  }
+
+  .custom-checkbox[aria-checked="true"]::before {
+    background-color: Highlight;
+  }
+}
+```
+
+Use `forced-color-adjust: none` only as a last resort when a component is genuinely impossible to adapt with system colors — it opts the element out of forced colors entirely and can negate the user's accessibility settings.
+
+**Further reading:**
+
+- [MDN: forced-colors media feature](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors)
+- [MDN: forced-color-adjust property](https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust)
+- [Chrome DevTools: Emulate CSS media features](https://developer.chrome.com/docs/devtools/rendering/emulate-css)
+- [Smashing Magazine: Windows High Contrast Colors Mode & CSS Custom Properties](https://www.smashingmagazine.com/2022/03/windows-high-contrast-colors-mode-css-custom-properties/)
+- [Adrian Roselli: WHCM and System Colors](https://adrianroselli.com/2021/02/whcm-and-system-colors.html)
+
 ## 7. Testing Workflows by Component Type
 
 ### 7.1 Forms
@@ -430,6 +568,7 @@ For each issue found:
 - [ ] Check color contrast (sample text and UI components)
 - [ ] Verify content is readable without color alone
 - [ ] Test light and dark color modes (if applicable)
+- [ ] Test in forced colors mode (see [section 6.4](#64-forced-colors-mode-testing))
 
 ## 11. Building a Manual Testing Culture
 
@@ -498,4 +637,4 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 
 ---
 
-**Last Updated:** 2026-02-24
+**Last Updated:** 2026-04-24
