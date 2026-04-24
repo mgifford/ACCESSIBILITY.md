@@ -25,7 +25,8 @@ Fixes #<!-- issue number, if applicable -->
 
 - [ ] Headings follow a logical hierarchy (no skipped levels)
 - [ ] Lists, tables, and code blocks use the correct Markdown/HTML elements
-- [ ] Tables have a caption or clear heading and use `<th>` with appropriate `scope` attributes for any HTML table examples
+- [ ] Tables have a caption or a clear preceding heading that identifies their purpose
+- [ ] HTML table examples use `<th>` elements with appropriate `scope` attributes
 - [ ] Images in documentation have descriptive alt text; decorative images use `alt=""`
 - [ ] Links have descriptive text — no "click here" or bare URLs used as link text
 - [ ] Plain language used: active voice, short sentences, no unexplained jargon
@@ -98,7 +99,7 @@ Relevant WCAG criterion: <!-- or "N/A – documentation-only change" -->
 
 ## AI usage disclosure
 
-> Per the [Sustainability policy](../SUSTAINABILITY.md), disclose AI tool usage here.
+> Per the [Sustainability policy](https://github.com/mgifford/ACCESSIBILITY.md/blob/main/SUSTAINABILITY.md), disclose AI tool usage here.
 
 - [ ] No AI tools were used in authoring this PR
 - [ ] AI tools were used — details: <!-- which tool(s) and for what purpose -->
