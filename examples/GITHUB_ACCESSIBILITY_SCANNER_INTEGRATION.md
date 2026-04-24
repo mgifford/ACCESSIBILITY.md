@@ -43,6 +43,31 @@ Add language like this to your project manifest:
 
 > We run `github/accessibility-scanner` on a recurring schedule and treat scanner findings as first-class accessibility defects. New high-severity regressions block release until resolved or explicitly waived.
 
+## Connecting scanner findings to the remediation agent
+
+After setting up the scanner, close the detect → fix loop by adding the
+complementary remediation workflow:
+
+1. Copy
+   [`examples/AGENT_REMEDIATION_WORKFLOW.yml`](./AGENT_REMEDIATION_WORKFLOW.yml)
+   to `.github/workflows/accessibility-remediation.yml`.
+2. When the scanner creates an issue labelled `accessibility`, the remediation
+   workflow fires automatically and passes the issue details to a Copilot
+   coding agent.
+3. The agent locates the offending code, applies a minimal fix, and opens a
+   **draft pull request** linked to the original issue.
+4. A human reviews and merges the draft PR.
+
+> Requires a GitHub Copilot Individual, Business, or Enterprise subscription
+> with the Copilot coding agent feature enabled and the repository setting
+> **Settings → Copilot → "Allow Copilot to create and approve pull requests"**
+> enabled.
+
+See [`examples/COPILOT_REMEDIATION_AGENT_PROMPT.md`](./COPILOT_REMEDIATION_AGENT_PROMPT.md)
+for the full structured agent task descriptions covering six common violation
+types (`image-alt`, `label`, `link-name`, `heading-order`, `color-contrast`,
+`aria-required-attr`).
+
 ## Source
 
 - GitHub repository: https://github.com/github/accessibility-scanner
