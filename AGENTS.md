@@ -200,6 +200,29 @@ in [`examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md`](./examples/COPILOT_BOOTSTRAP_A
 > **Requires** a GitHub Copilot Individual, Business, or Enterprise
 > subscription with the Copilot coding agent feature enabled.
 
+## Remediation agent pattern
+
+Use the **Copilot coding agent remediation workflow** to close the
+detect → fix loop: when the accessibility scanner creates an issue labelled
+`accessibility`, this workflow automatically invokes a Copilot coding agent to
+propose a fix as a **draft pull request** for human review.
+
+1. Copy [`examples/AGENT_REMEDIATION_WORKFLOW.yml`](./examples/AGENT_REMEDIATION_WORKFLOW.yml)
+   to `.github/workflows/` in the target repository.
+2. The workflow fires automatically on `issues: labeled` (label:
+   `accessibility`) and also accepts a manual `workflow_dispatch` trigger.
+3. The agent reads the issue body, locates the offending code, applies the
+   minimal fix, and opens a **draft PR** — it never merges automatically.
+4. A human reviews the draft PR, verifies the fix, and merges after approval.
+
+The full structured agent task descriptions for each violation type live in
+[`examples/COPILOT_REMEDIATION_AGENT_PROMPT.md`](./examples/COPILOT_REMEDIATION_AGENT_PROMPT.md).
+
+> **Requires** a GitHub Copilot Individual, Business, or Enterprise
+> subscription with the Copilot coding agent feature enabled, and the
+> repository setting **Settings → Copilot → "Allow Copilot to create and
+> approve pull requests"** enabled.
+
 ## Continuous improvement
 
 Help maintain quality by:

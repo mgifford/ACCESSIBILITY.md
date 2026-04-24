@@ -1,0 +1,161 @@
+# Accessibility Issue Remediation using GitHub Copilot coding agent
+#
+# HOW TO USE
+# ----------
+# 1. Copy this file to .github/workflows/accessibility-remediation.yml in
+#    your repository.
+# 2. This workflow fires automatically when an issue labelled "accessibility"
+#    is opened, or you can trigger it manually from the Actions tab.
+# 3. The Copilot coding agent analyses the issue, locates the offending code,
+#    applies the minimal fix, and opens a **draft** pull request for human
+#    review — it never merges automatically.
+#
+# REQUIREMENTS
+# ------------
+# - A GitHub Copilot Individual, Business, or Enterprise subscription with the
+#   Copilot coding agent feature enabled.
+# - The following repository settings enabled:
+#     Settings → Copilot → "Allow Copilot to create and approve pull requests"
+# - The GITHUB_TOKEN permissions below (granted automatically by GitHub
+#   Actions; no additional secrets are required).
+#
+# SECURITY NOTES
+# --------------
+# - This workflow uses minimum required permissions (contents: write,
+#   pull-requests: write, issues: read).
+# - The agent-created PR is always a draft; a human must review and approve
+#   before merging.
+# - The agent has no access to secrets beyond what is needed to create a
+#   branch and open a PR.
+#
+# AGENT TASK
+# ----------
+# The full structured agent task descriptions for each violation type live in:
+#   examples/COPILOT_REMEDIATION_AGENT_PROMPT.md
+# The workflow selects the appropriate prompt based on axe rule ID tags found
+# in the issue body and passes it to the Copilot coding agent.
+
+name: Accessibility Issue Remediation (Copilot Agent)
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: >-
+          Issue number to remediate (e.g. 42). The issue must be labelled
+          "accessibility" and include a rule ID such as "image-alt", "label",
+          "link-name", "heading-order", "color-contrast", or
+          "aria-required-attr" in its body.
+        type: number
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  remediate:
+    name: Run Copilot remediation agent
+    # Only run when the label added is "accessibility", or on manual dispatch.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.label.name == 'accessibility'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------------
+      # Resolve the issue number from either the label event or the manual
+      # workflow_dispatch input.
+      # ------------------------------------------------------------------
+      - name: Resolve issue number
+        id: issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            NUMBER="$INPUT_ISSUE_NUMBER"
+          else
+            NUMBER="$EVENT_ISSUE_NUMBER"
+          fi
+          echo "number=$NUMBER" >> "$GITHUB_OUTPUT"
+
+          # Fetch and store the issue body for downstream steps.
+          BODY=$(gh issue view "$NUMBER" --json body --jq '.body')
+          {
+            echo 'body<<ISSUE_BODY_EOF'
+            echo "$BODY"
+            echo 'ISSUE_BODY_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      # ------------------------------------------------------------------
+      # Extract the agent task description from the examples directory.
+      # COPILOT_REMEDIATION_AGENT_PROMPT.md contains human-readable prose
+      # plus exactly one ```text … ``` code block per violation type.
+      # The block whose header comment matches the axe rule ID found in the
+      # issue body is selected; the generic/fallback block is used if no
+      # specific rule is matched.
+      # ------------------------------------------------------------------
+      - name: Extract agent task description
+        id: task
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          PROMPT_FILE="examples/COPILOT_REMEDIATION_AGENT_PROMPT.md"
+
+          # Determine which axe rule ID appears in the issue body.
+          RULE_ID=""
+          for rule in image-alt label link-name heading-order color-contrast aria-required-attr; do
+            if echo "$ISSUE_BODY" | grep -qi "$rule"; then
+              RULE_ID="$rule"
+              break
+            fi
+          done
+
+          if [ -z "$RULE_ID" ]; then
+            RULE_ID="generic"
+          fi
+
+          # Extract the ```text block that follows the matching rule anchor.
+          # Each block in the prompt file is preceded by an HTML comment of
+          # the form <!-- rule: <rule-id> -->.
+          {
+            echo 'body<<AGENT_TASK_EOF'
+            awk -v rule="$RULE_ID" '
+              /^<!-- rule:/{
+                match($0, /<!-- rule: ([^ ]+) -->/, arr)
+                if (arr[1] == rule) { capture=1 }
+              }
+              capture && /^```text$/ { inblock=1; next }
+              inblock && /^```$/ { exit }
+              inblock { print }
+            ' "$PROMPT_FILE"
+            # Inject the issue number so the agent can name the branch and
+            # link the PR back to the original issue.
+            echo ""
+            echo "Issue number: $ISSUE_NUMBER"
+            echo "Issue body:"
+            echo "$ISSUE_BODY"
+            echo 'AGENT_TASK_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      # ------------------------------------------------------------------
+      # Assign the task to the Copilot coding agent.
+      # The agent will:
+      #   1. Read the issue body to understand the violation.
+      #   2. Locate and fix the offending code.
+      #   3. Open a draft PR linked to the original issue.
+      # ------------------------------------------------------------------
+      - name: Assign task to Copilot coding agent
+        uses: github/copilot-agent@v1
+        with:
+          task: ${{ steps.task.outputs.body }}
+          pr_draft: true

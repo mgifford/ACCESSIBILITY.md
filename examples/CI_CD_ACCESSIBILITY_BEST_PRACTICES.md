@@ -378,6 +378,71 @@ Playwright's aria snapshot feature currently relies on the Chromium accessibilit
 
 ---
 
+## 6. Agent-Driven Remediation
+
+Detection alone does not fix accessibility barriers. The **detect → agent-fix → human-review** loop closes the gap by having a Copilot coding agent propose a fix immediately after a scanner creates an issue, rather than waiting days or weeks for a developer to triage and act.
+
+### How it works
+
+```
+Scanner runs → issue created (label: accessibility) → agent workflow fires
+→ agent locates code → agent applies minimal fix → agent opens DRAFT PR
+→ human reviews → human merges
+```
+
+The agent-created PR is **always a draft** — it is never auto-merged. Human review is a mandatory step in the loop.
+
+### Workflow (`.github/workflows/accessibility-remediation.yml`)
+
+Copy [`examples/AGENT_REMEDIATION_WORKFLOW.yml`](./AGENT_REMEDIATION_WORKFLOW.yml) to `.github/workflows/` in your repository. The workflow:
+
+- Fires on `issues: labeled` when the label is `accessibility` (matching issues created by `github/accessibility-scanner`).
+- Also accepts a manual `workflow_dispatch` trigger with an issue number input.
+- Reads the issue body to detect the axe rule ID (`image-alt`, `label`, `link-name`, `heading-order`, `color-contrast`, `aria-required-attr`).
+- Selects the matching structured agent task from [`examples/COPILOT_REMEDIATION_AGENT_PROMPT.md`](./COPILOT_REMEDIATION_AGENT_PROMPT.md).
+- Passes the task plus the live issue body to the Copilot coding agent.
+- The agent opens a **draft PR** linked to the original issue.
+
+**Permissions (minimum required):**
+{% raw %}
+```yaml
+permissions:
+  contents: write       # create branch and commit the fix
+  pull-requests: write  # open the draft PR
+  issues: read          # read the issue body
+```
+{% endraw %}
+
+### Supported violation types
+
+| axe Rule ID | WCAG SC | Fix complexity |
+|-------------|---------|---------------|
+| `image-alt` | 1.1.1 Non-text Content | Low |
+| `label` | 1.3.1 Info and Relationships | Low |
+| `link-name` | 2.4.4 Link Purpose | Low |
+| `heading-order` | 1.3.1 Info and Relationships | Low |
+| `color-contrast` | 1.4.3 Contrast (Minimum) | Medium |
+| `aria-required-attr` | 4.1.2 Name, Role, Value | Medium |
+
+For any other axe rule, the workflow falls back to a generic prompt that instructs the agent to consult [`examples/AXE_RULES_REFERENCE.md`](./AXE_RULES_REFERENCE.md).
+
+### Requirements
+
+- A **GitHub Copilot Individual, Business, or Enterprise** subscription with the Copilot coding agent feature enabled.
+- Repository setting: **Settings → Copilot → "Allow Copilot to create and approve pull requests"** must be enabled.
+- No additional secrets are required; the workflow uses the default `GITHUB_TOKEN`.
+
+### Security considerations
+
+- The workflow runs with **minimum required permissions** (`contents: write`, `pull-requests: write`, `issues: read`).
+- The agent has no access to deployment secrets or credentials beyond what is needed to create a branch and open a PR.
+- Agent-created PRs must be reviewed and approved by a human before merging.
+
+> For the full structured agent task descriptions for each violation type, see
+> [`examples/COPILOT_REMEDIATION_AGENT_PROMPT.md`](./COPILOT_REMEDIATION_AGENT_PROMPT.md).
+
+---
+
 ## Governance & SLAs
 
 - **Critical Failures:** Any page with a Lighthouse Accessibility score under $100% blocks the build.
