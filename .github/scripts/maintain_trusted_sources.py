@@ -10,7 +10,7 @@ import os
 import sys
 import yaml
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Any
 from urllib.parse import urlparse
 import time
@@ -322,7 +322,7 @@ def enrich_metadata(sources: List[Dict[str, Any]], full_scan: bool = False) -> N
             last_updated = check_content_freshness(full_url)
             if last_updated:
                 # If no new content in over a year, mark as not active
-                one_year_ago = datetime.now() - timedelta(days=365)
+                one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
                 if last_updated < one_year_ago:
                     source['status'] = 'not active'
                     print(f"  ⚠️  No updates since {last_updated.date()}, marked as 'not active'")
