@@ -364,8 +364,10 @@ We are looking for feedback on the taxonomy and automation workflows.
 * **Using this?** Let us know so we can add you to the "Adopters" list.
 
 ## Related Projects
+- [Mike Mai's Agent Skills](https://github.com/mikemai2awesome/agent-skills)
 - [Intopia's Web Accessibility Skill](https://github.com/Intopia/intopia-web-accessibility-skill/)
-- [Mike Mai's Agent Skills](https://github.com/mikemai2awesome/agent-skills) 
+- [A11y Spec-First Coding](https://github.com/LaurenceRLewis/a11y-spec-first-skill)
+- [A11y Skills Collection](https://github.com/mgifford/accessibility-skills) - Paired version of this one.
 
 ## 📄 License
 
