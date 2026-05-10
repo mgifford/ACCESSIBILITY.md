@@ -7,8 +7,7 @@ It now provides a broader comparison matrix across the related projects tracked 
 
 ## Comparison matrix
 
-The following table compares nine accessibility projects across key dimensions:
-Each row describes one project, and the columns show its focus, format, target users, platform coverage, and key differentiator.
+The following table compares nine accessibility projects across key dimensions: each row describes one project, and the columns show its focus, format, target users, platform coverage, and key differentiator.
 
 | Project | Primary focus | Format | Primary audience | Platform scope | Key differentiator |
 |---|---|---|---|---|---|
@@ -24,9 +23,9 @@ Each row describes one project, and the columns show its focus, format, target u
 
 ## How to use this matrix
 
-- Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
-- Add one or more **skill-focused repos** for implementation-level AI guidance.
-- Choose by delivery context:
+1. Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
+2. Add one or more **skill-focused repos** for implementation-level AI guidance.
+3. Choose by delivery context:
   - **Web UI teams:**
     - KreerC/ACCESSIBILITY.md
     - Intopia/intopia-web-accessibility-skill
@@ -44,7 +43,7 @@ Each row describes one project, and the columns show its focus, format, target u
 2. **Implementation layer**: install one or more targeted skills
 3. **Validation layer**: CI checks, manual AT testing, and human review
 
-This layered approach avoids relying on a single artifact for all accessibility needs.
+This layered approach avoids relying on a single artifact for all accessibility needs, ensuring separation of concerns between policy, implementation, and verification.
 
 ## Notes and limits
 
