@@ -368,6 +368,9 @@ We are looking for feedback on the taxonomy and automation workflows.
 - [Intopia's Web Accessibility Skill](https://github.com/Intopia/intopia-web-accessibility-skill/)
 - [A11y Spec-First Coding](https://github.com/LaurenceRLewis/a11y-spec-first-skill)
 - [A11y Skills Collection](https://github.com/mgifford/accessibility-skills) - Paired version of this one.
+- [A11y.md](https://github.com/fecarrico/A11Y.md)
+-[iOS Agent Skill]( https://github.com/dadederk/iOS-Accessibility-Agent-Skill)
+
 
 ## 📄 License
 
