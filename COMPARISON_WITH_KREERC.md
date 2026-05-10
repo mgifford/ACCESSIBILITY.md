@@ -8,8 +8,9 @@ It now provides a broader comparison matrix across the related projects tracked 
 ## Comparison matrix
 
 The following table compares nine accessibility projects across key dimensions:
+Each row describes one project, and the columns show its focus, format, target users, platform coverage, and key differentiator.
 
-| Project | Primary focus | Format | Primary audience | Platform scope | Distinct strength |
+| Project | Primary focus | Format | Primary audience | Platform scope | Key differentiator |
 |---|---|---|---|---|---|
 | [mgifford/ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) | Governance + templates + workflows for accessibility transparency | Multi-file docs repo (`ACCESSIBILITY-template.md`, `AGENTS.md`, examples, workflows) | Maintainers, teams, orgs, AI-assisted contributors | Broad web/process guidance | End-to-end governance layer (policy, CI/CD, testing, trusted sources) |
 | [KreerC/ACCESSIBILITY.md](https://github.com/KreerC/ACCESSIBILITY.md) | Focused accessibility skill for AI agents | Skill-oriented repo with direct instructions | AI coding assistants and developers using them | Web accessibility implementation | Very concise, direct, installable guidance for day-to-day coding |
@@ -32,8 +33,10 @@ The following table compares nine accessibility projects across key dimensions:
     - mikemai2awesome/agent-skills
     - LaurenceRLewis/a11y-spec-first-skill
     - mgifford/accessibility-skills
-  - **Native iOS teams:** dadederk/iOS-Accessibility-Agent-Skill
-  - **Large agent orchestration needs:** Community-Access/accessibility-agents
+  - **Native iOS teams:**
+    - dadederk/iOS-Accessibility-Agent-Skill
+  - **Large agent orchestration needs:**
+    - Community-Access/accessibility-agents
 
 ## Suggested layering model
 
