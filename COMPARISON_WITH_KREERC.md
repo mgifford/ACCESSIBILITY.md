@@ -2,12 +2,12 @@
 
 ## Why this page exists
 
-This page used to compare only **mgifford/ACCESSIBILITY.md** and **KreerC/ACCESSIBILITY.md**.
+This page previously compared only **mgifford/ACCESSIBILITY.md** and **KreerC/ACCESSIBILITY.md**.
 It now provides a broader comparison matrix across the related projects tracked in [README.md](./README.md#related-projects).
 
 ## Comparison matrix
 
-The following table compares nine accessibility projects across six key dimensions:
+The following table compares nine accessibility projects across key dimensions:
 
 | Project | Primary focus | Format | Primary audience | Platform scope | Distinct strength |
 |---|---|---|---|---|---|
@@ -26,7 +26,12 @@ The following table compares nine accessibility projects across six key dimensio
 - Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
 - Add one or more **skill-focused repos** for implementation-level AI guidance.
 - Choose by delivery context:
-  - **Web UI teams:** KreerC/ACCESSIBILITY.md, Intopia/intopia-web-accessibility-skill, mikemai2awesome/agent-skills, LaurenceRLewis/a11y-spec-first-skill, mgifford/accessibility-skills
+  - **Web UI teams:**
+    - KreerC/ACCESSIBILITY.md
+    - Intopia/intopia-web-accessibility-skill
+    - mikemai2awesome/agent-skills
+    - LaurenceRLewis/a11y-spec-first-skill
+    - mgifford/accessibility-skills
   - **Native iOS teams:** dadederk/iOS-Accessibility-Agent-Skill
   - **Large agent orchestration needs:** Community-Access/accessibility-agents
 
@@ -40,7 +45,7 @@ This layered approach avoids relying on a single artifact for all accessibility 
 
 ## Notes and limits
 
-- This matrix is a directional comparison, not a ranking.
+- This matrix is a qualitative comparison, not a ranking.
 - Repositories evolve quickly; verify current scope before adoption.
 - No AI skill replaces manual testing with assistive technologies or feedback from people with disabilities.
 
