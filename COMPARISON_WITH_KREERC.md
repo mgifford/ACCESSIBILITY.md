@@ -27,15 +27,15 @@ The following table compares nine accessibility projects across key dimensions.
 - Add one or more **skill-focused repos** for implementation-level AI guidance.
 - Choose by delivery context:
   - **Web UI teams:**
-    - KreerC/ACCESSIBILITY.md
-    - Intopia/intopia-web-accessibility-skill
-    - mikemai2awesome/agent-skills
-    - LaurenceRLewis/a11y-spec-first-skill
-    - mgifford/accessibility-skills
+    - KreerC/ACCESSIBILITY.md (concise, direct AI coding instructions)
+    - Intopia/intopia-web-accessibility-skill (structured criteria + examples)
+    - mikemai2awesome/agent-skills (strong native-first front-end patterns)
+    - LaurenceRLewis/a11y-spec-first-skill (spec-citation discipline)
+    - mgifford/accessibility-skills (modular topic packs aligned to canonical guides)
   - **Native iOS teams:**
-    - dadederk/iOS-Accessibility-Agent-Skill
+    - dadederk/iOS-Accessibility-Agent-Skill (platform-specific VoiceOver/Dynamic Type depth)
   - **Large agent orchestration needs:**
-    - Community-Access/accessibility-agents
+    - Community-Access/accessibility-agents (broad specialist coverage and orchestration)
 
 ## Suggested layering model
 
@@ -78,6 +78,10 @@ Based on this broader landscape, the highest-value next improvements here are:
 3. **Adoption pathways by maturity**: Add quick-start paths for small teams, scaling teams, and enterprise governance use cases.
 4. **Validation clarity**: Link each recommended project combo to concrete validation expectations (automated + manual AT testing).
 5. **Feedback loop**: Add an issue template prompt specifically for comparison updates so this page evolves with the ecosystem.
+
+For example, add simple metadata at the top of this page such as:
+- `last_reviewed: YYYY-MM-DD`
+- `review_cadence: quarterly`
 
 ## Notes and limits
 
