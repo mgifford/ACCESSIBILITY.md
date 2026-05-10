@@ -45,6 +45,40 @@ The following table compares nine accessibility projects across key dimensions.
 
 This layered approach avoids relying on a single artifact for all accessibility needs, ensuring separation of concerns between policy, implementation, and verification.
 
+## What each project does well (AI instruction perspective)
+
+- **mgifford/ACCESSIBILITY.md**: Strong governance model, broad component guidance, and clear integration with workflows, policies, and contributor processes.
+- **KreerC/ACCESSIBILITY.md**: Excellent brevity and day-to-day usability as a direct AI coding skill.
+- **mikemai2awesome/agent-skills**: Practical front-end conventions with a strong “use native elements first” mindset.
+- **Intopia/intopia-web-accessibility-skill**: Good structure for implementation teams through acceptance criteria, examples, and contrast tooling.
+- **LaurenceRLewis/a11y-spec-first-skill**: Strong rigor by requiring spec-grounded claims before guidance.
+- **mgifford/accessibility-skills**: Modular, reusable topic-based skills that map to canonical best-practice sources.
+- **fecarrico/A11Y.md**: Clear protocol framing and operational checklists for AI-assisted delivery.
+- **dadederk/iOS-Accessibility-Agent-Skill**: Deep iOS-specific implementation and testing guidance.
+- **Community-Access/accessibility-agents**: Broad automation coverage and specialized agent roles across domains.
+
+## Where each project could improve
+
+- **mgifford/ACCESSIBILITY.md**: Add a more condensed “quick AI skill” variant for faster in-editor use.
+- **KreerC/ACCESSIBILITY.md**: Expand links to implementation examples and CI-oriented validation patterns.
+- **mikemai2awesome/agent-skills**: Add deeper WCAG traceability and explicit validation checklists.
+- **Intopia/intopia-web-accessibility-skill**: Continue expanding component coverage and long-term maintenance signals.
+- **LaurenceRLewis/a11y-spec-first-skill**: Add more implementation examples to complement citation discipline.
+- **mgifford/accessibility-skills**: Keep synchronization automation and release/version visibility strong as skills scale.
+- **fecarrico/A11Y.md**: Clarify governance boundaries versus implementation guidance for mixed teams.
+- **dadederk/iOS-Accessibility-Agent-Skill**: Expand cross-platform mapping guidance for teams working beyond iOS.
+- **Community-Access/accessibility-agents**: Provide simpler onboarding paths for teams that do not need full agent breadth.
+
+## Improvement opportunities for mgifford/ACCESSIBILITY.md
+
+Based on this broader landscape, the highest-value next improvements here are:
+
+1. **Compact AI mode**: Add a concise “portable AI instructions” artifact for teams that want minimal context overhead.
+2. **Comparative maintenance cadence**: Add a lightweight “last reviewed” date and update cadence note on this comparison page.
+3. **Adoption pathways by maturity**: Add quick-start paths for small teams, scaling teams, and enterprise governance use cases.
+4. **Validation clarity**: Link each recommended project combo to concrete validation expectations (automated + manual AT testing).
+5. **Feedback loop**: Add an issue template prompt specifically for comparison updates so this page evolves with the ecosystem.
+
 ## Notes and limits
 
 - This matrix is a qualitative comparison, not a ranking.
