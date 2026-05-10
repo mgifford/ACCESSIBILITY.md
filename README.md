@@ -1,4 +1,4 @@
-8# ACCESSIBILITY.md
+# ACCESSIBILITY.md
 
 > **The open standard for project accessibility transparency, governance, and AI-assisted inclusion.**
 
