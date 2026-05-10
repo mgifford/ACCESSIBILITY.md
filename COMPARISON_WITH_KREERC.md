@@ -1,5 +1,10 @@
 # Comparison with Similar Projects
 
+## Maintenance metadata
+
+- **Last reviewed**: 2026-05-10
+- **Review cadence**: Quarterly
+
 ## Why this page exists
 
 This page compares accessibility projects to help you choose complementary tools for your workflow.
@@ -27,11 +32,12 @@ The following table compares nine accessibility projects across key dimensions.
 - Add one or more **skill-focused repos** for implementation-level AI guidance.
 - Choose by delivery context:
   - **Web UI teams:**
-    - KreerC/ACCESSIBILITY.md (concise, direct AI coding instructions)
-    - Intopia/intopia-web-accessibility-skill (structured criteria + examples)
-    - mikemai2awesome/agent-skills (strong native-first front-end patterns)
-    - LaurenceRLewis/a11y-spec-first-skill (spec-citation discipline)
-    - mgifford/accessibility-skills (modular topic packs aligned to canonical guides)
+    - KreerC/ACCESSIBILITY.md (best for quick, concise AI coding guardrails)
+    - Intopia/intopia-web-accessibility-skill (best when formal acceptance criteria are needed)
+    - mikemai2awesome/agent-skills (best for native-first front-end implementation style)
+    - LaurenceRLewis/a11y-spec-first-skill (best when teams require spec-cited outputs)
+    - mgifford/accessibility-skills (best for modular topic-by-topic coverage)
+    - These are often complementary rather than mutually exclusive.
   - **Native iOS teams:**
     - dadederk/iOS-Accessibility-Agent-Skill (platform-specific VoiceOver/Dynamic Type depth)
   - **Large agent orchestration needs:**
@@ -79,9 +85,7 @@ Based on this broader landscape, the highest-value next improvements here are:
 4. **Validation clarity**: Link each recommended project combo to concrete validation expectations (automated + manual AT testing).
 5. **Feedback loop**: Add an issue template prompt specifically for comparison updates so this page evolves with the ecosystem.
 
-For example, add simple metadata at the top of this page such as:
-- `last_reviewed: YYYY-MM-DD`
-- `review_cadence: quarterly`
+Why this matters: a compact mode reduces instruction-token overhead and helps AI tools apply high-priority accessibility rules more consistently during rapid in-editor iterations.
 
 ## Notes and limits
 
