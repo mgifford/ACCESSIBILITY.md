@@ -2,12 +2,12 @@
 
 ## Why this page exists
 
-This page previously compared only **mgifford/ACCESSIBILITY.md** and **KreerC/ACCESSIBILITY.md**.
-It now provides a broader comparison matrix across the related projects tracked in [README.md](./README.md#related-projects).
+This page compares accessibility projects to help you choose complementary tools for your workflow.
+It covers the related projects tracked in [README.md](./README.md#related-projects).
 
 ## Comparison matrix
 
-The following table compares nine accessibility projects across key dimensions: each row describes one project, and the columns show its focus, format, target users, platform coverage, and key differentiator.
+The following table compares nine accessibility projects across key dimensions.
 
 | Project | Primary focus | Format | Primary audience | Platform scope | Key differentiator |
 |---|---|---|---|---|---|
@@ -23,9 +23,9 @@ The following table compares nine accessibility projects across key dimensions: 
 
 ## How to use this matrix
 
-1. Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
-2. Add one or more **skill-focused repos** for implementation-level AI guidance.
-3. Choose by delivery context:
+- Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
+- Add one or more **skill-focused repos** for implementation-level AI guidance.
+- Choose by delivery context:
   - **Web UI teams:**
     - KreerC/ACCESSIBILITY.md
     - Intopia/intopia-web-accessibility-skill
