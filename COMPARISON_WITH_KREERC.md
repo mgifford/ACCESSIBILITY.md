@@ -7,11 +7,13 @@ It now provides a broader comparison matrix across the related projects tracked 
 
 ## Comparison matrix
 
+The following table compares nine accessibility projects across six key dimensions:
+
 | Project | Primary focus | Format | Primary audience | Platform scope | Distinct strength |
 |---|---|---|---|---|---|
 | [mgifford/ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) | Governance + templates + workflows for accessibility transparency | Multi-file docs repo (`ACCESSIBILITY-template.md`, `AGENTS.md`, examples, workflows) | Maintainers, teams, orgs, AI-assisted contributors | Broad web/process guidance | End-to-end governance layer (policy, CI/CD, testing, trusted sources) |
 | [KreerC/ACCESSIBILITY.md](https://github.com/KreerC/ACCESSIBILITY.md) | Focused accessibility skill for AI agents | Skill-oriented repo with direct instructions | AI coding assistants and developers using them | Web accessibility implementation | Very concise, direct, installable guidance for day-to-day coding |
-| [mikemai2awesome/agent-skills](https://github.com/mikemai2awesome/agent-skills) | Practical coding-style skills collection | Multi-skill repository | Developers using skills-driven agent workflows | Primarily frontend/web | Strong “trust native HTML/browser” approach via `frontend-a11y` |
+| [mikemai2awesome/agent-skills](https://github.com/mikemai2awesome/agent-skills) | Practical coding-style skills collection | Multi-skill repository | Developers using skills-driven agent workflows | Primarily front-end/web | Strong “trust native HTML/browser” approach via `frontend-a11y` |
 | [Intopia/intopia-web-accessibility-skill](https://github.com/Intopia/intopia-web-accessibility-skill/) | Structured web accessibility skill with criteria and examples | `SKILL.md` + indexed references + scripts | Teams integrating agent skills into delivery | Web components/patterns | Combines acceptance criteria, examples, and contrast script checks |
 | [LaurenceRLewis/a11y-spec-first-skill](https://github.com/LaurenceRLewis/a11y-spec-first-skill) | Spec-first AI prompting discipline | Instruction skill file | Developers wanting citation-driven AI output | Web/front-end technologies | Forces explicit specification mapping before recommendations |
 | [mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills) | Portable topic-specific accessibility skills | Skill collection derived from this repo’s examples | AI agent users needing reusable modules | Mostly web, topic-based | Modular skill packs aligned to canonical example docs |
@@ -24,9 +26,9 @@ It now provides a broader comparison matrix across the related projects tracked 
 - Use **mgifford/ACCESSIBILITY.md** as your governance and transparency baseline.
 - Add one or more **skill-focused repos** for implementation-level AI guidance.
 - Choose by delivery context:
-  - **Web UI teams:** KreerC, Intopia, Mike Mai, Spec-First, accessibility-skills
-  - **Native iOS teams:** iOS Accessibility Agent Skill
-  - **Large agent orchestration needs:** Accessibility Agents
+  - **Web UI teams:** KreerC/ACCESSIBILITY.md, Intopia/intopia-web-accessibility-skill, mikemai2awesome/agent-skills, LaurenceRLewis/a11y-spec-first-skill, mgifford/accessibility-skills
+  - **Native iOS teams:** dadederk/iOS-Accessibility-Agent-Skill
+  - **Large agent orchestration needs:** Community-Access/accessibility-agents
 
 ## Suggested layering model
 
