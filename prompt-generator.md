@@ -1,5 +1,6 @@
 ---
 title: Prompt Generator
+full_width: true
 ---
 
 <section>

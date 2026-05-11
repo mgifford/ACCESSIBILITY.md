@@ -2,6 +2,7 @@
 title: Search
 layout: default
 description: Search across all ACCESSIBILITY.md guides and documentation.
+full_width: true
 ---
 
 <div class="search-page">

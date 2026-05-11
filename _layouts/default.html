@@ -103,7 +103,19 @@
           </button>
         </div>
       </header>
-      <main id="main-content" tabindex="-1">{{ content }}</main>
+      <main id="main-content" tabindex="-1">
+        {% if page.full_width %}
+          {{ content }}
+        {% else %}
+          <div class="prose-page">
+            <div class="wrap">
+              <div class="prose-body">
+                {{ content }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </main>
       <footer class="site-footer">
         <p>
           <strong>ACCESSIBILITY.md</strong> is an open documentation standard for

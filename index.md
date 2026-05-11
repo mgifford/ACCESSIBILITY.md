@@ -1,5 +1,6 @@
 ---
 title: ACCESSIBILITY.md
+full_width: true
 ---
 
 <header class="hero">
@@ -356,7 +357,7 @@ title: ACCESSIBILITY.md
           <p>Section 508 compliance requirements for government contracts and RFPs</p>
         </article>
       </a>
-      <a class="card" href="./COMPARISON_WITH_KREERC.html">
+      <a class="card" href="./COMPARISONS.html">
         <article>
           <h3>Comparison with Similar Projects</h3>
           <p>Analysis of different approaches to accessibility documentation</p>
