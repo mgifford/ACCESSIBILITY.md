@@ -39,37 +39,167 @@ Avoid:
 
 ---
 
-## 3. Respecting User Preferences
+## 3. Modern CSS Color System Best Practices (2026)
 
-Implement theme switching that respects system and user preferences:
+Modern color systems should start with the browser, not with duplicated theme branches. Declare `color-scheme` on the root element, prefer `light-dark()` for token values, and keep `prefers-color-scheme` for targeted fallback and asset-selection cases.
 
-### Preferred pattern: CSS custom properties with media query
+### Summary
+
+1. Use `color-scheme` so the browser can match native UI to your theme support.
+2. Prefer `light-dark()` for theme tokens instead of duplicating values across media queries.
+3. Use `contrast-color()` for adaptive components that need a safe foreground choice.
+4. Keep `prefers-color-scheme` for specialized cases such as images, SVGs, JavaScript initialization, and legacy support.
+5. Test with real users and accessibility tools before treating automated color logic as sufficient.
+
+### `color-scheme`
+
+Modern implementations should declare:
 
 ```css
 :root {
-  /* Light mode (default) */
-  --color-text: #1a1a1a;
-  --color-background: #ffffff;
-  --color-link: #0066cc;
-  --color-focus: #004499;
-  --color-border: #cccccc;
-  --color-hover: #f5f5f5;
+  color-scheme: light dark;
+}
+```
+
+This tells the browser that the page supports both light and dark schemes, so built-in UI components, form controls, scrollbars, and other native surfaces are rendered in a matching style. It also enables `light-dark()` to resolve correctly.
+
+### `light-dark()` as the preferred token pattern
+
+Use `light-dark()` for theme tokens instead of duplicating the same values in separate `@media (prefers-color-scheme: dark)` blocks:
+
+```css
+:root {
+  color-scheme: light dark;
+
+  --background: light-dark(#ffffff, #1a1a1a);
+  --text: light-dark(#1a1a1a, #e8e8e8);
+  --link: light-dark(#005ea8, #8ecaff);
+  --focus: light-dark(#004499, #99ccff);
+  --border: light-dark(#cccccc, #444444);
+  --hover: light-dark(#f5f5f5, #2a2a2a);
 }
 
-@media (prefers-color-scheme: dark) {
+body {
+  color: var(--text);
+  background-color: var(--background);
+}
+
+a {
+  color: var(--link);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+```
+
+Advantages:
+
+- Less duplication
+- Easier maintenance
+- Better token management
+- Direct support for user color scheme preferences
+
+### Progressive enhancement and fallback
+
+Use safe defaults first, then layer `light-dark()` and `prefers-color-scheme` as the browser supports them:
+
+```css
+:root {
+  color-scheme: light dark;
+
+  --background: #ffffff;
+  --text: #1a1a1a;
+  --link: #005ea8;
+  --focus: #004499;
+}
+
+@supports (color: light-dark(white, black)) {
   :root {
-    /* Dark mode */
-    --color-text: #e8e8e8;
-    --color-background: #1a1a1a;
-    --color-link: #66aaff;
-    --color-focus: #99ccff;
-    --color-border: #444444;
-    --color-hover: #2a2a2a;
+    --background: light-dark(#ffffff, #1a1a1a);
+    --text: light-dark(#1a1a1a, #e8e8e8);
+    --link: light-dark(#005ea8, #8ecaff);
+    --focus: light-dark(#004499, #99ccff);
   }
 }
 
-/* Support for manual theme override */
-[data-theme="light"] {
+@supports not (color: light-dark(white, black)) {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #1a1a1a;
+      --text: #e8e8e8;
+      --link: #8ecaff;
+      --focus: #99ccff;
+    }
+  }
+}
+```
+
+### `contrast-color()` for adaptive components
+
+`contrast-color()` can make components self-correcting by choosing an appropriate foreground for the background that was actually used. This is useful for buttons, badges, tags, status indicators, and other dynamically themed components.
+
+```css
+.button,
+.badge,
+.tag,
+.status-indicator,
+.theme-card {
+  --surface: light-dark(#005ea8, #8ecaff);
+
+  background: var(--surface);
+  color: #ffffff;
+}
+
+@supports (color: contrast-color(red)) {
+  .button,
+  .badge,
+  .tag,
+  .status-indicator,
+  .theme-card {
+    color: contrast-color(var(--surface));
+  }
+}
+```
+
+Examples of useful applications:
+
+- Buttons that must stay readable over user-selected accent colors
+- Badges and tags that change color by category or status
+- Status indicators that use theme-driven surfaces
+- Components that inherit their color from data, user settings, or CMS content
+
+Important cautions:
+
+- `contrast-color()` is not a replacement for accessibility testing
+- It currently returns black or white choices
+- Mid-tone colors may still present readability challenges
+- Designers must still verify WCAG contrast requirements
+- Automated color selection should be treated as an enhancement, not a guarantee
+
+### Why `prefers-color-scheme` still matters
+
+Keep `prefers-color-scheme` for cases where it is the right tool, including:
+
+- Image selection
+- SVG variants
+- JavaScript theme initialization
+- Legacy browser support
+- Complex theme overrides
+
+It is still valuable, but it is no longer the only recommended technique for token authoring.
+
+## 4. Respecting User Preferences and Legacy Support
+
+Implement theme switching that respects system and user preferences. If you provide a manual theme toggle, use it as an optional override layered on top of CSS-driven tokens.
+
+### Fallback token pattern for older browsers
+
+```css
+:root {
+  color-scheme: light dark;
+
   --color-text: #1a1a1a;
   --color-background: #ffffff;
   --color-link: #0066cc;
@@ -78,13 +208,17 @@ Implement theme switching that respects system and user preferences:
   --color-hover: #f5f5f5;
 }
 
-[data-theme="dark"] {
-  --color-text: #e8e8e8;
-  --color-background: #1a1a1a;
-  --color-link: #66aaff;
-  --color-focus: #99ccff;
-  --color-border: #444444;
-  --color-hover: #2a2a2a;
+@supports not (color: light-dark(white, black)) {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-text: #e8e8e8;
+      --color-background: #1a1a1a;
+      --color-link: #66aaff;
+      --color-focus: #99ccff;
+      --color-border: #444444;
+      --color-hover: #2a2a2a;
+    }
+  }
 }
 
 body {
@@ -96,8 +230,9 @@ a {
   color: var(--color-link);
 }
 
-a:focus {
+a:focus-visible {
   outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 ```
 
@@ -404,10 +539,17 @@ Ensure PNG/WebP images with transparency remain perceivable:
   padding: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
+@supports (color: light-dark(white, black)) {
   .logo-with-transparency {
-    /* Adjust if needed for dark mode */
-    background-color: var(--color-logo-background-dark);
+    background-color: light-dark(var(--color-logo-background-light), var(--color-logo-background-dark));
+  }
+}
+
+@supports not (color: light-dark(white, black)) {
+  @media (prefers-color-scheme: dark) {
+    .logo-with-transparency {
+      background-color: var(--color-logo-background-dark);
+    }
   }
 }
 ```
@@ -457,6 +599,7 @@ Test:
 - Tab through interactive elements in both modes
 - Verify focus indicator meets 3:1 contrast
 - Check keyboard navigation works identically in both modes
+- Verify focus styles still read clearly in forced-colors mode
 
 ---
 
@@ -496,11 +639,15 @@ Minimum checks for color mode implementation:
 - [ ] Navigate site in browser light mode - verify all contrast passes WCAG AA
 - [ ] Switch to browser dark mode - verify all contrast passes WCAG AA
 - [ ] Enable Windows High Contrast - verify content remains perceivable
+- [ ] Verify forced-colors mode preserves meaning and focus visibility
 - [ ] Test keyboard navigation in both light and dark modes
 - [ ] Verify focus indicators are visible in both modes
 - [ ] Check that all interactive states (hover, active, disabled) work in both modes
 - [ ] Test with screen reader - verify no mode-specific issues
 - [ ] Verify color-blind simulation tools show sufficient non-color cues
+- [ ] Verify `light-dark()` resolves to the intended token pair in supported browsers
+- [ ] Verify `contrast-color()` chooses a legible foreground in supported browsers
+- [ ] Verify browser support fallbacks work where `light-dark()` or `contrast-color()` are unavailable
 - [ ] For data tables with zebra striping: verify row background colors differ by approximately 5–10% luminance from the page background (not near-white stripes on a dark page)
 - [ ] Verify text on every zebra-stripe row background meets 4.5:1 contrast
 
@@ -509,7 +656,10 @@ Minimum checks for color mode implementation:
 - Run contrast checker on light mode colors
 - Run contrast checker on dark mode colors
 - Verify CSS uses semantic color tokens, not hardcoded values
-- Check for `prefers-color-scheme` media query implementation
+- Check for `color-scheme` declaration on `:root`
+- Check for `light-dark()` token usage where supported
+- Check for `contrast-color()` usage behind `@supports`
+- Check for `prefers-color-scheme` media query implementation in fallback or asset-selection code
 - Validate forced-colors mode fallbacks exist
 
 ### Browser and OS testing
@@ -520,6 +670,9 @@ Test with:
 - Firefox with system dark mode
 - Safari with system dark mode
 - Windows High Contrast themes (forced-colors)
+- High contrast settings on macOS and browser-level contrast modes
+- Forced-colors mode with form controls, scrollbars, and native UI surfaces
+- Browser support for `color-scheme`, `light-dark()`, and `contrast-color()`
 - Browser zoom at 200% in both modes
 
 ---
@@ -530,6 +683,9 @@ A color mode implementation is complete when:
 
 - All text and UI elements meet WCAG 2.2 AA contrast in both light and dark modes
 - System color preference is detected and respected by default
+- `color-scheme` is declared on the root element
+- `light-dark()` is used for theme tokens where supported
+- `contrast-color()` is used behind progressive enhancement guards where appropriate
 - Forced-colors mode maintains content comprehension
 - Information is not conveyed by color alone
 - Focus indicators are visible and meet contrast requirements in all modes
@@ -564,33 +720,12 @@ Keep stripe colors close to the page background — roughly 5% and 10% away — 
 
 ```css
 :root {
-  /* Light mode (default) */
-  --color-background:      #ffffff;
-  --color-table-row-even:  #f2f2f2;  /* ~5% darker than background  */
-  --color-table-row-odd:   #e5e5e5;  /* ~10% darker than background */
-  --color-text:            #1a1a1a;
-}
+  color-scheme: light dark;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background:      #1a1a1a;
-    --color-table-row-even:  #272727;  /* ~5% lighter than background  */
-    --color-table-row-odd:   #343434;  /* ~10% lighter than background */
-    --color-text:            #e8e8e8;
-  }
-}
-
-/* Manual theme overrides (mirror the media query tokens above) */
-[data-theme="light"] {
-  --color-background:     #ffffff;
-  --color-table-row-even: #f2f2f2;
-  --color-table-row-odd:  #e5e5e5;
-}
-
-[data-theme="dark"] {
-  --color-background:     #1a1a1a;
-  --color-table-row-even: #272727;
-  --color-table-row-odd:  #343434;
+  --color-background:     light-dark(#ffffff, #1a1a1a);
+  --color-table-row-even: light-dark(#f2f2f2, #272727);
+  --color-table-row-odd:  light-dark(#e5e5e5, #343434);
+  --color-text:           light-dark(#1a1a1a, #e8e8e8);
 }
 
 table {
@@ -618,13 +753,15 @@ The CSS `color-mix()` function can compute stripe colors relative to the backgro
   --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, black);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #1a1a1a;
-    --color-text:       #e8e8e8;
+@supports not (color: light-dark(white, black)) {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background: #1a1a1a;
+      --color-text: #e8e8e8;
 
-    --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, white);
-    --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, white);
+      --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, white);
+      --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, white);
+    }
   }
 }
 ```
@@ -680,6 +817,11 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 
 ### Additional Reading
 
+- [MDN: light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
+- [MDN: contrast-color()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color)
+- [Smashing Magazine: Building Self-Correcting Color Systems With contrast-color()](https://www.smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/)
+- [CSS-Tricks: Exploring the CSS contrast-color() Function, a Second Time](https://css-tricks.com/exploring-the-css-contrast-color-function-a-second-time/)
+- [Piccalilli: Some CSS-only contrast options until contrast-color() is baseline widely available](https://piccalil.li/blog/some-css-only-contrast-options-until-contrast-color-is-baseline-widely-available/)
 - [Inclusive Dark Mode: Designing Accessible Dark Themes](https://www.smashingmagazine.com/2025/04/inclusive-dark-mode-designing-accessible-dark-themes/)
 - [Dark Mode Accessibility Myth Debunked](https://stephaniewalter.design/blog/dark-mode-accessibility-myth-debunked/)
 - [Dark Mode Done Right: Performance & Accessibility](https://dev.to/javascriptwizzard/dark-mode-done-right-performance-accessibility-considerations-43b1)
