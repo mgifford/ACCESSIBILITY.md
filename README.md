@@ -342,6 +342,7 @@ This section documents which AI tools have been used in the development and main
 | Tool | Provider | Used for |
 |------|----------|----------|
 | **GitHub Copilot Coding Agent** | GitHub / Microsoft (Claude models via Anthropic) | Creating and maintaining documentation files, adding best-practice guides, refactoring content, managing pull requests, and performing repository maintenance tasks |
+| **GitHub Copilot Coding Agent (GPT-5.4 mini)** | GitHub Copilot / OpenAI | Updating the CI/CD accessibility example to match the upstream `accessibility-skills` CI/CD skill and validating the resulting diff |
 
 ### Notes
 
