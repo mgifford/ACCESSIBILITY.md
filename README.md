@@ -372,6 +372,7 @@ We are looking for feedback on the taxonomy and automation workflows.
 - [iOS Agent Skill]( https://github.com/dadederk/iOS-Accessibility-Agent-Skill)
 - [Accessibility Agents](https://github.com/Community-Access/accessibility-agents)
 - [Awesome Copilot A11y Instructions](https://github.com/github/awesome-copilot/blob/main/instructions/a11y.instructions.md)
+- [AccessLint skills](https://github.com/AccessLint/skills)
 
 ## 📄 License
 
