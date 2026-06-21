@@ -152,6 +152,10 @@ jobs:
 ### B. Lighthouse Accessibility Audit on Every PR
 Catch regressions before they merge. This workflow builds the Jekyll site and runs a Lighthouse audit on every pull request and push to `main`.
 
+Run the same accessibility checks in both light and dark color schemes. A PR is not fully covered unless the test suite explicitly emulates each scheme and fails on violations in either mode. If you use visual regression tests, keep the baselines separate for light and dark mode.
+
+Missing one of the color-scheme passes is also a coverage gap, because theme-specific regressions often only appear in the scheme that was not exercised.
+
 **Workflow (`.github/workflows/lighthouse.yml`):**
 ```yaml
 name: Lighthouse CI
@@ -236,6 +240,9 @@ jobs:
           name: a11y-json-report
           path: audit-report.json
 ```
+
+
+
 
 ---
 
