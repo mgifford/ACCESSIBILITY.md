@@ -26,9 +26,9 @@ All visual interface elements that convey information or require user interactio
 | 1.4.3 Contrast (Minimum) | AA | 4.5:1 for normal text; 3:1 for large text | Text and images of text |
 | 1.4.6 Contrast (Enhanced) | AAA | 7:1 for normal text; 4.5:1 for large text | Text and images of text |
 | 1.4.11 Non-text Contrast | AA | 3:1 against adjacent colors | UI components, graphical objects |
-| 2.4.13 Focus Appearance | AA | Focus indicator area ≥ perimeter of component × CSS pixels; 3:1 contrast change | Keyboard focus indicators |
+| 2.4.13 Focus Appearance | AAA | Focus indicator area ≥ perimeter of component × CSS pixels; 3:1 contrast change | Keyboard focus indicators |
 
-> **WCAG 2.2 note:** 2.4.13 Focus Appearance is new in WCAG 2.2 at Level AA. Teams that previously targeted 2.4.7 (Focus Visible, AA) must also now satisfy 2.4.13.
+> **WCAG 2.2 note:** 2.4.13 Focus Appearance is new in WCAG 2.2 at Level AAA. Teams that previously targeted 2.4.7 (Focus Visible, AA) must also now satisfy 2.4.13.
 
 ---
 
@@ -238,7 +238,7 @@ a:focus {
 
 ## 6. Focus Appearance (WCAG 2.4.13)
 
-WCAG 2.2 adds **2.4.13 Focus Appearance** at Level AA. A visible keyboard focus indicator must:
+WCAG 2.2 adds **2.4.13 Focus Appearance** at Level AAA. A visible keyboard focus indicator must:
 
 1. Enclose the focused component (or its text/icon) with a focus indicator area of at least the **perimeter of the component** (in CSS pixels) times 2 CSS pixels in thickness.
 2. Have a **contrast ratio of at least 3:1** between the focused and unfocused states.
@@ -610,7 +610,7 @@ jobs:
 | [1.4.6](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html) | Contrast (Enhanced) | AAA | 7:1 normal text; 4.5:1 large text |
 | [1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | Non-text Contrast | AA | 3:1 for UI components and graphical objects |
 | [2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | Focus Visible | AA | Keyboard focus indicator is visible |
-| [2.4.13](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) | Focus Appearance | AA | Focus indicator must be sufficiently large and high-contrast |
+| [2.4.13](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) | Focus Appearance | AAA | Focus indicator must be sufficiently large and high-contrast |
 
 ---
 
