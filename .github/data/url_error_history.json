@@ -1,0 +1,39 @@
+{
+  "errors": {
+    "a11y-style-guide-com": [
+      {
+        "date": "2026-07-01T01:24:21.835224",
+        "status_code": 404,
+        "error": "404 Not Found"
+      }
+    ],
+    "getevinced-github-io": [
+      {
+        "date": "2026-07-01T01:24:21.835224",
+        "status_code": 404,
+        "error": "404 Not Found"
+      }
+    ],
+    "gov-uk-service-manual-accessibility": [
+      {
+        "date": "2026-07-01T01:24:21.835224",
+        "status_code": 404,
+        "error": "404 Not Found"
+      }
+    ],
+    "material-design-accessibility": [
+      {
+        "date": "2026-07-01T01:24:21.835224",
+        "status_code": 404,
+        "error": "404 Not Found"
+      }
+    ],
+    "shopify-ux": [
+      {
+        "date": "2026-07-01T01:24:21.835224",
+        "status_code": 404,
+        "error": "404 Not Found"
+      }
+    ]
+  }
+}
