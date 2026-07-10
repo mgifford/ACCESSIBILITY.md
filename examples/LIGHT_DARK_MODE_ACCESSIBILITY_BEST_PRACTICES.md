@@ -385,8 +385,26 @@ const themeModeButtons = document.querySelectorAll('.theme-mode-btn');
 const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 const modeOrder = ['light', 'dark', 'system'];
 
-// Persist user mode as light, dark, or system
-let mode = localStorage.getItem('theme-mode') || 'system';
+// Safe localStorage access keeps controls working in restricted environments.
+function getStoredMode() {
+  try {
+    return localStorage.getItem('theme-mode');
+  } catch {
+    return null;
+  }
+}
+
+function setStoredMode(value) {
+  try {
+    localStorage.setItem('theme-mode', value);
+  } catch {
+    // Storage is unavailable; keep the current-session behavior.
+  }
+}
+
+// Persist user mode as light, dark, or system.
+const storedMode = getStoredMode();
+let mode = modeOrder.includes(storedMode) ? storedMode : 'system';
 
 function resolveTheme(activeMode) {
   if (activeMode === 'system') {
@@ -427,7 +445,7 @@ function focusModeByIndex(index) {
   }
 
   mode = nextMode;
-  localStorage.setItem('theme-mode', mode);
+  setStoredMode(mode);
   applyMode(mode);
   nextButton.focus();
 }
@@ -435,7 +453,7 @@ function focusModeByIndex(index) {
 themeModeButtons.forEach((button) => {
   button.addEventListener('click', () => {
     mode = button.dataset.themeValue;
-    localStorage.setItem('theme-mode', mode);
+    setStoredMode(mode);
     applyMode(mode);
   });
 
@@ -465,7 +483,7 @@ themeModeButtons.forEach((button) => {
       case 'Enter':
         event.preventDefault();
         mode = button.dataset.themeValue;
-        localStorage.setItem('theme-mode', mode);
+        setStoredMode(mode);
         applyMode(mode);
         break;
       default:
@@ -487,7 +505,8 @@ applyMode(mode);
 #### Requirements
 
 - Provide three explicit options: `light`, `dark`, and `system`
-- Persist selected mode across sessions in localStorage (for example, `theme-mode`)
+- Persist selected mode across sessions in localStorage (for example, `theme-mode`) when storage is available
+- Wrap localStorage reads/writes in `try/catch` so controls still work when persistence is blocked
 - When `system` is selected, resolve visual theme from `prefers-color-scheme`
 - While in `system` mode, update automatically if OS/browser preference changes
 - Expose selected state programmatically (`role="radio"` with `aria-checked`)

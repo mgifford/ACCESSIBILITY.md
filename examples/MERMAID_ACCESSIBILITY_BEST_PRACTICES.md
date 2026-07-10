@@ -11,7 +11,7 @@ Copyright (c) 2026 Mike Gifford
 
 Based on:
 - Léonie Watson's [Accessible SVG flowcharts](https://tink.uk/accessible-svg-flowcharts/)
-- Carie Fisher's [Accessible SVGs: Perfect Patterns For Screen Reader Users](https://cariefisher.com/a11y-svg-updated/)
+- Carie Fisher's [Accessible SVGs: Perfect Patterns For Screen Reader Users](https://cariefisher.com/#/writing/accessible-svg-patterns-comparison)
 - W3C ARIA Authoring Practices Guide
 - WCAG 2.2 Level AA
 
@@ -299,7 +299,7 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 ### Additional Reading
 
 - **Léonie Watson's Accessible SVG Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
-- **Carie Fisher's Pattern Testing**: https://cariefisher.com/a11y-svg-updated/
+- **Carie Fisher's Pattern Testing**: https://cariefisher.com/#/writing/accessible-svg-patterns-comparison
 
 ---
 

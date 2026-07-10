@@ -388,7 +388,7 @@ Use `forced-color-adjust: none` only as a last resort when a component is genuin
 **Further reading:**
 
 - [MDN: forced-colors media feature](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors)
-- [MDN: forced-color-adjust property](https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust)
+- [MDN: forced-color-adjust property](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/forced-color-adjust)
 - [Chrome DevTools: Emulate CSS media features](https://developer.chrome.com/docs/devtools/rendering/emulate-css)
 - [Smashing Magazine: Windows High Contrast Colors Mode & CSS Custom Properties](https://www.smashingmagazine.com/2022/03/windows-high-contrast-colors-mode-css-custom-properties/)
 - [Adrian Roselli: WHCM and System Colors](https://adrianroselli.com/2021/02/whcm-and-system-colors.html)

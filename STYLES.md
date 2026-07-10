@@ -253,7 +253,7 @@ Also see: [[AGENTS.md]]
 ---
 
 ## 6. References and inspiration
-* [UK GDS Style Guide](https://www.gov.uk/guidance/style-guide/a-to-z)
+* [UK GDS Style Guide](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/)
 * [California Design System](https://designsystem.webstandards.ca.gov/)
 * [18F Content Guide](https://content-guide.18f.gov/)
 * [Harvard Accessibility & Readability](https://accessibility.huit.harvard.edu/design-readability)

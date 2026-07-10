@@ -10,7 +10,7 @@ Copyright (c) 2026 Mike Gifford
 **Normative specification governing post-processing rules, semantic preservation, and verification checklists.**
 
 Based on:
-- Carie Fisher's [Accessible SVGs: Perfect Patterns For Screen Reader Users](https://cariefisher.com/a11y-svg-updated/)
+- Carie Fisher's [Accessible SVGs: Perfect Patterns For Screen Reader Users](https://cariefisher.com/#/writing/accessible-svg-patterns-comparison)
 - Léonie Watson's [Accessible SVG Flowcharts](https://tink.uk/accessible-svg-flowcharts/)
 - SVG Specification (W3C)
 - WCAG 2.2 Level AA
@@ -439,7 +439,7 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 
 ### Additional Reading
 
-- **Carie Fisher's Pattern 11**: https://cariefisher.com/a11y-svg-updated/
+- **Carie Fisher's Pattern 11**: https://cariefisher.com/#/writing/accessible-svg-patterns-comparison
 - **Léonie Watson's Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
 
 ---

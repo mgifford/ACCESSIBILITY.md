@@ -11,7 +11,7 @@ SVG perceivable, operable, and compatible with assistive technologies?
 
 Pattern recommendations in this skill are grounded in cross-browser/screen reader
 testing by Carie Fisher (published on Smashing Magazine, updated at
-<https://cariefisher.com/a11y-svg-updated/>). When a pattern is labelled
+<https://cariefisher.com/#/writing/accessible-svg-patterns-comparison>). When a pattern is labelled
 **"Best in Show"**, **"Use Caution"**, or **"Not Recommended"** below, those
 labels reflect her testing results across OS/browser/screen reader combinations.
 

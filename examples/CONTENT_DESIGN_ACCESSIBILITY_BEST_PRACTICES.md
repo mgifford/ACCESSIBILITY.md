@@ -131,7 +131,7 @@ Content is ready to publish when:
 ### Government Content Design Style Guides
 
 - [Canada.ca Content Style Guide](https://design.canada.ca/style-guide/) - Government of Canada
-- [GOV.UK Style Guide](https://www.gov.uk/guidance/style-guide) - UK Government Digital Service
+- [GOV.UK Style Guide](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/) - UK Government Digital Service
 - [California ODI Content Design Guide](https://hub.innovation.ca.gov/content-design/odi-style-guide/) - California Office of Data & Innovation
 - [California ODI Recommended Reading](https://hub.innovation.ca.gov/content-design/recommended-reading/) - Curated content design resources
 - [UK Home Office Content Style Guide](https://design.homeoffice.gov.uk/design-and-content/content/content-style-guide) - UK Home Office
