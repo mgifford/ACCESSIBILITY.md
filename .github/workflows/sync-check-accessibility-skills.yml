@@ -184,13 +184,13 @@ jobs:
             const report = fs.readFileSync('/tmp/report.md', 'utf8');
             const count = '${{ steps.compare.outputs.diverged_count }}';
 
-            const title = accessibility-skills sync: ${count} file(s) need review;
+            const title = `accessibility-skills sync: ${count} file(s) need review`;
             const body = [
               report,
               '',
               '---',
               '_This issue was automatically created by the [sync-check-accessibility-skills workflow](' +
-              https://github.com/${context.repo.owner}/${context.repo.repo}/actions/workflows/sync-check-accessibility-skills.yml).  +
+              `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/workflows/sync-check-accessibility-skills.yml).  ` +
               'Close this issue once the diverged files have been reviewed and any improvements merged._'
             ].join('\n');
 
@@ -229,9 +229,9 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issues[0].number,
-                body: ### Updated sync report\n\n${report},
+                body: `### Updated sync report\n\n${report}`,
               });
-              console.log(Updated existing issue #${issues[0].number});
+              console.log(`Updated existing issue #${issues[0].number}`);
             } else {
               // Create new issue
               const { data: issue } = await github.rest.issues.create({
@@ -241,7 +241,7 @@ jobs:
                 body,
                 labels: ['sync-check', 'documentation'],
               });
-              console.log(Created issue #${issue.number}: ${issue.html_url});
+              console.log(`Created issue #${issue.number}: ${issue.html_url}`);
             }
 
       - name: Print report summary

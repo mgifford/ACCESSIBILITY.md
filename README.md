@@ -4,7 +4,7 @@
 
 Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md`** defines the inclusive state of a project. It is a human and machine-readable manifest that tracks a project’s commitment to accessibility (a11y) through metrics, guardrails, and automated enforcement.
 
-> **Looking for the Claude Skills approach?** If you want to add accessibility guidance to a project via an `AGENTS.skills`, see the companion repo: **[mgifford/accessibility-skil](https://github.com/mgifford/accessibility-skills/)l (now with evals)**. 
+> **Looking for the Claude Skills approach?** If you want to add accessibility guidance to a project via an `AGENTS.skills`, see the companion repo: **[mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills/) (now with evals)**.
 
 ---
 

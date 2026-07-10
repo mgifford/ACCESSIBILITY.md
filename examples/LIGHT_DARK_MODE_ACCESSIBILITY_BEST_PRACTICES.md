@@ -238,16 +238,18 @@ a:focus-visible {
 
 ### User override pattern
 
-If providing manual theme toggle:
+If providing manual theme controls:
 
 #### Toggle control design
 
-Use a single toggle button that switches between light and dark modes:
+Use a three-option control for **Light**, **Dark**, and **System**:
 
-- **Visual affordance**: Use sun/moon icons to provide clear indication of theme switching functionality
+- **Control model**: Use a radiogroup with three options (`light`, `dark`, `system`) so the selected state is explicit
+- **Visual affordance**: Use sun/moon/system icons as supporting visuals, not the only state indicator
 - **Placement**: Position in the top-right corner of the header in both desktop and mobile views
 - **Scroll behavior**: Do not make the toggle fixed/sticky; it should remain in normal document flow within the header
 - **Keyboard navigation**: Place the toggle in the DOM **after** navigation/menu items so it appears later in the tab order
+- **Keyboard interaction**: Make the radiogroup a single Tab stop and support Arrow keys, Home/End, Space, and Enter to change the selected option
 - **Language consideration**: This guidance assumes left-to-right (LTR) languages
 
 #### HTML structure
@@ -260,17 +262,39 @@ Use a single toggle button that switches between light and dark modes:
     <a href="/contact">Contact</a>
     <!-- Navigation items come first in DOM order -->
   </nav>
-  
-  <!-- Theme toggle comes after navigation for proper tab order -->
-  <button id="theme-toggle" aria-label="Switch to dark mode">
-    <svg aria-hidden="true" class="theme-icon sun-icon" viewBox="0 0 24 24" width="20" height="20">
-      <circle cx="12" cy="12" r="5" fill="currentColor"/>
-      <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-    </svg>
-    <svg aria-hidden="true" class="theme-icon moon-icon" viewBox="0 0 24 24" width="20" height="20">
-      <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-    </svg>
-  </button>
+
+  <!-- Theme control comes after navigation for proper tab order -->
+  <div id="theme-mode-group" role="radiogroup" aria-label="Color theme">
+    <button type="button" class="theme-mode-btn" role="radio" aria-checked="false" tabindex="-1" data-theme-value="light">
+      <svg aria-hidden="true" class="theme-icon" viewBox="0 0 24 24" width="20" height="20">
+        <circle cx="12" cy="12" r="5" fill="currentColor"/>
+        <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+      </svg>
+      <span>Light</span>
+    </button>
+
+    <button type="button" class="theme-mode-btn" role="radio" aria-checked="false" tabindex="-1" data-theme-value="dark">
+      <svg aria-hidden="true" class="theme-icon" viewBox="0 0 24 24" width="20" height="20">
+        <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <span>Dark</span>
+    </button>
+
+    <button type="button" class="theme-mode-btn" role="radio" aria-checked="true" tabindex="0" data-theme-value="system">
+      <span>System</span>
+      <svg aria-hidden="true" class="theme-mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 24">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </g>
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M36 3a6.364 6.364 0 0 0 9 9 9 9 0 1 1-9-9"/>
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" transform="translate(48)">
+          <rect width="18" height="11" x="3" y="4" rx="2"/>
+          <path d="M2 18h20"/>
+        </g>
+      </svg>
+    </button>
+  </div>
 </header>
 ```
 
@@ -289,69 +313,57 @@ nav {
   gap: 1.5rem;
 }
 
-#theme-toggle {
+#theme-mode-group {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.25rem;
+}
+
+.theme-mode-btn {
   /* Optional: margin-left: auto provides fallback positioning if additional
      header items are added. Currently, justify-content: space-between on
-     parent handles the layout with just nav and button. */
-  margin-left: auto;
+     parent handles the layout with nav and this control. */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   padding: 0.5rem;
-  border: 1px solid var(--color-border);
+  border: 0;
   background-color: var(--color-background);
   color: var(--color-text);
   cursor: pointer;
   border-radius: 4px;
 }
 
-#theme-toggle:hover {
+.theme-mode-btn:hover {
   background-color: var(--color-hover);
 }
 
-#theme-toggle:focus {
+.theme-mode-btn:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-.theme-icon {
+.theme-mode-btn[aria-checked="true"] {
+  background-color: var(--color-hover);
+  border: 1px solid var(--color-border);
+}
+
+.theme-icon,
+.theme-mode-icon {
   display: block;
+}
+
+.theme-icon {
   width: 20px;
   height: 20px;
 }
 
-/* Default state (before JS loads): show moon icon indicating "switch to dark mode" */
-.sun-icon {
-  display: none;
-}
-
-.moon-icon {
-  display: block;
-}
-
-/* If system prefers dark mode, show sun icon before JS loads */
-@media (prefers-color-scheme: dark) {
-  .sun-icon {
-    display: block;
-  }
-  
-  .moon-icon {
-    display: none;
-  }
-}
-
-/* Show/hide appropriate icon based on theme */
-[data-theme="dark"] .sun-icon {
-  display: block;
-}
-
-[data-theme="dark"] .moon-icon {
-  display: none;
-}
-
-[data-theme="light"] .sun-icon {
-  display: none;
-}
-
-[data-theme="light"] .moon-icon {
-  display: block;
+.theme-mode-icon {
+  width: 54px;
+  height: 18px;
 }
 
 /* Mobile responsive */
@@ -369,64 +381,120 @@ nav {
 #### JavaScript implementation
 
 ```javascript
-const themeToggle = document.getElementById('theme-toggle');
+const themeModeButtons = document.querySelectorAll('.theme-mode-btn');
 const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+const modeOrder = ['light', 'dark', 'system'];
 
-// Get user preference from localStorage, or default to system preference
-const savedTheme = localStorage.getItem('theme');
-let currentTheme;
-let userHasOverride = false;
+// Persist user mode as light, dark, or system
+let mode = localStorage.getItem('theme-mode') || 'system';
 
-if (savedTheme) {
-  // User has explicitly set a preference
-  currentTheme = savedTheme;
-  userHasOverride = true;
-} else {
-  // No user override - inherit from browser/OS default
-  currentTheme = prefersDarkScheme.matches ? 'dark' : 'light';
-}
-
-function applyTheme(theme) {
-  // Set data-theme on root; descendant CSS selectors control icon visibility
-  document.documentElement.setAttribute('data-theme', theme);
-  
-  // Update button label to reflect the action
-  if (theme === 'dark') {
-    themeToggle.setAttribute('aria-label', 'Switch to light mode');
-  } else {
-    themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+function resolveTheme(activeMode) {
+  if (activeMode === 'system') {
+    return prefersDarkScheme.matches ? 'dark' : 'light';
   }
+  return activeMode;
 }
 
-themeToggle.addEventListener('click', () => {
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  currentTheme = newTheme;
-  userHasOverride = true;
-  localStorage.setItem('theme', newTheme);
-  applyTheme(newTheme);
+function updateSelection(activeMode) {
+  themeModeButtons.forEach((button) => {
+    const checked = button.dataset.themeValue === activeMode;
+    button.setAttribute('aria-checked', checked ? 'true' : 'false');
+    button.setAttribute('tabindex', checked ? '0' : '-1');
+  });
+}
+
+function applyMode(activeMode) {
+  const resolvedTheme = resolveTheme(activeMode);
+
+  // Track both chosen mode and resolved theme for styling/debugging.
+  document.documentElement.setAttribute('data-theme-mode', activeMode);
+  document.documentElement.setAttribute('data-theme', resolvedTheme);
+
+  updateSelection(activeMode);
+}
+
+function getModeIndex(activeMode) {
+  return modeOrder.indexOf(activeMode);
+}
+
+function focusModeByIndex(index) {
+  const normalizedIndex = (index + modeOrder.length) % modeOrder.length;
+  const nextMode = modeOrder[normalizedIndex];
+  const nextButton = document.querySelector(`[data-theme-value="${nextMode}"]`);
+
+  if (!nextButton) {
+    return;
+  }
+
+  mode = nextMode;
+  localStorage.setItem('theme-mode', mode);
+  applyMode(mode);
+  nextButton.focus();
+}
+
+themeModeButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    mode = button.dataset.themeValue;
+    localStorage.setItem('theme-mode', mode);
+    applyMode(mode);
+  });
+
+  button.addEventListener('keydown', (event) => {
+    const currentIndex = getModeIndex(mode);
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault();
+        focusModeByIndex(currentIndex + 1);
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault();
+        focusModeByIndex(currentIndex - 1);
+        break;
+      case 'Home':
+        event.preventDefault();
+        focusModeByIndex(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        focusModeByIndex(modeOrder.length - 1);
+        break;
+      case ' ':
+      case 'Enter':
+        event.preventDefault();
+        mode = button.dataset.themeValue;
+        localStorage.setItem('theme-mode', mode);
+        applyMode(mode);
+        break;
+      default:
+        break;
+    }
+  });
 });
 
-// Listen for system theme preference changes (only when no user override exists)
 prefersDarkScheme.addEventListener('change', (e) => {
-  if (!userHasOverride) {
-    currentTheme = e.matches ? 'dark' : 'light';
-    applyTheme(currentTheme);
+  // Only react automatically while user has selected system mode.
+  if (mode === 'system') {
+    applyMode('system');
   }
 });
 
-// Apply theme on load
-applyTheme(currentTheme);
+applyMode(mode);
 ```
 
 #### Requirements
 
-- Default to system preference (`prefers-color-scheme`) when no user override exists
-- Persist user choice across sessions in localStorage
-- Update toggle button label to reflect the **action** (e.g., "Switch to dark mode" when currently in light mode)
-- Use sun icon when in dark mode (indicates switching to light)
-- Use moon icon when in light mode (indicates switching to dark)
-- Ensure toggle appears in keyboard tab order **after** navigation items
-- Position toggle in top-right corner of header (not fixed/sticky)
+- Provide three explicit options: `light`, `dark`, and `system`
+- Persist selected mode across sessions in localStorage (for example, `theme-mode`)
+- When `system` is selected, resolve visual theme from `prefers-color-scheme`
+- While in `system` mode, update automatically if OS/browser preference changes
+- Expose selected state programmatically (`role="radio"` with `aria-checked`)
+- Implement roving tabindex so only the selected option is in the Tab order
+- Support keyboard control with Arrow keys, Home/End, Space, and Enter
+- Ensure the control appears in keyboard tab order **after** navigation items
+- Position control in top-right corner of header (not fixed/sticky)
 
 ---
 
