@@ -517,7 +517,49 @@ applyMode(mode);
 
 ---
 
-## 4. Forced-Colors Mode Support
+## 4. Complex Scripts and Diacritics (e.g., Hebrew, Arabic)
+
+When supporting complex scripts with vocalization and cantillation marks (such as Hebrew Nikkud and Ta'amei Hamikra, or Arabic Tashkeel), dark mode presents unique accessibility challenges. These marks are not separate characters side-by-side; they are combining Unicode characters (e.g., range `U+0591` to `U+05C7` for Hebrew) that stack vertically. Standard frontend implementations often break when rendering these vertically stacked diacritics in dark mode.
+
+### CSS Validation for Complex Scripts
+
+1. **Irradiation / Glow Control:** Pure white text on a pure black background causes a bleeding effect ("halation") that blurs tiny dots. 
+   * Use an off-white text color (e.g., `#f5f5f5`) on a dark charcoal/gray background (e.g., `#121212`).
+   * Explicitly add font smoothing for diacritic legibility across browsers:
+     ```css
+     .complex-script-container {
+       -webkit-font-smoothing: antialiased;
+       -moz-osx-font-smoothing: grayscale;
+     }
+     ```
+2. **Line-Height & Clipping:** Diacritics stack above and below the baseline. Audit your CSS to ensure `line-height` is set to at least `1.8` or `2.0`. **Never** apply `overflow: hidden` to the text container, otherwise top/bottom marks will be clipped.
+3. **Contrast & Color Inheritance:** Ensure text color changes apply uniformly. If pseudo-elements or specific spans colorize diacritics, they must invert to a high-contrast color.
+4. **RTL (Right-to-Left) Preservation:** Ensure dark mode state toggles do not accidentally strip `dir="rtl"` attributes or break bidirectional text isolation (`<bdi>`).
+5. **Font-Weight "Thinning":** Light text on a dark background naturally looks bolder. Avoid overly bold font-weights in dark mode, as diacritics can merge into the base letters and become unreadable blobs.
+
+### Visual Regression Testing for Diacritics
+
+Standard DOM-based text checks cannot catch visual rendering failures of combining characters. Automated tests (e.g., using Playwright or Cypress) must use strict visual regression testing. 
+
+**Example Prompt for LLM Test Generation:**
+
+Act as a QA Automation Engineer. Write a visual regression test script using [Playwright/Cypress] that does the following:
+1. Loads a page containing complex Hebrew text with both Nikkud and Ta'amei Hamikra (e.g., 'בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים').
+2. Captures a baseline screenshot in Light Mode.
+3. Simulates/toggles Dark Mode (via data-theme attribute or prefers-color-scheme media query override).
+4. Waits for the font (e.g., SBL Hebrew or Tiro Hebrew) to fully render.
+5. Captures a Dark Mode screenshot and performs a pixel-by-pixel visual diff with a strict threshold (0.01) to ensure the tiny diacritic dots do not blur, disappear, or shift position. Ensure the test environment sets `ignoreFontAntialiasing: true` or runs in a standardized Docker container to prevent false positives across OS runners.
+
+### Manual Validation Checklist
+
+When reviewing screenshots or rendered UI components—or when passing images to Vision AI models for auditing—use this checklist:
+
+* **Visibility:** Are the tiny dots inside the letters (e.g., the Dagesh dot in ּ) distinct and readable against the dark background?
+* **Separation:** Are the vertical and horizontal lines below the letters blending together into a single blob, or do they remain separate lines?
+* **Truncation:** Is the very highest mark (the cantillation accent above the letter) fully visible, or is it cut off by the top edge of the line block?
+* **Weight/Blobbing:** Does the font weight feel too heavy in dark mode? Ensure bold text hasn't turned the diacritics into unreadable blobs.
+
+## 5. Forced-Colors Mode Support
 
 Forced-colors mode (Windows High Contrast) overrides author styles. Ensure content remains accessible:
 
@@ -564,7 +606,7 @@ Requirements:
 
 ---
 
-## 5. Color Independence
+## 6. Color Independence
 
 Information must not be conveyed by color alone:
 
@@ -601,7 +643,7 @@ Avoid:
 
 ---
 
-## 6. Images and Graphics
+## 7. Images and Graphics
 
 Images and graphics must work in both modes:
 
@@ -652,7 +694,7 @@ Ensure PNG/WebP images with transparency remain perceivable:
 
 ---
 
-## 7. Focus and Interactive States
+## 8. Focus and Interactive States
 
 Focus indicators must be visible in all color modes:
 
@@ -690,7 +732,7 @@ Test:
 
 ---
 
-## 8. Motion and Transitions
+## 9. Motion and Transitions
 
 Respect motion preferences when switching themes:
 
@@ -717,7 +759,7 @@ Requirements:
 
 ---
 
-## 9. Testing Expectations
+## 10. Testing Expectations
 
 Minimum checks for color mode implementation:
 
@@ -764,7 +806,7 @@ Test with:
 
 ---
 
-## 10. Definition of Done
+## 11. Definition of Done
 
 A color mode implementation is complete when:
 
@@ -783,7 +825,7 @@ A color mode implementation is complete when:
 
 ---
 
-## 11. Data Tables and Zebra Striping
+## 12. Data Tables and Zebra Striping
 
 Zebra striping (alternating row background colors) helps users track rows across wide tables. However, many implementations apply high-contrast absolute colors that work acceptably in light mode but become visually extreme in dark mode.
 
