@@ -291,6 +291,12 @@ full_width: true
           <p>Target size minimums, pointer cancellation, drag alternatives, motion actuation, and WCAG 2.5.x criteria for touch and pointer interactions</p>
         </article>
       </a>
+      <a class="card" href="./examples/SPEECH_RECOGNITION_ACCESSIBILITY_BEST_PRACTICES.html">
+        <article>
+          <h3>Speech Recognition Accessibility Best Practices</h3>
+          <p>WCAG 2.5.3 Label in Name, visible-accessible name alignment, native semantics for voice commands, and testing with Dragon, Apple Voice Control, and Windows Speech Recognition</p>
+        </article>
+      </a>
       <a class="card" href="./examples/ACCESSIBILITY_PROMPT_STARTER.html">
         <article>
           <h3>Prompt Starter</h3>
