@@ -466,6 +466,98 @@ For any other axe rule, the workflow falls back to a generic prompt that instruc
 
 ---
 
+## Severity Scale (this skill)
+
+| Level | Meaning |
+| --- | --- |
+| **Critical** | Blocks task completion entirely for one or more disability groups |
+| **Serious** | Significantly impairs access; workaround unreasonable to expect |
+| **Moderate** | Creates friction; workaround exists and is not too burdensome |
+| **Minor** | Best-practice gap; marginal impact on access |
+
+---
+
+## Security Considerations
+
+This skill references GitHub Actions that fetch and execute remote code. This
+creates a **supply chain risk** (Snyk W012: Potentially malicious external URL).
+
+### The Risk
+
+GitHub Actions execute code from external repositories:
+- `github/accessibility-scanner@v3` — runs accessibility scans against your site
+- `AGENT_REMEDIATION_WORKFLOW.yml` — runs a Copilot coding agent that applies fixes
+- Any pinned action version could be compromised upstream
+
+### Mitigations
+
+When implementing these workflows:
+
+1. **Pin to commit SHAs, not tags** — Tags can be moved; commit SHAs cannot:
+   ```yaml
+   # Instead of:
+   uses: actions/checkout@v4
+   
+   # Use (replace with actual SHA from action's release page):
+   uses: actions/checkout@<commit-sha>  # e.g., v4.1.1
+   ```
+
+2. **Review action sources** — Only use actions from trusted publishers:
+   - `actions/checkout`, `actions/setup-node`, `actions/upload-artifact` (GitHub official)
+   - `github/accessibility-scanner` (GitHub official)
+   - `dequelabs/axe-core-npm` (axe-core maintainers)
+
+3. **Audit before copying workflows** — Review `AGENT_REMEDIATION_WORKFLOW.yml`
+   before copying to your repo. Understand that it grants Copilot write access
+   to create PRs.
+
+4. **Use `permissions:` to limit blast radius** — Always declare minimum permissions:
+   ```yaml
+   permissions:
+     contents: read
+     issues: write  # only if creating issues
+   ```
+
+5. **Review Dependabot PRs** — When Dependabot proposes action updates, review
+   the changelog before approving.
+
+### Acceptance
+
+This pattern is acceptable because:
+- CI/CD automation requires executing external code by design
+- Pinning to SHAs ensures you control exactly which code runs
+- Permission restrictions limit damage from compromised actions
+- Human review of Dependabot PRs catches upstream compromises
+
+---
+
+## Definition of Done Checklist
+
+- [ ] Lighthouse CI runs on every PR and blocks on accessibility failures
+- [ ] axe-core scans run on every PR with zero violations
+- [ ] Scheduled weekly scans run against production
+- [ ] Alert-fatigue guard pauses scans when issues remain open
+- [ ] Playwright aria snapshots cover critical user journeys
+- [ ] Guidepup virtual screen reader tests pass for key flows
+- [ ] All GitHub Actions pinned to commit SHAs
+- [ ] Permissions declarations use minimum required privileges
+
+---
+
+## Key WCAG Criteria (automation coverage)
+
+| WCAG SC | What automation catches | What requires manual testing |
+| --- | --- | --- |
+| 1.1.1 Non-text Content | Missing alt attributes | Meaningful alt text quality |
+| 1.3.1 Info and Relationships | Missing heading hierarchy, table headers | Logical reading order |
+| 1.4.3 Contrast (AA) | Color contrast ratio | Contextual contrast |
+| 2.1.1 Keyboard | Missing focusable elements | Focus order, interaction patterns |
+| 2.4.1 Bypass Blocks | Missing skip links | Skip link effectiveness |
+| 2.4.7 Focus Visible | Missing focus styles | Focus indicator clarity |
+| 4.1.2 Name, Role, Value | Missing ARIA labels | Correct ARIA usage |
+
+---
+
 ## Alternative Tools & Resources
 
 - **[AccessLint](https://github.com/accesslint):** A GitHub App that provides inline PR comments. A great backup for catching issues during code review without a full CI run.
