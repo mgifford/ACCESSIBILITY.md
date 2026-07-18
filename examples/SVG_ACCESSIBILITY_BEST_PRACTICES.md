@@ -4,361 +4,708 @@ title: SVG Accessibility Best Practices
 
 # SVG Accessibility Best Practices
 
-## Core Mandate
+SVG accessibility depends on the graphic's purpose and how it is embedded. A decorative icon, an informative image, an icon inside a button, and an interactive diagram require different patterns.
 
-Outcome-based, not checklist-driven. Measure against real usage context: is the
-SVG perceivable, operable, and compatible with assistive technologies?
-
-Pattern recommendations in this skill are grounded in cross-browser/screen reader
-testing by Carie Fisher (published on Smashing Magazine, updated at
-<https://cariefisher.com/#/writing/accessible-svg-patterns-comparison>). When a pattern is labelled
-**"Best in Show"**, **"Use Caution"**, or **"Not Recommended"** below, those
-labels reflect her testing results across OS/browser/screen reader combinations.
+Start by deciding what users need from the graphic. Then provide the simplest semantic implementation that delivers the same information or function.
 
 ---
 
-## Severity Scale
+## 1. Required Outcomes
 
-| Level | Meaning |
-| --- | --- |
-| **Critical** | SVG conveys essential information with no accessible alternative |
-| **Serious** | SVG is interactive but unreachable or unlabelled for AT users |
-| **Moderate** | AT experience degraded but content still partially accessible |
-| **Minor** | Best-practice gap; marginal impact |
+A conforming implementation must:
 
----
+- provide an equivalent text alternative for meaningful SVG content;
+- allow decorative SVG content to be ignored by assistive technology;
+- give functional graphics a name that describes the action or destination;
+- avoid repeating a control's accessible name through both its text and icon;
+- preserve information that is communicated through colour, shape, position, or animation;
+- provide sufficient text and non-text contrast;
+- make SVG-based controls keyboard operable with visible focus;
+- respect motion preferences and provide required animation controls;
+- remain understandable in supported light, dark, increased-contrast, and forced-colours modes; and
+- preserve accessibility markup during SVG optimization and reuse.
 
-## Decorative SVGs — Hide Completely from AT
-
-A decorative SVG that is not hidden from AT is a **Moderate** issue — it adds
-noise to the accessibility tree and forces screen reader users to listen to
-meaningless announcements.
-
-**Both attributes are required:**
-
-```html
-<svg aria-hidden="true" focusable="false">
-  <!-- decorative icon — no title, no desc, no role needed -->
-</svg>
-```
-
-* `aria-hidden="true"` removes the SVG from the accessibility tree entirely
-* `focusable="false"` is required for IE/Edge legacy compatibility where SVGs
-  become focusable by default and appear in the tab order
-
-**Never use `role="presentation"` as a substitute for `aria-hidden="true"`**
-on decorative SVGs. `role="presentation"` does not reliably suppress AT
-announcement across all browser/screen reader combinations.
-
-**When is an SVG decorative?** If the same meaning is conveyed by adjacent
-visible text, or if the image is purely ornamental (borders, backgrounds,
-flourishes), it is decorative. If removing it would leave a user without
-information or context they need, it is meaningful.
+The presence of `<title>`, `<desc>`, `role="img"`, or `aria-label` does not by itself make an SVG accessible. The result must be tested in its final context.
 
 ---
 
-## Meaningful SVGs — Choosing the Right Pattern
+## 2. Choose the Pattern by Purpose and Context
 
-Based on Carie Fisher's testing across NVDA, JAWS, VoiceOver (macOS and iOS),
-TalkBack, and Narrator:
+| Context | Preferred pattern |
+|:---|:---|
+| Decorative SVG loaded with `<img>` | `<img src="…" alt="">` |
+| Meaningful SVG loaded with `<img>` | `<img src="…" alt="Useful description">` |
+| Decorative inline SVG | `<svg aria-hidden="true">…</svg>` |
+| Simple meaningful inline SVG | `<svg role="img" aria-labelledby="…"><title>…</title></svg>` |
+| Icon inside a named button or link | Name the HTML control and hide the SVG |
+| Complex graphic | Short name plus visible summary, data, or detailed description |
+| Reused sprite icon | Label or hide each outer `<svg>` instance, not the shared symbol |
+| Interactive graphic | Prefer native HTML controls; provide an equivalent structured alternative |
 
-### SVG as `<img>` (external file reference)
-
-Use `<img>` for simple, uncomplicated images. The SVG file loads separately —
-this is lighter and easier to maintain for icons used in multiple places, but
-offers less control over internals.
-
-**Best in Show — `<img>` patterns:**
-
-```html
-<!-- Pattern 2: <img> + role="img" + alt — RECOMMENDED -->
-<img role="img" class="icon" alt="Download" src="download.svg">
-
-<!-- Pattern 3: <img> + role="img" + aria-label — RECOMMENDED -->
-<img role="img" class="icon" aria-label="Download" src="download.svg">
-```
-
-**Use Caution:**
-
-```html
-<!-- Pattern 4: <img> + role="img" + aria-labelledby
-     Works in most combinations but has gaps in some screen readers -->
-<p id="cap1" class="visually-hidden">Download report</p>
-<img role="img" aria-labelledby="cap1" src="download.svg">
-```
-
-**Not Recommended:**
-
-```html
-<!-- Pattern 1: <img> + alt alone — inconsistent results, omit role="img" -->
-<img alt="Download" src="download.svg">
-```
+Use native HTML semantics before ARIA. Do not add `role="img"` to an `<img>` merely because its source is an SVG file.
 
 ---
 
-### Inline SVG — simple label only
+## 3. External SVG Used with `<img>`
 
-Use inline `<svg>` when you need control over colours, animation, or internals.
+An SVG referenced by an HTML `<img>` follows the same text-alternative rules as other image formats.
 
-**Best in Show — inline SVG patterns (simple label):**
-
-```html
-<!-- Pattern 5: <svg> + role="img" + <title> — RECOMMENDED -->
-<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <title>Download</title>
-  <!-- paths -->
-</svg>
-
-<!-- Pattern 8: <svg> + role="img" + <title> + aria-labelledby — RECOMMENDED -->
-<svg role="img" aria-labelledby="dl-title" viewBox="0 0 24 24">
-  <title id="dl-title">Download</title>
-  <!-- paths -->
-</svg>
-```
-
-**Use Caution:**
+### Informative image
 
 ```html
-<!-- Pattern 7: aria-describedby pointing to <title> — less reliable than
-     aria-labelledby; some screen readers do not expose the description -->
-<svg role="img" aria-describedby="dl-title7" viewBox="0 0 24 24">
-  <title id="dl-title7">Download</title>
-</svg>
+<img
+  src="/assets/images/service-area.svg"
+  alt="Map showing the service area extending from Kingston to Ottawa"
+  width="640"
+  height="360"
+>
 ```
 
-**Not Recommended:**
+Use `alt` to communicate the image's purpose in that context. Do not begin with “image of” unless the fact that it is an image is itself important.
+
+`role="img"` is redundant here. `aria-label` is also unnecessary when native `alt` can provide the name.
+
+### Decorative image
 
 ```html
-<!-- Pattern 6: <svg> + role="img" + <text> — poor results across screen readers -->
-<svg role="img" viewBox="0 0 24 24">
-  <text class="visually-hidden" font-size="0">Download</text>
-</svg>
+<img src="/assets/images/flourish.svg" alt="" width="120" height="24">
 ```
+
+The empty `alt` tells assistive technology to ignore the image. Omitting `alt` is not equivalent and can expose a filename or URL.
+
+### Functional image
+
+When the image is the only content of a link or button, its text alternative describes the action or destination.
+
+```html
+<a href="/reports/annual-report.pdf">
+  <img src="/assets/icons/download.svg" alt="Download annual report">
+</a>
+```
+
+When visible text already names the control, give the image empty `alt` to avoid repetition.
+
+```html
+<a href="/reports/annual-report.pdf">
+  <img src="/assets/icons/download.svg" alt="">
+  Download annual report
+</a>
+```
+
+### Internal SVG metadata does not replace HTML `alt`
+
+When an SVG is loaded through `<img>`, provide its text alternative on the HTML `<img>`. Do not depend on `<title>` or `<desc>` inside the external SVG file to name the HTML image.
 
 ---
 
-### Inline SVG — extended description (complex/informational images)
+## 4. Decorative Inline SVG
 
-Use when the SVG conveys more than a name can carry: diagrams, illustrations,
-charts, infographics.
-
-**Best in Show — inline SVG with extended description:**
+Hide an inline SVG when it is ornamental or repeats information already supplied by nearby text or its containing control.
 
 ```html
-<!-- Pattern 11: <svg> + role="img" + <title> + <desc> + aria-labelledby
-     pointing to BOTH IDs — RECOMMENDED for complex SVGs -->
-<svg role="img"
-     aria-labelledby="chart-title chart-desc"
-     viewBox="0 0 400 300">
-  <title id="chart-title">Q1 2024 Website Visitors</title>
-  <desc id="chart-desc">
-    Bar chart. January 12,400. February 15,800.
-    March 19,200 — highest, up 54% from January.
+<p class="notice">
+  <svg aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M12 3 2 21h20L12 3Z"></path>
+  </svg>
+  Your session expires in five minutes.
+</p>
+```
+
+`aria-hidden="true"` removes the SVG and its descendants from the accessibility tree. Do not place focusable or interactive content inside an element hidden this way.
+
+`focusable="false"` was used to address legacy Internet Explorer and older Edge behaviour. It can remain when a project's browser policy still includes those user agents, but it is not a universal requirement for modern browsers.
+
+Do not add `<title>` or `<desc>` to an SVG that is intentionally hidden. Those elements would be unused and can confuse maintenance.
+
+---
+
+## 5. Simple Meaningful Inline SVG
+
+Use an inline SVG as one atomic image when a short name communicates its purpose.
+
+```html
+<svg
+  role="img"
+  aria-labelledby="download-icon-title"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="download-icon-title">Download</title>
+  <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"></path>
+</svg>
+```
+
+The `<title>` is a direct child of the `<svg>`, has a unique ID, and supplies the accessible name through `aria-labelledby`.
+
+An `aria-label` is a reasonable alternative when managing a unique title ID would add needless complexity.
+
+```html
+<svg role="img" aria-label="Download" viewBox="0 0 24 24">
+  <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"></path>
+</svg>
+```
+
+Do not use both patterns unless there is a specific, tested reason. The accessible-name calculation gives ARIA labelling attributes priority over `<title>`.
+
+### `<title>` is not dependable visible help
+
+Some browsers display an SVG `<title>` as a pointer tooltip. That does not make it a substitute for visible text or an accessible custom tooltip. It may not be discoverable by keyboard, touch, speech input, or magnification users.
+
+---
+
+## 6. Icons Inside Buttons and Links
+
+The HTML control should own the accessible name. Hide its SVG icon.
+
+### Visible text
+
+```html
+<button type="button">
+  <svg aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M6 6 18 18M18 6 6 18"></path>
+  </svg>
+  Close
+</button>
+```
+
+### Icon-only control
+
+```html
+<button type="button" aria-label="Close dialog">
+  <svg aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M6 6 18 18M18 6 6 18"></path>
+  </svg>
+</button>
+```
+
+Do not give both the button and its hidden icon separate versions of the same name. That can produce duplicate or inconsistent announcements.
+
+Prefer a visible label when the action may not be obvious. A familiar-looking icon can still have different meanings across products.
+
+### Light/Dark mode selector icon
+
+For a standalone SVG asset inside the labelled selector button, use `<img>` with empty `alt` because the button already has a name.
+
+```html
+<button
+  type="button"
+  aria-expanded="false"
+  aria-controls="light-dark-options"
+>
+  <img
+    src="/assets/images/theme-selector.svg"
+    alt=""
+    width="24"
+    height="24"
+  >
+  <span>Light/Dark mode: System</span>
+</button>
+```
+
+The selector's behaviour, expanded options, and keyboard interaction are documented in [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md).
+
+An external SVG loaded through `<img>` does not inherit `currentColor` from the surrounding HTML button. Use this pattern when the asset's own colours have been validated on every button background. If the icon must follow a manual site theme, inline the paths or reference a real external `<symbol>` whose paths use `currentColor`.
+
+---
+
+## 7. Accessible Names and Descriptions
+
+The SVG Accessibility API Mappings define this name priority for exposed SVG elements:
+
+1. `aria-labelledby`
+2. `aria-label`
+3. A direct child `<title>`
+4. Other host-language fallbacks
+
+Descriptions similarly prioritize `aria-describedby`, then a direct child `<desc>`.
+
+### Name and concise description
+
+```html
+<svg
+  role="img"
+  aria-labelledby="weather-title"
+  aria-describedby="weather-desc"
+  viewBox="0 0 320 180"
+>
+  <title id="weather-title">Weekly temperature trend</title>
+  <desc id="weather-desc">
+    Temperatures rise from 12 degrees Monday to 21 degrees Friday.
   </desc>
-  <!-- chart paths -->
+  <!-- Graphic content -->
 </svg>
 ```
 
-Note: Pattern 11 sometimes reads both `<title>` and `<desc>` consecutively,
-which can sound slightly repetitive. This is acceptable — it did not suppress
-or ignore any content in testing, unlike the "Use Caution" patterns below.
+Keep IDs unique in the whole HTML document. Repeating a component that contains fixed SVG IDs can cause one instance to be labelled by another.
 
-**Use Caution (all have gaps in at least one major screen reader combination):**
+Do not put both the title and description IDs in `aria-labelledby` when they have different purposes. That concatenates both strings into the accessible name. Use `aria-labelledby` for the name and `aria-describedby` for the description.
 
-```html
-<!-- Pattern 9: <title> + <text> -->
-<!-- Pattern 10: <title> + <desc> without aria-labelledby -->
-<!-- Pattern 12: <title> + <desc> + aria-describedby -->
-```
+### Do not bury essential information in `<desc>`
 
-For Pattern 10 and 12 specifically: `<desc>` alone, and `aria-describedby`
-pointing to `<desc>`, are not reliably exposed across all combinations.
-Always use `aria-labelledby` referencing both IDs (Pattern 11) for complex SVGs.
+Support for navigating or reviewing long SVG descriptions varies across assistive technologies. Put essential details in visible HTML so that everyone can find, navigate, copy, translate, and magnify them.
 
 ---
 
-## Animated SVGs — `prefers-reduced-motion`
+## 8. Complex Graphics, Diagrams, and Charts
 
-**Rapid SVG animation is a Critical safety issue** if it flashes at 3+ Hz
-(WCAG 2.3.1 — Three Flashes or Below Threshold). Vestibular disorders can be
-triggered by any sustained motion; seizure thresholds are lower.
+A complex SVG usually needs more than one long accessible name. Provide:
 
-Always wrap SVG animations in a `prefers-reduced-motion` check:
+- a concise name;
+- a visible summary of the purpose and important conclusion;
+- the complete data or relationships in structured HTML when needed; and
+- keyboard-operable controls if the graphic is interactive.
+
+```html
+<figure>
+  <svg
+    role="img"
+    aria-labelledby="visitors-title"
+    aria-describedby="visitors-summary"
+    viewBox="0 0 640 360"
+  >
+    <title id="visitors-title">Website visitors from January to March</title>
+    <!-- Axes, labels, and bars -->
+  </svg>
+
+  <figcaption id="visitors-summary">
+    Visitors increased each month, from 12,400 in January to 19,200 in March.
+  </figcaption>
+
+  <details>
+    <summary>View the chart data</summary>
+    <table>
+      <caption>Monthly website visitors</caption>
+      <thead>
+        <tr><th scope="col">Month</th><th scope="col">Visitors</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">January</th><td>12,400</td></tr>
+        <tr><th scope="row">February</th><td>15,800</td></tr>
+        <tr><th scope="row">March</th><td>19,200</td></tr>
+      </tbody>
+    </table>
+  </details>
+</figure>
+```
+
+Do not duplicate a detailed table into `aria-label`, `<title>`, or `<desc>`. Long strings announced as one image name are difficult to navigate.
+
+The ARIA Graphics Module defines roles such as `graphics-document`, `graphics-object`, and `graphics-symbol` for structured graphics. Support must be tested with the project's actual browser and assistive-technology combinations. These roles do not remove the need for an equivalent text presentation.
+
+For detailed chart-specific requirements, see [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md).
+
+---
+
+## 9. Reused Icons and SVG Sprites
+
+### Inline sprite
+
+Define reusable artwork in `<symbol>` elements. Give each rendered outer SVG instance its context-specific accessibility treatment.
+
+```html
+<svg aria-hidden="true" hidden>
+  <symbol id="icon-download" viewBox="0 0 24 24">
+    <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"></path>
+  </symbol>
+</svg>
+
+<button type="button">
+  <svg aria-hidden="true" viewBox="0 0 24 24">
+    <use href="#icon-download"></use>
+  </svg>
+  Download report
+</button>
+```
+
+Names inside a shared symbol are rarely appropriate for every instance. “Arrow” could mean Next, Previous, Expand, Collapse, Upload, or Download depending on context. Name the control or outer rendered instance.
+
+### External sprite
+
+```html
+<svg role="img" aria-label="Download" viewBox="0 0 24 24">
+  <use href="/assets/icons.svg#icon-download"></use>
+</svg>
+```
+
+Test external sprite use in the browsers and assistive technologies the project supports. SVG `<use>` creates a shadow tree, and ID references within reused content have special processing rules.
+
+### Avoid recursive references
+
+An external `<use>` target must be a distinct element, usually a `<symbol>` with an ID.
+
+```xml
+<!-- /assets/icons.svg -->
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="theme-selector" viewBox="0 0 24 24">
+    <!-- Actual paths go here. -->
+  </symbol>
+</svg>
+```
+
+```html
+<svg aria-hidden="true" viewBox="0 0 24 24">
+  <use href="/assets/icons.svg#theme-selector"></use>
+</svg>
+```
+
+Do not make `/assets/icons.svg#theme-selector` reference itself. If `theme-selector.svg` is a complete standalone image rather than a sprite containing a symbol, embed it with `<img src="/assets/images/theme-selector.svg" alt="">` or inline its paths.
+
+---
+
+## 10. Colour, Contrast, and Themes
+
+### Use `currentColor` when the icon should follow text colour
+
+```html
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+  <path d="M5 12h14M13 6l6 6-6 6"></path>
+</svg>
+```
 
 ```css
-/* Default: respect the preference — run animation only if user has not
-   requested reduced motion */
+.icon {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+```
+
+`currentColor` is useful, not mandatory. Multi-colour graphics may need several semantic tokens. Validate every meaningful colour pairing in every supported theme.
+
+### Do not rely on colour alone
+
+Use text labels, patterns, line styles, shapes, or symbols in addition to colour for statuses, chart series, map areas, and selected states.
+
+### Contrast requirements
+
+- Text rendered inside an SVG is subject to the applicable text contrast requirement.
+- Visual information required to identify a component, state, or graphical object generally needs at least 3:1 contrast against the relevant adjacent colour.
+- Decorative details do not need to meet non-text contrast merely because they are in a meaningful graphic.
+
+See [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md) for thresholds, states, and testing.
+
+### Forced colours
+
+Allow the user agent to adapt author colours by default. Add targeted rules only when testing shows that necessary information disappears.
+
+```css
+@media (forced-colors: active) {
+  .icon {
+    color: ButtonText;
+  }
+
+  .chart-line {
+    fill: none;
+    stroke: CanvasText;
+  }
+
+  .chart-line[data-selected="true"] {
+    stroke: Highlight;
+    stroke-width: 4;
+  }
+}
+```
+
+Do not set both `fill` and `stroke` on every path indiscriminately. That can turn line artwork into solid shapes or otherwise destroy the graphic.
+
+Avoid `forced-color-adjust: none` unless preserving author colours is essential and the result has been tested with multiple system palettes.
+
+---
+
+## 11. Text Inside SVG
+
+Visible `<text>` elements can contribute to the graphic and its accessibility tree, but they do not behave like ordinary reflowing HTML text.
+
+- Keep essential labels visible and legible.
+- Meet text contrast requirements.
+- Do not convert essential labels to paths merely to preserve a typeface.
+- Do not use `font-size="0"`, off-canvas positioning, or transparent SVG text as a substitute for a text alternative.
+- Provide important explanations and long-form content in HTML.
+- Test resizing and zoom. SVG labels can overlap, clip, or become too small even when the outer SVG scales.
+
+`<foreignObject>` can embed HTML in SVG, but it adds rendering, fallback, and assistive-technology considerations. Use ordinary HTML outside the SVG when it can provide the same result.
+
+---
+
+## 12. Interactive SVG
+
+Prefer native HTML buttons, links, form controls, and disclosures placed before, after, or over the graphic. Native elements provide established semantics, keyboard behaviour, focus handling, and speech-input support.
+
+```html
+<div class="map">
+  <svg aria-hidden="true" viewBox="0 0 640 360">
+    <!-- Visual map -->
+  </svg>
+
+  <ul class="map-locations">
+    <li><a href="/locations/ottawa">Ottawa service centre</a></li>
+    <li><a href="/locations/kingston">Kingston service centre</a></li>
+  </ul>
+</div>
+```
+
+If interaction must occur within the SVG:
+
+- use an SVG `<a href="…">` for genuine navigation;
+- provide an accessible name that describes the purpose;
+- preserve a logical DOM and focus order;
+- support expected keyboard activation;
+- show a visible focus indicator that is not clipped;
+- ensure pointer targets meet the project's target-size requirement;
+- expose selected, expanded, pressed, or current states programmatically;
+- ensure the accessible name contains the visible label for speech input; and
+- provide an equivalent HTML list, table, or controls when the visual layout cannot be navigated non-visually.
+
+Do not put every data point in the tab order. Hundreds of focus stops make a visualization technically reachable but practically unusable. Design a deliberate navigation model and document its keys.
+
+Do not create a button by adding only `tabindex="0"` and a click listener to `<path>` or `<g>`. That does not provide native button semantics or keyboard behaviour.
+
+---
+
+## 13. Motion, Animation, and Flashing
+
+### Start with a static presentation
+
+Run non-essential SVG animation only when the user has not requested reduced motion.
+
+```css
+.loading-icon {
+  transform-origin: center;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .animated-icon {
+  .loading-icon {
     animation: spin 1s linear infinite;
   }
 }
 
-/* Explicit reduction: stop all SVG animation */
+@keyframes spin {
+  to { transform: rotate(1turn); }
+}
+```
+
+Do not use a blanket `svg *` rule to reduce motion. It can affect unrelated components, override meaningful states, and make debugging difficult. Target the animated component and define an understandable static state.
+
+### Interaction-triggered motion
+
+WCAG 2.3.3 Animation from Interactions is Level AAA. It requires users to be able to disable non-essential motion animation triggered by interaction. Respecting `prefers-reduced-motion` is an effective design approach even when the conformance target is Level AA.
+
+```css
 @media (prefers-reduced-motion: reduce) {
-  svg * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .diagram-panel {
+    animation: none;
+    transition: none;
   }
 }
 ```
 
-For SVG animations controlled via JavaScript (e.g., GSAP, Anime.js):
+### Moving content
 
-```js
-const prefersReduced = window.matchMedia(
-  '(prefers-reduced-motion: reduce)'
-).matches;
+WCAG 2.2.2 requires a mechanism to pause, stop, or hide moving, blinking, or scrolling information that starts automatically, lasts more than five seconds, appears alongside other content, and is not essential.
 
-if (!prefersReduced) {
-  // Start animation
-  gsap.to('.icon-path', { rotation: 360, repeat: -1, duration: 1 });
-} else {
-  // Show static final state instead
-  element.classList.add('animation-complete');
-}
-```
+### Flashing content
 
-For inline `<svg>` with `<animate>` or `<animateTransform>` elements, use
-`begin="indefinite"` as the default and only trigger the animation when
-`prefers-reduced-motion: no-preference` is confirmed:
-
-```html
-<svg viewBox="0 0 100 100">
-  <circle cx="50" cy="50" r="40">
-    <animate id="spin-anim"
-             attributeName="r" from="40" to="45"
-             dur="0.5s" repeatCount="indefinite"
-             begin="indefinite"/>
-  </circle>
-</svg>
-```
-
-```js
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.getElementById('spin-anim').beginElement();
-}
-```
+The reduced-motion preference does not replace WCAG 2.3.1. Avoid flashing content. Content must not flash more than three times in any one-second period unless it remains below the defined general and red-flash thresholds.
 
 ---
 
-## Required: `currentColor` for Theme Compatibility
+## 14. Responsive SVG and Zoom
+
+Preserve `viewBox` so the graphic can scale without cropping its internal coordinate system.
 
 ```html
-<svg viewBox="0 0 24 24" class="icon" aria-hidden="true" focusable="false">
-  <path fill="currentColor" d="…"/>
+<svg
+  class="responsive-diagram"
+  role="img"
+  aria-label="Request approval workflow"
+  viewBox="0 0 800 450"
+>
+  <!-- Graphic content -->
 </svg>
 ```
-
-Hardcoded colour values that do not respond to theme changes are **Moderate** —
-the SVG may become invisible or low-contrast in dark mode or forced-colours mode.
-
----
-
-## Required: Forced-Colors Support
-
-Only needed when the SVG would lose meaning without it:
 
 ```css
-@media (forced-colors: active) {
-  .icon { stroke: CanvasText; fill: CanvasText; }
-  .accent { stroke: Highlight; fill: Highlight; }
+.responsive-diagram {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
 }
 ```
 
-Use semantic system colour keywords: `Canvas`, `CanvasText`, `LinkText`,
-`ButtonFace`, `ButtonText`, `Highlight`, `HighlightText`.
+Test at 200% and 400% browser zoom and with narrow viewports. A scalable canvas does not guarantee that labels reflow or remain readable. For dense diagrams, consider a simplified small-screen view and an adjacent HTML explanation.
+
+Do not disable page zoom to compensate for an inflexible SVG layout.
 
 ---
 
-## Required: Non-text Contrast
+## 15. Standalone SVG Documents
 
-Meaningful graphical elements (not decorative) require minimum 3:1 contrast
-against adjacent colours (WCAG 1.4.11). This is **Moderate** if failing —
-the SVG is still present, but low-contrast elements may be unperceivable for
-low-vision users who do not use forced-colours mode.
+An SVG opened directly in a browser is a document, not an HTML `<img>` element. Include the namespace, language, responsive metadata, and an accessible name.
 
----
+```xml
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="diagram-title"
+  viewBox="0 0 800 450"
+  lang="en"
+  xml:lang="en"
+>
+  <title id="diagram-title">Request approval workflow</title>
+  <!-- Graphic content -->
+</svg>
+```
 
-## Required: Preserve `viewBox`
-
-Do not remove `viewBox` during optimisation — it is required for responsive
-scaling. Its removal is **Minor** in most fixed-dimension contexts but will
-break fluid layouts.
-
----
-
-## Do NOT Remove During Optimisation
-
-Optimisation tools (SVGO and similar) may remove elements that are required
-for accessibility. Configure your optimiser to preserve:
-
-* `viewBox`
-* `<title>` when contributing to accessible name
-* `<desc>` when contributing to accessible description
-* IDs referenced by `aria-labelledby`, `aria-describedby`, `<use href="#…">`,
-  `clip-path="url(#…)"`, `mask="url(#…)"`, `filter="url(#…)"`
-* Internal `<style>` elements implementing interaction states, reduced-motion,
-  or forced-colours rules
+If the standalone file is complex, include or link to an equivalent HTML description near the place from which users open it. Do not assume that a long `<desc>` offers the same navigation and structure as HTML.
 
 ---
 
-## Interactive SVGs
+## 16. Optimization and Build Processing
 
-If the SVG itself is interactive (clickable regions, toggle buttons):
+SVG optimizers can remove or rewrite accessibility-critical content. Configure the build to preserve:
 
-* **Prefer a `<button>` or `<a>` wrapper** over raw SVG `tabindex` — native
-  elements provide keyboard, ARIA semantics, and AT support for free
-* Ensure keyboard activation (Enter/Space for buttons, Enter for links)
-* Provide visible focus indication
-* An interactive SVG unreachable by keyboard is **Critical**
+- `viewBox`;
+- `<title>` and `<desc>` when they are used;
+- `role`, `aria-*`, and language attributes;
+- IDs referenced by ARIA, `<use>`, clipping paths, masks, filters, and gradients;
+- semantic `<text>` content;
+- styles for focus, themes, forced colours, and reduced motion; and
+- symbol IDs exposed as part of a public sprite interface.
 
----
+When inline SVG components are repeated, generate unique IDs for titles, descriptions, gradients, masks, and clipping paths. An optimizer that minifies every copy to the same IDs can break both rendering and accessible names.
 
-## What Is NOT Required
-
-* A `<desc>` for every SVG — Pattern 8 (`<title>` + `aria-labelledby`) is
-  sufficient when a name alone fully conveys the meaning
-* Focus styling inside non-interactive SVGs
-* A `forced-colors` block when the SVG remains perceivable without it
-* `role="img"` on decorative SVGs — use `aria-hidden="true"` instead
+Sanitize untrusted uploaded SVG files. SVG can contain scripts, external references, animation, and other active content. Sanitization must also preserve whichever text alternatives are intentionally allowed.
 
 ---
 
-## Definition of Done Checklist
+## 17. Testing
 
-* [ ] Decorative SVGs: `aria-hidden="true" focusable="false"`, no `<title>`, no `<desc>`
-* [ ] Meaningful `<img>` SVGs: Pattern 2 or 3 (`role="img"` + `alt` or `aria-label`)
-* [ ] Meaningful inline SVGs (simple): Pattern 8 (`role="img"` + `<title>` + `aria-labelledby`)
-* [ ] Meaningful inline SVGs (complex): Pattern 11 (`role="img"` + `<title>` + `<desc>` + `aria-labelledby` both IDs)
-* [ ] All referenced IDs preserved through any optimisation pass
-* [ ] `currentColor` used for fills/strokes
-* [ ] `viewBox` present
-* [ ] Non-text elements meet 3:1 contrast
-* [ ] Animated SVGs: animation only runs under `prefers-reduced-motion: no-preference`
-* [ ] Rapidly flashing content: does not flash at 3+ Hz regardless of preference
-* [ ] Interactive SVGs: keyboard operable, visible focus, prefer native wrapper elements
-* [ ] Tested with screen reader on recommended OS/browser combination
+### Code review
+
+- Classify each SVG as decorative, informative, functional, complex, or interactive.
+- Confirm that the embedding pattern matches that purpose.
+- Inspect accessible-name and description relationships.
+- Search repeated inline components for duplicate IDs.
+- Confirm that build optimization preserves required attributes and elements.
+
+### Browser and assistive-technology testing
+
+1. Inspect the accessibility tree and confirm the expected role, name, and description.
+2. Read the page with the supported screen-reader and browser combinations.
+3. Confirm that decorative icons are silent and named graphics are announced once.
+4. Navigate all SVG-related controls using only the keyboard.
+5. Test speech-input names against visible labels.
+6. Zoom to 200% and 400% and test narrow viewports.
+7. Test every supported light and dark theme.
+8. Test `prefers-reduced-motion`, `prefers-contrast`, and forced colours.
+9. Verify colour-independent meaning and required contrast.
+10. Test with images unavailable when the SVG is essential to the task.
+
+Use combinations relevant to the users and support policy, such as NVDA with Firefox or Chrome, JAWS with Chrome or Edge, VoiceOver with Safari, and TalkBack with Chrome. Results from one combination do not establish universal support.
+
+### Automated testing
+
+Automated tools can detect missing `<img alt>`, some accessible-name problems, duplicate IDs, contrast failures, and certain ARIA errors. They cannot decide whether the alternative is equivalent, whether a graphic is truly decorative, whether a long description communicates the relationships, or whether an interactive visualization is usable.
+
+No automated pass replaces manual SVG review.
 
 ---
 
-## Key WCAG Criteria
+## 18. Common Failures
 
-* 1.1.1 Non-text Content (A) — **Critical if meaningful SVG has no text alternative**
-* 1.4.11 Non-text Contrast (AA)
-* 2.3.1 Three Flashes or Below Threshold (A) — **Critical for flashing/strobing animations**
-* 4.1.2 Name, Role, Value (A)
+| Failure | Correction |
+|:---|:---|
+| `<img src="graphic.svg">` has no `alt`. | Add context-appropriate `alt`, including `alt=""` for decoration. |
+| `role="img"` is added to every HTML `<img>`. | Use the native `<img>` semantics and `alt`. |
+| Every inline SVG receives a title whether meaningful or decorative. | Classify its purpose first; hide decorative SVGs. |
+| An icon and its parent button both expose the same label. | Name the button and hide the icon. |
+| Both `<title>` and `<desc>` IDs are put in `aria-labelledby`. | Use `aria-labelledby` for the name and `aria-describedby` for the description. |
+| A long table or paragraph is placed in `<desc>`. | Provide essential detail as visible, structured HTML. |
+| Repeated inline icons contain identical title IDs. | Generate a unique ID for every document instance or use a direct `aria-label`. |
+| A standalone SVG file is referenced through `<use>` as though it were a sprite symbol. | Use `<img>`, inline the paths, or define a real `<symbol id="…">`. |
+| A sprite symbol references itself. | Put actual paths in the symbol and reference it only from rendered instances. |
+| `currentColor` is declared mandatory for every SVG. | Use it for single-colour icons; use tested semantic tokens where multiple colours carry meaning. |
+| Forced-colours CSS sets both fill and stroke on every path. | Apply targeted system colours without changing the graphic's geometry. |
+| A clickable `<path>` has only a click handler. | Prefer a native HTML control or implement complete semantics and keyboard behaviour. |
+| Every chart point is added to the tab order. | Provide a deliberate navigation model and an equivalent table or list. |
+| Reduced motion is implemented with `svg *` and `!important`. | Target each animated component and provide a meaningful static state. |
+| Passing an automated scan is treated as proof. | Test purpose, equivalence, announcements, keyboard use, themes, motion, and forced colours manually. |
+
+---
+
+## 19. Definition of Done
+
+- [ ] Every SVG has been classified by purpose and embedding context.
+- [ ] Meaningful external `<img>` elements have useful `alt` text.
+- [ ] Decorative external images use `alt=""`.
+- [ ] Decorative inline SVGs are hidden from assistive technology.
+- [ ] Functional graphics describe their action or destination.
+- [ ] Icons inside named controls do not create duplicate announcements.
+- [ ] Meaningful inline SVGs expose the intended role and accessible name.
+- [ ] Names and descriptions use the correct ARIA relationship.
+- [ ] Essential complex information is available in visible, structured HTML.
+- [ ] Repeated components have no conflicting IDs.
+- [ ] Sprite targets are real symbols or elements and are not recursive.
+- [ ] Text and required graphical details meet applicable contrast requirements.
+- [ ] Meaning does not depend on colour alone.
+- [ ] SVG-based interaction is keyboard operable with visible focus.
+- [ ] Motion preferences and required pause, stop, hide, and flash protections are implemented.
+- [ ] The graphic remains usable at 200% and 400% zoom and on narrow screens.
+- [ ] Themes, increased contrast, and forced colours preserve meaning.
+- [ ] Optimization preserves accessibility-critical content and references.
+- [ ] The final implementation has been tested with relevant browsers and assistive technologies.
+
+---
+
+## 20. WCAG 2.2 Mapping
+
+| Success criterion | Level | SVG relevance |
+|:---|:---:|:---|
+| [1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) | A | Meaningful SVG content needs an equivalent text alternative; decoration must be ignorable. |
+| [1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) | A | Relationships communicated visually may need a programmatic or text equivalent. |
+| [1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) | A | Colour cannot be the only visual means of conveying information. |
+| [1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) | AA | Text within SVG must meet text contrast requirements. |
+| [1.4.5 Images of Text](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text.html) | AA | Use real text instead of path-rendered text when the presentation is not essential. |
+| [1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | AA | Required component and graphical information generally needs 3:1 contrast. |
+| [2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) | A | Interactive SVG functionality must work from a keyboard. |
+| [2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html) | A | Certain automatically moving SVG content needs user controls. |
+| [2.3.1 Three Flashes or Below Threshold](https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html) | A | Flashing must remain within the defined safety threshold. |
+| [2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) | AAA | Non-essential interaction-triggered motion animation must be disableable. |
+| [2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | AA | Keyboard focus must be visible. |
+| [2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) | A | The accessible name of a control should contain its visible label. |
+| [2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) | AA | SVG interaction targets must meet the applicable size or spacing requirement. |
+| [4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) | A | Custom interactive graphics must expose their semantics and states. |
 
 ---
 
 ## References
 
-### Machine-Readable Standards
+- [W3C WAI Images Tutorial](https://www.w3.org/WAI/tutorials/images/)
+- [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/)
+- [Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.2/)
+- [WAI-ARIA Graphics Module](https://www.w3.org/TR/graphics-aria-1.0/)
+- [Scalable Vector Graphics 2](https://www.w3.org/TR/SVG2/)
+- [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/)
+- [Understanding 1.1.1: Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
+- [Understanding 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [Understanding 2.2.2: Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)
+- [Understanding 2.3.1: Three Flashes or Below Threshold](https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html)
+- [Understanding 2.3.3: Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+### Machine-readable standards
 
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
-- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) - ARIA-focused informative catalog
-- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml) - HTML accessibility including SVG
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/ARIA/SVG/HTML standards
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld):
+
+- [WCAG 2.2 normative content in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [ARIA informative catalog in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml)
+- [HTML accessibility content in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [Standards link graph in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
+
+---
+
+AGPL-3.0-or-later License - See LICENSE file for full text  
+Copyright (c) 2026 Mike Gifford
