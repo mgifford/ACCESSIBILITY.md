@@ -4,915 +4,783 @@ title: Accessibility Bug Reporting Best Practices
 
 # Accessibility Bug Reporting Best Practices
 
-This guide explains how to write accessibility bug reports that are clear, reproducible, and actionable. It is optimized for the output of automated testing tools and AI agents, but applies equally to manually discovered issues.
+This guide explains how to record, triage, fix, and verify accessibility findings. It applies to findings from disabled users, manual evaluation, automated tools, code review, and support channels.
 
-A good accessibility bug report provides enough information for a developer who was not present during testing to reproduce, understand, and fix the problem — without requiring additional back-and-forth.
+A useful report lets another person understand the barrier, reproduce it when possible, judge its impact, identify the responsible source, and verify the correction. Not every field applies to every finding. Do not delay a valid report because a selector, tool rule, WCAG mapping, or code-level fix is unavailable.
 
-## 1. Core Principle
+## 1. Principles
 
-**Reproducibility is the single most important quality of a bug report.** If a developer cannot reproduce the problem, they cannot fix it. Every field in an accessibility report exists to close the gap between finding a bug and fixing it.
+1. **Describe the barrier before the standard.** State what task or interaction fails and under what conditions.
+2. **Record observed facts.** Separate observations from assumptions, suspected causes, and suggested fixes.
+3. **Collect only relevant context.** Browser, assistive technology, viewport, preferences, and account state matter only when they affect the result.
+4. **Protect people and systems.** Remove personal data, credentials, tokens, private content, and unnecessary account information from every attachment and code sample.
+5. **Treat tool output as evidence, not a conformance decision.** Automated checks can find many failures, but they cannot establish that a page or product conforms to WCAG.
+6. **Separate severity from priority.** Task impact and workaround quality inform severity. Reach, frequency, deadlines, regression status, and business context inform priority.
+7. **Fix the source when possible.** A correction in a shared component, template, content model, or design token is usually safer than many page-specific patches.
+8. **Close with verification evidence.** A code change, an automated pass, or a visual check alone may not prove that the user-facing barrier is gone.
 
-Accessibility bugs have extra requirements compared with general bugs because:
+## 2. Findings, Issues, and Conformance
 
-- The failure often only surfaces with a specific assistive technology (AT) or browser combination.
-- The violation may be visible in the DOM but invisible to sighted keyboard users, or vice versa.
-- Automated tools detect *potential* violations; human or AT confirmation is often needed to establish real-world impact.
-- The fix must not introduce new barriers for other users.
+These terms describe different things:
 
-## 2. Required Fields
+| Term | Meaning |
+| --- | --- |
+| **Finding** | An observed or suspected accessibility barrier or test result. |
+| **Issue** | Tracked work that may contain one or more related findings. |
+| **Occurrence** | One place or state in which a finding appears. |
+| **Root cause** | The source that produces one or more occurrences, such as a shared component. |
+| **Conformance conclusion** | A conclusion about a defined scope, standard, level, and evaluation method. |
 
-Every accessibility bug report must include the following fields.
+A failed automated rule does not automatically prove a WCAG failure. A passed automated rule does not prove conformance. Confirm the result and its scope before making a conformance claim.
 
-### 2.1 Page URL
+## 3. Minimum Information for a Useful Report
 
-Provide the exact URL where the issue was found, including query string and fragment identifier if relevant.
+Include the following when it is known and relevant:
 
+| Field | What to record |
+| --- | --- |
+| **Title** | Component or location, failure, and task effect. |
+| **Location and state** | Safe URL or route, component name, build, and the state in which the problem appears. |
+| **Task and impact** | What the person is trying to do and how the barrier affects that task. |
+| **Steps or conditions** | The shortest reliable path to the problem, including required preconditions. |
+| **Expected result** | The user-facing behavior that should occur. |
+| **Actual result** | What was observed, including relevant output from assistive technology. |
+| **Environment** | Only the browser, operating system, assistive technology, input, viewport, zoom, preferences, or locale that affect the result. |
+| **Evidence** | A small, redacted excerpt or accessible attachment when it makes the finding easier to understand. |
+
+Do not reject a report from a user because it lacks technical details. A triager can add a locator, standards mapping, or diagnostic evidence later.
+
+## 4. Write a Specific Title
+
+Use a short title that identifies the component, failure, and consequence.
+
+Good examples:
+
+- `Checkout: card error text is not associated with the field`
+- `Account menu: keyboard focus moves behind the open dialog`
+- `Product cards: price text disappears at 200% text size`
+
+Avoid titles such as `Accessibility issue`, `Screen reader bug`, or `WCAG failure`. They do not identify the affected behavior.
+
+Including a WCAG criterion in the title is optional. The report should remain understandable to someone who does not know the criterion number.
+
+## 5. Record Location and State Safely
+
+### 5.1 Page, route, and build
+
+Record enough information to find the same interface:
+
+```text
+Page or route: /checkout/payment
+Build or commit: 2026.07.18.2
+Component: Payment form
+UI state: Form submitted with an invalid card number
+Account role: Test customer
 ```
-URL: https://example.com/checkout?step=2#payment-form
+
+Use an exact URL only when its query and fragment values are relevant and safe to share. Remove or replace:
+
+- session identifiers and access tokens;
+- email addresses, names, account numbers, and order numbers;
+- private search terms or document names;
+- authentication callbacks and password-reset values;
+- any other secret or personal data.
+
+For example:
+
+```text
+Unsafe: https://example.com/orders/847291?token=secret-value
+Safe:   https://example.com/orders/[test-order-id]
 ```
 
-If the issue appears on multiple pages, list all affected URLs or describe the URL pattern (e.g. "all `/product/*` pages").
+Do not include production credentials. Provide an approved test account through the organization's secure process when one is needed.
 
-### 2.2 XPath (Simplest Form)
+### 5.2 Element and component locators
 
-Provide the shortest XPath that uniquely identifies the failing element on the page. Simple attribute-based selectors are preferred over full absolute paths.
+Start with a human-readable component name and location:
 
-```xpath
-//button[@id="submit-payment"]
-//input[@name="card-number"]
-//div[@role="dialog"][@aria-labelledby="modal-title"]
+```text
+Component: Close button in the cookie settings dialog
+Location: Dialog header, immediately after the heading
 ```
 
-If the element has no stable ID or name attribute, add the next-shortest unique selector:
+Add a stable technical locator if it helps:
 
-```xpath
-//nav[@aria-label="Main navigation"]//a[contains(text(),"Sign in")]
+```text
+Stable selector: [data-component="cookie-settings"] [data-action="close"]
+Frame: iframe[title="Payment"]
+Shadow host: payment-widget
 ```
 
-### 2.3 XPath with Hierarchy (Full DOM Path)
+A tool-native selector, accessibility-tree path, test ID, or short XPath can be useful. A full absolute DOM XPath should not be mandatory. Absolute paths are brittle when wrappers, list positions, or generated markup change.
 
-Provide the complete ancestor chain when the context is ambiguous or when the simplified XPath could match multiple elements.
+If the element is inside an iframe or shadow root, record that boundary. If no reliable locator exists, describe the visible label, accessible name, role, nearby heading, and interaction state.
 
-```xpath
-/html/body/main/section[@id="checkout"]/form[@id="payment-form"]/fieldset[2]/input[@name="card-number"]
+## 6. Preconditions and Steps to Reproduce
+
+List only the steps needed to reach the failure. Include the input method and assistive technology command when they matter.
+
+```text
+Preconditions:
+- Signed in as a test customer
+- Cart contains one item
+- NVDA is running with Firefox
+
+Steps:
+1. Open the checkout payment step.
+2. Leave the card number empty.
+3. Move to the Submit order button with Tab.
+4. Activate the button with Enter.
+5. Listen for feedback without moving focus.
 ```
 
-Automated tools should emit both forms. The hierarchy path supports debugging in environments where IDs change dynamically (e.g. React, Angular).
+For intermittent findings, record:
 
-### 2.4 HTML Snippet
+- how many attempts reproduced the result;
+- timing, network, animation, or loading conditions;
+- whether the problem occurred after back navigation or a state change;
+- the earliest known build in which it appeared.
 
-Include the minimal HTML fragment that demonstrates the problem. Trim surrounding markup to the smallest context that still shows the issue.
+`Cannot reproduce` is a triage state, not automatic evidence that the report is invalid. Preserve the original conditions and intermittent evidence.
 
-**Good — shows only what matters:**
+## 7. Separate Expected and Actual Results
+
+Write expected behavior as an outcome, not as a required implementation.
+
+```text
+Expected:
+After submission, the card number error is associated with the field. When
+focus moves to the field, its label, invalid state, and error are available.
+
+Actual:
+The visible error appears, but the card number field has no programmatic error
+association. When focus moves to the field, NVDA announces only its label.
+```
+
+Avoid putting a particular ARIA attribute or JavaScript method in the expected result unless the product contract requires that implementation. Put possible code changes under **Suggested fix**.
+
+## 8. Describe User Impact Precisely
+
+Describe the affected interaction and the consequence. Do not infer a person's diagnosis or claim that every member of a disability group has the same experience.
+
+Useful impact statement:
+
+```text
+People using screen readers are not notified that submission failed. They may
+continue waiting or search the form for an error. The task is possible only
+after reviewing the form field by field.
+```
+
+Less useful statement:
+
+```text
+This affects blind people and violates WCAG.
+```
+
+When known, record:
+
+- the task that is blocked or made harder;
+- whether the person can perceive, understand, navigate, or operate the control;
+- the quality and cost of any workaround;
+- whether the result can cause loss of data, time, money, privacy, or safety;
+- whether the barrier is repeated in a shared workflow.
+
+User impact may be reported even when no WCAG criterion has been identified.
+
+## 9. Record the Relevant Environment
+
+An environment list is useful only when it describes the conditions that produced the result. Do not paste a generic browser and assistive technology matrix into every issue.
+
+Possible fields include:
+
+```text
+Test date and time: 2026-07-18 14:30 EDT
+Product build: 2026.07.18.2
+Browser: Firefox 140
+Operating system: Windows 11 24H2
+Assistive technology: NVDA 2026.1
+Input: Keyboard
+Viewport: 1280 by 720 CSS pixels
+Zoom or text size: 200% text size
+Orientation: Landscape
+Color scheme: Dark
+Forced colors: Active
+prefers-reduced-motion: reduce
+prefers-contrast: more
+Locale and language: en-CA
+Account role: Test customer
+```
+
+Use the value actually tested. Do not infer a device type from a viewport-width breakpoint. Viewport dimensions, input capabilities, browser, operating system, and physical device are separate facts.
+
+Relevant CSS preference values include:
+
+- `prefers-color-scheme`: `light` or `dark`;
+- `prefers-reduced-motion`: `reduce` or `no-preference`;
+- `prefers-contrast`: `more`, `less`, `custom`, or `no-preference`;
+- `forced-colors`: `active` or `none`.
+
+See [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) and [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) for related implementation guidance.
+
+## 10. Add Technical Evidence Without Exposing Data
+
+Technical evidence is optional when the observed behavior is already clear. When it helps, include the smallest relevant excerpt.
+
+### 10.1 HTML or accessibility-tree excerpt
 
 ```html
-<button>
-  <img src="close.svg">
-</button>
+<label for="card-number">Card number</label>
+<input id="card-number" name="card-number">
+<p id="card-number-error">Enter a card number.</p>
 ```
 
-**Problem:** The image has no `alt` attribute, so the button has no accessible name.
+Explain what the excerpt demonstrates. In this example, the visible error is not programmatically associated with the field. Do not assume a code excerpt shows the entire computed accessibility tree or runtime state.
 
-**Expected:**
+Before sharing HTML, DOM snapshots, logs, or accessibility-tree output, remove:
 
-```html
-<button>
-  <img src="close.svg" alt="Close dialog">
-</button>
+- tokens, cookies, and hidden credentials;
+- names, addresses, messages, and account data;
+- values from private form fields;
+- internal URLs or identifiers that are not required to reproduce the issue.
+
+### 10.2 Screenshots, recordings, and logs
+
+Attachments must also be accessible and safe:
+
+- describe the relevant content of each screenshot in the issue;
+- use arrows or numbered markers plus text, not color alone;
+- provide captions or a transcript for video and audio evidence;
+- crop or redact faces, names, notifications, account details, and private content;
+- limit access to sensitive evidence according to organizational policy;
+- preserve diagnostic logs only as long as they are needed.
+
+A recording can show timing and state changes, but it should not replace written steps, expected behavior, and actual behavior.
+
+## 11. Standards, Rules, and Test Results
+
+### 11.1 WCAG mapping
+
+When the mapping is known, record the exact WCAG version, success criterion, and level:
+
+```text
+Standard: WCAG 2.2
+Success Criterion: 1.3.1 Info and Relationships
+Level: A
+Relationship: Confirmed failure
 ```
 
-Include parent elements only when the violation depends on the relationship between parent and child (e.g. missing `<label>` for `<input>`, or a `<table>` without `<th scope>`).
+Use `suspected` or `needs review` when the mapping is uncertain. A finding may relate to more than one requirement, but do not add criteria merely because a tool lists them as tags.
 
-### 2.5 WCAG Success Criterion
+Use the [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) to check the normative wording, intent, techniques, and failures. Do not rely on a shortened local table as a substitute for the standard.
 
-Cite the specific WCAG 2.1 or 2.2 Success Criterion violated, including its level (A, AA, or AAA).
+### 11.2 Tool and rule information
 
-```
-WCAG SC: 1.1.1 Non-text Content (Level A)
-WCAG SC: 4.1.2 Name, Role, Value (Level A)
-WCAG SC: 1.4.3 Contrast (Minimum) (Level AA)
-```
+For automated or semi-automated results, preserve:
 
-Refer to the [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) for the full list of criteria.
-
-### 2.6 ACT Rule or Checker Rule
-
-Reference the specific rule from the testing tool or from the W3C Accessibility Conformance Testing (ACT) framework.
-
-**Axe-core rule:**
-
-```
-Rule ID: image-alt
-Rule: Images must have alternate text
-Tool: axe-core 4.x
+```text
+Tool and version: [name and version]
+Rule ID and version: [identifier and version]
+Configuration: [ruleset, tags, exclusions, and relevant options]
+Test method: Automated / Semi-automated / Manual
+Raw outcome: [tool's original outcome]
+Human review: Confirmed / Rejected / Needs review
 ```
 
-**ACT rule:**
+Keep a tool's impact or confidence value separate from the project's severity. Tool metadata is a heuristic and may not reflect the task, context, workaround, or root cause.
 
-```
-ACT Rule: 23a2a8 — Image button has accessible name
-URL: https://act-rules.github.io/rules/23a2a8
-```
+### 11.3 ACT outcomes
 
-**Accessibility Insights rule:**
+If a result uses the [ACT Rules Format 1.1](https://www.w3.org/TR/act-rules-format/), preserve one of its defined outcomes:
 
-```
-Rule: image-alt
-Check: alt-attribute
-Guidance: https://accessibilityinsights.io/info-examples/web/image-alt/
-```
+- `inapplicable`;
+- `passed`;
+- `failed`;
+- `cantTell`;
+- `untested`.
 
-When multiple tools flag the same issue, list all rule IDs so the report can be linked to automated check output.
+Send `cantTell` results for review. A `passed` or `inapplicable` rule result may still require other tests before drawing a conclusion about a WCAG requirement.
 
-### 2.7 Severity
+## 12. Separate Severity, Priority, Reach, and Confidence
 
-Rate severity using a standard scale. Use this taxonomy consistently across all reports in a project.
+These fields answer different questions:
 
-| Level | Definition | Example |
-|-------|-----------|---------|
-| **Critical** | Users cannot complete a core task at all | Modal dialog traps keyboard focus and has no close mechanism |
-| **High** | Significant barrier that degrades or blocks a key workflow | Form error messages not announced to screen readers |
-| **Medium** | Noticeable barrier with a workaround available | Focus indicator is missing but Tab order is logical |
-| **Low** | Minor issue with minimal real-world impact | Decorative icon has a redundant `aria-label` |
+| Field | Question |
+| --- | --- |
+| **Severity** | How serious is the task-level consequence in this occurrence? |
+| **Priority** | When should the responsible team address it? |
+| **Reach** | How many people, pages, components, or workflows may be affected? |
+| **Frequency** | How often does the condition or occurrence appear? |
+| **Confidence** | How certain is the team that the finding and its cause are understood? |
 
-This taxonomy aligns with the severity levels used in [ACCESSIBILITY.md](../ACCESSIBILITY.md).
+Frequency and reach can increase priority, but they do not change what happened in one occurrence. Do not automatically turn a low-severity issue into a higher-severity issue because it appears on many pages.
 
-### 2.8 Frequency / Occurrence
+Projects should define and calibrate their own scales with disabled users and product teams. One possible task-impact scale is:
 
-Report how often the element appears on the page and across the site.
+| Example level | Task impact and workaround |
+| --- | --- |
+| **Blocker** | A core task cannot be completed, or there is a serious safety, privacy, or data-loss risk, with no reasonable workaround. |
+| **Major** | A task fails, is unreliable, or requires a substantial workaround. |
+| **Moderate** | The task remains possible but requires significant extra effort or assistance. |
+| **Minor** | The finding causes localized friction without material task loss. |
+| **Needs review** | The result or impact has not been confirmed. |
 
-```
-Frequency: 1 instance on this page
-Frequency: Appears on every page in the main navigation
-Frequency: Found on 23 of 47 pages crawled (49%)
-```
+This is an example, not a universal standard. Document local definitions and examples. Do not choose the highest value reported by several tools and call it user impact.
 
-For automated scans, include aggregate counts:
+Priority may also consider:
 
-```json
-{
-  "rule": "image-alt",
-  "occurrences": 14,
-  "pages_affected": 6,
-  "total_pages_scanned": 50
-}
-```
+- use in a critical or frequently used workflow;
+- the number of affected occurrences or products;
+- whether a shared source can correct many occurrences;
+- legal, contractual, release, or procurement deadlines;
+- whether the issue is a regression;
+- risk of further content or component reuse;
+- fix complexity and dependencies.
 
-Frequency informs prioritisation. A single critical failure may warrant immediate action; a low-severity issue across hundreds of pages may need a systematic fix.
+## 13. Record Scope, Frequency, and Root Cause
 
-**Frequency amplifies effective severity.** A "Low" rated issue that appears on every page of a site, or on a heavily trafficked page or a top user task (such as sign-in, checkout, or search), should be treated with higher urgency than its base severity suggests. When assigning priority, consider both the raw severity rating and the reach of the issue:
+Describe what was actually checked:
 
-| Situation | Suggested priority adjustment |
-|-----------|-------------------------------|
-| Low severity, appears on every page | Treat as Medium |
-| Medium severity, appears on every page | Treat as High |
-| Low/Medium severity, on a top-task page | Escalate by one severity level |
-| Low/Medium severity, on a high-traffic landing page | Escalate by one severity level |
-
-## 3. Recommended Additional Fields
-
-These fields are not always required but significantly improve report quality.
-
-### 3.1 Issue Summary (Title)
-
-Write a concise title that identifies:
-1. The component type
-2. The failure mode
-3. The WCAG criterion (optionally)
-
-**Good titles:**
-- `Close button missing accessible name (WCAG 1.1.1)`
-- `Error message not associated with form field (WCAG 1.3.1)`
-- `Dropdown menu items not keyboard-operable (WCAG 2.1.1)`
-
-**Avoid:**
-- `Accessibility issue found`
-- `Screen reader problem on checkout`
-
-### 3.2 Description
-
-Explain what is wrong and why it is a barrier for users with disabilities.
-
-```
-The "Close" button in the cookie-consent dialog contains only a decorative SVG icon 
-with no alt text, aria-label, or visible text. Screen reader users hear "button" with 
-no indication of its purpose, making it impossible to dismiss the dialog by voice or 
-from a screen reader virtual cursor.
+```text
+Observed occurrences: 7
+Pages checked: 12
+Pages affected: 5
+States checked: Default, error, disabled
+Likely source: Shared address form component
+Unchecked scope: Mobile app and authenticated administrator flow
 ```
 
-### 3.3 Steps to Reproduce
+Do not extrapolate from a sample without saying that it is an estimate. A sitewide template defect and seven unrelated content errors may have the same count but require different work.
 
-Provide numbered steps a developer can follow to see the failure.
+Group findings conservatively. Combine occurrences when they share the same remediation unit or confirmed root cause. Do not merge findings only because they have the same rule ID or a similar selector. Preserve representative URLs, states, and exceptions within a grouped issue.
 
-```
-1. Go to https://example.com/shop
-2. Wait for the cookie consent banner to appear
-3. Open NVDA (or VoiceOver on macOS)
-4. Press Tab to move focus to the "X" button in the banner
-5. Listen to what the screen reader announces
-```
+## 14. Suggested Fixes and Acceptance Criteria
 
-For automated test output, include the command used and relevant configuration:
+A suggested fix is helpful but optional. Label it as a proposal and explain why it is expected to address the barrier. The responsible team may know a safer source-level correction.
 
-```bash
-npx axe https://example.com/shop --tags wcag2a,wcag2aa --reporter json
+```text
+Suggested fix:
+Associate the error message with the field and expose the invalid state after
+validation. Move focus or provide a status message according to the form's
+established error-handling pattern.
 ```
 
-### 3.4 Expected Behaviour
+Acceptance criteria should describe verifiable behavior:
 
-State what the correct experience should be.
-
-```
-Expected: Screen reader announces "Close cookie consent dialog, button" 
-          or equivalent meaningful label.
-```
-
-### 3.5 Actual Behaviour
-
-State what currently happens.
-
-```
-Actual: Screen reader announces "button" only. No accessible name is provided.
+```text
+- Submitting the empty field identifies the card number error in text.
+- The field exposes the error association and invalid state programmatically.
+- The error is discoverable without reviewing every field.
+- Keyboard focus remains predictable.
+- The behavior works in the supported browser and assistive technology combinations.
+- Existing visible labels, instructions, and error summaries still work.
 ```
 
-### 3.6 Testing Environment
+Avoid acceptance criteria that specify only an attribute, selector, screenshot, or automated rule result. Those checks may support verification, but the user-facing outcome is the target.
 
-Specify the full stack used during testing. AT bugs are often environment-specific.
+## 15. Markdown Issue Template
 
-```
-Browser:     Chrome 124 / Firefox 126 / Safari 17.4
-OS:          Windows 11 / macOS 14 / iOS 17
-Screen reader: NVDA 2024.1 / JAWS 2024 / VoiceOver
-Zoom level:  100% / 200%
-Tool:        axe-core 4.9.1 / Accessibility Insights 2.47 / Pa11y 6.2
-```
-
-### 3.7 Impact Statement
-
-Describe which disability groups are affected and how.
-
-```
-Impact: Blind and low-vision users relying on screen readers cannot identify 
-        or operate the close button. Users who rely on voice control software 
-        (e.g. Dragon NaturallySpeaking) cannot activate an unnamed button by 
-        speaking its label.
-```
-
-### 3.8 Suggested Fix
-
-Provide a concrete remediation if possible.
-
-```html
-<!-- Current (broken) -->
-<button class="close-btn">
-  <svg aria-hidden="true" ...></svg>
-</button>
-
-<!-- Fixed: Option A — aria-label -->
-<button class="close-btn" aria-label="Close cookie consent dialog">
-  <svg aria-hidden="true" ...></svg>
-</button>
-
-<!-- Fixed: Option B — visually hidden text -->
-<button class="close-btn">
-  <svg aria-hidden="true" ...></svg>
-  <span class="visually-hidden">Close cookie consent dialog</span>
-</button>
-```
-
-### 3.9 Personalisation and Context
-
-Accessibility failures are not always reproducible on every page load. Many issues only surface under specific user settings, device types, or navigation paths. Always record the personalisation state and context at the time of discovery.
-
-**Colour scheme and display preferences**
-
-Note whether the issue occurs in light mode, dark mode, or both, and whether any OS-level display settings are active.
-
-```
-Colour scheme:    Light mode / Dark mode / System default
-Forced Colors:    Active (Windows High Contrast) / Inactive
-Contrast mode:    Standard / Increased contrast (macOS)
-```
-
-**CSS media features**
-
-Some failures only appear when specific CSS media features are active. Record any active preferences.
-
-```
-prefers-color-scheme:   light / dark
-prefers-reduced-motion: reduce / no-preference
-prefers-contrast:       more / less / forced / no-preference
-forced-colors:          active / none
-```
-
-See the [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) guide for more detail.
-
-**Viewport and device type**
-
-Layout, component visibility, and interaction patterns often differ between mobile and desktop. Specify the device context when the issue is viewport-specific.
-
-```
-Viewport:   375 × 812 px (iPhone 14, Safari iOS 17)
-Viewport:   1440 × 900 px (MacBook Pro, Chrome 124)
-Device:     Mobile — iOS 17 / Android 14
-Device:     Desktop — Windows 11 / macOS 14
-Orientation: Portrait / Landscape
-```
-
-**Navigation path and UI state**
-
-The route taken to reach a page — and any UI interactions performed before the failure — can determine whether a problem appears at all. Record the user journey when it is relevant.
-
-```
-Arrived via:   Direct URL / Search results link / Internal navigation from [page]
-Preceded by:   Clicked "Add to cart" on product page, then navigated to checkout
-UI state:      Modal open / Accordion expanded / Dropdown active
-Login state:   Authenticated (standard user role) / Guest / Admin
-```
-
-Together, these contextual details help developers reproduce failures that only appear under specific personalisation settings, on specific device classes, or after specific interaction sequences.
-
-## 4. Structured Report Templates
-
-### 4.1 Markdown Template (for GitHub Issues)
+Adapt this template to the organization. Fields marked as optional should remain optional.
 
 ```markdown
-## Accessibility Issue: [Brief Description]
+## Accessibility finding
 
-**Bug ID:** `[PREFIX-xxxxxxxx]` (instance) / `[PREFIX-xxxxxxxx]` (pattern)
-**URL:** [Full URL where issue was found]
-**XPath:** `[Shortest unique XPath]`
-**Full DOM path:** `[Full ancestor chain XPath]`
-**WCAG SC:** [SC number] — [SC name] (Level [A/AA/AAA])
-**Rule:** [Tool name] — [Rule ID]
-**Severity:** [Critical / High / Medium / Low]
-**Frequency:** [Number of instances; pages affected]
-**Screen type:** [desktop / mobile] | **Colour mode:** [light / dark]
+### Summary
 
-### HTML Snippet
+[Component or location: failure and task effect]
 
-```html
-[Minimal failing HTML fragment]
+### Location and state
+
+- Page or route:
+- Build or commit:
+- Component:
+- Preconditions and UI state:
+- Safe locator (optional):
+
+### Steps or conditions
+
+1.
+2.
+3.
+
+### Expected result
+
+[Describe the user-facing outcome.]
+
+### Actual result
+
+[Describe what was observed.]
+
+### User impact
+
+[Describe the affected task, consequence, and workaround if known.]
+
+### Relevant environment
+
+- Test date:
+- Browser and operating system:
+- Assistive technology and version:
+- Input method:
+- Viewport, zoom, text size, and orientation:
+- Active preferences or display modes:
+- Locale, account role, or other relevant state:
+
+### Evidence
+
+[Add a small redacted excerpt, attachment description, or link to protected evidence.]
+
+### Standards and tests (optional)
+
+- WCAG version, success criterion, and level:
+- Relationship: Confirmed / Suspected / Needs review
+- Tool, rule, version, and configuration:
+- Test method and raw outcome:
+- Human review: Confirmed / Rejected / Needs review
+
+### Scope and source
+
+- Occurrences and sample checked:
+- Suspected or confirmed root cause:
+- Related issue or regression:
+
+### Suggested fix (optional)
+
+[Describe a possible approach without replacing acceptance criteria.]
+
+### Acceptance criteria
+
+- [ ] The reported user-facing barrier is no longer present.
+- [ ] The original environment and interaction have been retested.
+- [ ] Relevant adjacent inputs, states, and supported environments have been checked.
+- [ ] Appropriate regression coverage has been added or updated.
+
+### Privacy and attachment check
+
+- [ ] Secrets, personal data, and private content have been removed.
+- [ ] Screenshots are described and recordings have captions or transcripts.
 ```
 
-### Description
+## 16. Example Report
 
-[Explain what is wrong and why it creates a barrier]
+### Checkout: card error text is not associated with the field
 
-### Steps to Reproduce
+**Location and state**
 
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
-### Expected Behaviour
-
-[What should happen]
-
-### Actual Behaviour
-
-[What currently happens]
-
-### Testing Environment
-
-| Item | Value |
-|------|-------|
-| Browser | [name and version] |
-| OS | [name and version] |
-| Screen reader | [name and version, or N/A] |
-| Testing tool | [name and version] |
-
-### Impact
-
-[Who is affected and how]
-
-### Suggested Fix (optional)
-
-[Code or prose describing the fix]
+```text
+Route: /checkout/payment
+Build: 2026.07.18.2
+Component: Payment form
+State: Test customer submits an empty card number field
 ```
 
-### 4.2 JSON Schema for Automated Tool Output
+**Steps**
 
-Use this schema when scripts or CI pipelines emit machine-readable accessibility reports.
+1. Start NVDA with Firefox.
+2. Open the payment step as a test customer with one item in the cart.
+3. Leave the card number empty.
+4. Move to **Submit order** with Tab and press Enter.
+5. Move focus back to the card number field with Shift+Tab.
+
+**Expected**
+
+The card number error is associated with the field. When focus returns to the field, its label, invalid state, and error are available programmatically.
+
+**Actual**
+
+The visible error appears, but the field has no programmatic error association. When focus returns to the field, NVDA announces only `Card number, edit`.
+
+**Impact**
+
+People using screen readers may not know which visible error belongs to the field. The available workaround is to navigate through surrounding content after each failed attempt.
+
+**Relevant environment**
+
+```text
+Firefox 140, Windows 11 24H2, NVDA 2026.1, keyboard input
+1280 by 720 CSS pixel viewport, 100% zoom, English (Canada)
+```
+
+**Standards and tests**
+
+```text
+WCAG 2.2, 1.3.1 Info and Relationships, Level A
+Relationship: Confirmed failure
+Method: Manual test with assistive technology
+```
+
+**Acceptance criteria**
+
+- The error remains identified in text.
+- The field exposes the error association and invalid state programmatically.
+- Moving focus to the field makes its label, invalid state, and error available.
+- Keyboard focus remains predictable.
+- The correction is retested with the supported form error pattern.
+
+## 17. Machine-Readable Finding Example
+
+Machine-readable output can support imports, reporting, and regression analysis. It must not require fields that do not exist for manual findings.
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "AccessibilityIssue",
-  "type": "object",
-  "required": ["url", "wcag_sc", "severity", "rule_id", "xpath", "html_snippet"],
-  "properties": {
-    "instance_id": {
-      "type": "string",
-      "pattern": "^[A-Z0-9]+-[0-9a-f]{8}$",
-      "examples": ["DRU-a3f1b2c4"],
-      "description": "Stable identifier for this specific violation on this page. Hash of page path + CSS selector + rule ID + screen type. Same element, same rule, same page, same viewport class = same ID."
-    },
-    "pattern_id": {
-      "type": "string",
-      "pattern": "^[A-Z0-9]+-[0-9a-f]{8}$",
-      "examples": ["DRU-f7e3a1b2"],
-      "description": "Stable identifier for the underlying template-level pattern across pages. Hash of CSS selector + rule ID + screen type (no page path). Multiple pages sharing the same component will share this ID."
-    },
-    "screen_type": {
-      "type": "string",
-      "enum": ["desktop", "mobile"],
-      "description": "Inferred from viewport width: < 768 px = mobile, >= 768 px = desktop. Uses the MOBILE_BREAKPOINT constant (768) defined in the implementation."
-    },
-    "color_mode": {
-      "type": "string",
-      "enum": ["light", "dark"],
-      "default": "light",
-      "description": "Colour scheme active during the scan. Dark mode support is a future extension; default to 'light'."
-    },
-    "url": {
-      "type": "string",
-      "format": "uri",
-      "description": "Full URL of the page where the issue was found"
-    },
-    "xpath": {
-      "type": "string",
-      "description": "Shortest unique XPath identifying the failing element"
-    },
-    "xpath_full": {
-      "type": "string",
-      "description": "Full ancestor-chain XPath for unambiguous DOM location"
-    },
-    "html_snippet": {
-      "type": "string",
-      "description": "Minimal HTML fragment demonstrating the failure"
-    },
-    "wcag_sc": {
-      "type": "string",
-      "pattern": "^\\d\\.\\d+\\.\\d+$",
-      "examples": ["1.1.1", "4.1.2", "1.4.3"],
-      "description": "WCAG Success Criterion number"
-    },
-    "wcag_level": {
-      "type": "string",
-      "enum": ["A", "AA", "AAA"],
-      "description": "WCAG conformance level"
-    },
-    "rule_id": {
-      "type": "string",
-      "description": "Rule identifier from the testing tool (e.g. axe-core rule ID)"
-    },
-    "act_rule_id": {
-      "type": "string",
-      "description": "W3C ACT rule identifier, if applicable"
-    },
-    "tool": {
-      "type": "string",
-      "description": "Name and version of the testing tool that found the issue"
-    },
-    "severity": {
-      "type": "string",
-      "enum": ["critical", "high", "medium", "low"],
-      "description": "Severity level of the issue"
-    },
-    "frequency": {
-      "type": "object",
-      "properties": {
-        "instances_on_page": { "type": "integer" },
-        "pages_affected": { "type": "integer" },
-        "total_pages_scanned": { "type": "integer" }
-      },
-      "description": "How often the issue occurs"
-    },
-    "summary": {
-      "type": "string",
-      "description": "Short title: component + failure mode + criterion"
-    },
-    "description": {
-      "type": "string",
-      "description": "Human-readable explanation of the barrier"
-    },
-    "impact": {
-      "type": "array",
-      "items": { "type": "string" },
-      "examples": [["blind", "low-vision", "motor"]],
-      "description": "Disability groups affected"
-    },
-    "environment": {
-      "type": "object",
-      "properties": {
-        "browser": { "type": "string" },
-        "os": { "type": "string" },
-        "screen_reader": { "type": "string" },
-        "zoom_level": { "type": "string" }
-      }
-    },
-    "suggested_fix": {
-      "type": "string",
-      "description": "Code snippet or prose describing the remediation"
-    },
-    "steps_to_reproduce": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "Ordered steps to observe the failure"
+  "schema_version": "1.0",
+  "title": "Checkout: card error text is not associated with the field",
+  "reported_at": "2026-07-18T14:30:00-04:00",
+  "location": {
+    "route": "/checkout/payment",
+    "safe_url": "https://example.com/checkout/payment",
+    "component": "Payment form",
+    "locator": {
+      "type": "stable-css",
+      "value": "[data-component='payment-form']"
     }
-  }
-}
-```
-
-### 4.3 Example JSON Report (axe-core output mapped to schema)
-
-```json
-{
-  "instance_id": "DRU-a3f1b2c4",
-  "pattern_id": "DRU-f7e3a1b2",
-  "screen_type": "desktop",
-  "color_mode": "light",
-  "url": "https://example.com/checkout?step=2",
-  "xpath": "//button[contains(@class,'close-btn')]",
-  "xpath_full": "/html/body/div[@id='cookie-banner']/button[contains(@class,'close-btn')]",
-  "html_snippet": "<button class=\"close-btn\"><svg aria-hidden=\"true\"></svg></button>",
-  "wcag_sc": "4.1.2",
-  "wcag_level": "A",
-  "rule_id": "button-name",
-  "act_rule_id": "97a4e1",
-  "tool": "axe-core 4.9.1",
-  "severity": "critical",
-  "frequency": {
-    "instances_on_page": 1,
-    "pages_affected": 12,
-    "total_pages_scanned": 50
   },
-  "summary": "Close button missing accessible name (WCAG 4.1.2)",
-  "description": "The cookie consent close button contains only an SVG icon with no accessible name. Screen reader users hear 'button' with no indication of the button's purpose.",
-  "impact": ["blind", "low-vision", "voice-control"],
+  "state": {
+    "build": "2026.07.18.2",
+    "account_role": "test customer",
+    "ui": "empty card number submitted"
+  },
+  "steps": [
+    "Open the payment step with NVDA and Firefox.",
+    "Leave the card number empty.",
+    "Move to Submit order with Tab and press Enter.",
+    "Move focus back to the card number field with Shift+Tab."
+  ],
+  "expected": "The field exposes its label, invalid state, and associated error programmatically.",
+  "actual": "A visible error appears, but the field has no error association and NVDA announces only its label.",
+  "impact": {
+    "task": "Correct payment details",
+    "effect": "The person may not know which visible error belongs to the field.",
+    "workaround": "Navigate through surrounding content after each attempt."
+  },
   "environment": {
-    "browser": "Chrome 124",
-    "os": "Windows 11",
-    "screen_reader": "NVDA 2024.1",
-    "zoom_level": "100%"
+    "browser": "Firefox 140",
+    "operating_system": "Windows 11 24H2",
+    "assistive_technology": "NVDA 2026.1",
+    "input": "keyboard",
+    "viewport_css_pixels": {
+      "width": 1280,
+      "height": 720
+    },
+    "zoom": "100%",
+    "locale": "en-CA"
   },
-  "suggested_fix": "<button class=\"close-btn\" aria-label=\"Close cookie consent dialog\"><svg aria-hidden=\"true\"></svg></button>",
-  "steps_to_reproduce": [
-    "Go to https://example.com/checkout?step=2",
-    "Wait for the cookie consent banner to appear",
-    "Open NVDA and press Tab to reach the close button",
-    "Observe that NVDA announces 'button' with no label"
+  "standards": [
+    {
+      "standard": "WCAG 2.2",
+      "criterion": "1.3.1",
+      "name": "Info and Relationships",
+      "level": "A",
+      "relationship": "confirmed-failure"
+    }
+  ],
+  "test_result": {
+    "method": "manual",
+    "status": "confirmed",
+    "tool": null,
+    "rule": null,
+    "act_outcome": null
+  },
+  "scope": {
+    "occurrences_observed": 1,
+    "pages_checked": 1,
+    "shared_component": true
+  },
+  "evidence": {
+    "attachments": [],
+    "redacted": true
+  },
+  "acceptance_criteria": [
+    "The error remains identified in text.",
+    "The field exposes the error association and invalid state programmatically.",
+    "Moving focus to the field makes its label, invalid state, and error available.",
+    "Keyboard focus remains predictable."
   ]
 }
 ```
 
-### 4.4 EARL: Evaluation and Report Language
+Projects that formalize this structure should version their schema, document null and omitted values, validate imports, and plan migrations. Preserve the tool's raw output separately when exact round-trip fidelity matters.
 
-[EARL (Evaluation and Report Language)](https://www.w3.org/WAI/standards-guidelines/earl/) is a W3C standard for expressing test results in a machine-readable format. It uses RDF (Resource Description Framework) to describe which subject (a web page or resource) was tested, which assertion (a WCAG criterion or rule) was evaluated, and what the outcome was.
+## 18. Automation and AI Guardrails
 
-Use EARL when you need interoperable, tool-agnostic accessibility reports that can be processed by different systems — for example, aggregating results from multiple testing tools, feeding a compliance dashboard, or archiving audit evidence.
+Automation can collect and organize evidence. It should not invent certainty.
 
-**Minimal EARL example (Turtle syntax):**
+An automated or AI-assisted reporting workflow should:
 
-```turtle
-@prefix earl: <http://www.w3.org/ns/earl#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+1. preserve the raw result, tool version, rule version, configuration, time, and tested URL or route;
+2. label the method as automated, semi-automated, manual, or user-reported;
+3. retain the tool's original outcome and put `cantTell` or uncertain results into a review queue;
+4. remove credentials and personal data before sending evidence to another system;
+5. avoid generating a WCAG mapping, impact statement, severity, or root cause when the evidence does not support it;
+6. require human validation according to the project's risk and triage rules before creating high-impact work or conformance claims;
+7. group occurrences only when the remediation unit or root cause is sufficiently established;
+8. update an existing issue with new occurrences instead of silently discarding them as duplicates;
+9. preserve disagreements between a tool result and human review;
+10. require user-facing retesting before closure when the barrier cannot be fully verified by automation.
 
-[] a earl:Assertion ;
-   earl:assertedBy <https://example.com/tools/axe-runner> ;
-   earl:subject <https://example.com/checkout?step=2> ;
-   earl:test <http://www.w3.org/TR/WCAG21/#non-text-content> ;
-   earl:result [
-     a earl:TestResult ;
-     earl:outcome earl:failed ;
-     dcterms:description "Close button contains only an SVG icon with no accessible name." ;
-     dcterms:date "2025-06-01T10:30:00Z"^^xsd:dateTime
-   ] ;
-   earl:mode earl:automatic .
+Do not close an issue only because the original automated rule passes. The implementation may have changed the selector, hidden the tested node, or introduced a different barrier.
+
+## 19. Deduplication and Identifiers
+
+Use the issue tracker's ID as the durable identity for tracked work. A scan fingerprint can help correlate repeated results, but it is not a permanent bug ID.
+
+If fingerprints are used:
+
+- version the fingerprint algorithm;
+- include the tool and rule version where relevant;
+- normalize URLs and selectors carefully;
+- expect fingerprints to change when markup or routing changes;
+- retain collision checks and the original evidence;
+- do not infer `mobile` or `desktop` from a width threshold;
+- do not merge results solely because their hashes match.
+
+A useful correlation key may include route pattern, source component, rule, relevant state, and environment. The right inputs depend on the product. A generated selector and a shortened hash are not guaranteed to be stable or unique.
+
+## 20. Finding Lifecycle
+
+Use a lifecycle that keeps evidence, ownership, and verification connected:
+
+1. **Capture:** Record the barrier, location, state, impact, and safe evidence.
+2. **Triage:** Confirm the result when possible, identify missing context, and separate severity from priority.
+3. **Isolate:** Find the source component, template, content model, token, or process that produces the occurrences.
+4. **Assign:** Give the issue an owner who can change the source, not only the individual page.
+5. **Define:** Agree on user-facing acceptance criteria and the supported test environments.
+6. **Correct:** Fix the source and update relevant documentation, examples, or content guidance.
+7. **Prevent:** Add proportionate automated, unit, integration, or manual regression coverage.
+8. **Retest:** Repeat the original interaction and check relevant adjacent inputs, states, preferences, and supported environments.
+9. **Close:** Record what changed, the verification evidence, remaining limitations, and any follow-up work.
+
+If a fix is partial, record the remaining occurrences or environments rather than closing the broader issue as complete.
+
+## 21. Definition of Done
+
+Before closing an accessibility issue, verify that:
+
+- [ ] the original user-facing barrier is no longer present;
+- [ ] the original steps and relevant environment were retested;
+- [ ] expected and actual behavior now agree;
+- [ ] the source-level fix covers the intended occurrences;
+- [ ] relevant keyboard, pointer, touch, speech, and assistive technology interactions were checked;
+- [ ] relevant states such as error, loading, expanded, disabled, and responsive layouts were checked;
+- [ ] active color, contrast, motion, text-size, zoom, and forced-colors preferences were checked when relevant;
+- [ ] the fix did not remove information or functionality from another presentation;
+- [ ] regression coverage was added or updated where practical;
+- [ ] automated results were supplemented by manual testing where automation cannot verify the outcome;
+- [ ] verification evidence is accessible, redacted, and linked to the tracked issue;
+- [ ] remaining limitations and follow-up issues are documented.
+
+## 22. Reporting Barriers to an External Organization
+
+Look first for the organization's accessibility statement, accessibility contact, support channel, or feedback form. Write for the person receiving the report, who may not be an accessibility specialist.
+
+Lead with:
+
+- the page or feature;
+- the barrier you observed;
+- the task it prevents or complicates;
+- concise steps and relevant environment details;
+- a request for acknowledgement or follow-up.
+
+WCAG references and suggested fixes are optional. Do not include passwords, personal information, private account content, or sensitive documents. There is no universal response deadline or escalation path. Appropriate follow-up depends on the organization, contract, service, and jurisdiction. This guide is not legal advice, and a reporter is not obligated to provide unpaid testing or remediation work.
+
+### External report template
+
+```text
+Subject: Accessibility barrier in [page or feature]
+
+Hello,
+
+I encountered an accessibility barrier in [page or feature].
+
+Location: [safe URL, route, or feature name]
+Task: [what you were trying to do]
+Barrier: [what happened]
+Impact: [how this affected the task]
+
+Steps or conditions:
+1. [Step]
+2. [Step]
+
+Expected: [user-facing outcome]
+Actual: [observed result]
+
+Relevant environment: [only details that affect the result]
+WCAG reference, if known: [version, criterion, and level]
+
+Please acknowledge this report and let me know how I can follow its status.
+
+Thank you.
 ```
 
-**Key EARL concepts:**
+For more guidance, see [Contacting Organizations about Inaccessible Websites](https://www.w3.org/WAI/teach-advocate/contact-inaccessible-websites/).
 
-| Term | Meaning |
-|------|---------|
-| `earl:Assertion` | A single test result (subject + test + outcome) |
-| `earl:subject` | The URL or resource that was tested |
-| `earl:test` | The criterion or rule being tested (WCAG SC, ACT rule, etc.) |
-| `earl:outcome` | `earl:passed`, `earl:failed`, `earl:cantTell`, `earl:inapplicable`, or `earl:untested` |
-| `earl:mode` | How the test was performed: `earl:automatic`, `earl:manual`, or `earl:semiAuto` |
-| `earl:assertedBy` | The tool or person that produced the assertion |
+## 23. Common Reporting Failures
 
-EARL output can be produced by tools such as [Alfa](https://github.com/Siteimprove/alfa), [Axe Reporter EARL](https://github.com/dequelabs/axe-reporter-earl), and [ACT-Rules implementations](https://act-rules.github.io/). The W3C [WCAG-EM Report Tool](https://www.w3.org/WAI/eval/report-tool/) also exports EARL.
+Avoid these patterns:
 
-For further reading, see [EARL overview on W3C WAI](https://www.w3.org/WAI/standards-guidelines/earl/).
+- requiring a full DOM XPath, HTML excerpt, tool rule, or WCAG criterion before accepting a report;
+- copying an exact URL that contains a token or personal data;
+- reporting only `fails WCAG` without describing the user-facing behavior;
+- treating a tool result as a confirmed defect or a conformance conclusion;
+- assigning severity from a tool's impact field or automatically increasing it by occurrence count;
+- claiming that a viewport width proves the physical device type;
+- listing every assistive technology version instead of the environment actually tested;
+- merging unrelated occurrences because the rule ID or selector looks similar;
+- prescribing a code change without behavior-based acceptance criteria;
+- attaching an unexplained screenshot or an uncaptioned recording;
+- closing after a code merge or automated pass without repeating the original interaction;
+- disclosing a reporter's diagnosis, identity, or private content without informed permission;
+- promising legal outcomes or universal response timelines.
 
-## 5. Guidance for Automated Tools and AI Agents
+## 24. Evaluation and Interchange Notes
 
-When a script or AI agent generates accessibility reports, apply these rules.
+The [WCAG-EM overview](https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/) describes a method for defining an evaluation scope, exploring a website, selecting a representative sample, evaluating it, and reporting findings. Use a current, appropriate evaluation method when the work is intended to support a conformance conclusion. A collection of issue reports is not, by itself, a complete conformance evaluation.
 
-### 5.1 Always Emit Both XPath Forms
+The [Evaluation Report Template](https://www.w3.org/WAI/test-evaluate/report-template/) provides adaptable reporting fields. The information needed varies with the evaluation context.
 
-Automated tools must emit both the simplified XPath (shortest unique selector) and the full DOM path XPath. The simplified form aids human readability; the full form aids deterministic replay.
+[Evaluation and Report Language, EARL](https://www.w3.org/WAI/standards-guidelines/earl/) can be useful for exchanging test results between tools. EARL 1.0 is published as a non-normative W3C Working Group Note, not a W3C Recommendation. It should not be a required format for routine issue reports. ACT Rules Format 1.1 includes non-normative JSON-LD and EARL examples for ACT result exchange.
 
-### 5.2 Deduplicate Before Reporting
+## 25. Related Guides
 
-Before filing issues, group violations by rule and normalised XPath. Reporting 200 identical `image-alt` violations as separate issues obscures the true scope of the problem. Instead, report one issue with `frequency.instances_on_page` set to 200.
+- [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
+- [AXE Rules Coverage](./AXE_RULES_COVERAGE.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Forms Accessibility Best Practices](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
 
-```python
-# Pseudocode: aggregate duplicates
-issues = defaultdict(list)
-for violation in raw_results:
-    key = (violation["rule_id"], violation["wcag_sc"], normalize_xpath(violation["xpath"]))
-    issues[key].append(violation)
+## References
 
-for key, group in issues.items():
-    report_issue(group[0], frequency=len(group))
+- [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/)
+- [How to Meet WCAG 2.2: Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
+- [ACT Rules Format 1.1](https://www.w3.org/TR/act-rules-format/)
+- [Website Accessibility Conformance Evaluation Methodology](https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/)
+- [Template for Accessibility Evaluation Reports](https://www.w3.org/WAI/test-evaluate/report-template/)
+- [Involving Users in Evaluating Web Accessibility](https://www.w3.org/WAI/test-evaluate/involving-users/)
+- [Using Combined Expertise to Evaluate Web Accessibility](https://www.w3.org/WAI/test-evaluate/combined-expertise/)
+- [Contacting Organizations about Inaccessible Websites](https://www.w3.org/WAI/teach-advocate/contact-inaccessible-websites/)
+- [Evaluation and Report Language](https://www.w3.org/WAI/standards-guidelines/earl/)
+- [EARL 1.0 Schema](https://www.w3.org/TR/EARL10-Schema/)
+
+## Machine-Readable Standards Metadata
+
+```yaml
+standards:
+  wcag:
+    version: "2.2"
+    uri: "https://www.w3.org/TR/WCAG22/"
+  act_rules_format:
+    version: "1.1"
+    status: "W3C Recommendation"
+    uri: "https://www.w3.org/TR/act-rules-format/"
+  earl:
+    version: "1.0"
+    status: "W3C Working Group Note"
+    normative: false
+    uri: "https://www.w3.org/TR/EARL10-Schema/"
+reporting_scope:
+  conformance_claim: false
+  supports_manual_findings: true
+  supports_automated_findings: true
 ```
 
-### 5.3 Map Tool Output to WCAG Criteria
+## License
 
-Every automated rule should map to at least one WCAG SC. Maintain a rule-to-WCAG mapping table in your project (see [AXE_RULES_COVERAGE.md](./AXE_RULES_COVERAGE.md) for an example) so that reports consistently include the criterion.
-
-### 5.4 Preserve the HTML Snippet
-
-Extract the failing element's outer HTML at scan time. DOM content may change after the scan. The preserved snippet allows verification of whether a deployed fix addresses the original issue.
-
-### 5.5 Assign Severity Consistently
-
-Use a single severity taxonomy across all reports and all tools. If multiple tools report the same violation at different severities, use the higher severity.
-
-### 5.6 Include Confidence Score for Automated Detections
-
-Automated tools sometimes flag *potential* violations that require manual confirmation (e.g. colour contrast where the background is a gradient). Include a `confidence` field when the tool provides it.
-
-```json
-{
-  "rule_id": "color-contrast",
-  "confidence": "needs-review",
-  "note": "Background colour is a CSS gradient; automated contrast check may be inaccurate. Manual verification required."
-}
-```
-
-### 5.7 AI Agent Prompt for Issue Filing
-
-When an AI agent files a GitHub Issue from automated scan output, use the following prompt structure:
-
-```
-You are an accessibility engineer filing a GitHub Issue. 
-Given the following JSON violation report, create a well-structured 
-GitHub Issue using the Markdown template below. 
-
-Rules:
-- Use the issue summary as the title.
-- Populate all fields; write "N/A" only if the data is genuinely absent.
-- Do not paraphrase WCAG criterion names; use the exact W3C wording.
-- Include the HTML snippet in a fenced code block.
-- Add the label "accessibility" to the issue.
-
-Violation data:
-[INSERT JSON HERE]
-
-Template:
-[INSERT MARKDOWN TEMPLATE HERE]
-```
-
-### 5.8 Generate Stable Unique Identifiers for Violations
-
-Assigning a stable identifier to each violation enables automated pipelines to track whether a fix was deployed, detect regressions, and deduplicate results across multiple scan runs.
-
-**Two levels of identification**
-
-| Level | Inputs to hash | Purpose |
-|-------|---------------|---------|
-| `instance_id` | page path + CSS selector + rule ID + screen type | Uniquely identifies one occurrence of a violation on one specific page. Same element, same rule, same page, same viewport class = same ID. |
-| `pattern_id` | CSS selector + rule ID + screen type | Identifies the recurring template-level pattern across pages. Multiple pages sharing the same component will share a `pattern_id`. |
-
-**Identifier format:** `[PREFIX]-[8-char-hex]` (e.g. `DRU-a3f1b2c4`)
-
-The prefix is project-specific (e.g. `DRU` for a Drupal site, `A11Y` as a generic default) and can be set in your scanner configuration.
-
-**Screen type detection**
-
-Infer screen type from the viewport width reported in the axe-core result. The `MOBILE_BREAKPOINT` constant is defined in the implementation block below; anything under 768 px is treated as mobile.
-
-**Colour mode**
-
-Default to `light` for current scans. Dark mode is a placeholder for future support when testing toolchains support `prefers-color-scheme: dark` emulation.
-
-**JavaScript implementation (Node.js, using `crypto`)**
-
-{% raw %}
-```javascript
-const crypto = require('crypto');
-
-/** Viewport width threshold below which a device is treated as mobile. */
-const MOBILE_BREAKPOINT = 768;
-
-/**
- * Detect screen type from an axe-core viewport object.
- * @param {{ width: number }} viewport
- * @returns {'mobile'|'desktop'}
- */
-function detectScreenType(viewport) {
-  return viewport && viewport.width < MOBILE_BREAKPOINT ? 'mobile' : 'desktop';
-}
-
-/**
- * Normalise an axe-core node.target value to a single CSS selector string.
- * @param {string|string[]} target - axe-core node.target
- * @returns {string}
- */
-function normalizeSelector(target) {
-  return Array.isArray(target) ? target.join(' > ') : String(target);
-}
-
-/**
- * Generate a stable instance ID for one violation on one page.
- * Uses SHA-256; only the first 8 hex characters are kept.
- * @param {string} pagePath   - URL path (e.g. '/checkout')
- * @param {string} selector   - CSS selector of the failing element
- * @param {string} ruleId     - axe-core rule ID (e.g. 'button-name')
- * @param {string} screenType - 'desktop' or 'mobile'
- * @param {string} [prefix='A11Y'] - Project prefix (e.g. 'DRU')
- * @returns {string} e.g. 'DRU-a3f1b2c4'
- */
-function generateInstanceId(pagePath, selector, ruleId, screenType, prefix = 'A11Y') {
-  const input = `${pagePath}|${selector}|${ruleId}|${screenType}`;
-  const hash = crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
-  return `${prefix}-${hash}`;
-}
-
-/**
- * Generate a pattern ID that identifies the same issue across multiple pages.
- * Uses SHA-256; only the first 8 hex characters are kept.
- * @param {string} selector   - CSS selector of the failing element
- * @param {string} ruleId     - axe-core rule ID
- * @param {string} screenType - 'desktop' or 'mobile'
- * @param {string} [prefix='A11Y'] - Project prefix
- * @returns {string} e.g. 'DRU-f7e3a1b2'
- */
-function generatePatternId(selector, ruleId, screenType, prefix = 'A11Y') {
-  const input = `${selector}|${ruleId}|${screenType}`;
-  const hash = crypto.createHash('sha256').update(input).digest('hex').slice(0, 8);
-  return `${prefix}-${hash}`;
-}
-```
-{% endraw %}
-
-**Annotating axe-core results**
-
-```javascript
-const { URL } = require('url');
-
-/**
- * Annotate every violation node in an axe-core results object
- * with instance_id, pattern_id, screen_type, and color_mode.
- *
- * @param {object} axeResults  - Full axe.run() result object
- * @param {string} [prefix='A11Y'] - Project prefix for IDs
- * @param {string} [colorMode='light'] - 'light' or 'dark' (dark mode: future extension)
- * @returns {Array<object>} Flat array of annotated violation nodes
- */
-function annotateViolations(axeResults, prefix = 'A11Y', colorMode = 'light') {
-  const pagePath = new URL(axeResults.url).pathname;
-  const viewport = { width: axeResults.testEnvironment.windowWidth };
-  const screenType = detectScreenType(viewport);
-
-  return axeResults.violations.flatMap(violation =>
-    violation.nodes.map(node => {
-      const selector = normalizeSelector(node.target);
-      return {
-        ...node,
-        rule_id:     violation.id,
-        instance_id: generateInstanceId(pagePath, selector, violation.id, screenType, prefix),
-        pattern_id:  generatePatternId(selector, violation.id, screenType, prefix),
-        screen_type: screenType,
-        color_mode:  colorMode,
-      };
-    })
-  );
-}
-```
-
-**Example output (single annotated node)**
-
-```json
-{
-  "instance_id": "DRU-a3f1b2c4",
-  "pattern_id":  "DRU-f7e3a1b2",
-  "screen_type": "desktop",
-  "color_mode":  "light",
-  "rule_id":     "button-name",
-  "target":      [".cookie-banner > button.close-btn"],
-  "html":        "<button class=\"close-btn\"><svg aria-hidden=\"true\"></svg></button>"
-}
-```
-
-**Why CSS selector, not XPath?**
-
-The CSS selector (from `node.target`) is used in the hash rather than the XPath because:
-
-- axe-core reports CSS selectors natively via `node.target`
-- CSS selectors are stable across XPath conversion logic changes
-- The hash remains consistent even if XPath generation evolves
-
-Include both the CSS selector and XPath in the report; use only the CSS selector as the hash input.
-
-## 6. Reporting Accessibility Issues to External Organisations
-
-When reporting accessibility barriers to a third-party organisation (a vendor, government service, or public website), adapt the report to the audience.
-
-### 6.1 Contact Strategy
-
-1. **Check for an existing channel** — Look for an accessibility statement, a dedicated `accessibility@` email address, or a feedback form.
-2. **Be specific, not general** — "Your site is inaccessible" does not help. Provide the exact page, element, and barrier.
-3. **Focus on impact** — Explain who is affected and what task they cannot complete, rather than leading with the technical violation.
-4. **Reference WCAG** — Cite the specific criterion. For public-sector organisations, reference applicable legislation (e.g. Section 508 in the US, EN 301 549 in the EU, AODA in Ontario).
-5. **Offer to help** — Suggest the fix. Organisations are more likely to act quickly when a solution is provided alongside the problem.
-6. **Set a timeline** — Request acknowledgement within a defined period (e.g. 10 business days) and a remediation timeline for critical issues.
-7. **Escalate if necessary** — If no response is received, contact the relevant accessibility enforcement body or ombudsman.
-
-### 6.2 Template for External Reports
-
-```
-Subject: Accessibility barrier on [Page Title] — [WCAG SC]
-
-Dear [Organisation Name] Accessibility Team,
-
-I am writing to report an accessibility barrier I encountered on your website.
-
-Page:     [Full URL]
-Issue:    [One-sentence description of the barrier]
-Impact:   [Who is affected and what they cannot do]
-WCAG SC:  [SC number and name, Level]
-
-Steps to reproduce:
-1. [Step 1]
-2. [Step 2]
-
-Expected: [What should happen]
-Actual:   [What happens instead]
-
-Suggested fix: [Brief description or code snippet if appropriate]
-
-I am available to provide further information or test a proposed fix. 
-I would appreciate acknowledgement within 10 business days and a 
-remediation timeline for this critical barrier.
-
-Thank you for your attention to this matter.
-
-[Your name / organisation]
-```
-
-## 7. Quality Checklist
-
-Before filing or submitting an accessibility bug report, verify each item:
-
-- [ ] URL is exact and publicly accessible (or a test account is provided)
-- [ ] Unique bug identifiers (`instance_id` and `pattern_id`) are generated and included
-- [ ] Screen type (`desktop` / `mobile`) and colour mode (`light` / `dark`) are recorded
-- [ ] XPath (simplified) uniquely identifies the element
-- [ ] Full DOM path XPath is included
-- [ ] HTML snippet is minimal and self-contained
-- [ ] WCAG SC is cited with the correct level (A/AA/AAA)
-- [ ] Automated rule ID is included (axe-core, ACT, or tool-specific)
-- [ ] Severity is assigned using the project's standard taxonomy
-- [ ] Frequency / occurrence count is provided
-- [ ] Summary title follows the `[Component] — [Failure] ([WCAG SC])` pattern
-- [ ] Steps to reproduce are numbered and complete
-- [ ] Expected and actual behaviours are stated separately
-- [ ] Testing environment (browser, OS, AT, tool) is documented
-- [ ] Personalisation context is recorded (colour scheme, CSS media features, viewport, navigation path)
-- [ ] Impact on specific disability groups is described
-- [ ] Duplicate violations are aggregated, not filed individually
-- [ ] For automated output: confidence level is included where relevant
-
-## 8. WCAG Success Criteria Quick Reference
-
-The following criteria are most frequently violated in automated scans. Use these as a starting point when assigning `wcag_sc`.
-
-| SC | Name | Level | Common Violations |
-|----|------|-------|------------------|
-| 1.1.1 | Non-text Content | A | Missing `alt` on images, unlabelled icon buttons |
-| 1.3.1 | Info and Relationships | A | Unsemantic heading structure, missing form labels |
-| 1.3.3 | Sensory Characteristics | A | Instructions that rely on shape, colour, or position only |
-| 1.4.1 | Use of Color | A | Status conveyed by colour alone |
-| 1.4.3 | Contrast (Minimum) | AA | Text below 4.5:1 contrast ratio |
-| 1.4.4 | Resize Text | AA | Page breaks at 200% zoom |
-| 1.4.11 | Non-text Contrast | AA | UI component borders below 3:1 contrast |
-| 2.1.1 | Keyboard | A | Elements not reachable or operable by keyboard |
-| 2.4.3 | Focus Order | A | Illogical tab order, focus moves unexpectedly |
-| 2.4.7 | Focus Visible | AA | No visible focus indicator |
-| 3.3.1 | Error Identification | A | Form errors not described in text |
-| 3.3.2 | Labels or Instructions | A | Form fields without visible labels |
-| 4.1.2 | Name, Role, Value | A | Custom widgets missing ARIA name, role, or state |
-| 4.1.3 | Status Messages | AA | Notifications not exposed to screen readers |
-
-For the complete list, see the [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/).
-
-## 9. Further Reading
-
-The following resources informed this guide:
-
-- [Writing Impactful Accessibility Reports](https://medium.com/openconcept-stories/writing-impactful-accessibility-reports-d6cdd84356fd) — Mike Gifford, OpenConcept
-- [How to Fix Accessibility Bugs](https://github.com/readme/guides/fix-accessibility-bugs) — Mike Gifford, GitHub README Guides
-- [Contacting Organizations about Inaccessible Websites](https://www.w3.org/WAI/teach-advocate/contact-inaccessible-websites/) — W3C WAI
-- [How to Report Accessibility Bugs](https://www.digitala11y.com/how-where-to-report-accessibility-bugs/) — DigitalA11y
-- [Template: Reporting Accessibility Issues](https://accessibility.huit.harvard.edu/template-reporting-accessibility-issues) — Harvard University
-- [Accessibility Insights for Web](https://github.com/microsoft/accessibility-insights-web) — Microsoft
-- [ACT Rules Community Group](https://act-rules.github.io/) — W3C
-- [EARL: Evaluation and Report Language](https://www.w3.org/WAI/standards-guidelines/earl/) — W3C WAI (machine-readable standard for expressing accessibility test results)
-- [AXE Rules Coverage](./AXE_RULES_COVERAGE.md) — This repository
-- [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md) — This repository
+This document is available under the repository's [MIT License](../LICENSE).
