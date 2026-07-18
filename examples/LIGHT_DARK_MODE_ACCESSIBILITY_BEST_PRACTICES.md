@@ -347,12 +347,27 @@ nav {
   outline-offset: 2px;
 }
 
-/* Selected state — contrast-color() ensures WCAG AA text */
+/* Selected state — icon gets vibrant colour, text stays readable */
 .theme-mode-btn[aria-pressed="true"] {
   border-color: var(--color-link);
   font-weight: 600;
   background: var(--color-background);
-  color: contrast-color(var(--color-background));
+  color: var(--color-text);
+}
+
+/* Sun → warm amber */
+.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] svg {
+  color: #d97706;
+}
+
+/* Moon → cool blue */
+.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] svg {
+  color: #2563eb;
+}
+
+/* Monitor → green */
+.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] svg {
+  color: #059669;
 }
 
 /* Mobile responsive */

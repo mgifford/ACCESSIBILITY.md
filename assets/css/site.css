@@ -648,13 +648,27 @@ textarea {
   outline-offset: 2px;
 }
 
-/* Selected state — contrast-color() ensures WCAG AA text */
+/* Selected state — icon gets vibrant colour, text stays readable */
 .theme-mode-btn[aria-pressed="true"] {
-  --btn-contrast: contrast-color(var(--bg));
   border-color: var(--text);
   font-weight: 600;
   background: var(--bg-soft);
-  color: var(--btn-contrast);
+  color: var(--muted);
+}
+
+/* Sun → warm amber */
+.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] svg {
+  color: #d97706;
+}
+
+/* Moon → cool blue */
+.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] svg {
+  color: #2563eb;
+}
+
+/* Monitor → green */
+.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] svg {
+  color: #059669;
 }
 
 /* ── Screen-reader-only utility ── */
