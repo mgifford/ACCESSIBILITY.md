@@ -339,11 +339,12 @@ nav {
   outline-offset: 2px;
 }
 
-/* Selected state — distinct from focus */
+/* Selected state — contrast-color() ensures WCAG AA text */
 .theme-mode-btn[aria-pressed="true"] {
   border-color: var(--color-link);
   font-weight: 600;
   background: var(--color-background);
+  color: contrast-color(var(--color-background));
 }
 
 /* Mobile responsive */

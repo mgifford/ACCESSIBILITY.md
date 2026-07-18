@@ -601,6 +601,12 @@ textarea {
 
 /* ── Three-option theme selector (group with native buttons) ── */
 
+@property --btn-contrast {
+  syntax: "<color>";
+  initial-value: black;
+  inherits: true;
+}
+
 #theme-selector {
   display: inline-flex;
   gap: 2px;
@@ -642,11 +648,13 @@ textarea {
   outline-offset: 2px;
 }
 
-/* Selected state — distinct from focus */
+/* Selected state — contrast-color() ensures WCAG AA text */
 .theme-mode-btn[aria-pressed="true"] {
+  --btn-contrast: contrast-color(var(--bg));
   border-color: var(--text);
   font-weight: 600;
   background: var(--bg-soft);
+  color: var(--btn-contrast);
 }
 
 /* ── Screen-reader-only utility ── */
