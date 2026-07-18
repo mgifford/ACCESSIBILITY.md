@@ -325,10 +325,12 @@ nav {
   color: var(--color-text);
   font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .theme-mode-btn:hover {
   background-color: var(--color-hover);
+  border-color: var(--color-text);
 }
 
 /* Focus indicator — visible outline, not box-shadow */
@@ -337,17 +339,30 @@ nav {
   outline-offset: 2px;
 }
 
-/* Selected state — distinct from focus */
+/* Selected state — vibrant icon colour per mode */
 .theme-mode-btn[aria-pressed="true"] {
-  border-color: var(--color-link);
   font-weight: 600;
-  background: var(--color-background);
 }
 
-.theme-mode-btn svg {
-  display: block;
-  width: 20px;
-  height: 20px;
+/* Sun → warm amber */
+.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] {
+  color: #f59e0b;
+  border-color: #f59e0b;
+  background: #fef3c7;
+}
+
+/* Moon → cool blue */
+.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] {
+  color: #60a5fa;
+  border-color: #60a5fa;
+  background: #1e3a5f;
+}
+
+/* Monitor → green */
+.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] {
+  color: #34d399;
+  border-color: #34d399;
+  background: #064e3b;
 }
 
 /* Mobile responsive */
