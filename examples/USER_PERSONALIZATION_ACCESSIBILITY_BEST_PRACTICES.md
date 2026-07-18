@@ -4,676 +4,876 @@ title: User Personalization and Accessibility Best Practices
 
 # User Personalization and Accessibility Best Practices
 
-This document defines accessibility requirements for implementing user personalization features that empower users to customize their browsing experience based on their individual needs and preferences.
+Personalization can help people adjust presentation, motion, density, and other aspects of an interface. It is an enhancement to an accessible foundation, not a repair layer and not a substitute for WCAG conformance.
 
-User choice matters. This guidance explains how to provide legitimate personalization options while avoiding problematic accessibility overlays, ensuring WCAG 2.2 Level AA compliance and respecting user preferences.
-
----
-
-## 1. Core Principle
-
-All users should be able to customize content presentation to meet their individual needs without compromising information, functionality, or accessibility. Personalization features must complement, not replace, proper accessible design.
+Start by respecting operating-system, browser, and assistive-technology settings. Add site-specific controls only when they provide a meaningful choice that users cannot obtain reliably from those existing tools.
 
 ---
 
-## 2. Understanding Accessibility Overlays
+## 1. Required Outcomes
 
-### What are accessibility overlays?
+An implementation with personalization must:
 
-Accessibility overlays are third-party tools that attempt to automatically "fix" accessibility issues on websites through JavaScript injections, typically triggered by a widget icon. They promise instant accessibility compliance without addressing underlying code issues.
+- remain accessible before preferences are applied and when JavaScript or storage is unavailable;
+- avoid blocking browser zoom, user styles, extensions, reader modes, or assistive technology;
+- respect applicable system and browser preferences;
+- use accessible native controls for site-specific settings;
+- explain each setting by its effect rather than by a presumed disability;
+- apply changes without losing information, functionality, focus, or entered data;
+- provide a simple way to restore defaults;
+- keep every author-provided combination within applicable accessibility requirements;
+- validate stored values before applying them;
+- minimize stored preference data and avoid inferring or recording disability information;
+- define whether a preference applies to one page, the site, the device, or a signed-in account; and
+- test individual settings and meaningful combinations across supported pages.
 
-### Why overlays are problematic
-
-**Do NOT use accessibility overlays as a substitute for proper accessible design.**
-
-Accessibility overlays have significant limitations:
-
-- They cannot fix underlying structural accessibility issues
-- They often create new barriers for assistive technology users
-- They provide a false sense of compliance
-- They may interfere with users' own assistive technologies
-- They don't address server-side or backend accessibility
-- They can create inconsistent experiences across different pages
-
-**Key resource:**
-- [Overlay Fact Sheet](https://overlayfactsheet.com/en/) - Comprehensive documentation of overlay problems, signed by over 800 accessibility professionals
-
-### Legitimate use case: Custom remediation
-
-There is ONE acceptable use case for overlay-like technology:
-
-**Custom remediation for legacy systems** where:
-1. The underlying codebase cannot be modified (e.g., vendor-locked legacy systems)
-2. The remediation is developed specifically for your site's known issues
-3. It's a temporary solution while planning proper accessibility fixes
-4. Users are informed it's a stopgap measure
-5. Active work continues toward proper accessible implementation
-
-As noted in the [Web Almanac 2024 Accessibility Chapter](https://almanac.httparchive.org/en/2024/accessibility#user-personalization-widgets-and-overlay-remediation) (User Personalization Widgets and Overlay Remediation section):
-
-> "Custom remediation for legacy sites can be fine when implemented thoughtfully as a bridge to proper accessibility."
+The page must still support browser text resizing, zoom, text-spacing overrides, forced colors, keyboard operation, and other WCAG requirements whether or not it provides a preference editor.
 
 ---
 
-## 3. User Personalization: The Right Approach
+## 2. Separate Requirements From Enhancements
 
-Instead of overlays, implement **user personalization widgets** that allow users to adjust presentation without claiming to "fix" accessibility.
+WCAG usually requires content to adapt to user settings. It does not generally require every site to reproduce browser settings in a custom panel.
 
-### Key distinction
+| Requirement or pattern | What authors must do |
+|:---|:---|
+| Resize Text, 1.4.4 Level AA | Do not prevent supported user-agent resizing. Content and controls must remain usable when text is enlarged to 200%. A site text-size control is one possible technique, not a universal requirement. |
+| Text Spacing, 1.4.12 Level AA | Allow users to override line, paragraph, letter, and word spacing to the specified values without loss of content or functionality. The site does not have to provide spacing controls. |
+| Reflow, 1.4.10 Level AA | Preserve content and functionality at the required narrow equivalent width, subject to the criterion's defined exceptions. |
+| Contrast and non-text contrast | Every author-provided theme or preset must meet the applicable criteria. |
+| Reduced motion | Respect `prefers-reduced-motion` where motion may create a barrier. A site control can provide an additional override. |
+| Reading mode, font choice, density, or simplification | These are useful enhancements when research demonstrates a need. They are not automatic WCAG requirements. |
 
-**Accessibility overlay:** Claims to make site accessible, injects fixes
-**Personalization widget:** Offers user preferences, doesn't claim compliance
-
-### Why personalization widgets work
-
-Browsers have excellent built-in personalization tools, but many users don't know about them. Personalization widgets can:
-
-- Make browser features more discoverable
-- Provide site-specific preferences that persist
-- Offer additional customization beyond browser defaults
-- Help users who don't have their own assistive technology in that environment
-- Benefit users not actively using assistive technology
+Do not claim that adding a preference panel makes inaccessible content conformant.
 
 ---
 
-## 4. CSS Media Queries for Accessibility
+## 3. Understand the Preference Sources
 
-Modern CSS provides powerful media queries that respect user preferences at the browser level.
+Preferences can originate from several places:
 
-### Available preference queries
+1. **Operating system:** color scheme, reduced motion, forced colors, contrast, transparency, text scale, and other platform settings.
+2. **Browser or user agent:** zoom, default font, minimum font size, reader mode, extensions, user styles, and site permissions.
+3. **Site setting:** an explicit choice that applies only to one site or application.
+4. **Account setting:** a preference intentionally synchronized across devices for a signed-in user.
 
-```css
-/* User prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+Use this precedence model:
 
-/* User prefers dark color scheme */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: #e8e8e8;
-    --color-background: #1a1a1a;
-  }
-}
+1. Start with an accessible default.
+2. Follow a recognized system or browser preference when the site setting is **System** or **Default**.
+3. Let an explicit site choice override only the corresponding presentation dimension.
+4. Let **Reset to defaults** remove site overrides and resume following the system.
 
-/* User prefers high contrast */
-@media (prefers-contrast: more) {
-  :root {
-    --color-text: #000000;
-    --color-background: #ffffff;
-    --border-width: 2px;
-  }
-}
-
-/* User has forced colors mode active (Windows High Contrast) */
-@media (forced-colors: active) {
-  .custom-focus-indicator {
-    forced-color-adjust: none;
-    outline: 2px solid CanvasText;
-  }
-}
-
-/* User prefers reduced transparency */
-@media (prefers-reduced-transparency: reduce) {
-  .modal-overlay {
-    opacity: 1;
-    background-color: var(--color-background);
-  }
-}
-```
-
-### Essential reading
-
-- [MDN: Using Media Queries for Accessibility](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#accessibility_media_features)
-- [A More Inclusive Website Thanks to Media Queries](https://elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries)
+Do not interpret a media-query match as a diagnosis. A person may choose dark mode, reduced motion, or increased contrast for many reasons.
 
 ---
 
-## 5. Implementing User Personalization Features
+## 4. Decide Whether Site Controls Are Needed
 
-### Recommended personalization options
+Add a site preference only when it provides a clear benefit and can be maintained across the entire experience.
 
-#### 5.1 Font Size Controls
+Useful candidates can include:
 
-Browsers allow font size adjustment, but many users prefer visible controls.
+- System, Light, and Dark color themes;
+- reduced motion;
+- a larger text preset;
+- a comfortable reading width and spacing preset;
+- reduced visual density;
+- control over autoplaying or moving content; and
+- a tested font-family choice for a content-heavy product.
 
-**Pattern: A+/A- buttons**
+Avoid adding a large panel of controls merely to appear accessible. Every additional setting introduces interaction, translation, persistence, testing, and combination costs.
 
-```html
-<div class="font-size-controls" role="group" aria-label="Font size controls">
-  <button 
-    id="decrease-font" 
-    aria-label="Decrease font size"
-    aria-describedby="font-size-status">
-    A-
-  </button>
-  <button 
-    id="reset-font" 
-    aria-label="Reset font size to default"
-    aria-describedby="font-size-status">
-    A
-  </button>
-  <button 
-    id="increase-font" 
-    aria-label="Increase font size"
-    aria-describedby="font-size-status">
-    A+
-  </button>
-  <div id="font-size-status" class="visually-hidden" role="status" aria-live="polite"></div>
-</div>
-```
+Do not provide arbitrary foreground and background color pickers unless the implementation can prevent unreadable author-generated combinations. Users needing unrestricted color control may be better served by browser, operating-system, or assistive-technology tools.
 
-```javascript
-// Font size adjustment
-const fontSizes = ['small', 'medium', 'large', 'x-large'];
-let currentSize = 1; // medium
+---
 
-function adjustFontSize(delta) {
-  currentSize = Math.max(0, Math.min(fontSizes.length - 1, currentSize + delta));
-  document.documentElement.style.fontSize = fontSizes[currentSize];
-  localStorage.setItem('preferredFontSize', currentSize);
-  
-  // Announce change to screen readers
-  const status = document.getElementById('font-size-status');
-  status.textContent = `Font size changed to ${fontSizes[currentSize]}`;
-}
+## 5. Respect User Preference Media Features
 
-// Restore preference on load
-const savedSize = localStorage.getItem('preferredFontSize');
-if (savedSize !== null) {
-  currentSize = parseInt(savedSize);
-  document.documentElement.style.fontSize = fontSizes[currentSize];
-}
-```
+Use CSS media queries as progressive enhancement. Unsupported queries are ignored, so the default presentation must remain accessible.
 
-**Key requirements:**
-- Provide clear labels and ARIA descriptions
-- Announce changes to screen readers via `aria-live` region
-- Persist preferences using `localStorage` or cookies
-- Allow reset to default
-- Don't prevent browser zoom from working
+### Color scheme
 
-#### 5.2 Font Family Selection
-
-Research on dyslexia fonts is mixed, but **user choice is valuable**.
-
-**Studies suggest mixed results:**
-- [PMC Article: Typography for Dyslexia](https://pmc.ncbi.nlm.nih.gov/articles/PMC5934461/)
-- [The Dyslexia Friendly Font Myth](https://www.heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth)
-- [Do Dyslexia Fonts Actually Work?](https://www.edutopia.org/article/do-dyslexia-fonts-actually-work)
-
-**Recommendation:** Offer choice, let users decide what works for them.
-
-```html
-<div class="font-family-selector">
-  <label for="font-select">Font style:</label>
-  <select id="font-select" aria-describedby="font-change-status">
-    <option value="default">Default (brand font)</option>
-    <option value="sans-serif">Sans-serif</option>
-    <option value="serif">Serif</option>
-    <option value="monospace">Monospace</option>
-    <option value="comic-sans">Comic Sans</option>
-    <option value="opendyslexic">OpenDyslexic</option>
-  </select>
-  <div id="font-change-status" class="visually-hidden" role="status" aria-live="polite"></div>
-</div>
-```
+Declare the schemes the page supports and define complete color pairs.
 
 ```css
 :root {
-  --font-default: "Brand Font", system-ui, sans-serif;
+  color-scheme: light dark;
+  --page-background: #ffffff;
+  --text-color: #1f2937;
+  --link-color: #005ea8;
 }
 
-[data-font="sans-serif"] {
-  --font-default: system-ui, -apple-system, sans-serif;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --page-background: #111827;
+    --text-color: #f3f4f6;
+    --link-color: #7dd3fc;
+  }
 }
 
-[data-font="serif"] {
-  --font-default: Georgia, "Times New Roman", serif;
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page-background: #ffffff;
+  --text-color: #1f2937;
+  --link-color: #005ea8;
 }
 
-[data-font="monospace"] {
-  --font-default: "Courier New", monospace;
-}
-
-[data-font="comic-sans"] {
-  --font-default: "Comic Sans MS", cursive, sans-serif;
-}
-
-[data-font="opendyslexic"] {
-  --font-default: "OpenDyslexic", sans-serif;
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-background: #111827;
+  --text-color: #f3f4f6;
+  --link-color: #7dd3fc;
 }
 
 body {
-  font-family: var(--font-default);
+  color: var(--text-color);
+  background: var(--page-background);
+}
+
+a {
+  color: var(--link-color);
 }
 ```
 
-**Important notes:**
-- Respect brand identity by making default your brand font
-- Ensure all font options remain readable and accessible
-- Test contrast in all font options
-- Allow users to revert to default
+In this pattern, the absence of `data-theme` means **System**. An explicit Light or Dark selection sets the attribute.
 
-#### 5.3 Line Spacing and Reading Mode
+### Reduced motion
 
-```html
-<fieldset class="reading-preferences">
-  <legend>Reading preferences</legend>
-  
-  <div class="preference-option">
-    <label for="line-spacing">Line spacing:</label>
-    <select id="line-spacing">
-      <option value="normal">Normal</option>
-      <option value="relaxed">Relaxed (1.5)</option>
-      <option value="loose">Loose (2.0)</option>
-    </select>
-  </div>
-  
-  <div class="preference-option">
-    <label for="letter-spacing">Letter spacing:</label>
-    <select id="letter-spacing">
-      <option value="normal">Normal</option>
-      <option value="wide">Wide</option>
-    </select>
-  </div>
-  
-  <div class="preference-option">
-    <label for="word-spacing">Word spacing:</label>
-    <select id="word-spacing">
-      <option value="normal">Normal</option>
-      <option value="wide">Wide</option>
-    </select>
-  </div>
-</fieldset>
+Remove or replace non-essential motion that can trigger discomfort or distraction. Do not apply a universal rule that forces every animation and transition to `0.01ms`; that pattern can break state changes and scripted event assumptions.
+
+```css
+.panel {
+  transition: translate 200ms ease-out, opacity 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion]) .panel {
+    transition: none;
+  }
+
+  :root:not([data-motion]) {
+    scroll-behavior: auto;
+  }
+}
+
+:root[data-motion="reduce"] .panel {
+  transition: none;
+}
+
+:root[data-motion="reduce"] {
+  scroll-behavior: auto;
+}
 ```
 
-**WCAG 1.4.12 Text Spacing requirements:**
-Users must be able to set:
-- Line height to at least 1.5 times font size
-- Paragraph spacing to at least 2 times font size
-- Letter spacing to at least 0.12 times font size
-- Word spacing to at least 0.16 times font size
+If motion communicates essential state, replace it with an immediate state change or a less triggering presentation. Do not remove the information.
 
-#### 5.4 Contrast Options
+### Contrast preferences
 
-See [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) for comprehensive guidance on theme switching.
+`prefers-contrast` can express `more`, `less`, or `custom`. Do not treat every match as a request for high contrast.
 
-```html
-<fieldset class="contrast-preferences">
-  <legend>Color theme:</legend>
-  <div role="radiogroup" aria-labelledby="theme-legend">
-    <input type="radio" id="theme-auto" name="theme" value="auto" checked>
-    <label for="theme-auto">Auto (follow system)</label>
-    
-    <input type="radio" id="theme-light" name="theme" value="light">
-    <label for="theme-light">Light</label>
-    
-    <input type="radio" id="theme-dark" name="theme" value="dark">
-    <label for="theme-dark">Dark</label>
-    
-    <input type="radio" id="theme-high-contrast" name="theme" value="high-contrast">
-    <label for="theme-high-contrast">High contrast</label>
-  </div>
-</fieldset>
+```css
+@media (prefers-contrast: more) {
+  :root {
+    --border-width: 0.1875rem;
+    --muted-text-color: currentColor;
+  }
+}
+
+@media (prefers-contrast: less) {
+  .decorative-texture {
+    background-image: none;
+  }
+}
+
+@media (prefers-contrast) {
+  .decorative-gradient,
+  .decorative-shadow {
+    background-image: none;
+    box-shadow: none;
+  }
+}
 ```
+
+An unqualified `prefers-contrast` query can be appropriate for reducing visual complexity. It is not appropriate for imposing a high-contrast palette because the user may have requested less contrast or a custom palette.
+
+### Reduced transparency
+
+Use `prefers-reduced-transparency` as a progressive enhancement and test current browser support before depending on it.
+
+```css
+@media (prefers-reduced-transparency: reduce) {
+  .dialog-backdrop {
+    background: Canvas;
+    opacity: 1;
+  }
+
+  .frosted-panel {
+    background: Canvas;
+    backdrop-filter: none;
+  }
+}
+```
+
+Media Queries Level 5 remains a W3C Working Draft. Treat newer features and script preference APIs as evolving technology, not as a replacement for an accessible default or a tested site control.
 
 ---
 
-## 6. Complete Preference Framework: Fluid Infusion
+## 6. Support Forced Colors
 
-The **Fluid Project** is an open-source community developing inclusive design approaches and tools. Their **Preferences Framework** (also known as **UI Options**) demonstrates best-in-class user personalization and serves as a reference implementation for accessibility-focused customization.
+Forced-color mode is a user-agent color transformation, not an author theme. Allow the browser to substitute the user's chosen palette.
 
-### About the Fluid Project
+```css
+@media (forced-colors: active) {
+  .button {
+    color: ButtonText;
+    background: ButtonFace;
+    border: 0.125rem solid ButtonText;
+  }
 
-The [Fluid Project](https://fluidproject.org/) is housed at the [Inclusive Design Research Centre (IDRC)](https://idrc.ocadu.ca/) at OCAD University in Toronto. The project focuses on creating flexible, customizable, and accessible user experiences through open-source software development and research.
+  .button:focus-visible {
+    outline: 0.1875rem solid Highlight;
+    outline-offset: 0.1875rem;
+  }
 
-**Key Fluid Project GitHub Organization:** [https://github.com/fluid-project](https://github.com/fluid-project)
+  .selected-item {
+    border-color: Highlight;
+  }
+}
+```
 
-### Fluid Infusion and UI Options
+Keep the default `forced-color-adjust: auto`. Use `forced-color-adjust: none` only for a narrowly scoped element when the component supplies its own tested response to the user's forced-color palette. It is not a general focus-indicator fix.
 
-**Fluid Infusion** is a JavaScript framework for building accessible web applications. Its **Preferences Framework (UI Options)** component provides a comprehensive user preference system that can be integrated into any website.
+Test meaning that was originally conveyed through:
 
-**Core Infusion Projects:**
-- [Fluid Infusion](https://github.com/fluid-project/infusion) - Main framework and preferences system
-- [UI Options](https://github.com/fluid-project/uio) - Standalone preferences component
-- [Fluid Skinning System (FSS)](https://github.com/fluid-project/fluid-skinning-system) - Accessible CSS framework that works with preferences
-- [Infusion Documentation](https://github.com/fluid-project/infusion-docs) - Comprehensive documentation and guides
+- background colors;
+- gradients;
+- shadows;
+- background images;
+- custom check marks;
+- selected states; and
+- focus indicators.
 
-### UI Options Features
+Add borders, text, or system-color indicators where the forced palette removes a meaningful visual distinction.
 
-**Text Customization:**
-- Text size adjustment (5 levels)
-- Line spacing controls
-- Font family selection (including OpenDyslexic)
-- Letter spacing adjustment
-- Word spacing adjustment
+---
 
-**Visual Customization:**
-- High contrast themes (multiple options)
-- Dark mode / light mode
-- Background color options
-- Custom color schemes
+## 7. Use an Accessible Preference Editor
 
-**Navigation Enhancement:**
-- Table of contents generation
-- Keyboard shortcuts
-- Enhanced focus indicators
-
-**Input Enhancement:**
-- Enhanced form inputs
-- Self-voicing (text-to-speech)
-- Highlight selection
-
-**Persistence:**
-- All preferences stored in cookies
-- Preferences persist across sessions
-- Works across multiple pages
-
-### Key Resources
-
-- [Fluid Infusion Preferences Framework Documentation](https://docs.fluidproject.org/infusion/development/PreferencesFramework)
-- [UI Options Demo](https://build-infusion.fluidproject.org/demos/prefsFramework/)
-- [Fluid Project GitHub Organization](https://github.com/fluid-project)
-- [Fluid Project Website](https://fluidproject.org/)
-- [Inclusive Design Research Centre](https://idrc.ocadu.ca/)
-
-**Implementation approach:**
+Prefer an inline disclosure when the set of options is small. This avoids the focus management and dismissal requirements of a modal dialog.
 
 ```html
-<!-- Preference toggle button with universal accessibility icon -->
-<button 
-  id="preferences-toggle" 
-  aria-label="Open accessibility preferences"
-  aria-expanded="false"
-  aria-controls="preferences-panel">
-  <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24">
-    <!-- Universal accessibility icon -->
-    <path d="M12 2C10.9 2 10 2.9 10 4s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 7h-3.18C16.4 7.84 15.3 7 14 7h-4c-1.3 0-2.4.84-2.82 2H4c-.55 0-1 .45-1 1s.45 1 1 1h3.18c.42 1.16 1.52 2 2.82 2h1v6c0 .55.45 1 1 1s1-.45 1-1v-6h1c1.3 0 2.4-.84 2.82-2H20c.55 0 1-.45 1-1s-.45-1-1-1z"/>
+<details class="display-preferences" id="display-preferences">
+  <summary>Display preferences</summary>
+
+  <form id="display-preferences-form">
+    <p>Changes are saved automatically on this device when storage is available.</p>
+
+    <fieldset>
+      <legend>Color theme</legend>
+
+      <label>
+        <input type="radio" name="theme" value="system" checked>
+        System
+      </label>
+
+      <label>
+        <input type="radio" name="theme" value="light">
+        Light
+      </label>
+
+      <label>
+        <input type="radio" name="theme" value="dark">
+        Dark
+      </label>
+    </fieldset>
+
+    <label for="text-size">Text size</label>
+    <select id="text-size" name="textSize">
+      <option value="default">Default</option>
+      <option value="large">Large</option>
+      <option value="x-large">Extra large</option>
+    </select>
+
+    <label for="reading-layout">Reading layout</label>
+    <select id="reading-layout" name="readingLayout">
+      <option value="default">Default</option>
+      <option value="comfortable">Comfortable</option>
+    </select>
+
+    <label for="motion">Motion</label>
+    <select id="motion" name="motion">
+      <option value="system">Follow system</option>
+      <option value="reduce">Reduce motion</option>
+    </select>
+
+    <button type="button" id="reset-display-preferences">
+      Reset to defaults
+    </button>
+
+    <p id="display-preferences-status" role="status"></p>
+  </form>
+</details>
+```
+
+Native radio buttons and selects already expose their selected values. Do not add a live-region announcement for every visual change unless testing shows that additional feedback is necessary. A concise status message is useful when preferences are saved, reset, or cannot be stored.
+
+If a modal is genuinely necessary, implement the complete dialog pattern: an accessible name, initial focus, contained tab sequence, Escape dismissal, a visible close button, and focus return to the opener.
+
+---
+
+## 8. Apply Presentation With CSS Variables and Attributes
+
+Use a small, controlled set of values. Do not insert stored strings directly into CSS.
+
+```css
+:root {
+  --content-measure: 80ch;
+  --reading-line-height: 1.5;
+  --paragraph-gap: 1em;
+}
+
+:root[data-text-size="large"] {
+  font-size: 125%;
+}
+
+:root[data-text-size="x-large"] {
+  font-size: 150%;
+}
+
+:root[data-reading-layout="comfortable"] {
+  --content-measure: 70ch;
+  --reading-line-height: 1.7;
+  --paragraph-gap: 1.5em;
+}
+
+.reading-content {
+  max-inline-size: var(--content-measure);
+  margin-inline: auto;
+}
+
+.reading-content p,
+.reading-content li {
+  line-height: var(--reading-line-height);
+}
+
+.reading-content p {
+  margin-block-end: var(--paragraph-gap);
+}
+```
+
+Keep browser zoom and user font settings working. Root percentages scale from the user's default rather than replacing it with a fixed pixel size.
+
+Do not use fixed-height text containers, clipping, or layout assumptions that fail when the font, text size, language, or spacing changes.
+
+---
+
+## 9. Validate, Apply, and Persist Values
+
+This framework is suitable for a static site. It validates every stored value, applies only known attributes, handles unavailable storage, and gives users a reset.
+
+```js
+const preferenceKey = "site.displayPreferences.v1";
+
+const defaults = Object.freeze({
+  theme: "system",
+  textSize: "default",
+  readingLayout: "default",
+  motion: "system"
+});
+
+const allowedValues = Object.freeze({
+  theme: ["system", "light", "dark"],
+  textSize: ["default", "large", "x-large"],
+  readingLayout: ["default", "comfortable"],
+  motion: ["system", "reduce"]
+});
+
+const form = document.querySelector("#display-preferences-form");
+const resetButton = document.querySelector("#reset-display-preferences");
+const status = document.querySelector("#display-preferences-status");
+
+function sanitizePreferences(candidate = {}) {
+  const source = candidate
+    && typeof candidate === "object"
+    && !Array.isArray(candidate)
+      ? candidate
+      : {};
+
+  return Object.fromEntries(
+    Object.entries(defaults).map(([name, defaultValue]) => {
+      const value = source[name];
+      return [
+        name,
+        allowedValues[name].includes(value) ? value : defaultValue
+      ];
+    })
+  );
+}
+
+function readPreferences() {
+  try {
+    const stored = localStorage.getItem(preferenceKey);
+    return stored
+      ? sanitizePreferences(JSON.parse(stored))
+      : { ...defaults };
+  } catch {
+    return { ...defaults };
+  }
+}
+
+function setOptionalAttribute(name, value, defaultValue) {
+  if (value === defaultValue) {
+    document.documentElement.removeAttribute(name);
+  } else {
+    document.documentElement.setAttribute(name, value);
+  }
+}
+
+function applyPreferences(preferences) {
+  setOptionalAttribute("data-theme", preferences.theme, "system");
+  setOptionalAttribute("data-text-size", preferences.textSize, "default");
+  setOptionalAttribute(
+    "data-reading-layout",
+    preferences.readingLayout,
+    "default"
+  );
+  setOptionalAttribute("data-motion", preferences.motion, "system");
+}
+
+function updateForm(preferences) {
+  form.elements.theme.value = preferences.theme;
+  form.elements.textSize.value = preferences.textSize;
+  form.elements.readingLayout.value = preferences.readingLayout;
+  form.elements.motion.value = preferences.motion;
+}
+
+function savePreferences(preferences) {
+  try {
+    localStorage.setItem(preferenceKey, JSON.stringify(preferences));
+    status.textContent = "";
+  } catch {
+    status.textContent =
+      "The preferences are applied for this page but could not be saved.";
+  }
+}
+
+form.addEventListener("change", () => {
+  const preferences = sanitizePreferences(
+    Object.fromEntries(new FormData(form))
+  );
+
+  applyPreferences(preferences);
+  savePreferences(preferences);
+});
+
+resetButton.addEventListener("click", () => {
+  const preferences = { ...defaults };
+  let storageCleared = true;
+
+  try {
+    localStorage.removeItem(preferenceKey);
+  } catch {
+    storageCleared = false;
+  }
+
+  applyPreferences(preferences);
+  updateForm(preferences);
+  status.textContent = storageCleared
+    ? "Display preferences reset to system defaults."
+    : "Defaults applied for this page, but saved preferences could not be cleared.";
+});
+
+const initialPreferences = readPreferences();
+applyPreferences(initialPreferences);
+updateForm(initialPreferences);
+```
+
+Load the script after the preference form or use `defer` on an external script so the controls exist before the code runs.
+
+If a theme flash before the script runs is disruptive, apply a very small, validated boot script in the document `<head>` before the main stylesheet, or render account preferences on the server. Keep the default and system-controlled presentation accessible even if the early script is blocked.
+
+Version the storage key when the schema changes. Migrate or discard old data deliberately rather than interpreting obsolete values.
+
+---
+
+## 10. Make Text Resizing Work Without Site Controls
+
+Browser text resizing and zoom remain the primary mechanisms. Design the page so they work:
+
+- use relative font sizes;
+- let text containers grow vertically;
+- avoid fixed heights for controls containing text;
+- let navigation and toolbars wrap;
+- avoid clipping and unnecessary `overflow: hidden`;
+- test long labels and translations; and
+- keep browser zoom enabled.
+
+A site text-size control can help discoverability or meet a researched product need. It must not be the only way to enlarge content, and it must not stop browser zoom from scaling further.
+
+Do not assume that increasing the root font size alone makes the layout accessible. Test every page and component at 200% text size and 400% page zoom.
+
+---
+
+## 11. Test Text-spacing Overrides Correctly
+
+Success Criterion 1.4.12 does not require a site to set or offer these values. It requires content to tolerate user overrides of at least:
+
+- line height at 1.5 times the font size;
+- spacing after paragraphs at 2 times the font size;
+- letter spacing at 0.12 times the font size; and
+- word spacing at 0.16 times the font size.
+
+Use a user stylesheet, bookmarklet, or test tool to apply the values.
+
+```css
+* {
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+
+p {
+  margin-block-end: 2em !important;
+}
+```
+
+Confirm that text is not clipped, truncated, overlapped, obscured, or made inoperable. If an ellipsis appears only because of the override, the complete content must remain available.
+
+Do not make users enable a site setting before their own stylesheet can work.
+
+---
+
+## 12. Offer Font Choices Carefully
+
+Evidence does not support naming one font as universally best for dyslexia or another disability. User needs and preferences differ.
+
+If research supports a font choice:
+
+- describe it neutrally, such as Sans serif, Serif, or Monospace;
+- include complete language and character coverage;
+- provide robust fallback fonts;
+- test control labels, code, numbers, and data tables;
+- preserve user-agent minimum font-size settings;
+- avoid layout shifts that move controls during loading;
+- do not require a remote font for the accessible experience; and
+- provide Default and Reset options.
+
+Do not tell users which font they need based on a disability. Let them choose based on the result they can see and use.
+
+---
+
+## 13. Keep Every Theme and Preset Accessible
+
+Every author-provided theme must independently meet the applicable requirements for:
+
+- text contrast;
+- non-text contrast;
+- focus visibility and focus not obscured;
+- links and visited links;
+- selected, checked, expanded, current, and error states;
+- charts, icons, and other meaningful graphics;
+- disabled-control recognition where applicable;
+- forced-color behavior; and
+- print output.
+
+Do not label a site preset “High contrast” unless it has a defined purpose, has been tested as a complete theme, and does not imply that it is equivalent to the user's operating-system forced-color mode. **Higher contrast** is often a more accurate label for an author palette.
+
+See [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) for the complete theme-selector pattern.
+
+---
+
+## 14. Reduce Motion and Distraction Without Removing Meaning
+
+Reduced motion is not the same as removing all visual change. Prefer:
+
+- immediate state changes instead of movement across the viewport;
+- crossfades or no transition where opacity changes are not themselves problematic;
+- paused decorative animation;
+- manual controls for carousels and rotating content;
+- no smooth scrolling; and
+- stable positioning of controls and content.
+
+If moving, blinking, scrolling, or auto-updating content meets the conditions in Success Criterion 2.2.2, provide Pause, Stop, Hide, or control of the update frequency as required. Do not hide these controls inside the same motion-heavy component.
+
+A site-level Reduce motion setting can supplement `prefers-reduced-motion`. The System choice must continue responding when the operating-system setting changes.
+
+---
+
+## 15. Support Reading and Content Adaptation
+
+A reading layout can change presentation without changing the meaning or availability of content. It may:
+
+- constrain line length;
+- increase spacing;
+- remove decorative backgrounds;
+- reduce visual density;
+- pause non-essential motion; or
+- place the primary article before supplementary material visually and structurally.
+
+Do not silently remove instructions, warnings, controls, error messages, or required task information. If a setting hides optional material, tell users what is hidden and provide an immediate way to restore it.
+
+Use semantic HTML so browser reader modes, extensions, and assistive technologies can adapt the content. Do not block extensions or overwrite user styles unnecessarily.
+
+W3C COGA guidance and WAI-Adapt work describe additional personalization for people with cognitive and learning disabilities. These resources provide valuable supplemental and emerging guidance. They are not additional WCAG 2.2 conformance requirements, and draft WAI-Adapt syntax must not be presented as a stable HTML feature.
+
+---
+
+## 16. Make Controls Understandable and Discoverable
+
+Label the entry point with its purpose, such as **Display preferences** or **Reading settings**.
+
+Do not rely on an accessibility icon alone. No single symbol communicates every possible preference to every user. If an icon is included, keep the text label and usually hide the icon from assistive technology.
+
+```html
+<button type="button" aria-expanded="false" aria-controls="preferences-panel">
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+    <!-- Decorative settings icon -->
   </svg>
-</button>
-
-<div 
-  id="preferences-panel" 
-  class="preferences-panel" 
-  hidden
-  role="dialog"
-  aria-labelledby="preferences-title"
-  aria-modal="true">
-  <h2 id="preferences-title">Display Preferences</h2>
-  
-  <p class="preferences-description">
-    These settings let you customize how you view this site. 
-    Your preferences will be saved for future visits.
-  </p>
-  
-  <!-- Font size controls -->
-  <!-- Line spacing controls -->
-  <!-- Font family selection -->
-  <!-- Contrast theme selection -->
-  <!-- Additional preferences -->
-  
-  <div class="preferences-actions">
-    <button id="save-preferences">Save and Close</button>
-    <button id="reset-preferences">Reset to Defaults</button>
-  </div>
-</div>
-```
-
-**Critical distinction:**
-
-Include clear messaging that this is **NOT** an accessibility overlay:
-
-```html
-<div class="preferences-notice" role="note">
-  <p>
-    <strong>Note:</strong> This is a preference editor, not an accessibility overlay. 
-    It allows you to customize how you view content without claiming to make 
-    inaccessible content accessible. Learn more about 
-    <a href="https://overlayfactsheet.com/en/">why accessibility overlays are problematic</a>.
-  </p>
-</div>
-```
-
----
-
-## 7. SkipTo: Essential Page Navigation
-
-SkipTo by PayPal provides a keyboard-accessible menu of landmarks and headings, helping users navigate long pages.
-
-**Why SkipTo matters:**
-
-Browsers should expose page structure natively but often don't provide an easy way for all users to jump to sections. SkipTo fills this gap.
-
-**Key resource:**
-- [PayPal SkipTo Documentation and Demo](https://paypal.github.io/skipto/)
-
-**Implementation:**
-
-```html
-<!-- Include SkipTo -->
-<script src="https://paypal.github.io/skipto/downloads/js/skipto.min.js"></script>
-
-<!-- Configure SkipTo -->
-<script>
-  var SkipToConfig = {
-    settings: {
-      skipTo: {
-        displayOption: 'popup',
-        attachElement: 'body',
-        colorTheme: 'auto'
-      }
-    }
-  };
-</script>
-```
-
-**Features:**
-- Keyboard shortcut (Alt+0 or Option+0) to open menu
-- Lists all landmarks and headings
-- Visual and screen reader accessible
-- Customizable appearance
-- Works with existing site structure
-
-**Integration with preferences:**
-
-Consider adding SkipTo toggle to your preferences panel:
-
-```html
-<div class="preference-option">
-  <input type="checkbox" id="enable-skipto" checked>
-  <label for="enable-skipto">
-    Enable SkipTo navigation menu (Alt+0)
-  </label>
-  <p class="preference-description">
-    Provides quick keyboard access to page sections and headings
-  </p>
-</div>
-```
-
----
-
-## 8. The Accessibility Icon: Creating Recognition
-
-Accessibility overlays have popularized a universal accessibility icon (person in a circle). Use this icon for legitimate personalization features to:
-
-1. Create visual consistency users recognize
-2. Signal where accessibility preferences are located
-3. Distinguish your preferences from page content
-
-**Icon pattern:**
-
-```html
-<button 
-  class="accessibility-preferences-btn"
-  aria-label="Open display preferences">
-  <!-- SVG icon with proper ARIA -->
-  <svg 
-    role="img" 
-    aria-hidden="true" 
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24"
-    width="32" 
-    height="32">
-    <title>Accessibility</title>
-    <path d="M12 2C10.9 2 10 2.9 10 4s.9 2 2 2 2-.9 2-2-.9-2-2-2zm8 7h-3.18C16.4 7.84 15.3 7 14 7h-4c-1.3 0-2.4.84-2.82 2H4c-.55 0-1 .45-1 1s.45 1 1 1h3.18c.42 1.16 1.52 2 2.82 2h1v6c0 .55.45 1 1 1s1-.45 1-1v-6h1c1.3 0 2.4-.84 2.82-2H20c.55 0 1-.45 1-1s-.45-1-1-1z" fill="currentColor"/>
-  </svg>
-  <span class="btn-text">Preferences</span>
+  <span>Display preferences</span>
 </button>
 ```
 
-**Placement:**
-- Consistent location (typically top-right corner)
-- Visible and easily discoverable
-- Large enough touch target (44×44px minimum)
-- Clear focus indicator
+Keep the entry point:
+
+- in a consistent location;
+- available by keyboard, pointer, touch, and speech input;
+- large enough under the applicable target-size criterion;
+- visible in every supported theme and forced colors; and
+- understandable without a tooltip.
+
+Avoid custom keyboard shortcuts unless there is a demonstrated need, a way to discover and change them, and a conflict review across browsers and assistive technologies.
 
 ---
 
-## 9. Accessibility Requirements Checklist
+## 17. Persist Preferences Without Creating a Privacy Profile
 
-When implementing user personalization:
+For non-sensitive site presentation choices, origin-scoped local storage is often sufficient. It is device- and browser-specific, can be cleared, and may be unavailable in some contexts.
 
-- [ ] **Do NOT use third-party accessibility overlays**
-- [ ] Reference [Overlay Fact Sheet](https://overlayfactsheet.com/en/) to explain why
-- [ ] Implement CSS media queries for user preferences
-- [ ] Provide visible preference controls for users who need them
-- [ ] Use proper ARIA for all controls (labels, live regions, states)
-- [ ] Persist preferences using `localStorage` or cookies
-- [ ] Announce changes to screen readers
-- [ ] Test with keyboard-only navigation
-- [ ] Test with screen readers (NVDA, JAWS, VoiceOver)
-- [ ] Ensure preferences don't break responsive design
-- [ ] Verify all preference combinations maintain WCAG 2.2 AA contrast
-- [ ] Include clear messaging that this is NOT an overlay
-- [ ] Consider including SkipTo for page navigation
-- [ ] Use recognizable accessibility icon for preferences button
-- [ ] Provide reset option to return to defaults
-- [ ] Document that users' own assistive technology takes precedence
+Explain persistence accurately. Say “saved on this device” when that is what the implementation does. Do not promise that a setting follows the user across browsers or devices unless account synchronization provides that behavior.
+
+Follow these rules:
+
+- store only the values needed to reproduce the chosen presentation;
+- do not store a presumed diagnosis or disability;
+- do not send preference values to analytics merely because they are available;
+- do not expose preferences in public profiles;
+- make account synchronization intentional and transparent;
+- protect synchronized settings as account data;
+- provide a reset and, where relevant, deletion mechanism;
+- handle storage denial and corrupted data safely; and
+- document retention and cookie use under the project's privacy process.
+
+User-preference media features can contribute to browser fingerprinting. Prefer CSS responses over reading and transmitting the values through JavaScript.
 
 ---
 
-## 10. Testing User Personalization
+## 18. Use Progressive Enhancement
+
+The unenhanced page must remain readable and operable.
+
+- Use CSS media queries even when a site control is also present.
+- Use native HTML controls before custom widgets.
+- Keep content in semantic HTML rather than generating it only after a preference loads.
+- Do not require third-party scripts for basic access.
+- Do not block rendering while waiting for remote preference services.
+- Preserve system preferences if storage fails.
+- Keep reset and recovery available after a partial failure.
+
+When an account service is unavailable, fall back to local or system preferences without preventing the task.
+
+---
+
+## 19. Do Not Confuse Personalization With an Overlay
+
+An accessibility overlay claims to detect or repair accessibility problems by injecting generic changes into a site. A preference editor lets a user choose among presentations that the site has deliberately designed and tested.
+
+Personalization must not:
+
+- claim to make an otherwise inaccessible site conformant;
+- rewrite semantics generically at runtime;
+- interfere with assistive technology or user styles;
+- conceal unresolved defects; or
+- replace remediation in source templates and components.
+
+Runtime remediation for a locked legacy system can sometimes reduce a known barrier while the source is being fixed. Treat it as a documented, tested, temporary risk mitigation. Do not call it conformance, do not describe it as the only acceptable overlay use case, and do not stop the underlying remediation work.
+
+A preference panel does not need a prominent disclaimer stating that it is not an overlay. Its label, documentation, and claims simply need to describe its actual function accurately.
+
+---
+
+## 20. Testing
+
+### Default and failure states
+
+- Test before JavaScript runs and with JavaScript disabled.
+- Block local storage and confirm that settings apply for the current page without breaking the interface.
+- Insert malformed and obsolete stored values and confirm that they are ignored.
+- Test the first visit, a returning visit, Reset, sign-out, and account deletion where applicable.
+- Confirm that a storage or network failure does not block content.
+
+### System preferences
+
+- Test light and dark system schemes.
+- Change the system scheme while the page is open and confirm that System mode follows it.
+- Test reduced motion both before and after page load.
+- Test `prefers-contrast` values supported by the test environment.
+- Test at least one light and one dark forced-color palette.
+- Treat reduced transparency and other newer queries as progressive enhancements.
+
+### Site controls
+
+- Operate every setting with keyboard, touch, pointer, and supported speech input.
+- Confirm labels, groups, values, focus, and status messages with a screen reader.
+- Confirm that applying a setting does not move focus or navigate unexpectedly.
+- Confirm that Reset returns both the presentation and controls to defaults.
+- Verify that the same settings work consistently on every page.
+- Test long translations and right-to-left content.
+
+### Content and layout
+
+- Resize text to 200%.
+- Test page zoom at 400% and the required narrow equivalent width.
+- Apply the four Text Spacing override values.
+- Test user font and minimum-font-size settings.
+- Confirm that controls, labels, tables, diagrams, code, and messages remain available.
+- Confirm that sticky and fixed elements do not obscure content or focus.
+
+### Combination testing
+
+Test individual settings first, then meaningful high-risk combinations, including:
+
+- Extra large text with Comfortable reading layout;
+- Dark theme with reduced motion;
+- explicit site theme with forced colors;
+- 400% zoom with the preferences panel open;
+- long translated labels with increased text spacing; and
+- stored preferences after a schema update.
+
+Do not attempt every mathematical combination blindly. Use pairwise coverage, risk analysis, and representative pages, then add combinations found through user research and defects.
 
 ### Automated testing
 
-```javascript
-// Example: Test font size preferences persist
-describe('Font size preferences', () => {
-  it('should persist font size selection', () => {
-    cy.visit('/');
-    
-    // Increase font size
-    cy.get('#increase-font').click();
-    
-    // Verify change applied
-    cy.get('html').should('have.css', 'font-size', 'large');
-    
-    // Verify localStorage updated
-    cy.window().then((win) => {
-      expect(win.localStorage.getItem('preferredFontSize')).to.eq('2');
-    });
-    
-    // Reload page
-    cy.reload();
-    
-    // Verify preference persisted
-    cy.get('html').should('have.css', 'font-size', 'large');
-  });
-  
-  it('should announce changes to screen readers', () => {
-    cy.visit('/');
-    cy.get('#increase-font').click();
-    
-    // Check aria-live region updated
-    cy.get('#font-size-status')
-      .should('have.attr', 'role', 'status')
-      .and('contain', 'Font size changed');
-  });
-});
-```
+Automation can check some contrast, labels, states, storage behavior, screenshots, CSS regressions, and target sizes. It cannot determine whether a preference is understandable, whether combinations create cognitive overload, whether a reading layout helps, or whether an injected remediation conflicts with assistive technology.
 
-### Manual testing
-
-1. **Keyboard accessibility:**
-   - Tab through all preference controls
-   - Verify focus indicators visible
-   - Test keyboard activation (Enter/Space)
-   - Verify keyboard shortcuts (if implemented)
-
-2. **Screen reader testing:**
-   - Verify all controls properly labeled
-   - Check that changes are announced
-   - Test with NVDA (Windows), JAWS (Windows), VoiceOver (macOS/iOS)
-
-3. **Preference persistence:**
-   - Set preferences, refresh page
-   - Close browser, reopen
-   - Test in incognito/private mode
-
-4. **Contrast validation:**
-   - Test all theme combinations meet WCAG 2.2 AA
-   - Verify in forced-colors mode (Windows High Contrast)
-   - Check with color blindness simulators
-
-5. **Mobile testing:**
-   - Touch targets adequate (44×44px minimum)
-   - Preferences panel accessible on small screens
-   - Works with zoom enabled
+Include people who use relevant personalization and assistive-technology features in usability testing.
 
 ---
 
-## 11. Related Resources
+## 21. Common Failures
 
-### Internal guides
-- [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) - Comprehensive theming guidance
-- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) - Keyboard interaction patterns
-- [Forms Accessibility Best Practices](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md) - Form control accessibility
-
-### External resources
-- [Overlay Fact Sheet](https://overlayfactsheet.com/en/) - Why overlays are problematic
-- [Fluid Infusion Preferences Framework](https://docs.fluidproject.org/infusion/development/PreferencesFramework) - Reference implementation
-- [PayPal SkipTo](https://paypal.github.io/skipto/) - Page navigation tool
-- [MDN: CSS Media Queries for Accessibility](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#accessibility_media_features)
-- [Web Almanac 2024: Accessibility Chapter](https://almanac.httparchive.org/en/2024/accessibility#user-personalization-widgets-and-overlay-remediation)
-
----
-
-## 12. Machine-Readable Standards
-
-This guide references normative WCAG 2.2 requirements available in machine-readable YAML format via [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld):
-
-- **WCAG 2.2 normative:** `wcag-2.2-normative.yaml`
-- **WCAG 1.4.12 Text Spacing:** `wcag-2.2-normative.yaml#1.4.12`
-- **WCAG 1.4.3 Contrast (Minimum):** `wcag-2.2-normative.yaml#1.4.3`
-- **WCAG 2.4.1 Bypass Blocks:** `wcag-2.2-normative.yaml#2.4.1` (related to SkipTo)
-- **ARIA authoring practices:** `wai-aria-informative.yaml`
+| Failure | Correction |
+|:---|:---|
+| A preference widget is claimed to make the site WCAG conformant. | Remediate the source and describe the widget only as optional personalization. |
+| WCAG 1.4.12 is said to require line- and letter-spacing controls. | Test that user overrides work without loss of content or functionality. |
+| A text-size button is treated as a replacement for browser zoom. | Keep zoom enabled and support text resizing independently. |
+| All animations and transitions are forced to `0.01ms !important`. | Remove or replace specific non-essential motion without breaking state changes. |
+| `prefers-contrast` is assumed to mean high contrast. | Handle `more`, `less`, and `custom` accurately. |
+| `forced-color-adjust: none` is applied to custom focus indicators. | Let forced colors apply by default and use system colors where clarification is needed. |
+| A site “High contrast” theme is treated as forced-color mode. | Test it as an author theme and label its effect accurately. |
+| Every page adds A+, A-, font, color, speech, and navigation controls. | Add only researched settings that can be maintained and tested. |
+| A settings icon is the only label. | Use visible text such as “Display preferences.” |
+| A fieldset contains a redundant ARIA radiogroup with a broken label reference. | Use native `<fieldset>`, `<legend>`, radio buttons, and labels. |
+| Every selection is repeated through a live region. | Rely on native control state and announce only results that need additional feedback. |
+| Stored values are inserted directly into classes or CSS. | Validate against a small allowlist before applying them. |
+| Local storage is assumed to be permanent and universal. | Handle denial and clearing, and describe its device and browser scope. |
+| Preference values are used to infer disabilities or enrich analytics profiles. | Store the minimum presentation state and do not infer sensitive characteristics. |
+| A named third-party script is presented as essential personalization. | Keep the guide implementation-neutral and evaluate dependencies under the project's security and accessibility process. |
+| A reading mode silently removes warnings or instructions. | Preserve required content and disclose any optional material that is hidden. |
+| Only individual options are tested. | Test high-risk combinations, reset, migration, and failure states. |
 
 ---
 
-## Summary
+## 22. Definition of Done
 
-User personalization done right empowers users without claiming to fix accessibility. The key distinctions:
+- [ ] The base experience is accessible without the preference editor.
+- [ ] Browser zoom, text resizing, user styles, extensions, and assistive technology are not blocked.
+- [ ] System preferences are respected where applicable.
+- [ ] Explicit site choices override only the corresponding setting.
+- [ ] System or Default resumes following the system.
+- [ ] Every setting has a clear visible label that describes its effect.
+- [ ] Preference controls use native semantics and work with keyboard, pointer, touch, screen reader, and speech input.
+- [ ] Applying a preference preserves focus, content, functionality, and entered data.
+- [ ] Reset clears site overrides and updates the controls.
+- [ ] Stored values are versioned and validated against allowlists.
+- [ ] Storage denial, corruption, and clearing are handled safely.
+- [ ] Persistence scope is explained accurately.
+- [ ] Preference data is minimized and not used to infer disability.
+- [ ] Every theme and preset meets applicable contrast and state requirements.
+- [ ] Forced colors remain usable without broad `forced-color-adjust: none` rules.
+- [ ] Reduced motion removes or replaces specific non-essential motion.
+- [ ] Text remains usable at 200% resizing and 400% page zoom.
+- [ ] Text-spacing overrides cause no clipping, overlap, obscuring, or loss of functionality.
+- [ ] Optional reading or simplified views preserve required information.
+- [ ] The implementation works when JavaScript, storage, or account services fail.
+- [ ] Individual settings and high-risk combinations have been manually tested.
+- [ ] Claims do not imply that personalization repairs accessibility conformance.
 
-**❌ Don't:**
-- Use third-party accessibility overlays
-- Claim personalization "makes site accessible"
-- Replace proper accessible design with widgets
-- Interfere with users' assistive technology
+---
 
-**✅ Do:**
-- Respect CSS media queries for user preferences
-- Provide visible preference controls as helpers
-- Be transparent about what features do
-- Persist user choices
-- Test thoroughly with assistive technology
-- Reference the Overlay Fact Sheet
-- Consider SkipTo for navigation
-- Use clear labeling and announcements
+## 23. WCAG 2.2 Mapping
 
-User choice is powerful. Give users control over their experience while maintaining a solid accessible foundation.
+| Success criterion | Level | Personalization relevance |
+|:---|:---:|:---|
+| [1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) | A | Preference labels, groups, instructions, and structure must be programmatically available. |
+| [1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) | AA | Text in every author theme must meet applicable contrast requirements. |
+| [1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) | AA | Text must resize to 200% without loss of content or functionality. |
+| [1.4.8 Visual Presentation](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html) | AAA | User-selectable colors, constrained line length, spacing, non-justified text, and resizing are relevant to enhanced reading presentation. |
+| [1.4.10 Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) | AA | Preferences and enlarged content must work at the criterion's required narrow equivalent width. |
+| [1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | AA | Controls, states, and focus indicators must remain perceivable in every author theme. |
+| [1.4.12 Text Spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html) | AA | User spacing overrides must not cause loss of content or functionality. |
+| [2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) | A | Preference controls must be keyboard operable. |
+| [2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html) | A | Moving and auto-updating content needs the required controls where the criterion applies. |
+| [2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) | AAA | Interaction-triggered motion animation must be disableable unless essential. |
+| [2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | AA | Focus must remain visible in every theme and preset. |
+| [2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html) | AA | Panels and enlarged layouts must not entirely hide focused controls. |
+| [2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) | A | Accessible control names must contain their visible text labels. |
+| [2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) | AA | Preference controls must meet the 24 CSS-pixel minimum or a defined exception. |
+| [3.2.2 On Input](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html) | A | Changing a preference must not unexpectedly navigate or cause another change of context. |
+| [4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) | A | Any custom control must expose an accurate name, role, value, and state. |
+| [4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) | AA | Save, reset, and storage-failure messages must be programmatically determinable when they are status messages. |
+
+COGA guidance and WAI-Adapt drafts are supplemental. They should not be represented as additional WCAG 2.2 success criteria.
+
+---
+
+## 24. Related Guides
+
+- [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Forms Accessibility Best Practices](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Navigation Accessibility Best Practices](./NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Touch and Pointer Accessibility Best Practices](./TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Progressive Enhancement Best Practices](./PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
+
+---
+
+## References
+
+The external references in this guide follow the repository's [trusted-source list](./TRUSTED_SOURCES.yaml). Primary standards are used for normative requirements. Draft specifications and supplementary guidance are identified as such.
+
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+- [Understanding 1.4.4: Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html)
+- [Understanding 1.4.12: Text Spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+- [Understanding 2.3.3: Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)
+- [Media Queries Level 5](https://www.w3.org/TR/mediaqueries-5/) (Working Draft)
+- [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/) (Candidate Recommendation)
+- [Making Content Usable for People with Cognitive and Learning Disabilities](https://www.w3.org/TR/coga-usable/) (W3C Working Group Note)
+- [WAI-Adapt Explainer](https://www.w3.org/TR/adapt/) (emerging personalization semantics)
+- [MDN: Using media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using) (supplementary implementation guidance)
+- [Overlay Fact Sheet](https://overlayfactsheet.com/en/) (supplementary industry resource)
+
+### Machine-readable standards
+
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld):
+
+- [WCAG 2.2 normative content in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [ARIA informative catalog in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml)
+- [HTML accessibility content in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [Standards link graph in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
+
+---
+
+AGPL-3.0-or-later License - See LICENSE file for full text  
+Copyright (c) 2026 Mike Gifford
