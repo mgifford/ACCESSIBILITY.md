@@ -4,913 +4,867 @@ title: Light/Dark Mode Accessibility Best Practices
 
 # Light/Dark Mode Accessibility Best Practices
 
-This document defines accessibility requirements for implementing light and dark color themes that respect user preferences and ensure WCAG 2.2 Level AA compliance.
+This document defines accessibility requirements for light and dark themes. It covers system preferences, optional manual selection, contrast, forced colours, increased-contrast preferences, images, interaction states, and testing.
 
-User preference matters. This guidance ensures accessible experiences in both light and dark modes, including support for forced-colors modes and high contrast preferences.
-
----
-
-## 1. Core Principle
-
-All users must be able to perceive and interact with content in their preferred color mode without losing information, functionality, or accessible contrast. Color themes must meet WCAG contrast requirements in all supported modes.
+Light and dark modes are not inherently accessible. Every supported mode must preserve content, functionality, visible states, and sufficient contrast.
 
 ---
 
-## 2. Dual Contrast Validation
+## 1. Required outcomes
 
-Color contrast must meet WCAG 2.2 Level AA requirements in **both** light and dark modes:
+Users must be able to perceive and operate the interface without losing information or functionality because of the active colour mode.
 
-- **Text contrast**: 4.5:1 for normal text, 3:1 for large text (18pt+/14pt+ bold)
-- **Non-text contrast**: 3:1 for UI components and graphical objects
-- **Focus indicators**: 3:1 against adjacent colors
+At minimum:
 
-### Required checks
+- Normal text must meet WCAG 2.2 Success Criterion 1.4.3, generally 4.5:1.
+- Large-scale text must meet the applicable 3:1 threshold defined by WCAG.
+- User-interface components, states, and graphical objects covered by WCAG 1.4.11 must meet 3:1 against adjacent colours.
+- Focus indicators must remain clearly visible in every supported mode. Do not reduce focus testing to a single contrast ratio; evaluate contrast, area, visibility, and whether the indicator is obscured.
+- Information must not be conveyed by colour alone.
+- Light, dark, System, forced-colours, and increased-contrast preferences must not be treated as interchangeable concepts.
 
-- Test contrast in light mode
-- Test contrast in dark mode
-- Test contrast in forced-colors/high contrast modes
-- Verify focus indicators remain visible in all modes
-
-Avoid:
-
-- Assuming one mode is "default" and neglecting the other
-- Using the same absolute colors in both modes without testing
-- Relying on transparency alone to achieve acceptable contrast
+Test actual colour combinations. Do not assume that a dark background automatically provides accessible contrast.
 
 ---
 
-## 3. Modern CSS Color System Best Practices (2026)
+## 2. Choose an implementation pattern
 
-Modern color systems should start with the browser, not with duplicated theme branches. Declare `color-scheme` on the root element, prefer `light-dark()` for token values, and keep `prefers-color-scheme` for targeted fallback and asset-selection cases.
+Use one of these patterns.
 
-### Summary
+### Pattern A: Follow the system preference
 
-1. Use `color-scheme` so the browser can match native UI to your theme support.
-2. Prefer `light-dark()` for theme tokens instead of duplicating values across media queries.
-3. Use `contrast-color()` for adaptive components that need a safe foreground choice.
-4. Keep `prefers-color-scheme` for specialized cases such as images, SVGs, JavaScript initialization, and legacy support.
-5. Test with real users and accessibility tools before treating automated color logic as sufficient.
+Use this pattern when users do not need a manual selector.
 
-### `color-scheme`
+- Declare support with `color-scheme`.
+- Use `prefers-color-scheme` or modern colour functions to define light and dark tokens.
+- Allow the page to respond when the operating-system or browser preference changes.
+- Do not store a separate preference when the user has not made one.
 
-Modern implementations should declare:
+### Pattern B: Provide a manual selector
+
+Use this pattern when users should be able to override their system preference.
+
+Provide three mutually exclusive choices:
+
+- **System:** follow the operating-system or browser preference.
+- **Light:** always use the light theme.
+- **Dark:** always use the dark theme.
+
+The selector can be permanently visible where space permits. In a constrained header, use one labelled button that opens a single-choice group. Do not use a binary toggle when System is a supported state.
+
+---
+
+## 3. Theme tokens and browser integration
+
+### Declare supported colour schemes
+
+Place this metadata early in the document head:
+
+```html
+<meta name="color-scheme" content="light dark">
+```
+
+Declare the supported schemes in CSS. Set a specific value when a manual override is active so browser-provided controls and surfaces follow the selected theme.
 
 ```css
 :root {
   color-scheme: light dark;
 }
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
 ```
 
-This tells the browser that the page supports both light and dark schemes, so built-in UI components, form controls, scrollbars, and other native surfaces are rendered in a matching style. It also enables `light-dark()` to resolve correctly.
+`color-scheme` affects browser-provided UI such as form controls, scrollbars, and spellcheck indicators. It does not create an accessible colour palette by itself.
 
-### `light-dark()` as the preferred token pattern
+### Preferred token pattern
 
-Use `light-dark()` for theme tokens instead of duplicating the same values in separate `@media (prefers-color-scheme: dark)` blocks:
+Use semantic tokens rather than scattering theme-specific colours through component rules.
 
 ```css
 :root {
   color-scheme: light dark;
 
-  --background: light-dark(#ffffff, #1a1a1a);
-  --text: light-dark(#1a1a1a, #e8e8e8);
-  --link: light-dark(#005ea8, #8ecaff);
-  --focus: light-dark(#004499, #99ccff);
-  --border: light-dark(#cccccc, #444444);
-  --hover: light-dark(#f5f5f5, #2a2a2a);
+  --background: light-dark(#ffffff, #15191e);
+  --surface: light-dark(#f3f5f7, #242a31);
+  --text: light-dark(#1b1f23, #f4f6f8);
+  --muted-text: light-dark(#4d5966, #c3cbd4);
+  --link: light-dark(#005ea8, #73b7f2);
+  --border: light-dark(#6b7480, #a7b0ba);
+  --focus: light-dark(#7a4e00, #ffdf85);
 }
 
 body {
   color: var(--text);
-  background-color: var(--background);
+  background: var(--background);
 }
 
 a {
   color: var(--link);
 }
-
-a:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-}
 ```
 
-Advantages:
+Validate every token pair. `light-dark()` selects a value; it does not verify contrast.
 
-- Less duplication
-- Easier maintenance
-- Better token management
-- Direct support for user color scheme preferences
-
-### Progressive enhancement and fallback
-
-Use safe defaults first, then layer `light-dark()` and `prefers-color-scheme` as the browser supports them:
+### Fallback for older browsers
 
 ```css
 :root {
-  color-scheme: light dark;
-
   --background: #ffffff;
-  --text: #1a1a1a;
+  --surface: #f3f5f7;
+  --text: #1b1f23;
   --link: #005ea8;
-  --focus: #004499;
-}
-
-@supports (color: light-dark(white, black)) {
-  :root {
-    --background: light-dark(#ffffff, #1a1a1a);
-    --text: light-dark(#1a1a1a, #e8e8e8);
-    --link: light-dark(#005ea8, #8ecaff);
-    --focus: light-dark(#004499, #99ccff);
-  }
+  --border: #6b7480;
+  --focus: #7a4e00;
 }
 
 @supports not (color: light-dark(white, black)) {
   @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #1a1a1a;
-      --text: #e8e8e8;
-      --link: #8ecaff;
-      --focus: #99ccff;
+    :root:not([data-theme="light"]) {
+      --background: #15191e;
+      --surface: #242a31;
+      --text: #f4f6f8;
+      --link: #73b7f2;
+      --border: #a7b0ba;
+      --focus: #ffdf85;
     }
   }
 }
 ```
 
-### `contrast-color()` for adaptive components
-
-`contrast-color()` can make components self-correcting by choosing an appropriate foreground for the background that was actually used. This is useful for buttons, badges, tags, status indicators, and other dynamically themed components.
-
-```css
-.button,
-.badge,
-.tag,
-.status-indicator,
-.theme-card {
-  --surface: light-dark(#005ea8, #8ecaff);
-
-  background: var(--surface);
-  color: #ffffff;
-}
-
-@supports (color: contrast-color(red)) {
-  .button,
-  .badge,
-  .tag,
-  .status-indicator,
-  .theme-card {
-    color: contrast-color(var(--surface));
-  }
-}
-```
-
-Examples of useful applications:
-
-- Buttons that must stay readable over user-selected accent colors
-- Badges and tags that change color by category or status
-- Status indicators that use theme-driven surfaces
-- Components that inherit their color from data, user settings, or CMS content
-
-Important cautions:
-
-- `contrast-color()` is not a replacement for accessibility testing
-- It currently returns black or white choices
-- Mid-tone colors may still present readability challenges
-- Designers must still verify WCAG contrast requirements
-- Automated color selection should be treated as an enhancement, not a guarantee
-
-### Why `prefers-color-scheme` still matters
-
-Keep `prefers-color-scheme` for cases where it is the right tool, including:
-
-- Image selection
-- SVG variants
-- JavaScript theme initialization
-- Legacy browser support
-- Complex theme overrides
-
-It is still valuable, but it is no longer the only recommended technique for token authoring.
-
-## 4. Respecting User Preferences and Legacy Support
-
-Implement theme switching that respects system and user preferences. If you provide a manual theme toggle, use it as an optional override layered on top of CSS-driven tokens.
-
-### Fallback token pattern for older browsers
-
-```css
-:root {
-  color-scheme: light dark;
-
-  --color-text: #1a1a1a;
-  --color-background: #ffffff;
-  --color-link: #0066cc;
-  --color-focus: #004499;
-  --color-border: #cccccc;
-  --color-hover: #f5f5f5;
-}
-
-@supports not (color: light-dark(white, black)) {
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-text: #e8e8e8;
-      --color-background: #1a1a1a;
-      --color-link: #66aaff;
-      --color-focus: #99ccff;
-      --color-border: #444444;
-      --color-hover: #2a2a2a;
-    }
-  }
-}
-
-body {
-  color: var(--color-text);
-  background-color: var(--color-background);
-}
-
-a {
-  color: var(--color-link);
-}
-
-a:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-```
-
-### User override pattern
-
-If providing manual theme controls:
-
-#### Three-Option Theme Selector Pattern
-
-Use a visible three-option selector that shows all three options at the same time:
-
-- **System**
-- **Light**
-- **Dark**
-
-#### Interaction pattern requirements
-
-- **Control model**: Use a labelled group containing three native `<button type="button">` elements with `aria-pressed` for the selected option
-- **Visual affordance**: Use sun/moon/system icons as supporting visuals with visible text labels
-- **Placement**: Position in the top-right corner of the header in both desktop and mobile views
-- **Scroll behavior**: Do not make the toggle fixed/sticky; it should remain in normal document flow within the header
-- **Keyboard navigation**: Each button is a separate Tab stop — use standard native button behaviour (Tab, Shift+Tab, Enter, Space)
-- **Do NOT** use custom keyboard handlers where native button behaviour already provides the required functionality
-- **Do NOT** change the theme when arrow-key focus moves — theme changes only on explicit activation (Enter, Space, click)
-- **Do NOT** use hover or focus previews
-- **Do NOT** automatically select when a user merely tabs to an option
-- **Language consideration**: This guidance assumes left-to-right (LTR) languages
-
-#### HTML structure
-
-```html
-<header>
-  <nav aria-label="Main navigation">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/contact">Contact</a>
-    <!-- Navigation items come first in DOM order -->
-  </nav>
-
-  <!-- Theme control comes after navigation for proper tab order -->
-  <div role="group" aria-label="Colour theme" id="theme-selector">
-    <button type="button" class="theme-mode-btn" aria-pressed="false" data-theme-value="system">
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
-        <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4h18v12H3zM8 20h8"/>
-      </svg>
-      <span>System</span>
-    </button>
-
-    <button type="button" class="theme-mode-btn" aria-pressed="false" data-theme-value="light">
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
-        <circle cx="12" cy="12" r="5" fill="currentColor"/>
-      </svg>
-      <span>Light</span>
-    </button>
-
-    <button type="button" class="theme-mode-btn" aria-pressed="true" data-theme-value="dark">
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
-        <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-      </svg>
-      <span>Dark</span>
-    </button>
-  </div>
-</header>
-```
-
-#### CSS for header layout and positioning
-
-```css
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-#theme-mode-group {
-  margin-left: auto;
-  display: inline-flex;
-  gap: 0.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0.25rem;
-}
-
-.theme-mode-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: 0.375rem;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.theme-mode-btn:hover {
-  background-color: var(--color-hover);
-  border-color: var(--color-text);
-}
-
-/* Focus indicator — visible outline, not box-shadow */
-.theme-mode-btn:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-/* Selected state — icon gets vibrant colour, text stays readable */
-.theme-mode-btn[aria-pressed="true"] {
-  border-color: var(--color-link);
-  font-weight: 600;
-  background: var(--color-background);
-  color: var(--color-text);
-}
-
-/* Sun → warm amber */
-.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] svg {
-  color: #d97706;
-}
-
-/* Moon → cool blue */
-.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] svg {
-  color: #2563eb;
-}
-
-/* Monitor → green */
-.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] svg {
-  color: #059669;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  header {
-    padding: 0.75rem;
-  }
-  
-  nav {
-    gap: 1rem;
-  }
-}
-```
-
-#### JavaScript implementation
-
-```javascript
-const STORAGE_KEY = 'theme-mode';
-const VALID_MODES = ['system', 'light', 'dark'];
-const buttons = document.querySelectorAll('.theme-mode-btn');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-let currentMode = 'system';
-
-function getStoredMode() {
-  try {
-    var stored = localStorage.getItem(STORAGE_KEY);
-    return VALID_MODES.indexOf(stored) !== -1 ? stored : 'system';
-  } catch (e) {
-    return 'system';
-  }
-}
-
-function setStoredMode(mode) {
-  try {
-    localStorage.setItem(STORAGE_KEY, mode);
-  } catch (e) {
-    /* Storage unavailable; preference still works for current session. */
-  }
-}
-
-function resolveTheme(mode) {
-  if (mode === 'system') {
-    return prefersDark.matches ? 'dark' : 'light';
-  }
-  return mode;
-}
-
-function updateButtons(activeMode) {
-  for (var i = 0; i < buttons.length; i++) {
-    var btn = buttons[i];
-    var isActive = btn.getAttribute('data-theme-value') === activeMode;
-    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-  }
-}
-
-function applyMode(mode) {
-  currentMode = mode;
-  var resolved = resolveTheme(mode);
-  document.documentElement.setAttribute('data-theme-mode', mode);
-  document.documentElement.setAttribute('data-theme', resolved);
-  updateButtons(mode);
-}
-
-function handleActivation(event) {
-  var btn = event.currentTarget;
-  var mode = btn.getAttribute('data-theme-value');
-  setStoredMode(mode);
-  applyMode(mode);
-}
-
-/* Attach click handlers — no keyboard handlers needed */
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', handleActivation);
-}
-
-/* Listen for OS preference changes */
-prefersDark.addEventListener('change', function() {
-  if (currentMode === 'system') {
-    applyMode('system');
-  }
-});
-
-/* Initialize */
-applyMode(getStoredMode());
-```
-
-#### Requirements
-
-- Provide three explicit options: `system`, `light`, and `dark` visible simultaneously
-- Use native `<button type="button">` elements with `aria-pressed` for selected state
-- Do NOT use custom `role="radio"` elements or radiogroup semantics
-- Do NOT use a single cycling button or two-state toggle
-- Theme changes only on explicit activation (Enter, Space, click) — focus alone does NOT change the theme
-- Persist selected mode across sessions in localStorage (key: `theme-mode`) when storage is available
-- Wrap localStorage reads/writes in `try/catch` so controls still work when persistence is blocked
-- Validate stored values — fall back to `system` for invalid values
-- When `system` is selected, resolve visual theme from `prefers-color-scheme`
-- While in `system` mode, update automatically if OS/browser preference changes
-- Ensure the control appears in keyboard tab order **after** navigation items
-- Position control in top-right corner of header (not fixed/sticky)
-- Use visible text labels (System, Light, Dark) — icons supplement but do not replace labels
+Use `contrast-color()` only as progressive enhancement. It currently chooses a contrasting light or dark foreground; it does not replace component-level testing.
 
 ---
 
-## 4. Complex Scripts and Diacritics (e.g., Hebrew, Arabic)
+## 4. Compact System/Light/Dark selector
 
-When supporting complex scripts with vocalization and cantillation marks (such as Hebrew Nikkud and Ta'amei Hamikra, or Arabic Tashkeel), dark mode presents unique accessibility challenges. These marks are not separate characters side-by-side; they are combining Unicode characters (e.g., range `U+0591` to `U+05C7` for Hebrew) that stack vertically. Standard frontend implementations often break when rendering these vertically stacked diacritics in dark mode.
+This example uses a compact trigger in the header and a native radio group in an overlaid panel. Native radios provide the expected single-choice semantics and arrow-key behaviour.
 
-### CSS Validation for Complex Scripts
+### Interaction requirements
 
-1. **Irradiation / Glow Control:** Pure white text on a pure black background causes a bleeding effect ("halation") that blurs tiny dots. 
-   * Use an off-white text color (e.g., `#f5f5f5`) on a dark charcoal/gray background (e.g., `#121212`).
-   * Explicitly add font smoothing for diacritic legibility across browsers:
-     ```css
-     .complex-script-container {
-       -webkit-font-smoothing: antialiased;
-       -moz-osx-font-smoothing: grayscale;
-     }
-     ```
-2. **Line-Height & Clipping:** Diacritics stack above and below the baseline. Audit your CSS to ensure `line-height` is set to at least `1.8` or `2.0`. **Never** apply `overflow: hidden` to the text container, otherwise top/bottom marks will be clipped.
-3. **Contrast & Color Inheritance:** Ensure text color changes apply uniformly. If pseudo-elements or specific spans colorize diacritics, they must invert to a high-contrast color.
-4. **RTL (Right-to-Left) Preservation:** Ensure dark mode state toggles do not accidentally strip `dir="rtl"` attributes or break bidirectional text isolation (`<bdi>`).
-5. **Font-Weight "Thinning":** Light text on a dark background naturally looks bolder. Avoid overly bold font-weights in dark mode, as diacritics can merge into the base letters and become unreadable blobs.
+- The trigger has a minimum 44 by 44 CSS-pixel target.
+- Its accessible name includes the selected mode, for example, “Theme: System. Choose light or dark mode.”
+- Click, Enter, or Space opens the selector.
+- Opening moves focus to the selected radio button.
+- Up/Left and Down/Right move through the radio choices using native browser behaviour.
+- Changing a radio must not immediately close the panel; otherwise continued arrow-key selection is interrupted.
+- Escape closes the panel and restores focus to the trigger.
+- Clicking outside or moving focus outside the complete component closes the panel.
+- Hover or focus may expose a tooltip, but must not open the selector.
+- The panel overlays content rather than increasing the header height.
+- The selected mode persists when storage is available.
+- System mode continues to respond to changes in `prefers-color-scheme`.
 
-### Visual Regression Testing for Diacritics
+### SVG icon
 
-Standard DOM-based text checks cannot catch visual rendering failures of combining characters. Automated tests (e.g., using Playwright or Cypress) must use strict visual regression testing. 
+Inline the icon in the trigger when it must inherit the button's colour. This avoids an external `<use>` reference, works when the site is tested from a local file, and adapts to light, dark, and forced-colours modes through `currentColor`.
 
-**Example Prompt for LLM Test Generation:**
+The SVG is decorative because the button supplies the accessible name. Do not give the inline SVG a competing `<title>` or description.
 
-Act as a QA Automation Engineer. Write a visual regression test script using [Playwright/Cypress] that does the following:
-1. Loads a page containing complex Hebrew text with both Nikkud and Ta'amei Hamikra (e.g., 'בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים').
-2. Captures a baseline screenshot in Light Mode.
-3. Simulates/toggles Dark Mode (via data-theme attribute or prefers-color-scheme media query override).
-4. Waits for the font (e.g., SBL Hebrew or Tiro Hebrew) to fully render.
-5. Captures a Dark Mode screenshot and performs a pixel-by-pixel visual diff with a strict threshold (0.01) to ensure the tiny diacritic dots do not blur, disappear, or shift position. Ensure the test environment sets `ignoreFontAntialiasing: true` or runs in a standardized Docker container to prevent false positives across OS runners.
+### HTML
 
-### Manual Validation Checklist
+```html
+<div class="theme-control">
+  <button
+    class="theme-trigger"
+    id="theme-trigger"
+    type="button"
+    aria-expanded="false"
+    aria-controls="theme-panel"
+  >
+    <!-- Decorative icon: the adjacent visually hidden text names the button. -->
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <!-- Left half: sun -->
+      <path fill="currentColor" d="M12 5a7 7 0 0 0 0 14Z"/>
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="1.8"
+      >
+        <path d="M12 1.5V3M4.6 4.6l1.1 1.1M1.5 12H3M4.6 19.4l1.1-1.1M12 21v1.5"/>
+      </g>
 
-When reviewing screenshots or rendered UI components—or when passing images to Vision AI models for auditing—use this checklist:
+      <!-- Right half: crescent moon -->
+      <path
+        fill="currentColor"
+        d="M12 5a7 7 0 0 1 0 14c2.9-1.25 4.75-3.85 4.75-7S14.9 6.25 12 5"
+      />
+    </svg>
+    <span class="visually-hidden" id="theme-trigger-label">
+      Theme: System. Choose light or dark mode.
+    </span>
+  </button>
 
-* **Visibility:** Are the tiny dots inside the letters (e.g., the Dagesh dot in ּ) distinct and readable against the dark background?
-* **Separation:** Are the vertical and horizontal lines below the letters blending together into a single blob, or do they remain separate lines?
-* **Truncation:** Is the very highest mark (the cantillation accent above the letter) fully visible, or is it cut off by the top edge of the line block?
-* **Weight/Blobbing:** Does the font weight feel too heavy in dark mode? Ensure bold text hasn't turned the diacritics into unreadable blobs.
+  <span class="theme-tooltip" role="tooltip">Choose light or dark mode</span>
 
-## 5. Forced-Colors Mode Support
+  <div class="theme-panel" id="theme-panel" hidden>
+    <fieldset>
+      <legend>Light or dark mode</legend>
 
-Forced-colors mode (Windows High Contrast) overrides author styles. Ensure content remains accessible:
+      <label class="theme-option">
+        <input type="radio" name="theme" value="system">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="18" height="13" rx="1.5"/>
+          <path d="M8 21h8M12 17v4"/>
+        </svg>
+        <span><strong>System</strong><small>Follow your device setting</small></span>
+      </label>
 
-### Detect forced-colors mode
+      <label class="theme-option">
+        <input type="radio" name="theme" value="light">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>
+        </svg>
+        <span><strong>Light</strong><small>Always use the light theme</small></span>
+      </label>
+
+      <label class="theme-option">
+        <input type="radio" name="theme" value="dark">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/>
+        </svg>
+        <span><strong>Dark</strong><small>Always use the dark theme</small></span>
+      </label>
+    </fieldset>
+  </div>
+</div>
+```
+
+### CSS
+
+```css
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.theme-control {
+  position: relative;
+}
+
+.theme-trigger {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--background);
+  cursor: pointer;
+}
+
+.theme-trigger:focus-visible,
+.theme-option input:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.theme-tooltip {
+  position: absolute;
+  z-index: 20;
+  inset-block-start: calc(100% + 0.5rem);
+  inset-inline-end: 0;
+  width: max-content;
+  max-width: 14rem;
+  padding: 0.35rem 0.55rem;
+  color: var(--background);
+  background: var(--text);
+  border-radius: 0.25rem;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.theme-trigger:hover + .theme-tooltip,
+.theme-trigger:focus-visible + .theme-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.theme-trigger[aria-expanded="true"] + .theme-tooltip {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.theme-panel {
+  position: absolute;
+  z-index: 30;
+  inset-block-start: calc(100% + 0.6rem);
+  inset-inline-end: 0;
+  width: min(19rem, calc(100vw - 2rem));
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  color: var(--text);
+  background: var(--background);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 25%);
+}
+
+.theme-panel[hidden] {
+  display: none;
+}
+
+.theme-panel fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.theme-option {
+  display: grid;
+  grid-template-columns: 1.35rem 1.5rem 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.55rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+
+.theme-option:hover {
+  background: var(--surface);
+}
+
+.theme-option input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.2rem 0 0;
+}
+
+.theme-option svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-block-start: 0.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-option strong,
+.theme-option small {
+  display: block;
+}
+
+@media (forced-colors: active) {
+  .theme-trigger,
+  .theme-panel {
+    border: 1px solid ButtonText;
+  }
+
+  .theme-trigger:focus-visible,
+  .theme-option input:focus-visible {
+    outline-color: Highlight;
+  }
+}
+```
+
+Do not place the component inside an ancestor that clips it with `overflow: hidden`. Test its position at narrow widths, 200% zoom, and 400% zoom.
+
+### JavaScript
+
+```javascript
+(function () {
+  var STORAGE_KEY = 'theme-mode';
+  var VALID_MODES = ['system', 'light', 'dark'];
+  var root = document.documentElement;
+  var control = document.querySelector('.theme-control');
+  var trigger = document.getElementById('theme-trigger');
+  var triggerLabel = document.getElementById('theme-trigger-label');
+  var panel = document.getElementById('theme-panel');
+  var radios = Array.from(document.querySelectorAll('input[name="theme"]'));
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var selectedMode = getStoredMode();
+
+  function getStoredMode() {
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      return VALID_MODES.includes(stored) ? stored : 'system';
+    } catch (error) {
+      return 'system';
+    }
+  }
+
+  function storeMode(mode) {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch (error) {
+      /* The current-session preference still works without storage. */
+    }
+  }
+
+  function resolveTheme(mode) {
+    if (mode === 'system') {
+      return prefersDark.matches ? 'dark' : 'light';
+    }
+    return mode;
+  }
+
+  function modeLabel(mode) {
+    return mode.charAt(0).toUpperCase() + mode.slice(1);
+  }
+
+  function applyMode(mode) {
+    selectedMode = mode;
+    root.dataset.themeMode = mode;
+    root.dataset.theme = resolveTheme(mode);
+    root.style.colorScheme = resolveTheme(mode);
+
+    radios.forEach(function (radio) {
+      radio.checked = radio.value === mode;
+    });
+
+    triggerLabel.textContent =
+      'Theme: ' + modeLabel(mode) + '. Choose light or dark mode.';
+  }
+
+  function openPanel() {
+    panel.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    var selectedRadio = radios.find(function (radio) {
+      return radio.checked;
+    });
+    if (selectedRadio) selectedRadio.focus();
+  }
+
+  function closePanel(restoreFocus) {
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger.focus();
+  }
+
+  trigger.addEventListener('click', function () {
+    if (panel.hidden) {
+      openPanel();
+    } else {
+      closePanel(true);
+    }
+  });
+
+  radios.forEach(function (radio) {
+    radio.addEventListener('change', function (event) {
+      storeMode(event.target.value);
+      applyMode(event.target.value);
+    });
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && !panel.hidden) {
+      event.preventDefault();
+      closePanel(true);
+    }
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!panel.hidden && !control.contains(event.target)) {
+      closePanel(false);
+    }
+  });
+
+  control.addEventListener('focusout', function (event) {
+    if (!panel.hidden && !control.contains(event.relatedTarget)) {
+      closePanel(false);
+    }
+  });
+
+  prefersDark.addEventListener('change', function () {
+    if (selectedMode === 'system') applyMode('system');
+  });
+
+  applyMode(selectedMode);
+}());
+```
+
+### Prevent a first-paint theme flash
+
+When manual overrides are supported, apply the stored mode in a small script in the document head before visible content is rendered. Keep the script synchronized with the main component implementation.
+
+```html
+<script>
+  (function () {
+    var mode = 'system';
+    try {
+      var stored = localStorage.getItem('theme-mode');
+      if (stored === 'light' || stored === 'dark') mode = stored;
+    } catch (error) {}
+
+    var resolved = mode === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : mode;
+
+    document.documentElement.dataset.themeMode = mode;
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.style.colorScheme = resolved;
+  }());
+</script>
+```
+
+### Applying this pattern to a static or Jekyll site
+
+Keep the component in the site's shared layout so every page uses the same markup, state, and keyboard behaviour.
+
+1. In the shared layout, replace the existing System/Light/Dark button group with the `.theme-control` HTML. Keep it after navigation and search in the DOM order.
+2. Put the component styles in the site's existing shared stylesheet. Reuse the site's semantic colour tokens instead of introducing duplicate values.
+3. Put the anti-flash script in `<head>` before visible content is rendered.
+4. Put the interaction script near the end of `<body>` or in the site's existing JavaScript bundle.
+5. Keep the storage key consistent across both scripts. This example uses `theme-mode`.
+6. Remove the old selector markup, styling, and event handlers after the replacement has passed testing. Do not leave two controls writing to the same preference.
+
+For a Jekyll site, the likely integration points are:
+
+```text
+_layouts/default.html   Shared control markup and anti-flash script
+assets/css/site.css     Theme tokens and component styles
+assets/js/theme.js      Selector behaviour, if scripts are kept separately
+```
+
+The inline trigger SVG requires no image request or asset-path handling. Keep a standalone SVG only when the same artwork is needed elsewhere.
+
+---
+
+## 5. Forced-colours support
+
+`forced-colors: active` means the browser is enforcing a limited user-selected palette. Windows High Contrast is an important example, but “forced colours” and “high contrast” are not interchangeable terms.
+
+Allow the browser to substitute system colours. Do not build a separate forced-colours theme. Add targeted corrections only where substitution removes a necessary boundary or state.
 
 ```css
 @media (forced-colors: active) {
-  /* Maintain semantic boundaries */
-  .card {
+  /* A shadow may disappear, so preserve the component boundary. */
+  .card,
+  dialog,
+  .theme-panel {
     border: 1px solid CanvasText;
   }
-  
-  /* Preserve critical visual indicators */
-  .focus-indicator {
+
+  /* Preserve a selected state without relying on author colours. */
+  [aria-current="page"],
+  [aria-pressed="true"] {
     outline: 2px solid Highlight;
-  }
-  
-  /* Use system colors for UI elements */
-  button {
-    color: ButtonText;
-    background-color: ButtonFace;
   }
 }
 ```
 
-### System color keywords in forced-colors mode
-
-Use semantic system colors:
-
-- `Canvas` - application background
-- `CanvasText` - text on Canvas background
-- `LinkText` - hyperlinks
-- `ButtonFace` - button background
-- `ButtonText` - button text
-- `Highlight` - selected/highlighted background
-- `HighlightText` - text on Highlight background
-
 Requirements:
 
-- Do not use `transparent` for borders needed for comprehension
-- Preserve icons and graphics that convey meaning
-- Test with Windows High Contrast themes
-- Ensure focus indicators remain visible
+- Use system colours such as `Canvas`, `CanvasText`, `LinkText`, `ButtonFace`, `ButtonText`, `Highlight`, and `HighlightText` when targeted adjustments are needed.
+- Do not use transparent borders when the border is necessary for comprehension.
+- Do not rely exclusively on box-shadow or background colour for boundaries and states.
+- Avoid `forced-color-adjust: none` unless retaining author colours is essential and separately tested.
+- Verify icons, focus indicators, selected states, form controls, and data visualizations.
 
 ---
 
-## 6. Color Independence
+## 6. Increased and reduced contrast preferences
 
-Information must not be conveyed by color alone:
+`prefers-contrast` is separate from `prefers-color-scheme`. A user may request more or less contrast while using either a light or dark theme.
 
-- Use icons, labels, or patterns in addition to color
-- Provide text labels for status indicators
-- Use multiple visual cues for interactive states
+```css
+@media (prefers-contrast: more) {
+  :root {
+    --border-width: 2px;
+  }
 
-### Preferred pattern for status indicators
+  .secondary-text {
+    color: var(--text);
+  }
+}
 
-```html
-<!-- Good: Icon + text + color -->
-<div class="status status-success">
-  <svg role="img" aria-label="Success" class="icon-checkmark">
-    <use href="#icon-checkmark"></use>
-  </svg>
-  <span>Success</span>
-</div>
-
-<div class="status status-error">
-  <svg role="img" aria-label="Error" class="icon-warning">
-    <use href="#icon-warning"></use>
-  </svg>
-  <span>Error</span>
-</div>
+@media (prefers-contrast: less) {
+  .decorative-divider {
+    opacity: 0.65;
+  }
+}
 ```
 
-Avoid:
-
-```html
-<!-- Bad: Color only -->
-<div class="status-success">Item saved</div>
-<div class="status-error">Item failed</div>
-```
+Do not automatically change between light and dark mode because a contrast preference is present. Do not reduce required text, component, or focus contrast in response to `prefers-contrast: less`.
 
 ---
 
-## 7. Images and Graphics
+## 7. Focus and interactive states
 
-Images and graphics must work in both modes:
+Focus indicators must remain clearly visible in every supported theme and preference mode.
 
-### SVG icons and graphics
+```css
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
 
-Use `currentColor` to inherit theme colors:
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
+```
 
-```svg
-<svg viewBox="0 0 24 24" class="icon">
-  <path fill="currentColor" d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+Evaluate:
+
+- Contrast between the focus indicator and adjacent colours
+- Contrast or other visible change between focused and unfocused states
+- Indicator thickness and area
+- Whether sticky headers, dialogs, or other content obscure the indicator
+- Visibility at 200% and 400% zoom
+- Visibility in forced-colours mode
+
+Also test hover, active, selected, checked, expanded, current, disabled, validation-error, autofill, and visited-link states. A palette that passes for static text can still fail in its interaction states.
+
+---
+
+## 8. Colour independence
+
+Do not convey information using colour alone.
+
+```html
+<p class="status status-error">
+  <svg aria-hidden="true" focusable="false"><!-- warning icon --></svg>
+  <strong>Error:</strong> Enter an email address.
+</p>
+```
+
+Use text, icons, patterns, borders, shape, or position as supplementary cues. Ensure each cue remains available in light, dark, and forced-colours modes.
+
+---
+
+## 9. Images, SVGs, and embedded content
+
+### SVG icons
+
+Inline SVG icons can use `currentColor`:
+
+```html
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <path fill="currentColor" d="M12 2 2 7v10c0 5.55 3.84 10.74 10 12 6.16-1.26 10-6.45 10-12V7Z"/>
 </svg>
 ```
 
-### Images with transparency
+If an icon conveys information that is not already present as text, give it an appropriate accessible name. Decorative icons must not create redundant announcements.
 
-Ensure PNG/WebP images with transparency remain perceivable:
+### Transparent images and logos
+
+Transparent images can disappear against an unexpected background. Provide a tested backing surface, outline, or theme-specific asset.
 
 ```css
-.logo-with-transparency {
-  /* Provide subtle background to ensure visibility */
-  background-color: var(--color-logo-background);
+.logo {
   padding: 0.5rem;
-}
-
-@supports (color: light-dark(white, black)) {
-  .logo-with-transparency {
-    background-color: light-dark(var(--color-logo-background-light), var(--color-logo-background-dark));
-  }
-}
-
-@supports not (color: light-dark(white, black)) {
-  @media (prefers-color-scheme: dark) {
-    .logo-with-transparency {
-      background-color: var(--color-logo-background-dark);
-    }
-  }
+  background: var(--logo-background);
+  border: 1px solid var(--border);
 }
 ```
 
-### Provide alternative images when necessary
+### Theme-specific images
 
 ```html
 <picture>
-  <source srcset="logo-dark.svg" media="(prefers-color-scheme: dark)">
-  <img src="logo-light.svg" alt="Company logo">
+  <source srcset="diagram-dark.svg" media="(prefers-color-scheme: dark)">
+  <img src="diagram-light.svg" alt="Description of the diagram">
 </picture>
 ```
 
+If a manual override can differ from the system preference, `prefers-color-scheme` alone is insufficient for selecting the asset. Update the asset from the resolved application theme or design one asset that works in both modes.
+
+Test charts, syntax highlighting, maps, screenshots, iframes, video players, canvas content, and third-party widgets separately.
+
 ---
 
-## 8. Focus and Interactive States
+## 10. Complex scripts and diacritics
 
-Focus indicators must be visible in all color modes:
+Light and dark themes must not clip or obscure combining marks used in scripts such as Arabic and Hebrew.
 
-### Requirements
+- Use fonts with verified support for the required script and marks.
+- Avoid fixed line heights that clip marks above or below the text.
+- Avoid `overflow: hidden` on text containers unless clipping has been explicitly ruled out.
+- Preserve `dir`, `lang`, `<bdi>`, and bidirectional isolation when applying a theme.
+- Test real content at multiple font sizes and zoom levels in both themes.
+- Use visual regression tests only in a controlled font and rendering environment; do not assume pixel diffs can determine whether text is readable.
 
-- Minimum 3:1 contrast against adjacent colors
-- Clearly distinguishable from unfocused state
-- Consistent thickness (at least 2px)
-- Not removed or reduced by dark mode
+Do not prescribe font smoothing or a universal line-height value. Rendering varies by font, platform, browser, script, and content.
 
-### Preferred pattern
+---
+
+## 11. Motion and transitions
+
+Theme changes do not require animation. Immediate changes avoid unnecessary work and are the safest default.
+
+If transitions provide a clear benefit, apply them only to major surfaces and controls. Do not attach transitions to the universal `*` selector.
 
 ```css
-:focus {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
+@media (prefers-reduced-motion: no-preference) {
+  body,
+  .site-header,
+  .theme-selector {
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
 }
 ```
 
-Test:
-
-- Tab through interactive elements in both modes
-- Verify focus indicator meets 3:1 contrast
-- Check keyboard navigation works identically in both modes
-- Verify focus styles still read clearly in forced-colors mode
+- Do not require animation to understand the change.
+- Keep optional transitions brief and targeted.
+- Do not animate theme changes when reduced motion is requested.
+- Do not automatically animate changes based on time of day.
 
 ---
 
-## 9. Motion and Transitions
+## 12. Data tables and zebra striping
 
-Respect motion preferences when switching themes:
+Zebra striping can help some users track rows, but it is supplementary. Do not rely on alternating background colours alone to convey grouping or meaning.
 
 ```css
-/* Default: smooth transitions */
-* {
-  transition: background-color 0.2s ease, color 0.2s ease;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  background: var(--background);
 }
 
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none;
+tbody tr:nth-child(even) {
+  background: var(--table-row-alternate);
+}
+
+th,
+td {
+  border-block-end: 1px solid var(--border);
+}
+
+@media (forced-colors: active) {
+  tbody tr {
+    border-block-end: 1px solid CanvasText;
   }
 }
 ```
 
 Requirements:
 
-- Theme transitions should be subtle and brief
-- Respect `prefers-reduced-motion` setting
-- Avoid jarring or distracting visual effects
-- Do not auto-animate theme changes based on time of day
+- Define row colours as theme tokens and validate them in every supported mode.
+- Ensure text and interactive elements meet their contrast requirements on every row background.
+- Retain row boundaries or another supplementary tracking cue when background colours disappear.
+- Test selected, hovered, focused, and expanded rows.
+- Do not prescribe an arbitrary percentage difference between stripe colours. Perceivability depends on the actual colours, display, context, and user.
 
 ---
 
-## 10. Testing Expectations
-
-Minimum checks for color mode implementation:
+## 13. Testing expectations
 
 ### Manual testing
 
-- [ ] Navigate site in browser light mode - verify all contrast passes WCAG AA
-- [ ] Switch to browser dark mode - verify all contrast passes WCAG AA
-- [ ] Enable Windows High Contrast - verify content remains perceivable
-- [ ] Verify forced-colors mode preserves meaning and focus visibility
-- [ ] Test keyboard navigation in both light and dark modes
-- [ ] Verify focus indicators are visible in both modes
-- [ ] Check that all interactive states (hover, active, disabled) work in both modes
-- [ ] Test with screen reader - verify no mode-specific issues
-- [ ] Verify color-blind simulation tools show sufficient non-color cues
-- [ ] Verify `light-dark()` resolves to the intended token pair in supported browsers
-- [ ] Verify `contrast-color()` chooses a legible foreground in supported browsers
-- [ ] Verify browser support fallbacks work where `light-dark()` or `contrast-color()` are unavailable
-- [ ] For data tables with zebra striping: verify row background colors differ by approximately 5–10% luminance from the page background (not near-white stripes on a dark page)
-- [ ] Verify text on every zebra-stripe row background meets 4.5:1 contrast
+- [ ] Follow the system light preference.
+- [ ] Follow the system dark preference.
+- [ ] If provided, select System, Light, and Dark manually.
+- [ ] Reload the page and verify that an explicit selection persists.
+- [ ] In System mode, change the operating-system preference while the page is open.
+- [ ] Check for an incorrect flash during initial rendering.
+- [ ] Use the complete selector with mouse, touch, keyboard, and a screen reader.
+- [ ] Open the selector with Enter and Space.
+- [ ] Move among radio choices with all expected arrow keys.
+- [ ] Close with Escape and confirm that focus returns to the trigger.
+- [ ] Tab away and confirm that the panel closes without trapping focus.
+- [ ] Test at 200% and 400% zoom and at a 320 CSS-pixel viewport.
+- [ ] Test text, controls, focus, hover, selected, disabled, error, and visited states.
+- [ ] Enable forced colours and verify meaning, boundaries, icons, and focus.
+- [ ] Test `prefers-contrast: more` and `prefers-contrast: less` where supported.
+- [ ] Verify images, charts, code highlighting, transparent assets, and embedded content.
+- [ ] Verify that colour is not the only cue.
+- [ ] Test representative complex scripts and combining marks where applicable.
 
 ### Automated testing
 
-- Run contrast checker on light mode colors
-- Run contrast checker on dark mode colors
-- Verify CSS uses semantic color tokens, not hardcoded values
-- Check for `color-scheme` declaration on `:root`
-- Check for `light-dark()` token usage where supported
-- Check for `contrast-color()` usage behind `@supports`
-- Check for `prefers-color-scheme` media query implementation in fallback or asset-selection code
-- Validate forced-colors mode fallbacks exist
+- Run automated contrast checks in both resolved themes.
+- Test the selector’s accessible name, expanded state, checked radio, and focus movement.
+- Test persistence with valid, invalid, and unavailable storage.
+- Test changes to the system preference while System is selected.
+- Run accessibility tests in forced-colours emulation where the testing platform supports it.
+- Validate authored CSS and CSS examples embedded in Markdown.
+- Use visual regression tests for unexpected theme-specific rendering changes, not as a substitute for accessibility evaluation.
 
-### Browser and OS testing
+### CSS validation in continuous integration
 
-Test with:
+Use Stylelint for authored stylesheets and `postcss-markdown` for fenced CSS examples in Markdown.
 
-- Chrome/Edge with system dark mode
-- Firefox with system dark mode
-- Safari with system dark mode
-- Windows High Contrast themes (forced-colors)
-- High contrast settings on macOS and browser-level contrast modes
-- Forced-colors mode with form controls, scrollbars, and native UI surfaces
-- Browser support for `color-scheme`, `light-dark()`, and `contrast-color()`
-- Browser zoom at 200% in both modes
-
----
-
-## 11. Definition of Done
-
-A color mode implementation is complete when:
-
-- All text and UI elements meet WCAG 2.2 AA contrast in both light and dark modes
-- System color preference is detected and respected by default
-- `color-scheme` is declared on the root element
-- `light-dark()` is used for theme tokens where supported
-- `contrast-color()` is used behind progressive enhancement guards where appropriate
-- Forced-colors mode maintains content comprehension
-- Information is not conveyed by color alone
-- Focus indicators are visible and meet contrast requirements in all modes
-- User theme preference persists across sessions (if manual toggle provided)
-- No accessibility regressions when switching between modes
-- Manual and automated tests pass in both modes
-- Data table zebra stripes use subtle relative differences (5–10% from the page background) rather than hard-coded absolute colors
-
----
-
-## 12. Data Tables and Zebra Striping
-
-Zebra striping (alternating row background colors) helps users track rows across wide tables. However, many implementations apply high-contrast absolute colors that work acceptably in light mode but become visually extreme in dark mode.
-
-### The problem with absolute zebra-stripe colors
-
-A common implementation might use `#ffffff` and `#f0f0f0` for light mode row stripes without updating the values for dark mode. When a dark page has a background of `#1a1a1a`, those same light stripe values create a jarring luminance jump that makes tables harder — not easier — to read, and can trigger discomfort for photosensitive users.
-
-**Avoid:**
-
-```css
-/* Bad: absolute colors that ignore the current page background */
-tbody tr:nth-child(even) { background-color: #ffffff; }
-tbody tr:nth-child(odd)  { background-color: #e0e0e0; }
-```
-
-In dark mode, these near-white stripes sit on a near-black page and produce excessive contrast that is tiring to scan.
-
-### Preferred pattern: subtle relative differences via CSS custom properties
-
-Keep stripe colors close to the page background — roughly 5% and 10% away — and update all three values together as part of your theme tokens:
-
-```css
-:root {
-  color-scheme: light dark;
-
-  --color-background:     light-dark(#ffffff, #1a1a1a);
-  --color-table-row-even: light-dark(#f2f2f2, #272727);
-  --color-table-row-odd:  light-dark(#e5e5e5, #343434);
-  --color-text:           light-dark(#1a1a1a, #e8e8e8);
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  background-color: var(--color-background);
-  color: var(--color-text);
-}
-
-tbody tr:nth-child(even) { background-color: var(--color-table-row-even); }
-tbody tr:nth-child(odd)  { background-color: var(--color-table-row-odd);  }
-```
-
-### Alternative: `color-mix()` for purely relative stripes
-
-The CSS `color-mix()` function can compute stripe colors relative to the background at runtime, removing the need to maintain separate hex values per theme. Browser support is strong as of 2024.
-
-```css
-:root {
-  --color-background: #ffffff;
-  --color-text:       #1a1a1a;
-
-  /* Mix background with black (light mode) or white (dark mode) */
-  --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, black);
-  --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, black);
-}
-
-@supports not (color: light-dark(white, black)) {
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-background: #1a1a1a;
-      --color-text: #e8e8e8;
-
-      --color-table-row-even: color-mix(in srgb, var(--color-background) 95%, white);
-      --color-table-row-odd:  color-mix(in srgb, var(--color-background) 90%, white);
-    }
+```json
+{
+  "scripts": {
+    "lint:css": "stylelint 'assets/css/**/*.css'",
+    "lint:css-docs": "stylelint '**/*.md' --custom-syntax postcss-markdown"
+  },
+  "devDependencies": {
+    "postcss-markdown": "latest",
+    "stylelint": "latest",
+    "stylelint-config-standard": "latest"
   }
 }
 ```
 
-This approach automatically adapts if the base background value changes, reducing maintenance burden.
+Run both commands in a dedicated pull-request lint job, alongside Markdown and link checks. Pin dependency versions through the lock file and review automated dependency updates before merging.
 
-### Forced-colors mode
+---
 
-In forced-colors mode the browser replaces all author-defined background colors with system palette values. Table rows will lose their stripe backgrounds, which is expected and acceptable behavior. Ensure the table remains comprehensible without the stripes:
+## 14. Definition of done
 
-- Add a visible border between rows as a supplementary visual separator
-- Do not rely solely on alternating background color to convey row grouping or meaning
+An implementation is complete when:
 
-```css
-@media (forced-colors: active) {
-  tbody tr {
-    border-bottom: 1px solid CanvasText;
-  }
-}
-```
-
-### Requirements
-
-- Zebra stripe colors must be defined relative to the page background, not as absolute values
-- Text must meet 4.5:1 contrast against **both** stripe row backgrounds in all color modes
-- The luminance difference between adjacent stripes should be perceivable but not jarring — a 5–10% step from the page background is the recommended range
-- Stripe colors must be defined as CSS custom properties and updated together with other theme tokens
-- Tables must remain scannable when stripe colors are absent (forced-colors mode)
+- All supported themes meet applicable WCAG 2.2 AA requirements.
+- The system preference is respected by default.
+- Manual selection, if present, provides System, Light, and Dark.
+- The manual selector is operable with keyboard, touch, pointer, and assistive technology.
+- Arrow-key navigation, Escape, focus departure, and focus restoration work as documented.
+- The active mode and resolved theme remain distinguishable in the implementation.
+- Browser-provided controls follow the resolved theme through `color-scheme`.
+- Forced-colours and contrast preferences preserve content and functionality.
+- Focus indicators and all component states remain visible.
+- Information is not conveyed by colour alone.
+- Images, graphics, tables, and embedded content work in every supported mode.
+- Optional transitions are scoped and respect reduced-motion preferences.
+- Manual, automated, CSS, and browser tests pass.
 
 ---
 
 ## References
 
-### W3C Specifications
+### W3C specifications and guidance
 
-- [WCAG 2.2 Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
-- [WCAG 2.2 Understanding 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [WCAG 2.2 Understanding 1.4.3: Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [WCAG 2.2 Understanding 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [WCAG 2.2 Understanding 2.4.7: Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [WCAG 2.2 Understanding 2.4.11: Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+- [WCAG 2.2 Understanding 2.4.13: Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)
+- [WAI-ARIA Authoring Practices: Radio Group Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/)
 - [CSS Media Queries Level 5: prefers-color-scheme](https://www.w3.org/TR/mediaqueries-5/#prefers-color-scheme)
-- [CSS Media Queries Level 5: forced-colors](https://www.w3.org/TR/mediaqueries-5/#forced-colors)
-- [CSS Color Module Level 4: System Colors](https://www.w3.org/TR/css-color-4/#css-system-colors)
+- [CSS Media Queries Level 5: prefers-contrast](https://www.w3.org/TR/mediaqueries-5/#prefers-contrast)
+- [CSS Color Adjustment: forced colours](https://www.w3.org/TR/css-color-adjust-1/#forced)
 
-### Machine-Readable Standards
+### Additional technical references
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
-
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
-- [CSS Specifications Index (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/css-specifications-index.yaml) - CSS specs including media queries and color modules
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/CSS/HTML standards
-
-### Related Guides
-
-- [User Personalization and Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) - Comprehensive guide on implementing user preference controls, CSS media queries for accessibility, and avoiding accessibility overlays
-
-### Additional Reading
-
-- [MDN: light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
-- [MDN: contrast-color()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color)
-- [Smashing Magazine: Building Self-Correcting Color Systems With contrast-color()](https://www.smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/)
-- [CSS-Tricks: Exploring the CSS contrast-color() Function, a Second Time](https://css-tricks.com/exploring-the-css-contrast-color-function-a-second-time/)
-- [Piccalilli: Some CSS-only contrast options until contrast-color() is baseline widely available](https://piccalil.li/blog/some-css-only-contrast-options-until-contrast-color-is-baseline-widely-available/)
-- [Inclusive Dark Mode: Designing Accessible Dark Themes](https://www.smashingmagazine.com/2025/04/inclusive-dark-mode-designing-accessible-dark-themes/)
-- [Dark Mode Accessibility Myth Debunked](https://stephaniewalter.design/blog/dark-mode-accessibility-myth-debunked/)
-- [Dark Mode Done Right: Performance & Accessibility](https://dev.to/javascriptwizzard/dark-mode-done-right-performance-accessibility-considerations-43b1)
-- [Dark Mode UI Design: Best Practices](https://blog.logrocket.com/ux-design/dark-mode-ui-design-best-practices-and-examples/)
-- [Minnesota IT Services: Dark Mode Accessibility](https://mn.gov/mnit/media/blog/?id=38-469250)
+- [MDN: color-scheme](https://developer.mozilla.org/docs/Web/CSS/color-scheme)
+- [MDN: light-dark()](https://developer.mozilla.org/docs/Web/CSS/color_value/light-dark)
+- [MDN: prefers-color-scheme](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-color-scheme)
+- [MDN: prefers-contrast](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-contrast)
+- [MDN: forced-colors](https://developer.mozilla.org/docs/Web/CSS/@media/forced-colors)
+- [User Personalization and Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
 
 ---
 
