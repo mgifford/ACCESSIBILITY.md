@@ -339,30 +339,11 @@ nav {
   outline-offset: 2px;
 }
 
-/* Selected state — vibrant icon colour per mode */
+/* Selected state — distinct from focus */
 .theme-mode-btn[aria-pressed="true"] {
+  border-color: var(--color-link);
   font-weight: 600;
-}
-
-/* Sun → warm amber */
-.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] {
-  color: #f59e0b;
-  border-color: #f59e0b;
-  background: #fef3c7;
-}
-
-/* Moon → cool blue */
-.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] {
-  color: #60a5fa;
-  border-color: #60a5fa;
-  background: #1e3a5f;
-}
-
-/* Monitor → green */
-.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] {
-  color: #34d399;
-  border-color: #34d399;
-  background: #064e3b;
+  background: var(--color-background);
 }
 
 /* Mobile responsive */
