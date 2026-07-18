@@ -121,7 +121,7 @@ Stop and request human review if any of these apply:
 - The change involves colour contrast and design-system tokens are not present in the repository.
 - The component relies on a third-party library whose source is inaccessible.
 - The correct WCAG Success Criterion is ambiguous.
-- Multiple "Low" severity findings cluster on a single critical user journey (treat as "Critical" and escalate).
+- Multiple "Minor" severity findings cluster on a single critical user journey (treat as "Critical" and escalate).
 
 ### Required PR output
 
@@ -163,12 +163,15 @@ When referencing sources from TRUSTED_SOURCES.yaml, always check the `ai_scrapin
 
 When identifying issues, use this severity scale:
 
-- **Critical**: Could lead to implementing features that prevent users from completing core tasks
-- **High**: Significant guidance gap that could create accessibility barriers
-- **Medium**: Documentation clarity issues or incomplete examples
-- **Low**: Minor improvements, typos, or enhancements
+| Level | Meaning | Action required |
+| --- | --- | --- |
+| **Critical** | Completely blocks access for one or more disability groups — users cannot complete a core task at all | Must fix before release; do not ship |
+| **Serious** | Significantly impairs access; workarounds may exist but are unreasonable to expect of disabled users | Fix in current sprint; escalate if deferred |
+| **Moderate** | Creates friction or confusion; a workaround exists and is not too burdensome | Fix in near-term backlog |
+| **Minor** | Marginal impact; best-practice gap that does not meaningfully prevent access | Fix when convenient; track in backlog |
 
-Never suggest changes that introduce Critical or High severity accessibility issues.
+**Never propose changes that introduce Critical or Serious issues.**
+Changes introducing Moderate issues require explicit sign-off.
 
 ## Quick decision framework
 
