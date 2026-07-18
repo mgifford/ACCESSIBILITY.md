@@ -240,9 +240,15 @@ a:focus-visible {
 
 If providing manual theme controls:
 
-#### Toggle control design
+#### Three-Option Theme Selector Pattern
 
-Use a three-option control for **System**, **Light**, and **Dark**:
+Use a visible three-option selector that shows all three options at the same time:
+
+- **System**
+- **Light**
+- **Dark**
+
+#### Interaction pattern requirements
 
 - **Control model**: Use a labelled group containing three native `<button type="button">` elements with `aria-pressed` for the selected option
 - **Visual affordance**: Use sun/moon/system icons as supporting visuals with visible text labels
@@ -251,6 +257,8 @@ Use a three-option control for **System**, **Light**, and **Dark**:
 - **Keyboard navigation**: Each button is a separate Tab stop — use standard native button behaviour (Tab, Shift+Tab, Enter, Space)
 - **Do NOT** use custom keyboard handlers where native button behaviour already provides the required functionality
 - **Do NOT** change the theme when arrow-key focus moves — theme changes only on explicit activation (Enter, Space, click)
+- **Do NOT** use hover or focus previews
+- **Do NOT** automatically select when a user merely tabs to an option
 - **Language consideration**: This guidance assumes left-to-right (LTR) languages
 
 #### HTML structure
