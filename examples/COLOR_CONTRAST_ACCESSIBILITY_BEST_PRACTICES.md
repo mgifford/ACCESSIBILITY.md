@@ -4,663 +4,634 @@ title: Color Contrast Accessibility Best Practices
 
 # Color Contrast Accessibility Best Practices
 
-This document defines accessibility requirements for color contrast in web interfaces, ensuring all users can perceive and distinguish content regardless of vision ability, ambient lighting, or display settings. It covers WCAG 2.2 Level AA requirements for text, non-text elements, and focus indicators — as well as emerging guidance on the Advanced Perceptual Contrast Algorithm (APCA) and forced-colors mode.
+Use sufficient contrast so that people can read text, identify controls, understand graphics, and track keyboard focus. Do not use color as the only way to communicate meaning.
 
-Color perception varies greatly across users. People with low vision, color vision deficiencies, or age-related vision changes all depend on sufficient contrast. Meeting contrast requirements benefits everyone: high-contrast interfaces are also easier to read in bright sunlight, on low-quality displays, and in print.
-
----
-
-## 1. Core Principle
-
-Sufficient contrast between foreground and background colors is a prerequisite for users to read text, identify UI components, perceive graphical content, and track keyboard focus. Color alone must never be the sole means of conveying information.
-
-All visual interface elements that convey information or require user interaction must meet the applicable WCAG 2.2 Level AA contrast thresholds listed in this document. Contrast must be maintained in **light mode, dark mode, and forced-colors (high contrast) mode**.
+This guide targets WCAG 2.2 Level AA. Level AAA requirements are identified separately and are not presented as Level AA requirements.
 
 ---
 
-## 2. WCAG 2.2 Requirements Overview
+## 1. Required Outcomes
 
-| Success Criterion | Level | Requirement | Applies To |
-|:---|:---:|:---|:---|
-| 1.4.1 Use of Color | A | Color must not be the only visual means of conveying information | All content |
-| 1.4.3 Contrast (Minimum) | AA | 4.5:1 for normal text; 3:1 for large text | Text and images of text |
-| 1.4.6 Contrast (Enhanced) | AAA | 7:1 for normal text; 4.5:1 for large text | Text and images of text |
-| 1.4.11 Non-text Contrast | AA | 3:1 against adjacent colors | UI components, graphical objects |
-| 2.4.13 Focus Appearance | AAA | Focus indicator area ≥ perimeter of component × CSS pixels; 3:1 contrast change | Keyboard focus indicators |
+A conforming implementation must:
 
-> **WCAG 2.2 note:** 2.4.13 Focus Appearance is new in WCAG 2.2 at Level AAA. Teams that previously targeted 2.4.7 (Focus Visible, AA) must also now satisfy 2.4.13.
+- provide at least 4.5:1 contrast for normal text and images of text;
+- provide at least 3:1 contrast for large text and images of large text;
+- provide at least 3:1 contrast for visual information needed to identify user interface components and their states;
+- provide at least 3:1 contrast for parts of graphics needed to understand the content;
+- provide a visual cue other than color when color communicates meaning, state, or an available action;
+- provide a visible keyboard focus indicator;
+- preserve these outcomes in every supported theme and component state; and
+- remain understandable when user agents replace author colors in forced-colors mode.
+
+Do not treat a passing palette as proof that the finished interface passes. Contrast depends on the colors that are actually adjacent after opacity, gradients, images, overlays, states, and themes are applied.
 
 ---
 
-## 3. Text Contrast (WCAG 1.4.3)
+## 2. WCAG 2.2 Requirements
 
-### Contrast ratio thresholds
+| Success criterion | Level | Requirement |
+|:---|:---:|:---|
+| [1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) | A | Color is not the only visual means of conveying information, prompting a response, or distinguishing an element. |
+| [1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) | AA | Text and images of text have at least 4.5:1 contrast, or 3:1 for large text. |
+| [1.4.5 Images of Text](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text.html) | AA | Use real text instead of images of text when the same presentation can be achieved with available technology, except when customizable or essential. |
+| [1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | AA | Visual information needed to identify components, states, and graphical objects has at least 3:1 contrast against adjacent colors. |
+| [2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | AA | A keyboard-operable interface has a visible mode of operation in which focus is indicated. |
+| [1.4.6 Contrast (Enhanced)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html) | AAA | Text has at least 7:1 contrast, or 4.5:1 for large text. |
+| [2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) | AAA | The focus indicator meets minimum area and contrast-change requirements. |
 
-| Text type | Minimum (Level AA) | Enhanced (Level AAA) |
+WCAG thresholds are pass or fail values. Do not round a result such as 4.499:1 up to 4.5:1.
+
+---
+
+## 3. Prioritize by User Impact
+
+Fix contrast problems in this order when time is limited:
+
+1. Text and controls required to complete a task.
+2. Keyboard focus indicators and component states.
+3. Errors, warnings, required fields, and status messages.
+4. Navigation, links, and labels.
+5. Charts, diagrams, and other information-bearing graphics.
+6. Supporting or secondary content.
+
+Frequency matters, but it does not make a blocking problem more serious than an infrequent problem that prevents task completion.
+
+---
+
+## 4. Text Contrast
+
+### Minimum ratios
+
+| Text | WCAG 2.2 AA | WCAG 2.2 AAA |
 |:---|:---:|:---:|
-| Normal text (below 18pt / 14pt bold) | **4.5:1** | 7:1 |
-| Large text (18pt+ / 14pt+ bold) | **3:1** | 4.5:1 |
-| Logotypes (text in logos) | Exempt | Exempt |
-| Incidental text (purely decorative) | Exempt | Exempt |
-| Disabled controls | Exempt | Exempt |
+| Normal text | 4.5:1 | 7:1 |
+| Large text | 3:1 | 4.5:1 |
 
-### What counts as "large text"
+For Latin text, WCAG defines large-scale text as at least:
 
-- **18pt** (approximately 24 CSS `px`) or larger in regular weight
-- **14pt** (approximately 18.67 CSS `px`) or larger in bold weight
+- 18 point, approximately 24 CSS pixels, at normal weight; or
+- 14 point, approximately 18.67 CSS pixels, when bold.
 
-### Preferred CSS pattern — text colors using custom properties
+Treat thin or unusual typefaces cautiously. A combination can meet the computed threshold but remain difficult to read because of narrow strokes or antialiasing.
+
+### Text covered by the requirement
+
+The requirement includes:
+
+- body text and headings;
+- link text;
+- button and form-control labels;
+- placeholder text;
+- text revealed on hover or focus;
+- validation and status messages; and
+- text rendered as an image.
+
+Logotypes, purely decorative text, and text in an inactive component are among the defined exceptions. Do not extend those exceptions to brand colors used for ordinary content.
+
+### Specify both sides of a color pair
+
+If author CSS specifies a foreground without a background, or a background without a foreground, the other color may come from an unknown user preference.
 
 ```css
-:root {
-  /* Normal body text — 4.5:1 against white background */
-  --color-text:        #1a1a1a;   /* contrast vs #fff: 16.75:1 ✓ */
-  --color-text-muted:  #595959;   /* contrast vs #fff: 7.0:1   ✓ */
-
-  /* Large heading text — may use 3:1 minimum */
-  --color-heading:     #333333;   /* contrast vs #fff: 12.63:1 ✓ */
-
-  /* Link text — meets 4.5:1 against white and has non-color distinction */
-  --color-link:        #0066cc;   /* contrast vs #fff: 4.52:1  ✓ */
-
-  --color-background:  #ffffff;
+html {
+  background: #ffffff;
+  color: #1b1f23;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text:        #e8e8e8;   /* contrast vs #1a1a1a: 13.61:1 ✓ */
-    --color-text-muted:  #b0b0b0;   /* contrast vs #1a1a1a:  7.0:1  ✓ */
-    --color-heading:     #f0f0f0;
-    --color-link:        #66aaff;   /* contrast vs #1a1a1a: 5.74:1  ✓ */
-    --color-background:  #1a1a1a;
-  }
+.notice {
+  background: #f2f6fa;
+  color: #243447;
 }
 ```
 
-### Images of text
+### Prefer real text
 
-Text embedded in images must meet the same 4.5:1 (or 3:1 large text) requirement. Prefer real text rendered in CSS to avoid this constraint and gain responsive scaling.
-
-### Avoid
-
-```css
-/* Bad — 2.4:1 contrast, fails 1.4.3 */
-.placeholder {
-  color: #aaaaaa;
-}
-
-/* Bad — decorative styling applied to informative text */
-.note {
-  color: #888;  /* fails against white background */
-}
-```
-
----
-
-## 4. Non-text Contrast (WCAG 1.4.11)
-
-Non-text elements that are required for users to understand or operate the interface must meet a **3:1 contrast ratio** against adjacent colors.
-
-### Applies to
-
-- Form input borders (text fields, checkboxes, radio buttons, select dropdowns)
-- Interactive UI component boundaries (buttons without text, sliders, toggles)
-- Icons and graphical objects that convey meaning
-- Charts and data visualization elements that encode information
-- Status indicators (progress bars, meter fills)
-
-### Does not apply to
-
-- Decorative graphics or illustrations that do not convey meaning
-- Inactive or disabled components
-- Logos and brand marks
-- Information also available in text (the graphical element is supplementary)
-
-### Form control pattern
-
-```css
-/* Checkbox — border must contrast 3:1 against its background */
-input[type="checkbox"] {
-  /* Custom styled checkbox */
-  --checkbox-border: #767676; /* 4.54:1 against #fff ✓ */
-  appearance: none;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid var(--checkbox-border);
-  border-radius: 3px;
-}
-
-input[type="checkbox"]:checked {
-  background-color: #0066cc;
-  border-color: #0066cc;
-  /* The check mark SVG fill must contrast 3:1 against #0066cc */
-  background-image: url("data:image/svg+xml,…"); /* white checkmark ✓ */
-}
-```
-
-### Icon pattern
+Real text can reflow, resize, adapt to user styles, and change with the theme. Use an image of text only when the presentation is customizable or the particular presentation is essential.
 
 ```html
-<!-- Good: icon whose meaning must be communicated has sufficient contrast -->
-<button aria-label="Close dialog">
+<!-- Prefer this. -->
+<p class="campaign-title">Public services for everyone</p>
+
+<!-- Avoid using a raster image only to reproduce styled text. -->
+```
+
+---
+
+## 5. Non-text Contrast
+
+WCAG 1.4.11 applies to visual information needed to identify a user interface component or its state, and to parts of a graphic needed to understand it.
+
+Examples include:
+
+- a checkbox boundary when that boundary identifies the control;
+- a check mark that communicates the checked state;
+- an icon in an icon-only button;
+- a slider thumb and track needed to operate the slider;
+- an error boundary when it communicates the error state; and
+- lines, sectors, points, or symbols needed to read a chart.
+
+The required visual information must have at least 3:1 contrast against the adjacent color or colors that a user must distinguish it from.
+
+This does not mean that every decorative border must be 3:1. If text, shape, position, or another visual treatment already identifies the component and state, a low-contrast decorative border is not necessarily the required visual information.
+
+### Native controls are a strong default
+
+Browsers and operating systems can adapt native controls to user preferences. Replacing them creates responsibility for every state and mode.
+
+```html
+<label>
+  <input type="checkbox" name="updates">
+  Send me service updates
+</label>
+```
+
+### If a control is customized, validate every state
+
+```css
+.checkbox {
+  appearance: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 2px solid #59636e;
+  border-radius: 0.2rem;
+  background: #ffffff;
+}
+
+.checkbox:checked {
+  border-color: #005ea8;
+  background-color: #005ea8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='m3 8 3 3 7-7'/%3E%3C/svg%3E");
+}
+```
+
+Test the unchecked boundary against its background, the checked fill against the surrounding background, and the check mark against the checked fill. Do not rely on a comment claiming that a color pair passes. Measure the rendered combination.
+
+### Use `currentColor` for adaptable icons
+
+```html
+<button class="icon-button" type="button" aria-label="Close dialog">
   <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-    <!-- Icon paths rendered in #595959 — 7.0:1 against white background ✓ -->
-    <path fill="#595959" d="M18 6L6 18M6 6l12 12" stroke-width="2"/>
+    <path d="m6 6 12 12M18 6 6 18"></path>
   </svg>
 </button>
 ```
 
----
+```css
+.icon-button {
+  color: #25313c;
+}
 
-## 5. Use of Color (WCAG 1.4.1)
-
-Color alone must not be the sole means of conveying information, indicating an action, prompting a response, or distinguishing a visual element. A second, non-color cue must always accompany color.
-
-### Common failure patterns
-
-```html
-<!-- Bad: required field indicated only by red label color -->
-<label style="color: red;">Email address</label>
-<input type="email">
-
-<!-- Bad: error state communicated only by red border -->
-<input type="email" style="border-color: red;">
-
-<!-- Bad: success/error icons differentiated only by color -->
-<span class="dot dot--green"></span> Active
-<span class="dot dot--red"></span>  Inactive
+.icon-button svg {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
 ```
 
-### Preferred patterns
+The button supplies the accessible name. The repeated SVG is hidden from assistive technology.
+
+---
+
+## 6. Do Not Rely on Color Alone
+
+Add a visible text, shape, pattern, icon, or other non-color cue whenever color carries meaning.
+
+### Required fields and errors
 
 ```html
-<!-- Good: required field — asterisk + color -->
-<label>
-  Email address
-  <span aria-hidden="true" class="required-marker">*</span>
-  <span class="sr-only">(required)</span>
-</label>
-<input type="email" aria-required="true">
-
-<!-- Good: error state — icon + text + color + border -->
-<div class="field field--error">
-  <label for="email">Email address</label>
-  <input id="email" type="email" aria-describedby="email-error" aria-invalid="true">
+<div class="field" data-state="error">
+  <label for="email">
+    Email address <span aria-hidden="true">(required)</span>
+  </label>
+  <input
+    id="email"
+    name="email"
+    type="email"
+    required
+    aria-invalid="true"
+    aria-describedby="email-error"
+  >
   <p id="email-error" class="error-message">
-    <svg role="img" aria-label="Error" class="icon-error" aria-hidden="true">
-      <use href="#icon-exclamation"></use>
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M12 3 2 21h20L12 3Zm0 6v5m0 3v.01"></path>
     </svg>
-    Please enter a valid email address.
+    Enter an email address in the format name@example.com.
   </p>
 </div>
-
-<!-- Good: status badges — shape/icon/text + color -->
-<span class="badge badge--success">
-  <svg role="img" aria-label="Active" aria-hidden="true" focusable="false">
-    <use href="#icon-check"></use>
-  </svg>
-  Active
-</span>
-<span class="badge badge--error">
-  <svg role="img" aria-label="Inactive" aria-hidden="true" focusable="false">
-    <use href="#icon-x"></use>
-  </svg>
-  Inactive
-</span>
 ```
-
-### Link distinction from surrounding text
-
-Links within paragraphs must be distinguishable from surrounding non-link text by more than color alone when the surrounding text has contrast of 3:1 or greater. Use underline (the browser default) or another non-color visual difference.
 
 ```css
-/* Good: underline preserved, plus sufficient color contrast */
-a {
-  color: #0066cc;
-  text-decoration: underline;
+.field[data-state="error"] input {
+  border: 3px solid #b10e1e;
 }
 
-/* Acceptable: underline visible on hover/focus — only when the link contrast
-   against the body text is 3:1 or greater (WCAG technique G183) */
-a {
-  color: #0066cc;         /* 4.52:1 vs white background */
-  text-decoration: none;
+.error-message {
+  color: #8a0b18;
+  font-weight: 700;
 }
-a:hover,
-a:focus {
-  text-decoration: underline;
+
+.error-message svg {
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  vertical-align: -0.2em;
 }
-/* However, this pattern still requires 3:1 contrast between #0066cc and
-   surrounding body text color (e.g., #1a1a1a) — verify with a tool */
 ```
+
+The text identifies the error without color. Native `required` exposes the required state and enables browser behavior. `aria-invalid` exposes the current invalid state.
+
+### Links in body text
+
+Underlining links is the simplest dependable pattern.
+
+```css
+a {
+  color: #005ea8;
+  text-decoration-line: underline;
+  text-decoration-thickness: max(1px, 0.08em);
+  text-underline-offset: 0.15em;
+}
+
+a:visited {
+  color: #5c2d91;
+}
+```
+
+An exception documented in [WCAG technique G183](https://www.w3.org/WAI/WCAG22/Techniques/general/G183) permits links without a default underline when the link text differs from surrounding text by at least 3:1 and gains an additional non-color cue on hover and keyboard focus. That exception is harder to maintain and less obvious to users. Prefer persistent underlines in prose.
+
+### Charts and status indicators
+
+Use labels, symbols, line styles, or patterns in addition to color. A separate text table can provide equivalent data, but it does not automatically excuse an operable or information-bearing graphic from applicable contrast requirements.
 
 ---
 
-## 6. Focus Appearance (WCAG 2.4.13)
+## 7. Keyboard Focus
 
-WCAG 2.2 adds **2.4.13 Focus Appearance** at Level AAA. A visible keyboard focus indicator must:
+WCAG 2.2 Level AA requires a visible focus indicator under 2.4.7. WCAG 2.2 does not require Level AA projects to satisfy 2.4.13, because Focus Appearance is Level AAA.
 
-1. Enclose the focused component (or its text/icon) with a focus indicator area of at least the **perimeter of the component** (in CSS pixels) times 2 CSS pixels in thickness.
-2. Have a **contrast ratio of at least 3:1** between the focused and unfocused states.
-3. Have a **contrast ratio of at least 3:1** against every adjacent color in the unfocused state.
+WCAG 1.4.11 may apply to an author-created focus indicator as visual information needed to identify the focused state. Level AAA criterion 2.4.13 separately measures the indicator's area and the contrast change between the same pixels in focused and unfocused states.
 
-> **Simpler mental model:** The focus ring must be clearly visible (thick enough, high enough contrast) and not obscured by other content.
+### Start with the browser indicator
 
-### Preferred CSS pattern — visible focus ring
+Do not remove the browser outline unless the replacement has been tested on every surface where it appears.
 
 ```css
-/* Universal focus style using CSS custom properties */
-:root {
-  --focus-ring-color:  #0066cc;
-  --focus-ring-width:  3px;
-  --focus-ring-offset: 2px;
-}
-
-/* Remove default outline and replace with a consistent, high-contrast ring */
 :focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  outline-offset: var(--focus-ring-offset);
-  /* Ensure the ring is visible against both light and dark backgrounds */
-  box-shadow: 0 0 0 calc(var(--focus-ring-width) + var(--focus-ring-offset))
-              #ffffff; /* White halo ensures visibility on dark backgrounds */
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --focus-ring-color: #99ccff; /* Lighter blue — visible on dark backgrounds */
-  }
+  outline: 3px solid #005fcc;
+  outline-offset: 3px;
 }
 ```
 
-### Using the `:focus-visible` pseudo-class
-
-`:focus-visible` shows the focus indicator only for keyboard navigation, hiding it for mouse/touch interaction. This improves aesthetics for pointer users while preserving accessibility for keyboard users.
+### Use a two-color indicator on varied surfaces
 
 ```css
-/* Only show custom ring for keyboard focus — never suppress focus entirely */
-:focus:not(:focus-visible) {
-  outline: none;
-}
 :focus-visible {
-  outline: 3px solid #0066cc;
+  outline: 3px solid #ffffff;
   outline-offset: 2px;
-}
-```
-
-### Avoid
-
-```css
-/* NEVER do this — completely removes focus visibility */
-:focus {
-  outline: none;
+  box-shadow: 0 0 0 5px #111111;
 }
 
-/* NEVER do this without providing an alternative focus style */
-*:focus {
-  outline: 0 !important;
-}
-```
-
-### C40 technique — focus offset for contrast
-
-When the default focus ring appears on a colored background that reduces its contrast, use `outline-offset` combined with a contrasting background or double-ring pattern (WCAG technique C40):
-
-```css
-/* C40: Two-color focus indicator — works on both light and dark surfaces */
-:focus-visible {
-  outline: 3px solid #000000;   /* Dark outer ring */
-  outline-offset: 1px;
-  box-shadow: 0 0 0 5px #ffffff; /* White inner ring via box-shadow */
-}
-```
-
----
-
-## 7. Evaluating Contrast Ratios
-
-### The contrast ratio formula
-
-WCAG contrast ratios are calculated using relative luminance (L) as defined in WCAG 2.x:
-
-```
-Contrast Ratio = (L1 + 0.05) / (L2 + 0.05)
-
-Where L1 is the relative luminance of the lighter color
-and   L2 is the relative luminance of the darker color.
-```
-
-This formula is based on the sRGB color space. It has limitations for colors of similar luminance but different hue (e.g., blue on red) — see [APCA](#10-apca--the-emerging-standard) for the next generation approach.
-
-### Recommended contrast-checking tools
-
-| Tool | Use case |
-|:---|:---|
-| [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) | Quick manual checks — text contrast |
-| [Accessible Colors](https://accessible-colors.com/) | Find the closest accessible color |
-| [Colour Contrast Analyser (TPGi)](https://vispero.com/lp/color-contrast-checker/) | Desktop app for sampling on-screen colors |
-| [axe DevTools](https://www.deque.com/axe/devtools/) | Browser extension with contrast violation detection |
-| [Colour Contrast Checker (Deque)](https://dequeuniversity.com/rules/axe/4.9/color-contrast) | Automated rule documentation |
-| [apcacontrast.com](https://apcacontrast.com/) | APCA-based contrast evaluation |
-| [Stark (Figma/Sketch plugin)](https://www.getstark.co/) | Design-time contrast checking |
-| [Chrome DevTools CSS Overview](https://developer.chrome.com/docs/devtools/) | Browser-based audit of contrast issues |
-
-### Testing programmatically with axe-core
-
-```javascript
-// Example: run contrast checks with axe-core
-const axe = require("axe-core");
-
-axe.run(document, {
-  runOnly: {
-    type: "rule",
-    values: ["color-contrast", "color-contrast-enhanced"]
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
   }
-}, (err, results) => {
-  if (err) throw err;
-  console.log("Contrast violations:", results.violations);
-});
+}
 ```
+
+A two-color indicator is more likely to remain visible over mixed light and dark surfaces. It is not self-validating. Test its geometry, clipping, adjacent colors, component states, and forced-colors behavior.
+
+Do not add `:focus:not(:focus-visible) { outline: none; }` as a universal rule. Browsers already determine when `:focus-visible` should match, and scripts, platform behavior, or unsupported contexts can make a blanket suppression risky.
 
 ---
 
-## 8. CSS Custom Properties for Accessible Color Palettes
+## 8. Themes and Semantic Color Tokens
 
-Centralizing all design-system colors as CSS custom properties makes contrast validation and theming manageable at scale.
-
-### Semantic color token pattern
+Validate complete foreground-background pairs, not isolated colors. Semantic tokens make intended pairings explicit and reduce hard-coded theme failures.
 
 ```css
-/* Design token layer — raw color values */
 :root {
-  /* Neutral scale */
-  --color-neutral-0:   #ffffff;
-  --color-neutral-100: #f5f5f5;
-  --color-neutral-200: #e8e8e8;
-  --color-neutral-600: #595959;  /* 7.0:1 on #fff */
-  --color-neutral-700: #404040;  /* 9.73:1 on #fff */
-  --color-neutral-900: #1a1a1a;  /* 16.75:1 on #fff */
+  color-scheme: light dark;
 
-  /* Brand color — verify contrast before use as text */
-  --color-brand-500:   #0066cc;  /* 4.52:1 on #fff — OK for normal text ✓ */
-  --color-brand-700:   #004c99;  /* 7.59:1 on #fff — OK for all text  ✓ */
-
-  /* Semantic layer — component usage */
-  --color-text-primary:   var(--color-neutral-900);
-  --color-text-secondary: var(--color-neutral-600);
-  --color-text-link:      var(--color-brand-500);
-  --color-surface:        var(--color-neutral-0);
-  --color-border:         var(--color-neutral-200); /* 3:1 for non-text ✓ */
+  --surface: light-dark(#ffffff, #15191e);
+  --surface-subtle: light-dark(#f2f6fa, #242a31);
+  --text: light-dark(#1b1f23, #f4f6f8);
+  --text-muted: light-dark(#4d5966, #c3cbd4);
+  --link: light-dark(#005ea8, #73b7f2);
+  --control-border: light-dark(#59636e, #a7b0ba);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text-primary:   var(--color-neutral-200);
-    --color-text-secondary: #a0a0a0;  /* 7.11:1 on #1a1a1a ✓ */
-    --color-text-link:      #66aaff;  /* 5.74:1 on #1a1a1a ✓ */
-    --color-surface:        var(--color-neutral-900);
-    --color-border:         #444444;  /* 3.1:1 vs #1a1a1a ✓ */
-  }
+html {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.card {
+  background: var(--surface-subtle);
+  color: var(--text);
+  border: 1px solid var(--control-border);
+}
+
+.card a {
+  color: var(--link);
 }
 ```
 
-### Always use semantic tokens in component CSS
+`light-dark()` is useful when the site's browser support policy permits it. A custom-property fallback or separate media-query declarations may still be needed for older browsers.
+
+For a manual theme selector, use the same semantic tokens and override them with a root attribute. The implementation details are covered in [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md).
+
+### Do not assume CSS color functions guarantee accessibility
+
+`color-mix()` can create a color between two inputs, but it does not target a WCAG contrast ratio. `contrast-color()` chooses a contrasting value from a limited result set in current implementations, but it does not replace validation of text, component, and state requirements. Treat both as implementation aids, not conformance tests.
+
+---
+
+## 9. Variable Backgrounds, Opacity, and Overlays
+
+For text over a gradient, image, video, or translucent surface, test the least favorable rendered region that can occur in normal use.
+
+Use an opaque or sufficiently opaque backing surface when the underlying content cannot be controlled.
 
 ```css
-/* Good: references the semantic token, works in all themes */
-.card {
-  background-color: var(--color-surface);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
+.hero-title {
+  display: inline;
+  padding: 0.15em 0.35em;
+  color: #ffffff;
+  background: #16202a;
+  box-decoration-break: clone;
+}
+```
+
+Be careful with opacity on a parent element. It blends the text and background together with content behind the component, changing both sides of the contrast pair.
+
+```css
+/* Avoid reducing the opacity of the entire component. */
+.secondary-card {
+  opacity: 0.6;
 }
 
-/* Bad: hard-coded value that may fail in dark mode */
-.card {
-  background-color: #ffffff;
-  color: #333;  /* Not guaranteed to meet 4.5:1 in all themes */
+/* Prefer explicit, validated colors. */
+.secondary-card {
+  background: #f2f6fa;
+  color: #4d5966;
 }
+```
+
+Automated tools may report variable backgrounds as incomplete or needing review. That is a limitation of the test, not evidence that the content passes.
+
+---
+
+## 10. States That Need Separate Validation
+
+Check each component in all states that users can encounter:
+
+- default;
+- hover;
+- keyboard focus;
+- active or pressed;
+- selected or checked;
+- visited;
+- invalid or error;
+- success, warning, and informational;
+- disabled or inactive;
+- browser autofill;
+- text selection; and
+- open, expanded, or current.
+
+Repeat the checks in each supported light, dark, or custom theme.
+
+### Disabled controls
+
+Inactive user interface components are excepted from the specific contrast requirements in 1.4.3 and 1.4.11. The exception is not a design target.
+
+- Keep disabled controls identifiable when practical.
+- Do not communicate the disabled state only by color.
+- Explain why a control is unavailable when that information is needed to continue.
+- Consider whether the control needs to be disabled at all. A submit attempt followed by clear validation can be easier to understand than an unexplained unavailable button.
+
+```html
+<button type="submit" disabled aria-describedby="submit-help">Submit</button>
+<p id="submit-help">Add at least one contact before submitting.</p>
 ```
 
 ---
 
-## 9. Forced Colors Mode (High Contrast)
+## 11. User Contrast Preferences
 
-Windows High Contrast Mode and the CSS `forced-colors` media query replace author colors with a small set of system-defined colors. All contrast obligations are delegated to the operating system, but interfaces can break if they rely on CSS `background-color` or `color` for information.
+`prefers-contrast` and `forced-colors` address different situations. Do not treat either as a light/dark theme selector.
 
-### Key system color keywords
+### `prefers-contrast`
+
+Use `prefers-contrast: more` as an enhancement. The default presentation must already meet the project's conformance target.
+
+```css
+@media (prefers-contrast: more) {
+  :root {
+    --text-muted: var(--text);
+    --control-border: currentColor;
+  }
+
+  a {
+    text-decoration-thickness: 0.15em;
+  }
+
+  :focus-visible {
+    outline-width: 4px;
+  }
+}
+```
+
+### Forced colors
+
+In forced-colors mode, the user agent maps author colors to a limited system palette. Authors remain responsible for preserving meaning, state, and operability.
+
+Use native controls and semantic HTML first. Add targeted corrections only where testing shows that information disappears.
 
 ```css
 @media (forced-colors: active) {
-  /* These keywords map to the user's chosen system colors */
-  .button {
-    background-color: ButtonFace;
-    color: ButtonText;
-    border: 2px solid ButtonBorder;
+  .status-icon,
+  .icon-button svg {
+    fill: none;
+    stroke: currentColor;
   }
 
-  .button:hover {
-    background-color: Highlight;
-    color: HighlightText;
+  [aria-current="page"] {
+    border-block-end: 0.25rem solid currentColor;
   }
 
-  /* Restore visibility of SVG icons hidden by fill:none */
-  .icon {
-    forced-color-adjust: auto; /* default; let the browser apply system colors */
-  }
-
-  /* Preserve a decorative gradient that also serves as a separator */
-  .divider {
-    forced-color-adjust: none;
-    background: ButtonText; /* Manually map to a system color */
+  [aria-invalid="true"] {
+    border: 3px solid Mark;
   }
 }
 ```
 
-### Transparency and pseudo-elements
-
-Custom focus rings or decorative indicators built with `box-shadow`, `background-color`, or `::before`/`::after` pseudo-elements may disappear in forced-colors mode. Use `outline` for focus indicators — it is preserved in forced-colors mode by default.
-
-```css
-/* Good: outline is forced-colors-safe */
-:focus-visible {
-  outline: 3px solid Highlight;
-  outline-offset: 2px;
-}
-
-/* Risk: box-shadow may not render in forced-colors mode */
-:focus-visible {
-  box-shadow: 0 0 0 3px #0066cc; /* May be suppressed */
-}
-```
-
-### Testing forced-colors mode
-
-- Enable **High Contrast Mode** in Windows Accessibility settings
-- In Chrome DevTools → Rendering panel → "Emulate CSS media feature forced-colors: active"
-- In Firefox, type `about:config` → `ui.forcedColors: 1`
+Avoid `forced-color-adjust: none` unless preserving author colors is essential and the result has been tested with multiple user-selected system palettes. It opts the element out of protections the mode is intended to provide.
 
 ---
 
-## 10. APCA — The Emerging Standard
+## 12. Testing
 
-The **Advanced Perceptual Contrast Algorithm (APCA)** is being developed by the W3C Silver Task Force as a candidate replacement for the WCAG 2.x contrast ratio formula. APCA models human contrast perception more accurately than the current luminance-based ratio, particularly for:
+### Manual testing
 
-- Dark text on light backgrounds vs. light text on dark backgrounds (the two are not symmetric)
-- Thin strokes and small font sizes (which require higher contrast than large text)
-- Saturated colors such as pure red or blue (which the WCAG 2.x formula handles poorly)
+1. Inspect the actual foreground and background colors in the browser.
+2. Measure text pairs without rounding the result.
+3. Identify the visual information required to find each component and understand each state.
+4. Measure that information against the relevant adjacent color or colors.
+5. Tab through the page and inspect focus on every background.
+6. Test all supported themes and component states.
+7. Test Windows High Contrast or browser forced-colors emulation.
+8. Inspect gradients, images, opacity, overlays, sticky content, and text selection manually.
+9. Use a grayscale or color-vision simulation as a review aid, then verify that meaning does not depend on color alone.
 
-### Current status
+Simulations do not reproduce a person's lived experience and do not replace standards-based testing.
 
-APCA is not yet required by WCAG 2.2. It is expected to appear in WCAG 3.0. Teams adopting APCA today should **continue to meet WCAG 2.2 AA requirements** in parallel and treat APCA as supplemental guidance.
+### Automated testing
 
-### APCA lightness contrast (Lc) thresholds (informational)
+Automated tools can find many computable text contrast failures. They cannot reliably determine every background, required graphical detail, color-only distinction, focus-indicator geometry, or forced-colors failure.
 
-| Content type | Minimum Lc | Recommended Lc |
-|:---|:---:|:---:|
-| Normal body text (16px / 400 weight) | 60 | 75 |
-| Large heading text (24px+ / 700 weight) | 45 | 60 |
-| UI component labels | 45 | 60 |
-| Placeholder / muted text | 30 | 45 |
-
-Lc values are positive for dark-on-light and negative for light-on-dark; only the absolute value is used for threshold comparisons.
-
-### Evaluating APCA contrast
+Use automation to support manual review, not to replace it.
 
 ```javascript
-// Using the APCA-W3 package (github.com/Myndex/SAPC-APCA)
-import { APCAcontrast, sRGBtoY } from "apca-w3";
+// tests/contrast.spec.js
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 
-const textColor       = "#1a1a1a";
-const backgroundColor = "#ffffff";
+for (const theme of ["light", "dark"]) {
+  test(`automated accessibility scan: ${theme}`, async ({ page }) => {
+    await page.goto("/");
+    await page.locator("html").evaluate((element, value) => {
+      element.dataset.theme = value;
+    }, theme);
 
-const Lc = APCAcontrast(sRGBtoY(backgroundColor), sRGBtoY(textColor));
-// Lc ≈ 106 — well above 75 threshold for normal body text ✓
-console.log(`APCA Lc: ${Math.abs(Lc).toFixed(1)}`);
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+
+    expect(results.violations).toEqual([]);
+  });
+}
 ```
 
----
+This example assumes the project already starts its test server through the Playwright `webServer` configuration. A CI command that scans `localhost` without starting and waiting for the application is incomplete.
 
-## 11. Disabled State Contrast
+Do not cite axe rules that do not exist. In particular, `focus-visible` and `focus-order-semantics` are not axe-core rule IDs. Keyboard focus appearance still requires manual testing.
 
-Disabled controls are **exempt** from WCAG 1.4.3 and 1.4.11 contrast requirements. However, this exemption exists because a disabled state signals to the user that the control is not currently operable — not as license to make disabled content unreadable. Consider these practices:
+### Design-token checks
 
-- Provide a clear visual distinction between disabled and enabled states beyond reduced opacity
-- Include a tooltip or instructional text explaining when/why a control is disabled
-- Avoid relying solely on reduced opacity (e.g., `opacity: 0.4`) — this does not meet any WCAG criterion but is a common pattern
+Maintain an explicit list of approved token pairings and test those pairs whenever tokens change. Do not test every token against every other token because many combinations are not valid uses.
 
-```html
-<!-- Good: disabled state with explanatory context -->
-<button disabled aria-describedby="submit-note">Submit</button>
-<p id="submit-note">Complete all required fields to enable the Submit button.</p>
+```json
+[
+  { "foreground": "text", "background": "surface", "minimum": 4.5 },
+  { "foreground": "link", "background": "surface", "minimum": 4.5 },
+  { "foreground": "control-border", "background": "surface", "minimum": 3 }
+]
 ```
 
----
-
-## 12. Testing and Validation Checklist
-
-### Automated checks
-
-- [ ] Run axe-core `color-contrast` rule against all pages
-- [ ] Run `color-contrast-enhanced` rule for AAA coverage
-- [ ] Validate focus indicator contrast with `focus-order-semantics` and `focus-visible` axe rules
-- [ ] Integrate contrast checks into CI pipeline using [@axe-core/cli](https://www.npmjs.com/package/@axe-core/cli) or pa11y
-
-### Manual checks
-
-- [ ] Check text contrast for all text sizes using a contrast checker tool
-- [ ] Check non-text contrast for all form controls, icons, and data visualizations
-- [ ] Verify focus ring is visible on all interactive elements in default and dark modes
-- [ ] Test in Windows High Contrast / forced-colors mode
-- [ ] Test with browser zoom at 200% and 400% (contrast issues can appear at scale)
-- [ ] Review states: default, hover, focus, active, visited, error, disabled
-
-### Color-independence check
-
-- [ ] View the page in grayscale (Chrome DevTools → CSS media feature `prefers-color-scheme: light`, then add grayscale filter)
-- [ ] Confirm all information conveyed by color is also conveyed by text, icons, or patterns
-
-### Automated CI example
-
-```yaml
-# .github/workflows/a11y-contrast.yml
-name: Accessibility — Contrast Check
-
-on: [push, pull_request]
-
-jobs:
-  contrast:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - run: npm ci
-      - run: npm run build
-      - run: |
-          npx @axe-core/cli http://localhost:3000 \
-            --tags wcag2aa \
-            --disable "color-contrast-enhanced"
-```
+Runtime tests are still required because component CSS can introduce opacity, overlays, and combinations that token tests do not cover.
 
 ---
 
-## 13. Common Mistakes
+## 13. CSS Validation Checks
 
-| Mistake | Why it fails | Fix |
-|:---|:---|:---|
-| Removing focus outline with `outline: none` | Focus invisible for keyboard users (2.4.7, 2.4.13) | Replace with visible custom focus style |
-| Placeholder text in form fields uses low-contrast gray | Placeholder falls below 4.5:1 (1.4.3) | Use a placeholder color ≥ 4.5:1 or design labels outside the field |
-| Error states shown only with a red border or red text | Color is sole cue for error (1.4.1) | Add error icon, text label, and `aria-invalid` |
-| Contrast checked only in light mode | Dark mode or high contrast mode may fail | Test all modes |
-| Overlay components (modals, tooltips) assume a white background | Background may vary (1.4.3) | Ensure overlay has opaque background with verified contrast |
-| Disabled controls appear nearly invisible | Technically exempt but confusing | Add explanatory text about why a control is disabled |
-| Gradient background behind text | Contrast ratio varies across the gradient (1.4.3) | Verify contrast at the lowest-contrast region, or use a solid overlay |
-| Icon-only buttons with low-contrast icons | Icon fails 3:1 non-text requirement (1.4.11) | Ensure icon is rendered in a color with 3:1 contrast against its background |
-| SVG `fill` not inheriting theme colors | SVG colors may not adapt in forced-colors mode | Use `currentColor` and CSS variables for SVG fills |
+Add CSS validation at two points:
+
+1. In the local development command, so authors receive immediate feedback.
+2. In continuous integration, so invalid CSS cannot be merged unnoticed.
+
+Use the [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/) for standards validation where practical, and a maintained linter such as [Stylelint](https://stylelint.io/) for repository rules and fast feedback.
+
+CSS validation does not measure contrast. It catches invalid declarations that can prevent intended colors, focus styles, or forced-colors fixes from applying.
 
 ---
 
-## 14. WCAG 2.2 Success Criterion Mapping
+## 14. WCAG 3 and APCA
 
-| SC | Title | Level | Summary |
-|:---|:---|:---:|:---|
-| [1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) | Use of Color | A | Color is not the sole conveyor of information |
-| [1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) | Contrast (Minimum) | AA | 4.5:1 normal text; 3:1 large text |
-| [1.4.6](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html) | Contrast (Enhanced) | AAA | 7:1 normal text; 4.5:1 large text |
-| [1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | Non-text Contrast | AA | 3:1 for UI components and graphical objects |
-| [2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | Focus Visible | AA | Keyboard focus indicator is visible |
-| [2.4.13](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) | Focus Appearance | AAA | Focus indicator must be sufficiently large and high-contrast |
+WCAG 3.0 is a W3C Working Draft. Its requirements and conformance model can change, and it must not be used as a replacement for the WCAG version required by a law, policy, or project.
+
+APCA has informed contrast research and earlier WCAG 3 work. Do not present fixed APCA thresholds as current WCAG requirements. Teams may use experimental contrast methods as supplemental design evidence, but they must continue to test against the applicable WCAG 2.x requirements for conformance.
+
+See the [current WCAG 3 Working Draft](https://www.w3.org/TR/wcag-3.0/) for its present status rather than relying on copied threshold tables.
 
 ---
 
-## 15. Related Guides
+## 15. Common Failures
 
-- [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) — Implementing dual-mode color palettes, CSS custom properties, and `prefers-color-scheme` support
-- [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md) — Color handling in SVG icons and graphics
-- [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) — Color-independent data visualization encoding
-- [Forms Accessibility Best Practices](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md) — Error state design, focus styles, and label contrast
-- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) — Focus management and visible focus indicators
-- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) — Providing user-controlled contrast and color preferences
-- [Print Accessibility Best Practices](./PRINT_ACCESSIBILITY_BEST_PRACTICES.md) — Contrast for print and grayscale output
+| Failure | Correction |
+|:---|:---|
+| Muted or placeholder text is too faint. | Measure it as text and meet the applicable text threshold. |
+| A token is labeled “accessible” without naming its paired background. | Document and test approved foreground-background pairs. |
+| A pale border is assumed to identify a control. | Ensure the required component boundary or other identifying visual information reaches 3:1. |
+| Errors or required fields use red as the only cue. | Add visible text, an icon, a pattern, or another non-color cue. |
+| Links in prose differ only by color. | Keep a persistent underline. |
+| Focus works on white but disappears on cards or images. | Test every surface and use a robust one- or two-color indicator. |
+| `outline: none` removes browser focus with no dependable replacement. | Preserve the browser indicator or provide a tested replacement. |
+| Light mode passes but dark mode, visited links, or hover states fail. | Test every state in every supported theme. |
+| Text is placed directly over an uncontrolled image or gradient. | Add a controlled backing surface or test the least favorable region. |
+| `opacity` is used to create secondary text. | Use an explicit foreground color validated against the final background. |
+| Custom graphics disappear in forced-colors mode. | Use semantic HTML, `currentColor`, system colors, and targeted forced-colors fixes. |
+| An automated scan reports no violations, so the page is declared conformant. | Complete manual color, focus, state, graphic, and forced-colors testing. |
+
+---
+
+## 16. Definition of Done
+
+- [ ] Normal text and images of text meet 4.5:1 or a documented exception.
+- [ ] Large text and images of large text meet 3:1 or a documented exception.
+- [ ] Required component boundaries, icons, controls, and states meet 3:1 against relevant adjacent colors.
+- [ ] Required graphical information meets 3:1 against relevant adjacent colors.
+- [ ] Color is never the only visual cue for meaning, state, or action.
+- [ ] Links in prose have a dependable non-color distinction.
+- [ ] Focus is visible on every keyboard-operable element and on every surface.
+- [ ] Every supported theme and component state has been tested.
+- [ ] Images, gradients, transparency, overlays, placeholder text, visited links, autofill, and text selection have been reviewed.
+- [ ] Forced-colors mode preserves meaning and operability.
+- [ ] Automated tests run against rendered pages, with manual review for incomplete coverage.
+- [ ] Approved design-token pairings are documented and tested.
+- [ ] CSS validation and linting run locally and in continuous integration.
+
+---
+
+## 17. Related Guides
+
+- [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
+- [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Forms Accessibility Best Practices](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Print Accessibility Best Practices](./PRINT_ACCESSIBILITY_BEST_PRACTICES.md)
 
 ---
 
 ## References
 
-### W3C Specifications
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+- [Understanding 1.4.1: Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
+- [Understanding 1.4.3: Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [Understanding 1.4.5: Images of Text](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text.html)
+- [Understanding 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [Understanding 2.4.7: Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [Understanding 2.4.13: Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)
+- [Technique G183: Links identified by color and an additional visual cue](https://www.w3.org/WAI/WCAG22/Techniques/general/G183)
+- [Technique C40: Two-color focus indicator](https://www.w3.org/WAI/WCAG22/Techniques/css/C40)
+- [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/)
+- [Media Queries Level 5: `prefers-contrast`](https://www.w3.org/TR/mediaqueries-5/#prefers-contrast)
+- [WCAG 3.0 Working Draft](https://www.w3.org/TR/wcag-3.0/)
 
-- [WCAG 2.2 Understanding 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
-- [WCAG 2.2 Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
-- [WCAG 2.2 Understanding 1.4.6 Contrast (Enhanced)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html)
-- [WCAG 2.2 Understanding 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
-- [WCAG 2.2 Understanding 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)
-- [WCAG 2.2 Technique C40: Creating a two-color focus indicator](https://www.w3.org/WAI/WCAG22/Techniques/css/C40)
-- [CSS Color Adjust Module Level 1 (`forced-colors`)](https://www.w3.org/TR/css-color-adjust-1/)
+### Machine-readable standards
 
-### Machine-Readable Standards
+For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld):
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
-
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) — Machine-readable WCAG 2.2 normative content
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) — Relationships across WCAG/CSS/HTML standards
-
-### Additional Reading
-
-- [WebAIM: Contrast and Color Accessibility](https://webaim.org/articles/contrast/)
-- [MDN: Understanding WCAG / Color Contrast](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG/Perceivable/Color_contrast)
-- [Deque University: Color Contrast Checklist](https://dequeuniversity.com/checklists/web/color-contrast)
-- [Section 508: Accessibility Bytes — Color Contrast](https://www.section508.gov/blog/accessibility-bytes/color-contrast/)
-- [Make Things Accessible: Contrast Requirements for WCAG 2.2 Level AA](https://www.makethingsaccessible.com/guides/contrast-requirements-for-wcag-2-2-level-aa/)
-- [a11y-collective: Colour Contrast for Accessibility](https://www.a11y-collective.com/blog/colour-contrast-for-accessibility/)
-- [a11y-collective: Focus Indicator Guide](https://www.a11y-collective.com/blog/focus-indicator/)
-- [APCA Contrast Calculator](https://apcacontrast.com/)
-- [SAPC-APCA GitHub Repository](https://github.com/Myndex/SAPC-APCA)
-- [MDN: forced-colors media feature](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors)
-- [Smashing Magazine: Inclusive Dark Mode — Designing Accessible Dark Themes](https://www.smashingmagazine.com/2025/04/inclusive-dark-mode-designing-accessible-dark-themes/)
-- [Sara Soueidan: A guide to designing accessible, WCAG-conformant focus indicators](https://www.sarasoueidan.com/blog/focus-indicators/)
-- [Silktide: WCAG 2.4.13 Focus Appearance](https://silktide.com/accessibility-guide/the-wcag-standard/2-4/navigable/2-4-13-focus-appearance/)
-- [W3C WCAG GitHub: Focus appearance discussion](https://github.com/w3c/wcag/issues/1847)
+- [WCAG 2.2 normative content in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [Standards link graph in YAML](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
 
 ---
 
