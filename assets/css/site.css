@@ -599,9 +599,9 @@ textarea {
   padding: 0.4rem 0;
 }
 
-/* ── Three-option theme selector (radiogroup) ── */
+/* ── Three-option theme selector (group with native buttons) ── */
 
-#theme-mode-group {
+#theme-selector {
   display: inline-flex;
   gap: 2px;
   border: 1px solid var(--line);
@@ -613,14 +613,15 @@ textarea {
 .theme-mode-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.35rem 0.45rem;
-  border: 1px solid transparent;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border: 2px solid transparent;
   border-radius: 4px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   line-height: 0;
+  font-size: 0.85rem;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -641,23 +642,24 @@ textarea {
 }
 
 /* Selected state — vibrant icon colour per mode */
-.theme-mode-btn[aria-checked="true"] {
-  background: var(--bg-soft);
+.theme-mode-btn[aria-pressed="true"] {
   border-color: var(--line);
+  font-weight: 600;
+  background: var(--bg-soft);
 }
 
 /* Sun → warm amber */
-.theme-mode-btn[data-theme-value="light"][aria-checked="true"] {
+.theme-mode-btn[data-theme-value="light"][aria-pressed="true"] {
   color: #f59e0b;
 }
 
 /* Moon → cool blue */
-.theme-mode-btn[data-theme-value="dark"][aria-checked="true"] {
+.theme-mode-btn[data-theme-value="dark"][aria-pressed="true"] {
   color: #60a5fa;
 }
 
 /* Monitor → green */
-.theme-mode-btn[data-theme-value="system"][aria-checked="true"] {
+.theme-mode-btn[data-theme-value="system"][aria-pressed="true"] {
   color: #34d399;
 }
 
@@ -874,12 +876,12 @@ textarea {
   }
 
   /* Restore theme selector border */
-  #theme-mode-group {
+  #theme-selector {
     border: 1px solid CanvasText;
   }
 
   /* Restore selected button appearance */
-  .theme-mode-btn[aria-checked="true"] {
+  .theme-mode-btn[aria-pressed="true"] {
     border: 2px solid Highlight;
     background: Highlight;
     color: HighlightText;

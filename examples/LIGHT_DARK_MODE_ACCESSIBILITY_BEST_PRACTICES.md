@@ -242,21 +242,22 @@ If providing manual theme controls:
 
 #### Toggle control design
 
-Use a three-option control for **Light**, **Dark**, and **System**:
+Use a three-option control for **System**, **Light**, and **Dark**:
 
-- **Control model**: Use a radiogroup with three options (`light`, `dark`, `system`) so the selected state is explicit
-- **Visual affordance**: Use sun/moon/system icons as supporting visuals, not the only state indicator
+- **Control model**: Use a labelled group containing three native `<button type="button">` elements with `aria-pressed` for the selected option
+- **Visual affordance**: Use sun/moon/system icons as supporting visuals with visible text labels
 - **Placement**: Position in the top-right corner of the header in both desktop and mobile views
 - **Scroll behavior**: Do not make the toggle fixed/sticky; it should remain in normal document flow within the header
-- **Keyboard navigation**: Place the toggle in the DOM **after** navigation/menu items so it appears later in the tab order
-- **Keyboard interaction**: Make the radiogroup a single Tab stop and support Arrow keys, Home/End, Space, and Enter to change the selected option
+- **Keyboard navigation**: Each button is a separate Tab stop — use standard native button behaviour (Tab, Shift+Tab, Enter, Space)
+- **Do NOT** use custom keyboard handlers where native button behaviour already provides the required functionality
+- **Do NOT** change the theme when arrow-key focus moves — theme changes only on explicit activation (Enter, Space, click)
 - **Language consideration**: This guidance assumes left-to-right (LTR) languages
 
 #### HTML structure
 
 ```html
 <header>
-  <nav>
+  <nav aria-label="Main navigation">
     <a href="/">Home</a>
     <a href="/about">About</a>
     <a href="/contact">Contact</a>
@@ -264,35 +265,26 @@ Use a three-option control for **Light**, **Dark**, and **System**:
   </nav>
 
   <!-- Theme control comes after navigation for proper tab order -->
-  <div id="theme-mode-group" role="radiogroup" aria-label="Color theme">
-    <button type="button" class="theme-mode-btn" role="radio" aria-checked="false" tabindex="-1" data-theme-value="light">
-      <svg aria-hidden="true" class="theme-icon" viewBox="0 0 24 24" width="20" height="20">
+  <div role="group" aria-label="Colour theme" id="theme-selector">
+    <button type="button" class="theme-mode-btn" aria-pressed="false" data-theme-value="system">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
+        <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4h18v12H3zM8 20h8"/>
+      </svg>
+      <span>System</span>
+    </button>
+
+    <button type="button" class="theme-mode-btn" aria-pressed="false" data-theme-value="light">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
         <circle cx="12" cy="12" r="5" fill="currentColor"/>
-        <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
       </svg>
       <span>Light</span>
     </button>
 
-    <button type="button" class="theme-mode-btn" role="radio" aria-checked="false" tabindex="-1" data-theme-value="dark">
-      <svg aria-hidden="true" class="theme-icon" viewBox="0 0 24 24" width="20" height="20">
+    <button type="button" class="theme-mode-btn" aria-pressed="true" data-theme-value="dark">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
         <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
       </svg>
       <span>Dark</span>
-    </button>
-
-    <button type="button" class="theme-mode-btn" role="radio" aria-checked="true" tabindex="0" data-theme-value="system">
-      <span>System</span>
-      <svg aria-hidden="true" class="theme-mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 24">
-        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-        </g>
-        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M36 3a6.364 6.364 0 0 0 9 9 9 9 0 1 1-9-9"/>
-        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" transform="translate(48)">
-          <rect width="18" height="11" x="3" y="4" rx="2"/>
-          <path d="M2 18h20"/>
-        </g>
-      </svg>
     </button>
   </div>
 </header>
@@ -323,47 +315,39 @@ nav {
 }
 
 .theme-mode-btn {
-  /* Optional: margin-left: auto provides fallback positioning if additional
-     header items are added. Currently, justify-content: space-between on
-     parent handles the layout with nav and this control. */
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem;
-  border: 0;
-  background-color: var(--color-background);
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.375rem;
+  background: var(--color-surface);
   color: var(--color-text);
+  font-size: 1rem;
   cursor: pointer;
-  border-radius: 4px;
 }
 
 .theme-mode-btn:hover {
   background-color: var(--color-hover);
 }
 
+/* Focus indicator — visible outline, not box-shadow */
 .theme-mode-btn:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-.theme-mode-btn[aria-checked="true"] {
-  background-color: var(--color-hover);
-  border: 1px solid var(--color-border);
+/* Selected state — distinct from focus */
+.theme-mode-btn[aria-pressed="true"] {
+  border-color: var(--color-link);
+  font-weight: 600;
+  background: var(--color-background);
 }
 
-.theme-icon,
-.theme-mode-icon {
+.theme-mode-btn svg {
   display: block;
-}
-
-.theme-icon {
   width: 20px;
   height: 20px;
-}
-
-.theme-mode-icon {
-  width: 54px;
-  height: 18px;
 }
 
 /* Mobile responsive */
@@ -381,139 +365,90 @@ nav {
 #### JavaScript implementation
 
 ```javascript
-const themeModeButtons = document.querySelectorAll('.theme-mode-btn');
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-const modeOrder = ['light', 'dark', 'system'];
+const STORAGE_KEY = 'theme-mode';
+const VALID_MODES = ['system', 'light', 'dark'];
+const buttons = document.querySelectorAll('.theme-mode-btn');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+let currentMode = 'system';
 
-// Safe localStorage access keeps controls working in restricted environments.
 function getStoredMode() {
   try {
-    return localStorage.getItem('theme-mode');
-  } catch {
-    return null;
+    var stored = localStorage.getItem(STORAGE_KEY);
+    return VALID_MODES.indexOf(stored) !== -1 ? stored : 'system';
+  } catch (e) {
+    return 'system';
   }
 }
 
-function setStoredMode(value) {
+function setStoredMode(mode) {
   try {
-    localStorage.setItem('theme-mode', value);
-  } catch {
-    // Storage is unavailable; keep the current-session behavior.
+    localStorage.setItem(STORAGE_KEY, mode);
+  } catch (e) {
+    /* Storage unavailable; preference still works for current session. */
   }
 }
 
-// Persist user mode as light, dark, or system.
-const storedMode = getStoredMode();
-let mode = modeOrder.includes(storedMode) ? storedMode : 'system';
-
-function resolveTheme(activeMode) {
-  if (activeMode === 'system') {
-    return prefersDarkScheme.matches ? 'dark' : 'light';
+function resolveTheme(mode) {
+  if (mode === 'system') {
+    return prefersDark.matches ? 'dark' : 'light';
   }
-  return activeMode;
+  return mode;
 }
 
-function updateSelection(activeMode) {
-  themeModeButtons.forEach((button) => {
-    const checked = button.dataset.themeValue === activeMode;
-    button.setAttribute('aria-checked', checked ? 'true' : 'false');
-    button.setAttribute('tabindex', checked ? '0' : '-1');
-  });
-}
-
-function applyMode(activeMode) {
-  const resolvedTheme = resolveTheme(activeMode);
-
-  // Track both chosen mode and resolved theme for styling/debugging.
-  document.documentElement.setAttribute('data-theme-mode', activeMode);
-  document.documentElement.setAttribute('data-theme', resolvedTheme);
-
-  updateSelection(activeMode);
-}
-
-function getModeIndex(activeMode) {
-  return modeOrder.indexOf(activeMode);
-}
-
-function focusModeByIndex(index) {
-  const normalizedIndex = (index + modeOrder.length) % modeOrder.length;
-  const nextMode = modeOrder[normalizedIndex];
-  const nextButton = document.querySelector(`[data-theme-value="${nextMode}"]`);
-
-  if (!nextButton) {
-    return;
+function updateButtons(activeMode) {
+  for (var i = 0; i < buttons.length; i++) {
+    var btn = buttons[i];
+    var isActive = btn.getAttribute('data-theme-value') === activeMode;
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   }
+}
 
-  mode = nextMode;
+function applyMode(mode) {
+  currentMode = mode;
+  var resolved = resolveTheme(mode);
+  document.documentElement.setAttribute('data-theme-mode', mode);
+  document.documentElement.setAttribute('data-theme', resolved);
+  updateButtons(mode);
+}
+
+function handleActivation(event) {
+  var btn = event.currentTarget;
+  var mode = btn.getAttribute('data-theme-value');
   setStoredMode(mode);
   applyMode(mode);
-  nextButton.focus();
 }
 
-themeModeButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    mode = button.dataset.themeValue;
-    setStoredMode(mode);
-    applyMode(mode);
-  });
+/* Attach click handlers — no keyboard handlers needed */
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', handleActivation);
+}
 
-  button.addEventListener('keydown', (event) => {
-    const currentIndex = getModeIndex(mode);
-
-    switch (event.key) {
-      case 'ArrowRight':
-      case 'ArrowDown':
-        event.preventDefault();
-        focusModeByIndex(currentIndex + 1);
-        break;
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        event.preventDefault();
-        focusModeByIndex(currentIndex - 1);
-        break;
-      case 'Home':
-        event.preventDefault();
-        focusModeByIndex(0);
-        break;
-      case 'End':
-        event.preventDefault();
-        focusModeByIndex(modeOrder.length - 1);
-        break;
-      case ' ':
-      case 'Enter':
-        event.preventDefault();
-        mode = button.dataset.themeValue;
-        setStoredMode(mode);
-        applyMode(mode);
-        break;
-      default:
-        break;
-    }
-  });
-});
-
-prefersDarkScheme.addEventListener('change', (e) => {
-  // Only react automatically while user has selected system mode.
-  if (mode === 'system') {
+/* Listen for OS preference changes */
+prefersDark.addEventListener('change', function() {
+  if (currentMode === 'system') {
     applyMode('system');
   }
 });
 
-applyMode(mode);
+/* Initialize */
+applyMode(getStoredMode());
 ```
 
 #### Requirements
 
-- Provide three explicit options: `light`, `dark`, and `system`
-- Persist selected mode across sessions in localStorage (for example, `theme-mode`) when storage is available
+- Provide three explicit options: `system`, `light`, and `dark` visible simultaneously
+- Use native `<button type="button">` elements with `aria-pressed` for selected state
+- Do NOT use custom `role="radio"` elements or radiogroup semantics
+- Do NOT use a single cycling button or two-state toggle
+- Theme changes only on explicit activation (Enter, Space, click) — focus alone does NOT change the theme
+- Persist selected mode across sessions in localStorage (key: `theme-mode`) when storage is available
 - Wrap localStorage reads/writes in `try/catch` so controls still work when persistence is blocked
+- Validate stored values — fall back to `system` for invalid values
 - When `system` is selected, resolve visual theme from `prefers-color-scheme`
 - While in `system` mode, update automatically if OS/browser preference changes
-- Expose selected state programmatically (`role="radio"` with `aria-checked`)
-- Implement roving tabindex so only the selected option is in the Tab order
-- Support keyboard control with Arrow keys, Home/End, Space, and Enter
 - Ensure the control appears in keyboard tab order **after** navigation items
 - Position control in top-right corner of header (not fixed/sticky)
+- Use visible text labels (System, Light, Dark) — icons supplement but do not replace labels
 
 ---
 

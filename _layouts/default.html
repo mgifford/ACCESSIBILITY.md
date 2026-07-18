@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
 
     {% assign page_title = page.title | default: site.title %}
     {% if page.title %}
@@ -49,16 +50,14 @@
     <!-- Anti-flash: apply saved theme before first paint -->
     <script>
       (function () {
-        var savedMode = null;
-        try { savedMode = localStorage.getItem('theme-mode'); } catch (e) {}
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        var mode = savedMode || 'system';
-        function resolve(m) {
-          if (m === 'system') return prefersDark.matches ? 'dark' : 'light';
-          return m;
-        }
+        var stored = null;
+        try { stored = localStorage.getItem('theme-mode'); } catch (e) {}
+        var mode = (stored === 'light' || stored === 'dark') ? stored : 'system';
+        var resolved = mode === 'system'
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : mode;
         document.documentElement.setAttribute('data-theme-mode', mode);
-        document.documentElement.setAttribute('data-theme', resolve(mode));
+        document.documentElement.setAttribute('data-theme', resolved);
       })();
     </script>
   </head>
@@ -96,14 +95,26 @@
             </button>
           </form>
 
-          <!-- Three-option theme selector: light / dark / system -->
-          <div id="theme-mode-group" role="radiogroup" aria-label="Colour theme">
+          <!-- Three-option theme selector: system / light / dark -->
+          <div role="group" aria-label="Colour theme" id="theme-selector">
             <button
               type="button"
               class="theme-mode-btn"
-              role="radio"
-              aria-checked="false"
-              tabindex="-1"
+              aria-pressed="false"
+              data-theme-value="system"
+              aria-label="System colour scheme"
+            >
+              <!-- Monitor/system icon -->
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4h18v12H3zM8 20h8"/>
+              </svg>
+              <span>System</span>
+            </button>
+
+            <button
+              type="button"
+              class="theme-mode-btn"
+              aria-pressed="false"
               data-theme-value="light"
               aria-label="Light mode"
             >
@@ -112,14 +123,13 @@
                 <circle cx="12" cy="12" r="5" fill="currentColor"/>
                 <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
               </svg>
+              <span>Light</span>
             </button>
 
             <button
               type="button"
               class="theme-mode-btn"
-              role="radio"
-              aria-checked="false"
-              tabindex="-1"
+              aria-pressed="true"
               data-theme-value="dark"
               aria-label="Dark mode"
             >
@@ -127,21 +137,7 @@
               <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
               </svg>
-            </button>
-
-            <button
-              type="button"
-              class="theme-mode-btn"
-              role="radio"
-              aria-checked="true"
-              tabindex="0"
-              data-theme-value="system"
-              aria-label="System colour scheme"
-            >
-              <!-- Monitor/system icon -->
-              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
-                <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4h18v12H3zM8 20h8"/>
-              </svg>
+              <span>Dark</span>
             </button>
           </div>
         </div>
@@ -181,106 +177,69 @@
     </div>
     <script>
       (function () {
-        var themeModeButtons = document.querySelectorAll('.theme-mode-btn');
-        var prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-        var modeOrder = ['light', 'dark', 'system'];
+        var STORAGE_KEY = 'theme-mode';
+        var VALID_MODES = ['system', 'light', 'dark'];
+        var buttons = document.querySelectorAll('.theme-mode-btn');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        var currentMode = 'system';
 
         function getStoredMode() {
-          try { return localStorage.getItem('theme-mode'); } catch (e) { return null; }
+          try {
+            var stored = localStorage.getItem(STORAGE_KEY);
+            return VALID_MODES.indexOf(stored) !== -1 ? stored : 'system';
+          } catch (e) {
+            return 'system';
+          }
         }
 
         function setStoredMode(mode) {
-          try { localStorage.setItem('theme-mode', mode); } catch (e) {}
+          try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) {}
         }
 
-        var mode = getStoredMode() || 'system';
-
-        function resolveTheme(activeMode) {
-          if (activeMode === 'system') {
-            return prefersDarkScheme.matches ? 'dark' : 'light';
+        function resolveTheme(mode) {
+          if (mode === 'system') {
+            return prefersDark.matches ? 'dark' : 'light';
           }
-          return activeMode;
+          return mode;
         }
 
-        function updateSelection(activeMode) {
-          themeModeButtons.forEach(function (button) {
-            var checked = button.dataset.themeValue === activeMode;
-            button.setAttribute('aria-checked', checked ? 'true' : 'false');
-            button.setAttribute('tabindex', checked ? '0' : '-1');
-          });
+        function updateButtons(activeMode) {
+          for (var i = 0; i < buttons.length; i++) {
+            var btn = buttons[i];
+            var isActive = btn.getAttribute('data-theme-value') === activeMode;
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          }
         }
 
-        function applyMode(activeMode) {
-          var resolvedTheme = resolveTheme(activeMode);
-          document.documentElement.setAttribute('data-theme-mode', activeMode);
-          document.documentElement.setAttribute('data-theme', resolvedTheme);
-          updateSelection(activeMode);
+        function applyMode(mode) {
+          currentMode = mode;
+          var resolved = resolveTheme(mode);
+          document.documentElement.setAttribute('data-theme-mode', mode);
+          document.documentElement.setAttribute('data-theme', resolved);
+          updateButtons(mode);
         }
 
-        function getModeIndex(activeMode) {
-          return modeOrder.indexOf(activeMode);
-        }
-
-        function focusModeByIndex(index) {
-          var normalizedIndex = (index + modeOrder.length) % modeOrder.length;
-          var nextMode = modeOrder[normalizedIndex];
-          var nextButton = document.querySelector('[data-theme-value="' + nextMode + '"]');
-          if (!nextButton) return;
-          mode = nextMode;
+        function handleActivation(event) {
+          var btn = event.currentTarget;
+          var mode = btn.getAttribute('data-theme-value');
           setStoredMode(mode);
           applyMode(mode);
-          nextButton.focus();
         }
 
-        themeModeButtons.forEach(function (button) {
-          button.addEventListener('click', function () {
-            mode = button.dataset.themeValue;
-            setStoredMode(mode);
-            applyMode(mode);
-          });
+        /* Attach click handlers — no keyboard handlers needed */
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].addEventListener('click', handleActivation);
+        }
 
-          button.addEventListener('keydown', function (event) {
-            var currentIndex = getModeIndex(mode);
-
-            switch (event.key) {
-              case 'ArrowRight':
-              case 'ArrowDown':
-                event.preventDefault();
-                focusModeByIndex(currentIndex + 1);
-                break;
-              case 'ArrowLeft':
-              case 'ArrowUp':
-                event.preventDefault();
-                focusModeByIndex(currentIndex - 1);
-                break;
-              case 'Home':
-                event.preventDefault();
-                focusModeByIndex(0);
-                break;
-              case 'End':
-                event.preventDefault();
-                focusModeByIndex(modeOrder.length - 1);
-                break;
-              case ' ':
-              case 'Enter':
-                event.preventDefault();
-                mode = button.dataset.themeValue;
-                setStoredMode(mode);
-                applyMode(mode);
-                break;
-              default:
-                break;
-            }
-          });
-        });
-
-        prefersDarkScheme.addEventListener('change', function () {
-          if (mode === 'system') {
+        /* Listen for OS preference changes */
+        prefersDark.addEventListener('change', function() {
+          if (currentMode === 'system') {
             applyMode('system');
           }
         });
 
-        applyMode(mode);
+        /* Initialize */
+        applyMode(getStoredMode());
       })();
     </script>
   </body>
