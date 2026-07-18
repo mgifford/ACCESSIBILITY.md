@@ -640,11 +640,25 @@ textarea {
   outline-offset: 2px;
 }
 
-/* Selected state */
+/* Selected state — vibrant icon colour per mode */
 .theme-mode-btn[aria-checked="true"] {
   background: var(--bg-soft);
-  color: var(--text);
   border-color: var(--line);
+}
+
+/* Sun → warm amber */
+.theme-mode-btn[data-theme-value="light"][aria-checked="true"] {
+  color: #f59e0b;
+}
+
+/* Moon → cool blue */
+.theme-mode-btn[data-theme-value="dark"][aria-checked="true"] {
+  color: #60a5fa;
+}
+
+/* Monitor → green */
+.theme-mode-btn[data-theme-value="system"][aria-checked="true"] {
+  color: #34d399;
 }
 
 /* ── Screen-reader-only utility ── */
