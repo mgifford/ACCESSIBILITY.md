@@ -19,5 +19,9 @@ exclude = [
   # Medium returns 403 to automated link checkers even for valid articles
   "^https://medium\\.com",
   # npmjs.com returns 403 to automated link checkers even for valid packages
-  "^https://www\\.npmjs\\.com"
+  "^https://www\\.npmjs\\.com",
+  # Harvard accessibility site returns 403 to automated link checkers
+  "^https://accessibility\\.huit\\.harvard\\.edu",
+  # Barrierbreak returns 202 to automated link checkers
+  "^https://www\\.barrierbreak\\.com"
 ]
