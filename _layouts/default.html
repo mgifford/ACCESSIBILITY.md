@@ -49,8 +49,16 @@
     <!-- Anti-flash: apply saved theme before first paint -->
     <script>
       (function () {
-        var savedTheme = localStorage.getItem('theme');
-        if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+        var savedMode = null;
+        try { savedMode = localStorage.getItem('theme-mode'); } catch (e) {}
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        var mode = savedMode || 'system';
+        function resolve(m) {
+          if (m === 'system') return prefersDark.matches ? 'dark' : 'light';
+          return m;
+        }
+        document.documentElement.setAttribute('data-theme-mode', mode);
+        document.documentElement.setAttribute('data-theme', resolve(mode));
       })();
     </script>
   </head>
@@ -88,19 +96,54 @@
             </button>
           </form>
 
-          <!-- Theme toggle: placed last in header for proper keyboard tab order -->
-          <!-- aria-label is updated by the inline script below before first interaction -->
-          <button id="theme-toggle" aria-label="Switch to dark mode" type="button">
-            <!-- Sun icon: shown in dark mode — clicking switches to light -->
-            <svg aria-hidden="true" focusable="false" class="theme-icon sun-icon" viewBox="0 0 24 24" width="20" height="20">
-              <circle cx="12" cy="12" r="5" fill="currentColor"/>
-              <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-            </svg>
-            <!-- Moon icon: shown in light mode — clicking switches to dark -->
-            <svg aria-hidden="true" focusable="false" class="theme-icon moon-icon" viewBox="0 0 24 24" width="20" height="20">
-              <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-            </svg>
-          </button>
+          <!-- Three-option theme selector: light / dark / system -->
+          <div id="theme-mode-group" role="radiogroup" aria-label="Colour theme">
+            <button
+              type="button"
+              class="theme-mode-btn"
+              role="radio"
+              aria-checked="false"
+              tabindex="-1"
+              data-theme-value="light"
+              aria-label="Light mode"
+            >
+              <!-- Sun icon -->
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
+                <circle cx="12" cy="12" r="5" fill="currentColor"/>
+                <path fill="currentColor" d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              class="theme-mode-btn"
+              role="radio"
+              aria-checked="false"
+              tabindex="-1"
+              data-theme-value="dark"
+              aria-label="Dark mode"
+            >
+              <!-- Moon icon -->
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              class="theme-mode-btn"
+              role="radio"
+              aria-checked="true"
+              tabindex="0"
+              data-theme-value="system"
+              aria-label="System colour scheme"
+            >
+              <!-- Monitor/system icon -->
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M3 4h18v12H3zM8 20h8"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
       <main id="main-content" tabindex="-1">
@@ -138,36 +181,106 @@
     </div>
     <script>
       (function () {
-        var toggle = document.getElementById('theme-toggle');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        var saved = localStorage.getItem('theme');
-        var current = saved || (prefersDark.matches ? 'dark' : 'light');
-        var hasOverride = !!saved;
+        var themeModeButtons = document.querySelectorAll('.theme-mode-btn');
+        var prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        var modeOrder = ['light', 'dark', 'system'];
 
-        function apply(theme) {
-          document.documentElement.setAttribute('data-theme', theme);
-          toggle.setAttribute(
-            'aria-label',
-            theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-          );
+        function getStoredMode() {
+          try { return localStorage.getItem('theme-mode'); } catch (e) { return null; }
         }
 
-        toggle.addEventListener('click', function () {
-          var next = current === 'dark' ? 'light' : 'dark';
-          current = next;
-          hasOverride = true;
-          localStorage.setItem('theme', next);
-          apply(next);
+        function setStoredMode(mode) {
+          try { localStorage.setItem('theme-mode', mode); } catch (e) {}
+        }
+
+        var mode = getStoredMode() || 'system';
+
+        function resolveTheme(activeMode) {
+          if (activeMode === 'system') {
+            return prefersDarkScheme.matches ? 'dark' : 'light';
+          }
+          return activeMode;
+        }
+
+        function updateSelection(activeMode) {
+          themeModeButtons.forEach(function (button) {
+            var checked = button.dataset.themeValue === activeMode;
+            button.setAttribute('aria-checked', checked ? 'true' : 'false');
+            button.setAttribute('tabindex', checked ? '0' : '-1');
+          });
+        }
+
+        function applyMode(activeMode) {
+          var resolvedTheme = resolveTheme(activeMode);
+          document.documentElement.setAttribute('data-theme-mode', activeMode);
+          document.documentElement.setAttribute('data-theme', resolvedTheme);
+          updateSelection(activeMode);
+        }
+
+        function getModeIndex(activeMode) {
+          return modeOrder.indexOf(activeMode);
+        }
+
+        function focusModeByIndex(index) {
+          var normalizedIndex = (index + modeOrder.length) % modeOrder.length;
+          var nextMode = modeOrder[normalizedIndex];
+          var nextButton = document.querySelector('[data-theme-value="' + nextMode + '"]');
+          if (!nextButton) return;
+          mode = nextMode;
+          setStoredMode(mode);
+          applyMode(mode);
+          nextButton.focus();
+        }
+
+        themeModeButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            mode = button.dataset.themeValue;
+            setStoredMode(mode);
+            applyMode(mode);
+          });
+
+          button.addEventListener('keydown', function (event) {
+            var currentIndex = getModeIndex(mode);
+
+            switch (event.key) {
+              case 'ArrowRight':
+              case 'ArrowDown':
+                event.preventDefault();
+                focusModeByIndex(currentIndex + 1);
+                break;
+              case 'ArrowLeft':
+              case 'ArrowUp':
+                event.preventDefault();
+                focusModeByIndex(currentIndex - 1);
+                break;
+              case 'Home':
+                event.preventDefault();
+                focusModeByIndex(0);
+                break;
+              case 'End':
+                event.preventDefault();
+                focusModeByIndex(modeOrder.length - 1);
+                break;
+              case ' ':
+              case 'Enter':
+                event.preventDefault();
+                mode = button.dataset.themeValue;
+                setStoredMode(mode);
+                applyMode(mode);
+                break;
+              default:
+                break;
+            }
+          });
         });
 
-        prefersDark.addEventListener('change', function (e) {
-          if (!hasOverride) {
-            current = e.matches ? 'dark' : 'light';
-            apply(current);
+        prefersDarkScheme.addEventListener('change', function () {
+          if (mode === 'system') {
+            applyMode('system');
           }
         });
 
-        apply(current);
+        applyMode(mode);
       })();
     </script>
   </body>

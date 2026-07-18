@@ -1693,10 +1693,18 @@ sources:
   domain: Léonie Watson (Tink)
   url: tink.uk
   full_url: https://tink.uk
-  best_for: general accessibility
-  description: Personal site of a director at TPGi and a well-known accessibility advocate and expert.
-  authority_level: to_review
+  best_for: SVG accessibility, accessible SVG flowcharts, screen reader behaviour, ARIA, live regions, keyboard
+  description: >
+    Personal site of Léonie Watson, accessibility consultant and W3C invited expert.
+    Authoritative research on accessible SVG flowcharts, ARIA live regions, and
+    screen reader announcement behaviour. Referenced in WAI working groups.
+  authority_level: community-expert
   topic_tags:
+  - svg
+  - aria
+  - screen-reader
+  - keyboard
+  - development
   - captions
   - audio-description
   - assistive-technology
@@ -1705,6 +1713,10 @@ sources:
   last_reviewed: null
   owner: Léonie Watson (Tink)
   license: unknown
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Treat as restricted pending author confirmation. Cite and link;
+    do not reproduce content wholesale or use for AI training.
   status: active
 - id: level-access
   domain: Level Access
@@ -1721,24 +1733,6 @@ sources:
   wcag_version: []
   last_reviewed: null
   owner: Level Access
-  license: unknown
-  status: active
-- id: robert-dodd-ai-accessibility-research
-  domain: linkedin.com
-  url: https://www.linkedin.com/pulse/current-state-digital-accessibility-research-ai-what-137-robert-dodd-qb7ie
-  full_url: https://www.linkedin.com/pulse/current-state-digital-accessibility-research-ai-what-137-robert-dodd-qb7ie
-  best_for: AI, accessibility research, academic research
-  description: Robert Dodd's analysis of 137 academic papers mapping current research trends, gaps, and opportunities at the intersection of AI and digital accessibility.
-  authority_level: to_review
-  topic_tags:
-  - ai
-  - research
-  - wcag
-  - assistive-technology
-  jurisdiction: global
-  wcag_version: []
-  last_reviewed: '2026-04-05'
-  owner: Robert Dodd
   license: unknown
   status: active
 - id: linkedin-accessibility
@@ -2483,28 +2477,6 @@ sources:
   owner: WAI-Tools Project
   license: W3C Software License
   status: active
-- id: wai-earl
-  domain: W3C EARL (Evaluation and Report Language)
-  url: https://www.w3.org/WAI/standards-guidelines/earl/
-  full_url: https://www.w3.org/WAI/standards-guidelines/earl/
-  best_for: accessibility test results, machine-readable reports, interoperable reporting, bug reporting
-  description: W3C standard format for expressing accessibility test results in a machine-readable RDF format. Used to create interoperable, tool-agnostic accessibility evaluation reports.
-  authority_level: authoritative
-  topic_tags:
-  - testing
-  - reporting
-  - rdf
-  - evaluation
-  - machine-readable
-  jurisdiction: global
-  wcag_version:
-  - '2.0'
-  - '2.1'
-  - '2.2'
-  last_reviewed: null
-  owner: W3C
-  license: W3C Document License
-  status: active
 - id: wai-yaml-ld
   domain: wai-yaml-ld
   url: https://github.com/mgifford/wai-yaml-ld
@@ -2727,16 +2699,18 @@ sources:
   full_url: https://cariefisher.com/
   best_for: accessibility articles, tutorials, speaking resources
   description: Personal site of Carie Fisher, accessibility advocate and developer, featuring articles, talks, and resources on web accessibility, inclusive design, and WCAG implementation.
-  authority_level: to_review
+  authority_level: community-expert
   topic_tags:
   - wcag
+  - svg
   - design
   - development
   - inclusive-design
-  - captions
-  - audio-description
+  - screen-reader
+  - testing
   - training
   - assistive-technology
+  - audio-description
   jurisdiction: global
   wcag_version:
   - '2.0'
@@ -2745,6 +2719,10 @@ sources:
   last_reviewed: null
   owner: Carie Fisher
   license: unknown
+  ai_scraping: prohibited
+  ai_scraping_notes: >
+    Author does not consent to AI scraping or reproduction. Link to articles;
+    do not fetch, summarise, or reproduce content. Confirm if policy changes.
   status: active
 - id: a11yweekly-com
   domain: A11y Weekly
@@ -3414,177 +3392,240 @@ sources:
   owner: YesLogic Pty Ltd
   license: commercial
   status: active
-- id: ecampus-ontario-accessibility
-  domain: eCampus Ontario Accessibility
-  url: https://accessibility.ecampusontario.ca/
-  full_url: https://accessibility.ecampusontario.ca/accessibility/best-practices/alt-text/
-  best_for: Alternative text best practices, higher education accessibility guidance
-  description: eCampus Ontario digital accessibility resources covering alt text, documents, multimedia, and more for post-secondary education.
-  authority_level: established
-  topic_tags:
-  - alt-text
-  - images
-  - higher-education
-  - wcag
-  jurisdiction: canada
-  wcag_version:
-  - "2.1"
-  last_reviewed: null
-  owner: eCampus Ontario
-  license: unknown
-  status: active
-- id: psu-accessibility-images
-  domain: Penn State University Accessibility — Images
-  url: https://accessibility.psu.edu/
-  full_url: https://accessibility.psu.edu/images/alttext/
-  best_for: Image alt text guidance, higher education accessibility
-  description: Penn State University's accessibility knowledge base covering alt text, image types, and WCAG compliance for web content.
-  authority_level: established
-  topic_tags:
-  - alt-text
-  - images
-  - higher-education
-  - wcag
-  jurisdiction: us
-  wcag_version:
-  - "2.1"
-  last_reviewed: null
-  owner: Penn State University
-  license: unknown
-  status: active
-- id: utoronto-alt-text-guide
-  domain: University of Toronto — Alt Text Best Practices Guide
-  url: https://people.utoronto.ca/
-  full_url: https://people.utoronto.ca/wp-content/uploads/2023/11/Alt-Text-Best-Practices-Guide-PSEC.pdf
-  best_for: Alt text best practices, higher education accessibility documentation
-  description: Comprehensive alt text best practices guide from the University of Toronto People, Equity and Culture team covering image types, writing tips, and decision frameworks.
-  authority_level: established
-  topic_tags:
-  - alt-text
-  - images
-  - higher-education
-  - wcag
-  jurisdiction: canada
-  wcag_version:
-  - "2.1"
-  last_reviewed: "2023-11-01"
-  owner: University of Toronto
-  license: unknown
-  status: inactive
-  status_note: PDF URL returns HTTP 202 (link checker failure as of 2026-04-16); removed from active references
-- id: asu-accessibility-images
-  domain: Arizona State University Accessibility — Images
-  url: https://accessibility.asu.edu/
-  full_url: https://accessibility.asu.edu/articles/images
-  best_for: Image accessibility, alt text guidance for higher education
-  description: Arizona State University accessibility resources covering image alt text requirements, decorative images, and WCAG compliance.
-  authority_level: established
-  topic_tags:
-  - alt-text
-  - images
-  - higher-education
-  - wcag
-  jurisdiction: us
-  wcag_version:
-  - "2.1"
-  last_reviewed: null
-  owner: Arizona State University
-  license: unknown
-  status: active
-- id: udayton-accessibility-alt-text
-  domain: University of Dayton Online Learning — Accessibility Tips
-  url: https://udayton.edu/
-  full_url: https://udayton.edu/blogs/onlinelearning/2026/accessibility-tip-2.php
-  best_for: Alt text writing tips, practical accessibility guidance
-  description: University of Dayton online learning accessibility blog covering practical tips for writing effective alt text and making images accessible.
+
+- id: apca-contrast
+  domain: APCA Contrast (git.apcacontrast.com)
+  url: git.apcacontrast.com
+  full_url: https://git.apcacontrast.com
+  best_for: APCA contrast algorithm, WCAG 3.0 proposed contrast model, advanced perceptual contrast
+  description: >
+    Reference implementation and documentation for APCA (Advanced Perceptual
+    Contrast Algorithm), proposed replacement for WCAG 2.x luminance-ratio contrast
+    in WCAG 3.0. Do not apply to production until WCAG 3.0 is a published
+    Recommendation. For monitoring and research only.
   authority_level: to_review
   topic_tags:
-  - alt-text
-  - images
-  - higher-education
-  jurisdiction: us
-  wcag_version: []
-  last_reviewed: null
-  owner: University of Dayton
-  license: unknown
-  status: active
-- id: digitala11y-bug-reporting
-  domain: DigitalA11y
-  url: digitala11y.com
-  full_url: https://www.digitala11y.com/how-where-to-report-accessibility-bugs/
-  best_for: accessibility bug reporting, issue filing, reporting accessibility violations
-  description: Practical guide on how and where to report accessibility bugs, covering internal and external reporting channels, tools, and templates.
-  authority_level: to_review
-  topic_tags:
-  - bug-reporting
-  - testing
+  - color
+  - contrast
   - wcag
-  - issue-tracking
+  - light-dark-mode
+  jurisdiction: global
+  wcag_version:
+  - 3.0-draft
+  last_reviewed: '2026-03-29'
+  owner: Andrew Somers / Myndex Research
+  license: W3C Community licence
+  status: active
+  ai_scraping: allowed
+
+- id: colorbrewer
+  domain: ColorBrewer
+  url: colorbrewer2.org
+  full_url: https://colorbrewer2.org
+  best_for: colorblind-safe palettes, sequential, diverging, qualitative colour schemes, data visualisation, maps
+  description: >
+    Tool by Cynthia Brewer (Penn State) for selecting colour palettes for maps
+    and data visualisation. Provides sequential, diverging, and qualitative
+    palettes with filters for color-vision-deficiency safe, print-safe, and
+    photocopy-safe combinations. Essential resource for accessible chart design.
+  authority_level: established
+  topic_tags:
+  - color
+  - charts-graphs
+  - maps
+  - design
   jurisdiction: global
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
-  owner: DigitalA11y
+  last_reviewed: '2026-03-29'
+  owner: Cynthia Brewer / Penn State
+  license: Apache-2.0
+  status: active
+  ai_scraping: allowed
+
+- id: focus-trap
+  domain: focus-trap (GitHub)
+  url: github.com/focus-trap/focus-trap
+  full_url: https://github.com/focus-trap/focus-trap
+  best_for: focus trap implementation, dialog accessibility, modal keyboard management
+  description: >
+    Production-ready JavaScript library for trapping focus within a DOM element.
+    Recommended fallback when the native `inert` attribute is unavailable
+    (pre-2023 browsers). MIT licence.
+  authority_level: established
+  topic_tags:
+  - keyboard
+  - aria
+  - development
+  - focus
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: '2026-03-29'
+  owner: focus-trap contributors
+  license: MIT
+  status: active
+  ai_scraping: allowed
+
+- id: hemingway-editor
+  domain: Hemingway Editor
+  url: hemingwayapp.com
+  full_url: https://hemingwayapp.com
+  best_for: readability scoring, Flesch-Kincaid grade level, plain language checking, content design
+  description: >
+    Web and desktop editor that highlights complex sentences, passive voice,
+    and adverbs, and provides a Flesch-Kincaid readability grade level.
+    Useful for checking content against WCAG 3.1.5 Reading Level AAA target
+    of Grade 8 or lower.
+  authority_level: to_review
+  topic_tags:
+  - content-design
+  - plain-language
+  - testing
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-03-29'
+  owner: Adam Long / Ben Long
+  license: proprietary
+  status: active
+  ai_scraping: allowed
+
+- id: leafletjs-accessibility
+  domain: Leaflet.js Accessibility
+  url: leafletjs.com/examples/accessibility/
+  full_url: https://leafletjs.com/examples/accessibility/
+  best_for: Leaflet.js map keyboard support, accessible interactive map implementation
+  description: >
+    Leaflet's official accessibility documentation covering keyboard navigation,
+    screen reader support, and ARIA configuration for interactive maps built
+    with the Leaflet.js library. BSD-2-Clause licence.
+  authority_level: established
+  topic_tags:
+  - maps
+  - keyboard
+  - development
+  jurisdiction: global
+  wcag_version:
+  - '2.1'
+  - '2.2'
+  last_reviewed: '2026-03-29'
+  owner: Leaflet contributors
+  license: BSD-2-Clause
+  status: active
+  ai_scraping: allowed
+
+- id: mermaid-js
+  domain: Mermaid.js
+  url: mermaid.js.org
+  full_url: https://mermaid.js.org
+  best_for: Mermaid diagram accessibility, accTitle/accDescr directives, SVG diagram generation
+  description: >
+    Official documentation for Mermaid.js diagramming library. Includes
+    accessibility configuration (%%accTitle, %%accDescr directives introduced
+    in v9.4), theming, and SVG output options. MIT licence.
+  authority_level: established
+  topic_tags:
+  - svg
+  - mermaid
+  - development
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-03-29'
+  owner: Mermaid contributors
+  license: MIT
+  status: active
+  ai_scraping: allowed
+
+- id: okabe-ito-palette
+  domain: Okabe-Ito Color Universal Design
+  url: jfly.uni-koeln.de/color/
+  full_url: https://jfly.uni-koeln.de/color/
+  best_for: colorblind-safe 8-colour palette, color vision deficiency, data visualisation, scientific figures
+  description: >
+    Masataka Okabe and Kei Ito's colorblind-safe 8-colour palette designed for
+    figures and charts. Handles deuteranopia, protanopia, and tritanopia.
+    Widely recommended as the default qualitative palette for scientific and
+    data visualisation. Hex values: #E69F00 #56B4E9 #009E73 #F0E442
+    #0072B2 #D55E00 #CC79A7 #000000.
+  authority_level: established
+  topic_tags:
+  - color
+  - charts-graphs
+  - design
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-03-29'
+  owner: Masataka Okabe / Kei Ito
   license: unknown
   status: active
-- id: act-rules-github
-  domain: ACT Rules Community Group
-  url: act-rules.github.io
-  full_url: https://act-rules.github.io/rules/
-  best_for: ACT rules, accessibility conformance testing, automated rule mapping, WCAG success criteria
-  description: W3C Accessibility Conformance Testing (ACT) rules provide a standardised, machine-readable format for accessibility test rules. Enables consistent mapping between automated tool results and WCAG success criteria.
+  ai_scraping: allowed
+
+- id: wicg-inert
+  domain: WICG inert polyfill
+  url: github.com/WICG/inert
+  full_url: https://github.com/WICG/inert
+  best_for: inert attribute polyfill, focus management, modal background suppression
+  description: >
+    WICG polyfill for the HTML `inert` attribute. Required for browsers that do
+    not support `inert` natively (shipped in all major browsers from 2023).
+    Use when supporting older browser targets. BSD-3-Clause licence.
+  authority_level: established
+  topic_tags:
+  - keyboard
+  - focus
+  - development
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-03-29'
+  owner: WICG contributors
+  license: BSD-3-Clause
+  status: active
+  ai_scraping: allowed
+
+- id: wai-tables-tutorial
+  domain: W3C WAI Tables Tutorial
+  url: www.w3.org/WAI/tutorials/tables/
+  full_url: https://www.w3.org/WAI/tutorials/tables/
+  best_for: accessible data tables, scope attribute, caption, multi-level headers, table markup
+  description: >
+    W3C WAI tutorial covering accessible HTML table markup from simple
+    one-header tables through multi-level complex tables. Covers scope,
+    colgroup, rowgroup, id/headers attributes, caption, and summary patterns.
   authority_level: authoritative
   topic_tags:
-  - act-rules
-  - automated-testing
+  - tables
   - wcag
-  - conformance
-  - rule-mapping
+  - development
+  - html
   jurisdiction: global
   wcag_version:
-  - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
-  owner: W3C ACT Rules Community Group
-  license: CC-BY-4.0
+  last_reviewed: '2026-03-29'
+  owner: W3C WAI
+  license: W3C Document License
   status: active
-- id: openconcept-impactful-reports
-  domain: OpenConcept Consulting
-  url: medium.com/openconcept-stories
-  full_url: https://medium.com/openconcept-stories/writing-impactful-accessibility-reports-d6cdd84356fd
-  best_for: accessibility reporting, writing accessibility bug reports, accessibility audit reports
-  description: Article by Mike Gifford on writing impactful accessibility reports that are actionable, clear, and prioritised for development teams.
+  ai_scraping: allowed
+
+- id: numberanalytics-accessible-tables
+  domain: Number Analytics
+  url: www.numberanalytics.com/blog/accessible-tables-design-guide
+  full_url: https://www.numberanalytics.com/blog/accessible-tables-design-guide
+  best_for: accessible table design, visual design principles for data tables
+  description: >
+    Design-focused guide to accessible data tables covering visual hierarchy,
+    responsive patterns, and accessibility considerations for data-heavy interfaces.
   authority_level: to_review
   topic_tags:
-  - bug-reporting
-  - accessibility-audits
-  - reporting
-  - best-practices
+  - tables
+  - design
+  - development
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
-  owner: Mike Gifford / OpenConcept Consulting
+  last_reviewed: '2026-03-29'
+  owner: Number Analytics
   license: unknown
   status: active
-- id: github-readme-fix-a11y-bugs
-  domain: GitHub README Guides
-  url: github.com/readme/guides
-  full_url: https://github.com/readme/guides/fix-accessibility-bugs
-  best_for: accessibility bug fixing, developer workflow, automated testing, accessibility engineering
-  description: Guide by Mike Gifford on how developers can find, prioritise, and fix accessibility bugs, including workflow integration and tool recommendations.
-  authority_level: to_review
-  topic_tags:
-  - bug-fixing
-  - automated-testing
-  - developer-workflow
-  - accessibility-engineering
-  jurisdiction: global
-  wcag_version:
-  - '2.1'
-  - '2.2'
-  last_reviewed: null
-  owner: Mike Gifford / GitHub
-  license: unknown
-  status: active
+  ai_scraping: allowed

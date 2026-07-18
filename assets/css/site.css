@@ -585,7 +585,7 @@ textarea {
   }
 }
 
-/* ── Site header with theme toggle ── */
+/* ── Site header with theme selector ── */
 
 .site-header {
   background: var(--bg-soft);
@@ -599,71 +599,52 @@ textarea {
   padding: 0.4rem 0;
 }
 
-#theme-toggle {
+/* ── Three-option theme selector (radiogroup) ── */
+
+#theme-mode-group {
+  display: inline-flex;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2px;
+  background: var(--bg);
+}
+
+.theme-mode-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem;
-  border: 1px solid var(--line);
+  padding: 0.35rem 0.45rem;
+  border: 1px solid transparent;
   border-radius: 4px;
-  background: var(--bg);
-  color: var(--text);
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
   line-height: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-#theme-toggle:hover {
+@media (prefers-reduced-motion: reduce) {
+  .theme-mode-btn {
+    transition: none;
+  }
+}
+
+.theme-mode-btn:hover {
   background: var(--bg-soft);
-  border-color: var(--text);
+  color: var(--text);
 }
 
-#theme-toggle:focus-visible {
+.theme-mode-btn:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
 
-.theme-icon {
-  display: block;
-  width: 20px;
-  height: 20px;
-}
-
-/* Default (light): show moon to indicate "switch to dark" */
-.sun-icon {
-  display: none;
-}
-
-.moon-icon {
-  display: block;
-}
-
-/* System dark mode (before JS loads): show sun to indicate "switch to light" */
-@media (prefers-color-scheme: dark) {
-  .sun-icon {
-    display: block;
-  }
-
-  .moon-icon {
-    display: none;
-  }
-}
-
-/* JS-controlled: dark theme active — show sun (click to go light) */
-[data-theme="dark"] .sun-icon {
-  display: block;
-}
-
-[data-theme="dark"] .moon-icon {
-  display: none;
-}
-
-/* JS-controlled: light theme active — show moon (click to go dark) */
-[data-theme="light"] .sun-icon {
-  display: none;
-}
-
-[data-theme="light"] .moon-icon {
-  display: block;
+/* Selected state */
+.theme-mode-btn[aria-checked="true"] {
+  background: var(--bg-soft);
+  color: var(--text);
+  border-color: var(--line);
 }
 
 /* ── Screen-reader-only utility ── */
@@ -867,4 +848,45 @@ textarea {
   color: var(--muted);
   line-height: 1.55;
   max-width: 680px;
+}
+
+/* ── Forced-colors / Windows High Contrast Mode ── */
+
+@media (forced-colors: active) {
+  /* Restore focus ring — box-shadow and custom outlines are removed in WHCM */
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Restore theme selector border */
+  #theme-mode-group {
+    border: 1px solid CanvasText;
+  }
+
+  /* Restore selected button appearance */
+  .theme-mode-btn[aria-checked="true"] {
+    border: 2px solid Highlight;
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  /* Restore card boundaries */
+  .card,
+  .code-card {
+    border: 1px solid CanvasText;
+  }
+
+  /* Restore table row separation */
+  .prose-body th,
+  .prose-body td {
+    border: 1px solid CanvasText;
+  }
+
+  /* Restore notice boundary */
+  .notice-experimental {
+    border-top: 4px solid Highlight;
+    border-bottom: 1px solid CanvasText;
+  }
 }
