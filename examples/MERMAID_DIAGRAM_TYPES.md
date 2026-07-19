@@ -479,8 +479,8 @@ A Mermaid diagram is ready to publish when:
 
 ---
 
-**Last reviewed**: July 18, 2026
+Mermaid Version: 
 
-**Reference renderer**: Mermaid 11.16.0
-
-**License**: MIT
+```mermaid 
+info 
+```
