@@ -11,8 +11,9 @@ diagrams and accessible alternatives. It addresses browser rendering, static
 SVG export, inline embedding, external images, theming, post-processing,
 optimization, validation, and testing.
 
-It is based on Mermaid 11.16.0 and targets WCAG 2.2 Level AA. Pin the Mermaid
-version used by a project and test every transformation before upgrading.
+It is based on Mermaid 11.16.0 and targets WCAG 2.2 Level AA. Pin Mermaid when
+the project controls the renderer. When a platform controls it, record the
+observed version and verify every required capability on that platform.
 
 This is implementation guidance, not a normative specification. W3C standards,
 the HTML Living Standard, and the Mermaid documentation remain authoritative.
@@ -40,7 +41,7 @@ An accessible Mermaid result depends on five separate layers:
 |---|---|---|
 | Semantic source or model | Nodes, relationships, values, order, labels, title, description, and structured alternative | The SVG can reconstruct every source relationship |
 | Mermaid source | Valid diagram declaration, `accTitle`, `accDescr`, and type-specific syntax | Comments or invented directives become metadata |
-| Renderer | Parse the pinned syntax, sanitize according to configuration, and generate SVG | Every Mermaid version produces the same DOM |
+| Renderer | Parse the configured or hosted syntax, sanitize according to configuration, and generate SVG | Every Mermaid version or host produces the same DOM |
 | SVG transformation | Preserve required structure, references, styling, and security | Adding ARIA roles makes a visual graph semantically navigable |
 | Host document | Choose the embedding method, expose the visible alternative, manage themes, and provide interaction | Internal SVG metadata is exposed identically through every embedding method |
 
@@ -48,13 +49,34 @@ When a defect appears, identify the responsible layer before applying a patch.
 Do not compensate for a missing structured alternative by adding unsupported
 roles to generated shapes.
 
+## Choose a Renderer Control Model
+
+The transformation pipeline must distinguish versions the project controls
+from versions supplied by a publishing platform.
+
+| Control model | Version evidence | Transformation responsibility |
+|---|---|---|
+| Self-managed renderer | Package manifest, lockfile, container digest, or pinned CDN URL | Pin the dependency and configuration, review upgrades, retain fixtures, and keep a rollback path. |
+| Platform-managed renderer | Version probe, platform documentation, or a dated observation from the target service | Record the observation, test required capabilities on the target surface, and preserve an independent structured alternative. |
+| Pre-rendered static output | Renderer and transformation versions recorded by the build or export job | Preserve provenance with the asset, then validate the final embedding context. |
+
+GitHub.com Markdown, GitHub Enterprise Server, GitHub Pages, local editors,
+build services, and exported documents are separate rendering surfaces.
+GitHub Pages does not automatically inherit the Mermaid renderer used by
+GitHub.com Markdown. Its Jekyll theme, plugin, client script, or build pipeline
+determines whether and how Mermaid is rendered.
+
+Do not describe a hosted renderer as pinned. An observed version is evidence
+about a platform at a point in time, not a dependency guarantee.
+
 ## Choose a Transformation Strategy
 
 | Situation | Preferred strategy |
 |---|---|
 | The Mermaid source is under project control | Add valid `accTitle` and `accDescr`, then render without rewriting metadata |
 | A complex diagram needs an alternative | Generate or author structured HTML from the semantic source, not from SVG geometry |
-| A browser displays Mermaid at runtime | Render with the pinned Mermaid API, validate the returned SVG, and insert it into a controlled host |
+| A controlled browser application displays Mermaid at runtime | Render with the pinned Mermaid API, validate the returned SVG, and insert it into a controlled host |
+| A platform-managed Markdown host displays Mermaid | Record its observed renderer version and date, verify required syntax and output on that host, and keep the structured alternative available |
 | A static site builds diagrams ahead of time | Render deterministic SVG or raster assets, validate them, and publish adjacent HTML alternatives |
 | An SVG will be used in an `<img>` | Supply the `<img alt>` in the host; retain internal SVG metadata for standalone reuse |
 | A legacy renderer omits root metadata | Patch only the missing root metadata from trusted, structured inputs |
@@ -70,12 +92,12 @@ renderer configuration.
 ```mermaid
 flowchart LR
     accTitle: Accessible Mermaid publication pipeline
-    accDescr: Reviewed source is parsed and rendered with a pinned Mermaid version, validated as SVG and CSS, embedded according to its delivery mode, and tested with its structured alternative.
+    accDescr: Reviewed source and its alternative are rendered by the selected controlled or hosted renderer. Generated output is processed according to its trust boundary, validated after every material transformation, embedded for its delivery mode, and tested in the final context.
     A[Reviewed semantic source] --> B[Mermaid source and HTML alternative]
-    B --> C[Parse and render with pinned Mermaid]
-    C --> D[Validate SVG, IDs, ARIA, and CSS]
-    D --> E[Embed for the selected delivery mode]
-    E --> F[Browser and assistive technology tests]
+    B --> C[Render on the selected target]
+    C --> D[Sanitize and transform as required]
+    D --> E[Validate final SVG, CSS, and references]
+    E --> F[Embed and test with the alternative]
 ```
 
 The same pipeline in text:
@@ -83,12 +105,62 @@ The same pipeline in text:
 1. Review the diagram's purpose, essential relationships, and data.
 2. Create valid Mermaid source with `accTitle` and `accDescr`.
 3. Create a visible structured alternative suited to the diagram type.
-4. Parse and render with an exact Mermaid version and controlled configuration.
-5. Parse the returned SVG as XML and validate its invariants.
-6. Apply only documented, narrowly scoped transformations.
-7. Validate any embedded and host CSS.
-8. embed or export using rules for the selected delivery mode.
-9. Test the final page or document, including the structured alternative.
+4. Identify whether the renderer is controlled or platform-managed and record
+   its provenance.
+5. Apply source-size and complexity limits before rendering untrusted input.
+6. Parse and render with the configured or observed target renderer.
+7. Parse the returned SVG securely and sanitize it when the trust model
+   requires sanitization.
+8. Validate SVG, ID, ARIA, URL, graphical-reference, and CSS invariants.
+9. Apply only documented, narrowly scoped transformations.
+10. Optimize with a reviewed configuration when optimization is required.
+11. Revalidate after the last material transformation, then embed or export
+    using rules for the selected delivery mode.
+12. Test the final page or document, including the structured alternative.
+
+## Record Transformation Provenance
+
+Keep enough information to reproduce or investigate the published result. A
+record can be stored in build metadata, a manifest, an artifact report, or the
+pull request that updates the diagram.
+
+Record:
+
+- source identifier and revision or digest;
+- publishing surface and delivery mode;
+- renderer control model;
+- configured or observed Mermaid version;
+- version discovery method and observation date;
+- renderer configuration relevant to security and output;
+- sanitizer, optimizer, converter, theme, and plugin versions;
+- ordered transformations applied to the generated SVG;
+- validation and test results;
+- structured-alternative location or identifier; and
+- owner and known limitations.
+
+Example manifest entry:
+
+```yaml
+diagram: account-recovery-flow
+surface: github-pages-production
+delivery_mode: inline-svg
+renderer:
+  control: project-managed
+  version: 11.16.0
+  discovered_by: package-lock
+  observed_on: 2026-07-19
+configuration:
+  security_level: strict
+  html_labels: false
+transformations:
+  - sanitize-static-svg-profile
+  - optimize-accessibility-preserving-profile
+alternative: '#account-recovery-steps'
+```
+
+For a platform-managed renderer, use `control: platform-managed`, record the
+version displayed by the platform's documented probe, and label the date as an
+observation rather than a guarantee.
 
 ## Author Metadata in Mermaid Source
 
@@ -165,13 +237,69 @@ Important configuration points:
   untrusted or accidental input. Keep security-sensitive configuration in the
   site initialization rather than author-controlled frontmatter.
 
-Pin an exact Mermaid version in the package lockfile and in any CDN URL. Do not
-load an unconstrained latest or major version in production.
+Pin an exact Mermaid version in the package lockfile and in any project-managed
+CDN URL. Do not load an unconstrained latest or major version in production.
+When the renderer is platform-managed, record how and when its version was
+observed and verify required capabilities on the target platform.
+
+## Treat Generated SVG as Active Content
+
+Mermaid usually generates SVG containing styles, IDs, fragment references,
+links, and possibly `<foreignObject>` when HTML labels are enabled. Generated
+SVG is not safe merely because it came from diagram syntax.
+
+Classify the complete path:
+
+- whether Mermaid source is trusted or user-supplied;
+- whether the renderer and its configuration are controlled;
+- whether plugins, custom icon packs, themes, or callbacks can add content;
+- whether a platform displays the output directly or the project extracts and
+  republishes it;
+- whether transformations can insert markup, styles, URLs, or interaction; and
+- whether the result is inserted inline, downloaded, opened standalone, or
+  embedded in another format.
+
+`DOMParser`, `XMLSerializer`, SVG formatting, and SVGO are not sanitizers. A
+successful XML parse proves only that the result is sufficiently well formed
+for that parser.
+
+For untrusted or mixed-trust pipelines:
+
+1. Apply source-size, text-size, edge-count, time, and resource limits.
+2. Keep Mermaid's strict security configuration.
+3. Parse XML with DTDs, external entities, local-file access, and network access
+   disabled when server-side XML parsing is used.
+4. Sanitize using a maintained SVG-aware allowlist matched to the selected
+   output profile.
+5. Remove or reject scripts, event attributes, unsafe URL schemes, unapproved
+   external resources, CSS imports, embedded HTML, animation, and interaction.
+6. Preserve only approved same-document fragment references used by titles,
+   descriptions, markers, gradients, masks, clip paths, filters, and symbols.
+7. Validate security and accessibility again after transformation and
+   optimization.
+8. Use Content Security Policy as defence in depth, not as a replacement for
+   sanitization.
+
+A static diagram profile can reject `<foreignObject>`, external URLs, click
+handlers, animation, and navigation. An intentionally interactive profile may
+permit a carefully reviewed subset, but it requires a separate threat model,
+keyboard model, and test suite.
+
+If GitHub.com renders a Mermaid fence directly, GitHub owns that immediate
+rendering boundary. If a project copies, extracts, transforms, or republishes
+the generated SVG, the project owns the new boundary and must validate the
+result for its destination context.
+
+See [SVG Accessibility Best Practices](SVG_ACCESSIBILITY_BEST_PRACTICES.md) for
+the complete SVG sanitization, resource-limit, and post-processing guidance.
 
 ## Render, Parse, and Validate Without Rewriting
 
 Prefer Mermaid's API to a separate source parser. Parse before rendering and
-validate the returned SVG as a DOM, not as a serialized string.
+validate the returned SVG as a DOM, not as a serialized string. The sample
+below assumes a controlled renderer, strict configuration, and trusted
+project-authored source. Apply the sanitization policy above before importing
+output from an untrusted or mixed-trust pipeline.
 
 ```javascript
 export async function renderStaticMermaid({ source, renderId, host }) {
@@ -246,11 +374,21 @@ export function parseAndValidateMermaidSvg(svgText) {
   if (root.querySelector('script')) {
     throw new Error('Scripts are not allowed in static diagram SVG.');
   }
+  if (root.querySelector('foreignObject')) {
+    throw new Error('HTML labels are not allowed in static diagram SVG.');
+  }
 
   for (const element of elements) {
     for (const attribute of element.getAttributeNames()) {
       if (attribute.toLowerCase().startsWith('on')) {
         throw new Error(`Event handler is not allowed: ${attribute}`);
+      }
+
+      if (attribute === 'href' || attribute === 'xlink:href') {
+        const value = element.getAttribute(attribute)?.trim() ?? '';
+        if (value && !value.startsWith('#')) {
+          throw new Error(`External reference is not allowed: ${value}`);
+        }
       }
     }
   }
@@ -259,10 +397,12 @@ export function parseAndValidateMermaidSvg(svgText) {
 }
 ```
 
-This validates a project policy for static diagrams. Adjust the policy only
-when the project intentionally supports trusted interaction and has tests for
-it. A syntactically valid SVG can still be inaccessible, insecure in its host,
-or semantically incomplete.
+This validates only part of a project policy for static diagrams. It is not a
+sanitizer and it does not parse CSS URLs, validate every `url(#id)` reference,
+or enforce resource-complexity limits. Adjust the policy only when the project
+intentionally supports trusted interaction and has tests for it. A
+syntactically valid SVG can still be inaccessible, insecure in its host, or
+semantically incomplete.
 
 ### Preserve the renderer's root semantics
 
@@ -272,9 +412,9 @@ flowchart with accessibility metadata. Other versions or diagram types may
 differ.
 
 Changing the role can change how assistive technologies expose descendants.
-Define a project policy based on the pinned renderer, embedding method, and
-tested browser and assistive-technology combinations. Record an intentional
-compatibility patch with the tests that justify it.
+Define a project policy based on the configured or observed renderer,
+embedding method, and tested browser and assistive-technology combinations.
+Record an intentional compatibility patch with the tests that justify it.
 
 ## Do Not Invent Node Semantics from SVG Geometry
 
@@ -564,18 +704,23 @@ available.
 
 Recommended build order:
 
-1. lint project-owned Mermaid source conventions;
-2. parse every source with the pinned Mermaid version;
-3. render every supported output mode;
-4. parse SVG as XML;
-5. validate IDs, URL fragments, roles, accessible names, descriptions, and
-   security invariants;
-6. parse embedded CSS and project overrides with a standards-aware CSS parser;
-7. validate the assembled HTML;
-8. run automated accessibility tests;
-9. run browser visual tests in light, dark, forced colors, high contrast, zoom,
-   and narrow viewports; and
-10. perform representative keyboard and assistive-technology testing.
+1. record the renderer control model, version evidence, configuration, target
+   surface, delivery mode, and alternative;
+2. apply input and complexity limits;
+3. lint project-owned Mermaid source conventions;
+4. parse and render every source with the configured or observed target
+   renderer;
+5. parse generated SVG securely and sanitize it when required by the trust
+   model;
+6. validate IDs, URL fragments, roles, accessible names, descriptions,
+   graphical references, CSS, and security invariants;
+7. apply documented transformations and optimization;
+8. repeat sanitization if a later step can introduce untrusted content;
+9. revalidate the final SVG, embedded CSS, host CSS, and assembled HTML;
+10. run automated accessibility and security tests on the final output;
+11. run browser visual tests in light, dark, forced colors, high contrast,
+    zoom, and narrow viewports; and
+12. perform representative keyboard and assistive-technology testing.
 
 ### CSS checks
 
@@ -638,10 +783,39 @@ Test fixtures should cover:
 - every embedding and export mode; and
 - diagrams near configured size and edge limits.
 
+## Test Security and Processing Boundaries
+
+Maintain valid fixtures and adversarial fixtures for the complete pipeline.
+Do not test only the sanitizer or only the renderer.
+
+| Input or condition | Expected outcome |
+|---|---|
+| Mermaid source above configured text or edge limits | Rejected or stopped within documented resource limits. |
+| Generated `<script>` or event-handler attribute | Removed or rejected before insertion or export. |
+| `javascript:` or another unapproved URL scheme | Removed or rejected. |
+| Unexpected external image, font, stylesheet, filter, link, or CSS import | Blocked unless explicitly permitted by the selected profile. |
+| Unapproved `<foreignObject>` or embedded HTML | Removed or rejected. |
+| DTD, external entity, XInclude, or other external XML processing | Rejected without local-file or network access. |
+| Recursive or excessive `<use>` references | Rejected by recursion or reference-depth limits. |
+| Approved same-document title, description, marker, gradient, mask, clip path, filter, or symbol reference | Preserved and resolved after sanitization and optimization. |
+| Several inline diagrams on one page | IDs remain document-wide unique and every reference targets the intended element. |
+| Renderer, sanitizer, optimizer, converter, theme, or plugin update | Full fixture, output-invariant, visual, security, and accessibility suites rerun. |
+| Platform-managed renderer change | Required capabilities rechecked on the target host and the dated observation updated. |
+
+When a preview inserts generated SVG into HTML, test that sanitization and
+validation occur before `innerHTML`, `dangerouslySetInnerHTML`, or an equivalent
+markup insertion. Test the exported artifact separately because preview and
+export paths can diverge.
+
 ## Optimize with an Allowlist
 
 An SVG optimizer can reduce file size, but its defaults may not understand the
 project's accessibility and embedding requirements.
+
+An optimizer is not a sanitizer. Sanitize according to the trust model before
+unsafe markup can reach an inline preview, and validate again after
+optimization. If an optimizer or later transformation can introduce untrusted
+content, sanitize again before final validation.
 
 Preserve or deliberately rewrite and retest:
 
@@ -659,6 +833,18 @@ Do not blanket-remove whitespace from text elements. Whitespace can affect
 labels and descriptions. Do not remove a group solely because it has no visual
 style; it may own IDs, transforms, links, clipping, or semantics.
 
+Use separate profiles when the tool supports continued editing and final
+delivery:
+
+- An edit-safe profile should preserve readable structure, metadata, IDs,
+  styles, groups, shapes, and precision needed for later editing.
+- A production profile may apply more structural changes only after the asset
+  is final and its semantics, references, rendering, and alternatives have
+  been verified.
+
+Lock optimizer versions and configurations. If browser, command-line, CI, and
+hosted paths use different versions, document and test each path deliberately.
+
 After optimization:
 
 1. parse the SVG again;
@@ -672,14 +858,22 @@ After optimization:
 
 ### Source and renderer
 
-- [ ] The Mermaid version is pinned.
-- [ ] The diagram declaration is supported by that version.
+- [ ] The rendering surface, delivery mode, and renderer control model are
+      documented.
+- [ ] A project-controlled Mermaid version is pinned, or a platform-managed
+      version has a dated observation and discovery method.
+- [ ] The diagram declaration and required accessibility syntax are verified
+      on the target renderer.
+- [ ] Renderer configuration, transformation tools, and structured-alternative
+      location are recorded.
 - [ ] `accTitle` and `accDescr` use valid Mermaid syntax.
 - [ ] A visible structured alternative preserves the diagram's meaning.
 - [ ] `securityLevel` remains `strict` unless an approved threat model says
       otherwise.
 - [ ] Root-level `htmlLabels` is selected intentionally.
 - [ ] Mermaid source parses before rendering.
+- [ ] Untrusted input is subject to documented size, complexity, time, and
+      resource limits.
 
 ### Generated SVG
 
@@ -690,6 +884,10 @@ After optimization:
 - [ ] IDs are unique in the assembled HTML document.
 - [ ] Marker, gradient, mask, clip-path, filter, link, and CSS references resolve.
 - [ ] No disallowed script or event attributes are present.
+- [ ] No unsafe URL schemes, unapproved external resources, CSS imports,
+      embedded HTML, DTDs, or external entities remain.
+- [ ] Approved same-document URL and graphical references resolve after the
+      last transformation.
 - [ ] Renderer-generated roles are preserved or an evidence-backed patch is
       documented.
 - [ ] No node or edge semantics were invented from layout alone.
@@ -718,25 +916,36 @@ After optimization:
 ### Validation and regression
 
 - [ ] SVG XML, embedded CSS, host CSS, and assembled HTML are parsed and checked.
+- [ ] Sanitization occurs before inline preview insertion when the trust model
+      requires it.
+- [ ] Security and accessibility checks run after the final transformation.
 - [ ] Tests assert DOM relationships instead of serialization formatting.
 - [ ] Automated accessibility checks run on final pages.
 - [ ] Visual regression covers every supported theme.
 - [ ] Representative browser, keyboard, screen-reader, and export tests pass.
 - [ ] Optimized output passes the same checks as unoptimized output.
+- [ ] Browser, command-line, CI, and hosted tool versions are aligned or
+      independently documented and tested.
+- [ ] Platform-managed version observations are updated when the host changes.
 
 ## Definition of Done
 
 A Mermaid transformation is ready for production when:
 
-1. its source and renderer versions are controlled;
+1. its source trust and input limits are documented, and its renderer is either
+   pinned by the project or recorded as a dated platform observation;
 2. the selected diagram type and accessible metadata parse correctly;
 3. the visual and structured alternative preserve the same essential meaning;
-4. the security configuration matches a documented threat model;
-5. generated SVG metadata, IDs, references, and styling survive transformation;
+4. the security configuration, input limits, sanitization, and processing
+   profiles match a documented threat model;
+5. generated SVG metadata, IDs, references, styling, and approved content
+   survive every transformation;
 6. the embedding method supplies the correct host alternative;
 7. contrast, theme, zoom, reflow, and interaction requirements have been tested;
-8. SVG, CSS, HTML, automated accessibility, and regression checks pass; and
-9. runtime failure leaves the structured alternative available without
+8. final SVG, CSS, HTML, security, automated accessibility, and regression
+   checks pass;
+9. transformation provenance and required test evidence are retained; and
+10. runtime failure leaves the structured alternative available without
    injecting unsafe or misleading output.
 
 ## Related Guides
@@ -758,11 +967,15 @@ A Mermaid transformation is ready for production when:
 - [Mermaid configuration schema](https://mermaid.js.org/schemas/config.schema.json)
 - [Mermaid theme configuration](https://mermaid.js.org/config/theming.html)
 - [Mermaid releases](https://github.com/mermaid-js/mermaid/releases)
+- [GitHub: Creating diagrams and checking the Mermaid version](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#checking-your-version-of-mermaid)
+- [GitHub: About GitHub Pages and Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll)
 
 ### W3C and WHATWG
 
 - [SVG 2: Document Structure](https://www.w3.org/TR/SVG2/struct.html)
 - [SVG 2: Accessibility Support](https://www.w3.org/TR/SVG2/access.html)
+- [SVG 2: Scripting and Interactivity](https://www.w3.org/TR/SVG2/interact.html)
+- [SVG 2: Linking](https://www.w3.org/TR/SVG2/linking.html)
 - [SVG Accessibility API Mappings](https://www.w3.org/TR/svg-aam-1.0/)
 - [HTML Living Standard: Embedded Content](https://html.spec.whatwg.org/multipage/embedded-content.html)
 - [WAI Images Tutorial: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
@@ -775,6 +988,13 @@ A Mermaid transformation is ready for production when:
 - [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/)
 - [Nu HTML Checker](https://validator.w3.org/nu/)
 
+### Security and Processing
+
+- [Content Security Policy Level 3](https://www.w3.org/TR/CSP3/)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
+- [SVGO Documentation](https://svgo.dev/docs/)
+- [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
+
 ### Machine-Readable References
 
 The project's [trusted sources list](TRUSTED_SOURCES.yaml) can help automated
@@ -782,15 +1002,26 @@ workflows select primary and established references. Machine-readable mirrors
 can support indexing and comparison, but they do not replace the original W3C,
 WHATWG, or Mermaid source.
 
+## Mermaid Version Information
 
-## Mermaid version information
+This guide uses Mermaid 11.16.0 as its reference version. The reference version
+identifies the documentation and transformation behavior reviewed while
+maintaining this guide. It does not claim that every publishing platform uses
+Mermaid 11.16.0.
 
-This guide uses Mermaid 11.16.0 as its reference version.
-
-The diagram below reports the Mermaid version supplied by the current
-Markdown hosting platform. It may differ from the version used by GitHub
-Pages, local builds, exported diagrams, or other rendering services.
+The diagram below reports the Mermaid version supplied by the current Markdown
+hosting platform. It may differ from the version used by GitHub Pages, local
+builds, GitHub Enterprise Server, exported diagrams, or other rendering
+services.
 
 ```mermaid
 info
 ```
+
+The `info` result is diagnostic and dynamic. Record its visible value, the
+surface, and the observation date in plain text when version evidence is
+required.
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
