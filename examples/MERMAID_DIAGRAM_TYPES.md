@@ -10,10 +10,12 @@ This reference helps authors choose a Mermaid diagram type, use the correct
 declaration, and provide an accessible alternative that preserves the
 diagram's meaning.
 
-It is based on Mermaid 11.16.0. Mermaid adds diagram types and sometimes
-changes beta declarations. Pin the renderer version used by a site, verify
-every source file with that version, and review the official documentation
-before upgrading.
+Mermaid 11.16.0 is this guide's reference version. Mermaid adds diagram types
+and sometimes changes beta declarations. Pin the renderer when the project
+controls it. When a hosting platform controls the renderer, record the
+observed version and test the required syntax and output on that platform.
+Review the official documentation and repeat those tests before upgrading or
+when the host changes its renderer.
 
 This page is not a record of which narrative generators a particular project
 has implemented. Keep implementation status in tested, machine-readable
@@ -33,7 +35,8 @@ Before choosing a diagram type, identify:
 3. the essential relationships and their direction;
 4. whether position, area, time, or sequence carries meaning;
 5. the structured alternative that will preserve that meaning; and
-6. the Mermaid versions and publishing platforms that must render it.
+6. the renderer control model, versions, and publishing platforms that must
+   render it.
 
 Do not choose a type merely because its visual style is appealing. Choose the
 smallest structure that accurately represents the information.
@@ -65,7 +68,50 @@ Mermaid 11.16.0 also has several kinds of status:
 Status is not uniform across the documentation. For example, the 11.16.0 beta
 policy accepts canonical `sankey`, `ishikawa`, and `treemap` declarations,
 while their syntax pages retain experimental or new-type warnings. Treat an
-explicit page warning as a reason to pin the version and test carefully.
+explicit page warning as a reason to pin the version when possible and test
+the target rendering surface carefully.
+
+## Verify the Target Rendering Surface
+
+The reference version in this guide identifies the declarations and
+documentation reviewed while maintaining the guide. It does not guarantee
+that a publishing platform uses Mermaid 11.16.0 or supports every type listed
+here.
+
+Treat each rendering surface as a separate target. This includes GitHub.com,
+each supported GitHub Enterprise Server release, GitHub Pages, local editors,
+documentation builds, exported SVG or raster images, and PDF conversion. In
+particular, GitHub Pages does not inherit the Mermaid renderer used by
+GitHub.com. Its behavior depends on the site's theme, plug-ins, scripts, and
+build configuration.
+
+Use the appropriate control model:
+
+- **Project-controlled renderer**: pin the exact Mermaid version and
+  configuration, validate diagrams in continuous integration, and test before
+  upgrading.
+- **Platform-managed renderer**: use the platform's documented version probe
+  where available, record the visible result and observation date, and test
+  required capabilities on that exact surface.
+- **Pre-rendered output**: record the tool, version, configuration, and export
+  method used to create the asset. Test both the asset and its embedding
+  context.
+
+A reported version number is useful provenance, but it is not enough by
+itself. Verify that the target surface:
+
+- recognizes each required declaration and compatibility alias;
+- preserves `accTitle` and `accDescr` in the final accessible output;
+- preserves the visible structured alternative;
+- applies acceptable light, dark, high-contrast, zoom, and reflow behavior;
+- handles links and any interactive content safely; and
+- preserves accessibility through SVG, raster, and PDF export paths.
+
+Keep project support claims in tested, machine-readable data rather than in
+this general reference. A support record should identify the surface,
+renderer control model, configured or observed version, discovery method,
+observation date, declarations and accessibility features tested, fallback,
+and owner.
 
 ## Quick Selection Guide
 
@@ -307,7 +353,8 @@ that is a project feature, not a built-in guarantee of each diagram type.
 
 Prefer this pipeline:
 
-1. validate the exact Mermaid source with the pinned renderer;
+1. validate the exact Mermaid source with the pinned renderer or tested target
+   platform;
 2. parse the type with version-matched tooling;
 3. transform the source into a type-specific semantic model;
 4. generate both the visual diagram and its structured alternative from that
@@ -323,7 +370,8 @@ states, or data values.
 
 Mermaid's internal parser and diagram database APIs are not a stable semantic
 interchange contract. If a project depends on internal APIs, pin the Mermaid
-version and run regression tests before every upgrade.
+version when controlled and run regression tests before every upgrade or
+observed host change.
 
 ### Define support honestly
 
@@ -354,34 +402,45 @@ export, and a PDF conversion.
 
 For every supported publishing path:
 
-1. record the Mermaid version and configuration;
-2. parse every diagram during continuous integration;
-3. inspect the final generated SVG or image;
-4. verify that title and description relationships survive embedding;
-5. verify the visible structured alternative remains adjacent or clearly
+1. record whether the renderer is project-controlled, platform-managed, or
+   used to create pre-rendered output;
+2. record the configured or observed Mermaid version, discovery method,
+   configuration, surface, and observation date;
+3. parse every diagram during continuous integration when the project controls
+   the build, and run representative capability tests on managed platforms;
+4. inspect the final generated SVG or image;
+5. verify that title and description relationships survive embedding;
+6. verify the visible structured alternative remains adjacent or clearly
    linked;
-6. test light, dark, high-contrast, zoom, and narrow viewport presentation;
-7. test keyboard access only where the diagram contains real interaction; and
-8. test representative output with screen readers.
+7. test light, dark, high-contrast, zoom, and narrow viewport presentation;
+8. test keyboard access only where the diagram contains real interaction; and
+9. test representative output with screen readers.
 
 A static SVG diagram should not receive `tabindex="0"` merely so it can be
 focused. If nodes or links are interactive, implement them as real operable
 controls or links with visible focus, meaningful names, and documented keyboard
 behavior.
 
-Pin versions rather than loading an unconstrained major or latest release.
-Keep Mermaid's `securityLevel: 'strict'` default unless a documented and tested
-requirement justifies a different setting. Treat user-authored Mermaid source,
-labels, links, configuration, and generated HTML as untrusted input.
+When the project controls Mermaid, pin an exact version rather than loading an
+unconstrained major or latest release. Keep Mermaid's
+`securityLevel: 'strict'` default unless a documented and tested requirement
+justifies a different setting. Treat user-authored Mermaid source, labels,
+links, configuration, and generated HTML as untrusted input.
 
 ## Testing Checklist
 
 ### Source and version
 
-- [ ] The Mermaid version is pinned.
-- [ ] Every declaration is supported by that version.
+- [ ] The renderer control model is documented.
+- [ ] A project-controlled Mermaid version is pinned exactly.
+- [ ] A platform-managed version is observed where possible, with the surface,
+      discovery method, and observation date recorded.
+- [ ] Every declaration is supported by the configured version or tested
+      target platform.
 - [ ] Beta and external plugin dependencies are documented.
-- [ ] Every Mermaid block parses in continuous integration.
+- [ ] Every Mermaid block parses in continuous integration when the build is
+      project-controlled; representative diagrams are tested on managed
+      platforms.
 - [ ] Unsupported syntax fails visibly rather than disappearing silently.
 
 ### Meaning and alternatives
@@ -430,14 +489,19 @@ labels, links, configuration, and generated HTML as untrusted input.
 - Relying on a chart's visual area, color, or position without exposing exact
   data.
 - Testing only in the Mermaid Live Editor rather than in the final site.
-- Loading an unpinned Mermaid release in production.
+- Assuming GitHub.com, GitHub Enterprise Server, GitHub Pages, editor previews,
+  and exports use the same renderer or configuration.
+- Treating a reported version number as proof that the required syntax,
+  accessibility metadata, themes, and export paths work.
+- Loading an unpinned Mermaid release when the project controls the renderer.
 
 ## Definition of Done
 
 A Mermaid diagram is ready to publish when:
 
 1. the type is appropriate for the information;
-2. its declaration parses with the pinned production renderer;
+2. its declaration parses with the pinned production renderer or tested target
+   platform;
 3. beta or plugin dependencies are intentional and documented;
 4. it has a useful `accTitle` and `accDescr`;
 5. a visible structured alternative preserves its essential meaning;
@@ -450,6 +514,7 @@ A Mermaid diagram is ready to publish when:
 ## Related Guides
 
 - [Mermaid Accessibility Best Practices](MERMAID_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Mermaid Transformation Best Practices](MERMAID_TRANSFORMATION_BEST_PRACTICES.md)
 - [Charts and Graphs Accessibility Best Practices](CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
 - [SVG Accessibility Best Practices](SVG_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Tables Accessibility Best Practices](TABLES_ACCESSIBILITY_BEST_PRACTICES.md)
@@ -467,6 +532,11 @@ A Mermaid diagram is ready to publish when:
 - [Mermaid 11.16.0 release](https://github.com/mermaid-js/mermaid/releases/tag/mermaid%4011.16.0)
 - [ZenUML plugin](https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid-zenuml)
 
+### GitHub Rendering Surfaces
+
+- [Creating diagrams: checking your version of Mermaid](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#checking-your-version-of-mermaid)
+- [About GitHub Pages and Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll)
+
 ### Accessibility Standards
 
 - [WCAG 2.2: Text Alternatives](https://www.w3.org/WAI/WCAG22/Understanding/text-alternatives.html)
@@ -477,14 +547,27 @@ A Mermaid diagram is ready to publish when:
 - [WAI Images Tutorial: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
 - [WAI Tables Tutorial](https://www.w3.org/WAI/tutorials/tables/)
 
-## Mermaid version information
+## Mermaid Version Information
 
-This guide uses Mermaid 11.16.0 as its reference version.
+This guide uses Mermaid 11.16.0 as its reference version. The reference
+version identifies the diagram declarations and documentation reviewed while
+maintaining this guide. It does not claim that every platform uses that
+version.
 
 The diagram below reports the Mermaid version supplied by the current
 Markdown hosting platform. It may differ from the version used by GitHub
-Pages, local builds, exported diagrams, or other rendering services.
+Enterprise Server, GitHub Pages, local builds, editors, exported diagrams, or
+other rendering services.
 
 ```mermaid
 info
 ```
+
+The result is dynamic diagnostic output, not durable documentation. When
+version provenance matters, record the visible value together with the
+surface, discovery method, and observation date in plain text or
+machine-readable project data.
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
