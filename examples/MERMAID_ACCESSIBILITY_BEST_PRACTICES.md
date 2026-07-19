@@ -888,6 +888,11 @@ accessibility standards:
 - [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
 - [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
 
+Mermaid Version: 
+```mermaid 
+info 
+```
+
 ---
 
 This document is available under the repository's [MIT License](../LICENSE).
