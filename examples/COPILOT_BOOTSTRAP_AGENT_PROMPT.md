@@ -3,7 +3,7 @@ title: Copilot Bootstrap Prompt
 last_reviewed: 2026-07-19
 ---
 
-# Copilot Bootstrap Prompt for ACCESSIBILITY.md
+# Copilot Bootstrap Prompt
 
 This file provides a reusable task prompt for drafting a project-level
 `ACCESSIBILITY.md` from [ACCESSIBILITY-template.md](../ACCESSIBILITY-template.md).
