@@ -4,523 +4,1008 @@ title: Maps Accessibility Best Practices
 
 # Maps Accessibility Best Practices
 
-This document defines accessibility requirements for interactive and static maps on the web, ensuring that all users can access geographic information regardless of visual, motor, or cognitive ability.
+## Purpose
 
-Maps present unique accessibility challenges because spatial information is inherently visual. These practices help teams provide meaningful alternatives, make interactive controls operable, and ensure content is understandable for all users.
+Maps can communicate locations, routes, boundaries, quantities, relationships,
+and changes over time. They can also support tasks such as finding a service,
+choosing an accessible route, comparing regions, or exploring spatial data.
 
----
+No single text description works for every map. Start with the map's purpose and
+the tasks it supports, then provide accessible content and controls that preserve
+that purpose for people who cannot see, distinguish, point at, drag, zoom, or
+interpret the visual map.
 
-## 1. Core Principle
+This guide covers static and interactive maps, map alternatives, markers,
+clusters, controls, search, routes, indoor wayfinding, embedded maps, visual
+design, keyboard and pointer operation, low-vision support, and testing. It
+targets WCAG 2.2 Level AA and identifies relevant Level AAA practices.
 
-All users must be able to access the essential information conveyed by a map through accessible alternatives, keyboard-operable controls, and clear, structured content. This includes people who are blind or low vision, those who cannot use a mouse, and those with cognitive or learning disabilities.
+## Core Principles
 
----
+1. Define the map's purpose before choosing an alternative.
+2. Make essential information and tasks available without perceiving or
+   operating the visual map.
+3. Keep the map and its structured alternative synchronized from the same data.
+4. Use native HTML controls and content outside the map whenever possible.
+5. Do not rely on color, shape, position, dragging, pinching, or hover alone.
+6. Preserve ordinary browser, keyboard, screen reader, speech input, zoom, and
+   page-scrolling behavior.
+7. Avoid `role="application"` unless a rare, thoroughly tested use case requires
+   application-mode interaction.
+8. Do not make every marker a separate Tab stop when a map contains many
+   locations.
+9. Give users a visible, direct path to the location list, data table,
+   directions, or other non-map view.
+10. Test task completion, not only the presence of attributes.
 
-## 2. Text Alternatives for Static Maps
+## Classify the Map and Its Purpose
 
-### Required for all maps that convey meaning
+Document the map's primary purpose before implementation.
 
-A static map image must have a text alternative that conveys the same information:
+| Map purpose | Essential information or task | Common accessible presentation |
+|---|---|---|
+| Simple locator | Where one place is and how to reach it | Concise image alternative, address, nearby landmark, directions, and contact information |
+| Location directory | Find and compare services or facilities | Searchable list or table with names, addresses, distances, categories, and relevant accessibility information |
+| Route or wayfinding map | Travel from a start point to a destination | Ordered directions with distances, turns, landmarks, route conditions, and accessible alternatives |
+| Thematic or quantitative map | Compare values across geographic areas | Summary of findings and a data table with region names, values, units, and time period |
+| Boundary or zoning map | Understand containment, adjacency, or jurisdiction | Named boundary descriptions, affected locations, attributes, and downloadable structured data |
+| Indoor or multi-floor map | Navigate a building or complex | Floor selector, accessible route instructions, landmarks, entrances, lifts, stairs, doors, surfaces, and current barriers |
+| Exploratory map | Investigate many spatial features and relationships | Synchronized filters, structured results, descriptions of spatial relationships, and accessible query tools |
 
-- Use `alt` for brief descriptions where the map supports a single point of information.
-- Use `aria-describedby` or a linked long description for complex maps with multiple features.
-- Never leave `alt` empty for a meaningful map — use `alt=""` only when the map is purely decorative (rare).
+A map can have more than one purpose. Provide the alternatives needed for every
+essential task rather than assuming that a short `alt` value, table, or set of
+directions is universally equivalent.
 
-#### Simple static map
+## Equivalent Purpose
 
-```html
-<img
-  src="campus-map.png"
-  alt="Campus map showing the main entrance on Elm Street, with the library to the north and parking to the east."
-/>
-```
+WCAG 1.1.1 requires a text alternative that serves the equivalent purpose of
+non-text content. Equivalent purpose does not mean reproducing every pixel,
+tile, street label, or decorative feature. It means preserving the information
+and tasks that matter in context.
 
-#### Complex map with long description
+For each map, identify:
+
+- the question the map is intended to answer;
+- the tasks users must complete;
+- the geographic scope, orientation, and scale;
+- the important places, areas, routes, and categories;
+- spatial relationships such as near, inside, connected, upstream, or adjacent;
+- values, units, ranges, and trends encoded visually;
+- conditions that affect accessibility or safety;
+- the data source, date, and known limitations; and
+- the effect of filters, layers, searches, and selections.
+
+Then verify that a person using the non-visual presentation can complete the
+same essential tasks and reach the same conclusions.
+
+### Research framework
+
+The 2026 paper
+[Systematically Evaluating Equivalent Purpose for Digital Maps](https://arxiv.org/abs/2512.05310)
+proposes a Map Equivalent-Purpose Framework covering generalized information,
+spatial information, and spatial relationships. It found that traditional
+tables and turn-by-turn directions can be insufficient when the map's purpose
+includes broad spatial understanding or exploration.
+
+Treat this as research guidance, not as a separate WCAG success criterion. A
+table can be equivalent for finding and comparing offices. Directions can be
+equivalent for following a route. A map intended to support open spatial
+exploration may need additional descriptions, queries, sonification, tactile
+output, or another accessible spatial interface.
+
+## Static Maps
+
+### Simple informative map
+
+Use a concise alternative that communicates the map's purpose and important
+relationships. Put actionable details in ordinary HTML.
 
 ```html
 <figure>
-  <img
-    src="regional-map.png"
-    alt="Regional accessibility map — detailed description below."
-    aria-describedby="regional-map-desc"
-  />
-  <figcaption id="regional-map-desc">
-    <p>The map shows three accessible transit routes through the downtown core. Route A runs north–south on Main Street with level boarding at all stops. Route B runs east–west on King Avenue with ramps at each station entrance. Route C is an inner loop connecting the civic centre, library, and hospital, all of which have automatic doors and step-free access.</p>
+  <img src="clinic-location.png"
+       alt="The clinic is on the north side of King Street, immediately east of the Central Station entrance."
+       width="960"
+       height="540">
+  <figcaption>
+    Northside Clinic, 200 King Street. The step-free entrance is on King Street.
+    <a href="#clinic-directions">Read accessible travel directions</a>.
   </figcaption>
 </figure>
 ```
 
-### What to include in a text alternative
+Do not fill `alt` with turn-by-turn instructions, every road label, or visual
+styling. Keep the alternative concise and provide detailed content nearby.
 
-- The purpose of the map
-- Key features, locations, or routes shown
-- Directional relationships (north, south, adjacent to, across from)
-- Any symbols or color coding used, with their meaning
+### Complex static map
 
----
+W3C guidance treats maps that convey substantial information as complex
+images. Provide both:
 
-## 3. Interactive Map Accessibility
-
-### Keyboard operability
-
-All map interactions available by mouse or touch must be reachable and operable by keyboard:
-
-- Pan/scroll: arrow keys or equivalent keyboard controls
-- Zoom in/out: `+`/`-` keys or accessible buttons with visible labels
-- Feature activation: `Enter` or `Space` on focused markers or regions
-- Close popups or tooltips: `Escape`
-- Skip the map: provide a visible-on-focus skip link before the map region
+- a short alternative identifying the map and its purpose; and
+- a visible, structured long description or clearly associated link.
 
 ```html
-<!-- Skip link before the map -->
-<a href="#map-skip-target" class="skip-link">Skip map</a>
+<figure>
+  <img src="accessible-transit-routes.png"
+       alt="Map of step-free transit routes in the downtown area. Detailed route information follows."
+       width="1200"
+       height="800">
+  <figcaption>
+    Step-free transit routes, updated 15 July 2026.
+    <a href="#transit-route-details">View route details and connections</a>.
+  </figcaption>
+</figure>
 
-<div id="map-container" aria-label="Interactive campus map">
-  <!-- map renders here -->
-</div>
-
-<div id="map-skip-target" tabindex="-1">
-  <h2>Map information as text</h2>
-  <!-- structured text equivalent -->
-</div>
-```
-
-### Focus management
-
-- Ensure focus is visible at all times on map controls and markers.
-- When a marker popup opens, move focus into the popup.
-- When a popup closes, restore focus to the triggering marker.
-- Do not trap focus inside the map container unless it is a modal experience.
-
-### Landmark and ARIA roles
-
-- Wrap the map in a `<section>` or use `role="application"` when custom keyboard behavior is implemented.
-- Provide an accessible name via `aria-label` or `aria-labelledby`.
-- Use `role="application"` sparingly — it suspends standard reading mode in screen readers. Only use it when the map delivers a rich interactive widget experience and includes comprehensive keyboard support.
-
-```html
-<section aria-labelledby="map-heading">
-  <h2 id="map-heading">Service Area Map</h2>
-  <div role="application" aria-label="Interactive service area map">
-    <!-- map -->
-  </div>
+<section id="transit-route-details" aria-labelledby="transit-route-heading">
+  <h2 id="transit-route-heading">Step-free transit route details</h2>
+  <p>
+    Three routes connect Central Station, City Hall, the library, and Central
+    Hospital. Routes 2 and 8 intersect at City Hall.
+  </p>
+  <!-- Use a list or table for the complete route and stop information. -->
 </section>
 ```
 
----
+Prefer visible structured content because everyone can navigate, enlarge,
+translate, copy, and search it. `aria-describedby` can be suitable for a plain
+text description, but assistive technologies generally expose referenced
+headings, lists, and tables as one flattened description. Do not use it as the
+only access to a complex structured alternative.
 
-## 4. Map Controls
+### Redundant and decorative maps
 
-### Zoom and navigation controls
+Use `alt=""` when an image is purely decorative. It can also be appropriate
+when the same map information is already completely and immediately available
+in nearby HTML and the image adds no additional purpose for non-visual users.
 
-- All map controls (zoom, pan, layer toggles, search) must be reachable by keyboard.
-- Buttons must have accessible names — avoid icon-only buttons without labels.
-- Controls must meet minimum touch target size (44×44 CSS pixels).
+Decorative maps must not contain interactive descendants or expose unnecessary
+keyboard stops. Do not call a meaningful or interactive map decorative simply
+to hide accessibility problems.
 
-```html
-<!-- Accessible zoom controls -->
-<div role="group" aria-label="Map zoom controls">
-  <button type="button" aria-label="Zoom in">+</button>
-  <button type="button" aria-label="Zoom out">−</button>
-  <button type="button" aria-label="Reset to default view">⟳</button>
-</div>
-```
+## Structured Alternatives
 
-### Layer toggles and filters
+The alternative format must match the task. A map may need several formats.
 
-- Layer toggles must use `<input type="checkbox">` or `role="checkbox"` with a visible label.
-- Group related layer controls with `<fieldset>` and `<legend>`.
-- Announce layer state changes using a live region when appropriate.
+### Location list or table
 
-```html
-<fieldset>
-  <legend>Map layers</legend>
-  <label><input type="checkbox" name="layer-transit" checked> Transit routes</label>
-  <label><input type="checkbox" name="layer-accessibility"> Accessibility features</label>
-  <label><input type="checkbox" name="layer-parking"> Parking areas</label>
-</fieldset>
-```
-
----
-
-## 5. Map Markers and Features
-
-### Accessible marker names
-
-Every marker, pin, or region must have an accessible name:
+For directories, provide the same locations, filters, status, and relevant
+attributes outside the visual map.
 
 ```html
-<!-- Marker as a button -->
-<button type="button" aria-label="City Hall — open weekdays 9am to 5pm">
-  <svg aria-hidden="true" focusable="false"><!-- pin icon --></svg>
-</button>
-```
-
-### Popups and tooltips
-
-- Popup content must be keyboard-accessible and screen-reader-readable.
-- Use `role="dialog"` with `aria-labelledby` for rich popups.
-- Provide a clearly labeled close button.
-- Ensure popup text has sufficient color contrast.
-
-```html
-<div role="dialog" aria-labelledby="popup-title" aria-modal="true">
-  <h3 id="popup-title">City Hall</h3>
-  <p>123 Main Street. Open Monday–Friday, 9am–5pm.</p>
-  <a href="/city-hall">More information</a>
-  <button type="button" aria-label="Close City Hall popup">✕</button>
-</div>
-```
-
-### Clusters
-
-- Marker clusters must announce their count and general location.
-- Expanding a cluster must be keyboard-operable and announce the result.
-
-```html
-<button type="button" aria-label="Cluster of 7 locations in downtown — press Enter to expand">
-  7
-</button>
-```
-
----
-
-## 6. Color and Visual Design
-
-### Do not rely on color alone
-
-Maps frequently use color to convey meaning. Every use of color must be accompanied by another visual indicator:
-
-- Use patterns, shapes, or labels in addition to color for route or zone differentiation.
-- Provide a map legend with text labels for all color-coded elements.
-- Ensure the legend is adjacent to the map and keyboard-accessible.
-
-### Color contrast
-
-- Map text and labels must meet 4.5:1 contrast ratio against their background (WCAG 2.2 AA).
-- UI controls must meet 3:1 contrast ratio for non-text elements.
-- Test maps in forced-colors (Windows High Contrast) mode.
-
-### Avoid conveying direction by color alone
-
-For route maps, supplement color with directional arrows or numbered waypoints.
-
----
-
-## 7. Structured Text Alternative
-
-Whenever a map communicates complex spatial data, provide a structured text equivalent alongside it. This can take several forms:
-
-### Tabular data
-
-When a map shows a list of locations:
-
-```html
-<table>
-  <caption>Accessible library branches</caption>
+<table id="branch-table">
+  <caption>Library branches matching the current filters</caption>
   <thead>
     <tr>
       <th scope="col">Branch</th>
       <th scope="col">Address</th>
-      <th scope="col">Accessibility features</th>
+      <th scope="col">Distance</th>
+      <th scope="col">Accessibility information</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Central Library</td>
-      <td>100 Main St</td>
-      <td>Step-free entry, elevator, accessible washrooms, assistive listening</td>
+      <th scope="row"><a href="/branches/central">Central Library</a></th>
+      <td>100 Main Street</td>
+      <td>600 metres</td>
+      <td>Step-free entrance, lift, accessible washroom, hearing loop</td>
     </tr>
     <tr>
-      <td>Eastside Branch</td>
-      <td>450 Oak Ave</td>
-      <td>Step-free entry, accessible washrooms</td>
+      <th scope="row"><a href="/branches/eastside">Eastside Branch</a></th>
+      <td>450 Oak Avenue</td>
+      <td>1.4 kilometres</td>
+      <td>Step-free entrance and accessible washroom</td>
     </tr>
   </tbody>
 </table>
 ```
 
-### Step-by-step directions
+- Explain how distance was calculated.
+- Include units and do not rely on row position to communicate proximity.
+- Preserve the selected filters and sort order in the list or table.
+- Let users open the same details and perform the same actions from both views.
+- Use pagination or result summaries when hundreds of markers would make the
+  alternative difficult to navigate.
 
-For routing maps, provide turn-by-turn text directions as an alternative:
+### Route directions
+
+Route alternatives need more than a start and destination.
 
 ```html
-<ol aria-label="Accessible route from main entrance to conference room">
-  <li>Enter through the main doors on Elm Street (automatic doors, level threshold).</li>
-  <li>Turn right and proceed to the elevator lobby.</li>
-  <li>Take the elevator to the 3rd floor.</li>
-  <li>Exit left and follow the corridor to room 310.</li>
-</ol>
+<section id="clinic-directions" aria-labelledby="directions-heading">
+  <h2 id="directions-heading">Step-free route from Central Station</h2>
+  <p>Distance: 350 metres. Typical travel time: 6 to 10 minutes.</p>
+  <ol>
+    <li>Leave Central Station through the King Street step-free exit.</li>
+    <li>Turn left and continue east for approximately 250 metres.</li>
+    <li>Cross Queen Avenue at the signal-controlled crossing with curb cuts.</li>
+    <li>Continue for 80 metres. The clinic entrance is on the left after the pharmacy.</li>
+  </ol>
+  <p>
+    Route data checked 15 July 2026. Call 555-0100 to confirm temporary lift or
+    entrance closures.
+  </p>
+</section>
 ```
 
----
+Include, as applicable:
 
-## 8. Indoor Maps and Wayfinding
+- distances and expected travel time;
+- street names, landmarks, turns, and decision points;
+- curb cuts, crossings, gradients, surfaces, widths, and steps;
+- accessible entrances, lifts, ramps, and washrooms;
+- known construction, closures, or temporary barriers;
+- transit stop and platform information; and
+- an alternative route when the shortest route is not accessible.
 
-Indoor maps present additional challenges because they often depict multi-level spaces with complex navigation needs.
+Do not rely only on cardinal directions. Combine direction with street names,
+distances, sequence, and recognizable landmarks.
 
-### Key requirements
+### Thematic and quantitative maps
 
-- Provide floor-level navigation controls with clear accessible names.
-- Announce floor changes clearly when the map view updates.
-- Provide text-based wayfinding as an alternative to the visual map.
-- Where possible, support integration with indoor positioning systems for real-time navigation assistance.
+Provide:
 
-### Floor selector
+- a plain-language summary of the main finding;
+- a data table with every value needed for comparison;
+- region names, categories, units, ranges, and missing-data indicators;
+- the time period and data source; and
+- access to structured data when practical.
+
+Do not replace a choropleth map with a list of color names. Explain what the
+encoded ranges mean and expose the underlying values.
+
+### Legends
+
+A legend is part of the map's content, not decoration.
+
+- Put legend text in HTML when possible.
+- Describe the meaning of colors, symbols, patterns, line styles, and sizes.
+- Keep legend changes synchronized with active layers and filters.
+- Do not use the legend as the only structured alternative.
+- Make interactive legend controls native buttons, checkboxes, or radio
+  buttons.
+
+## Interactive Map Structure
+
+Keep the page structure understandable before the map library loads.
 
 ```html
-<label for="floor-select">Select floor</label>
-<select id="floor-select">
-  <option value="ground">Ground floor (accessible entrance, lobby, café)</option>
-  <option value="1">Floor 1 (offices, meeting rooms 101–120)</option>
-  <option value="2">Floor 2 (library, training rooms 201–210)</option>
-</select>
+<section aria-labelledby="service-map-heading">
+  <h2 id="service-map-heading">Find an accessible service location</h2>
+  <p>
+    Search or filter the locations, then use either the interactive map or the
+    synchronized results list.
+  </p>
+  <p>
+    <a href="#location-results-heading">Skip the interactive map and view locations</a>
+  </p>
 
-<!-- Use a live region to announce the floor change to screen readers -->
-<div role="status" aria-live="polite" aria-atomic="true" id="floor-announcement"></div>
+  <form role="search" aria-label="Service locations">
+    <label for="location-query">Location or address</label>
+    <input id="location-query"
+           name="query"
+           type="search">
+    <button type="submit">Search locations</button>
+  </form>
+
+  <div class="map-interface">
+    <h3 id="map-view-heading">Interactive map</h3>
+    <p id="map-instructions">
+      Use the named map controls to move or zoom. The locations list contains
+      every result shown on the map.
+    </p>
+    <div id="map-viewport"
+         role="region"
+         aria-labelledby="map-view-heading"
+         aria-describedby="map-instructions">
+      <!-- The tested map library renders the map and its controls here. -->
+    </div>
+  </div>
+
+  <section aria-labelledby="location-results-heading">
+    <h3 id="location-results-heading" tabindex="-1">Location results</h3>
+    <p id="location-result-status" role="status" aria-atomic="true"></p>
+    <ul id="location-results">
+      <!-- Render the same locations represented by map markers. -->
+    </ul>
+  </section>
+</section>
 ```
 
-Wire the `change` event of the select to update `#floor-announcement` with a brief human-readable message such as "Showing Ground floor". This approach is more reliably supported across assistive technologies than `aria-controls`.
+The map region's accessible name describes the interface, not every marker.
+Do not duplicate the same heading through both `aria-label` and
+`aria-labelledby`.
 
-### Accessible route highlighting
+The visible link to results is useful to screen reader, keyboard, switch,
+speech-input, mobile, low-bandwidth, and cognitively disabled users. Do not
+reveal it only on keyboard focus if the alternative is useful to everyone.
 
-When showing accessible routes indoors, clearly differentiate them from standard routes using both color and pattern (for example, a dashed line in addition to color), and provide a legend.
+### Avoid `role="application"`
 
----
+Most maps do not need `role="application"`. It can change screen reader
+interaction modes and suppress ordinary reading commands.
 
-## 9. Third-Party Map Embeds
+Prefer:
 
-Many projects embed maps from third-party providers (Google Maps, Mapbox, Leaflet, OpenStreetMap). Each has different accessibility characteristics.
+- native controls around the map;
+- ordinary document content for results and details;
+- a named region for the viewport; and
+- documented, scoped keyboard behavior only where the viewport needs it.
 
-### Embedding considerations
+Use application semantics only when the team understands the screen reader
+consequences, has implemented a complete keyboard model, provides instructions
+and an exit path, and has tested the supported combinations. Adding the role
+does not make a map accessible.
 
-- Always provide a non-map alternative (table of locations, directions, or address list) alongside any embedded map.
-- Test the embedded map for keyboard operability and screen reader compatibility.
-- Add a descriptive `title` to `<iframe>` embeds.
-- Ensure the map does not create a keyboard trap.
+## Map Controls
+
+### Use named native controls
+
+Provide buttons for functions that would otherwise require a pointer gesture
+or dragging movement.
 
 ```html
-<iframe
-  src="https://example-map-provider.com/embed?..."
-  title="Interactive map showing our office locations"
-  width="600"
-  height="450"
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-
-<!-- Always provide a text alternative below the embed -->
-<details>
-  <summary>View office locations as a list</summary>
-  <ul>
-    <li>Vancouver: 100 Granville Street, V6C 1T2</li>
-    <li>Toronto: 200 Bay Street, M5J 2J3</li>
-  </ul>
-</details>
+<div class="map-controls" role="group" aria-labelledby="map-controls-heading">
+  <h3 id="map-controls-heading">Map view controls</h3>
+  <button type="button">Zoom in</button>
+  <button type="button">Zoom out</button>
+  <button type="button">Pan north</button>
+  <button type="button">Pan west</button>
+  <button type="button">Reset map view</button>
+  <button type="button">Pan east</button>
+  <button type="button">Pan south</button>
+</div>
 ```
 
-### Leaflet.js accessibility
+Visible text makes controls easier to understand and operate by speech. If the
+design uses an icon, keep the visible tooltip or adjacent label available by
+keyboard, touch, and pointer, and include the visible wording in the accessible
+name.
 
-When using Leaflet, always add `keyboard: true` to your map initialization and ensure all custom markers and controls have accessible names. When clustering markers is needed, use the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plugin and ensure cluster buttons expose accessible names with counts (see Section 5 — Clusters). Consider [Leaflet Accessible](https://github.com/adamlacombe/Leaflet.Accessible) for additional keyboard and screen reader improvements.
+### Target size
 
----
+WCAG 2.5.8 Target Size (Minimum) requires a target of at least 24 by 24 CSS
+pixels or satisfaction of a listed exception. It does not impose a universal
+44 by 44 minimum at Level AA.
 
-## 10. Map Search and Geocoding
+Use at least 44 by 44 CSS pixels for primary map controls as an inclusive
+practice and to align with the Level AAA Target Size (Enhanced) criterion.
+Markers can be visually small while a larger transparent hit area provides an
+adequate target, as long as hit areas do not overlap in a way that creates
+ambiguous activation.
 
-If the map includes a search or address lookup:
+```css
+.map-controls button {
+  min-inline-size: 44px;
+  min-block-size: 44px;
+}
+```
 
-- Label the search input clearly.
-- Announce search results using a live region.
-- Announce when no results are found.
-- Ensure result items are navigable by keyboard and operable with `Enter`.
+### Layers and filters
+
+Use native controls and visible labels.
 
 ```html
-<label for="map-search">Search for a location</label>
-<input
-  type="search"
-  id="map-search"
-  aria-controls="map-search-results"
-  autocomplete="off"
-  aria-autocomplete="list"
-/>
+<fieldset>
+  <legend>Locations to show</legend>
+  <label>
+    <input type="checkbox" name="category" value="clinic" checked>
+    Clinics
+  </label>
+  <label>
+    <input type="checkbox" name="category" value="pharmacy">
+    Pharmacies
+  </label>
+  <label>
+    <input type="checkbox" name="step-free" value="yes">
+    Step-free entrance
+  </label>
+</fieldset>
+```
 
-<ul
-  id="map-search-results"
-  role="listbox"
-  aria-label="Search suggestions"
-  aria-live="polite"
->
-  <!-- dynamically populated results -->
+When a filter changes the markers, update the structured results from the same
+state. Announce a concise result summary such as "12 locations shown." Do not
+announce every marker added, tile loaded, pan movement, or zoom frame.
+
+## Keyboard Interaction
+
+All map functionality must be available from a keyboard interface unless the
+underlying movement is essential under WCAG's limited exception.
+
+- Users can reach every control in a logical order.
+- Native buttons operate with `Enter` and `Space`.
+- Focus is visible and is not obscured by floating controls or popups.
+- Users can move into and out of the map without a keyboard trap.
+- Panning, zooming, selecting features, changing layers, searching, and opening
+  details have keyboard paths.
+- Rerendering the map does not discard focus or move it to the document body.
+- Full-screen mode has an obvious exit control and returns focus logically.
+
+### Arrow keys and shortcuts
+
+Do not capture page-level arrow keys merely because a map is present. If arrow
+keys pan a viewport, activate that behavior only while the viewport has focus
+and provide nearby instructions. Users must still be able to press `Tab` or
+`Shift` plus `Tab` to leave.
+
+If single-character shortcuts such as `+` or `-` work outside a focused
+component, meet WCAG 2.1.4 by allowing users to turn them off, remap them, or
+limiting them to when the relevant component has focus. Always provide named
+buttons as an alternative.
+
+### Large marker sets
+
+Hundreds of markers must not create hundreds of sequential Tab stops. Choose a
+tested interaction model such as:
+
+- one map-viewport Tab stop with documented directional navigation;
+- a roving `tabindex` pattern within the current marker set;
+- focusable markers only after a user narrows results; or
+- a structured location list as the primary keyboard interface.
+
+There is no universal WAI-ARIA map pattern. Document the chosen behavior and
+test it with users. Do not invent a composite role that misrepresents the map.
+
+## Markers, Clusters, and Details
+
+### Markers
+
+Each interactive marker needs a concise, unique accessible name that identifies
+the place or feature. Include a visible label in the accessible name when one
+is displayed.
+
+```html
+<button type="button"
+        class="map-marker"
+        aria-label="City Hall, 123 Main Street"
+        aria-expanded="false"
+        aria-controls="city-hall-details">
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+    <!-- Marker artwork -->
+  </svg>
+</button>
+
+<section id="city-hall-details"
+         aria-labelledby="city-hall-heading"
+         hidden>
+  <h3 id="city-hall-heading">City Hall</h3>
+  <p>123 Main Street. Step-free entrance on Queen Avenue.</p>
+  <a href="/locations/city-hall">City Hall details</a>
+</section>
+```
+
+The implementation must update both `hidden` and `aria-expanded`. The example
+uses ordinary non-modal content. Do not add `role="dialog"` or
+`aria-modal="true"` to every marker popup.
+
+If a popup contains interactive content, define a predictable focus strategy.
+Moving focus can be appropriate when the user explicitly opens a substantial
+detail panel. It is usually disruptive for a small label or preview. If focus
+moves, provide a close control and return focus to the triggering marker or
+equivalent result item.
+
+### Clusters
+
+Clusters need an accessible name, a count, a meaningful location or category,
+and a keyboard action.
+
+```html
+<button type="button"
+        aria-expanded="false"
+        aria-controls="downtown-location-results">
+  Show 7 locations in downtown
+</button>
+```
+
+After expansion:
+
+- update `aria-expanded`;
+- update the map and structured results together;
+- preserve focus on the cluster control or move it only to a predictable
+  results heading after an explicit user action; and
+- announce a concise result summary rather than every marker.
+
+Do not put instructions such as "press Enter" in a native button's name.
+Its role already communicates how it operates.
+
+## Search, Geocoding, and Geolocation
+
+### Prefer a simple search first
+
+A labeled search form followed by a status message and ordinary links is easier
+to implement and use than a custom autocomplete widget.
+
+```html
+<form role="search" aria-labelledby="map-search-heading">
+  <h2 id="map-search-heading">Search service locations</h2>
+  <label for="map-search">Address, postal code, or place</label>
+  <input id="map-search"
+         name="query"
+         type="search">
+  <button type="submit">Search</button>
+</form>
+
+<p id="search-status" role="status" aria-atomic="true"></p>
+<ul id="search-results">
+  <!-- Use ordinary links or buttons for results. -->
 </ul>
 ```
 
----
+If suggestions are necessary, implement and test the complete WAI-ARIA
+combobox pattern, including `aria-expanded`, `aria-controls`, option state,
+active-descendant or focus behavior, keyboard interaction, selection, and
+escape behavior. Adding `role="listbox"` and `aria-autocomplete` to an
+otherwise incomplete widget is not sufficient.
 
-## 11. Mobile and Touch Accessibility
+### Search behavior
 
-- All map interactions must be operable with a single pointer (no multi-finger gestures required).
-- Provide button-based alternatives for pinch-to-zoom and two-finger pan.
-- Ensure maps work correctly with iOS VoiceOver and Android TalkBack.
-- Confirm that touch targets are at least 44×44 CSS pixels.
+- Accept multiple useful forms of location input.
+- Explain errors and offer corrections without clearing the query.
+- Announce a concise result count or no-results message.
+- Keep results keyboard navigable as ordinary content.
+- Do not move focus on every keystroke.
+- Identify ambiguous addresses and let the user choose.
+- Expose distance units and the origin used for distance calculations.
+- Preserve the query and filters when switching between map and list views.
 
----
+### Geolocation
 
-## 12. Testing Expectations
+- Request location permission only after a clear user action.
+- Explain why location is requested and how it will be used.
+- Provide address or place search when permission is denied or unavailable.
+- Handle inaccurate or stale locations without blaming the user.
+- Do not require precise geolocation for a task that can use manual input.
 
-Minimum checks for each map change:
+## Pointer, Touch, and Dragging
 
-- Navigate all controls and markers using keyboard only.
-- Verify visible focus on all focusable elements.
-- Verify screen reader announces marker names, popup content, and control states.
-- Verify color contrast for map text, labels, and UI controls.
-- Verify the map in forced-colors (Windows High Contrast) mode.
-- Verify a text alternative or structured equivalent is present and complete.
-- Verify embedded maps have descriptive `title` attributes.
-- Check with iOS VoiceOver and Android TalkBack for mobile map interactions.
+Maps commonly depend on pinch, rotate, swipe, and drag gestures. These cannot
+be the only way to operate essential functions.
 
----
+- Provide zoom buttons as alternatives to pinch gestures.
+- Provide pan controls, search, or location selection as alternatives to
+  dragging the map.
+- Provide a button or menu action as an alternative to dragging a marker or
+  route point.
+- Let users activate markers and controls with a single pointer.
+- Avoid actions that fire on pointer-down when they can be completed on
+  pointer-up, allowing cancellation.
+- Keep controls separated and large enough for users with limited dexterity.
 
-## 13. Definition of Done
+An embedded map must not create a page-scrolling trap. Users need a reliable
+way to scroll past it without performing an undocumented multi-finger gesture.
+Consider requiring an explicit "Use interactive map" action before the map
+captures drag or wheel gestures, especially on small screens.
 
-A map feature is complete only when:
+## Low Vision, Zoom, Reflow, and Orientation
 
-- All map controls have accessible names.
-- All markers and interactive features are keyboard-operable.
-- A text alternative (table, list, or directions) is present alongside the map.
-- Color is not the only means of conveying information.
-- Color contrast requirements are met for all labels and controls.
-- Manual keyboard and screen reader checks pass.
-- No blocking accessibility defects remain.
+Browser zoom and map zoom are different. Support both.
 
----
+- Browser zoom enlarges controls, labels, instructions, and alternatives.
+- Map zoom changes geographic scale and displayed features.
+- Do not override browser zoom or pinch-to-zoom at the page level.
+- Keep map controls and alternatives available at 200 percent and 400 percent
+  browser zoom.
+- Preserve content in portrait and landscape orientations.
+- Avoid fixed-height layouts that hide controls when text grows.
 
-## 14. Equivalent Purpose Evaluation for Digital Maps
+WCAG 1.4.10 includes an exception for content requiring a two-dimensional
+layout for meaning or use. A map viewport can require two-dimensional panning.
+This does not exempt the surrounding controls, search, status, details,
+directions, and location results from reflow requirements.
 
-WCAG 2.2 SC 1.1.1 requires that non-text content have text alternatives that serve the **equivalent purpose**. For digital maps, this standard is particularly demanding because maps communicate multi-layered spatial information that cannot be captured by a brief description of visual appearance.
+Provide a full-screen or enlarged view when useful, but do not make it the only
+accessible path. Full-screen controls must remain keyboard and touch operable.
 
-Research on systematically evaluating equivalent purpose for digital maps is presented in [Systematically Evaluating Equivalent Purpose for Digital Maps (arXiv:2512.05310)](https://arxiv.org/abs/2512.05310). That work highlights the gap between the **visual representation** of a map — its colors, shapes, and spatial layout — and its **semantic representation**: the geographic meaning, relationships, and tasks the map supports. An effective text alternative bridges this gap by preserving meaning, not merely describing appearance.
+## Color, Contrast, and Visual Encoding
 
-### The Visual–Semantic Gap
+### Do not rely on color alone
 
-A map's visual properties and semantic meaning are fundamentally different things:
+Combine color with labels, patterns, line styles, symbols, sizes, or direct
+values. Examples include:
 
-| Visual representation | Semantic representation |
+- route numbers and distinct line styles in addition to route colors;
+- icons and text labels in addition to marker colors;
+- hatching or boundary styles in addition to area fills; and
+- numeric values in the alternative data table.
+
+Do not use color alone to indicate selected markers, accessible routes,
+closures, hazards, or severity.
+
+### Apply contrast requirements accurately
+
+- Authored normal-size text generally needs at least 4.5 to 1 contrast.
+- Large text generally needs at least 3 to 1 contrast.
+- Visual information required to identify authored controls, their states, and
+  meaningful graphical objects generally needs at least 3 to 1 contrast
+  against adjacent colors under WCAG 1.4.11.
+- Focus indicators need enough contrast to remain visible against the colors
+  they touch.
+
+Do not claim that every pixel, aerial photograph, terrain feature, or incidental
+label in a map must meet one universal ratio. Evaluate the authored information
+needed to understand and operate the map, and always provide the structured
+alternative.
+
+### Forced colors and user preferences
+
+- Test controls, focus indicators, markers, routes, selected states, and
+  legends in forced-colors mode.
+- Do not disable forced-color adjustments broadly.
+- Ensure the location list and directions remain complete if map tiles,
+  gradients, or background imagery disappear.
+- Respect increased text spacing, browser colors, dark presentation, and
+  reduced-motion preferences.
+- Avoid animated panning or zooming when an immediate update works.
+
+## Canvas and SVG Maps
+
+Canvas pixels have no child semantics. If a map is drawn on `<canvas>`, provide
+accessible DOM controls, results, names, states, details, and alternatives
+outside or in a tested fallback structure. Do not assume screen readers can
+inspect painted markers.
+
+For SVG maps:
+
+- give a non-interactive SVG map an appropriate accessible name and
+  description;
+- keep decorative paths out of the accessibility tree;
+- make interactive regions programmatically focusable and named;
+- expose state and relationships through supported HTML or SVG semantics; and
+- provide a structured alternative for large or spatially complex SVG maps.
+
+See the project's
+[SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+for detailed SVG guidance.
+
+## Indoor Maps and Wayfinding
+
+Indoor wayfinding depends on current, detailed information.
+
+Provide, as applicable:
+
+- building, entrance, floor, and destination names;
+- accessible entrances and their hours;
+- lift, stair, escalator, ramp, and platform locations;
+- corridor widths, door types, thresholds, gradients, surfaces, and lighting;
+- washrooms, refuge areas, service counters, and assistance points;
+- landmarks and distances between decision points;
+- temporary lift outages, construction, locked doors, or route closures; and
+- the source and last verification date.
+
+### Floor selection
+
+Use a native control and update both the map and its alternative.
+
+```html
+<label for="floor-select">Building floor</label>
+<select id="floor-select">
+  <option value="ground">Ground floor: entrance, reception, cafe</option>
+  <option value="1">Floor 1: offices and meeting rooms 101 to 120</option>
+  <option value="2">Floor 2: library and training rooms 201 to 210</option>
+</select>
+
+<p id="floor-status" role="status" aria-atomic="true"></p>
+```
+
+On change, update the floor heading, locations, directions, and map together.
+A concise status such as "Ground floor shown, 8 locations" can confirm the
+result. Do not rely on a live region as a substitute for updating the visible
+content.
+
+Real-time positioning is an enhancement, not the only navigation method.
+Indoor location can be inaccurate, unavailable, or difficult to interpret.
+Offer static directions, assistance information, and a way to report outdated
+route data.
+
+## Embedded and Third-Party Maps
+
+The content owner remains responsible for the experience delivered through an
+embedded map.
+
+```html
+<iframe
+  src="https://maps.example.org/embed/service-locations"
+  title="Interactive map of service locations"
+  loading="lazy">
+</iframe>
+
+<p>
+  <a href="#service-location-list">View service locations as a list</a>
+  or
+  <a href="/service-locations.csv">download the location data</a>.
+</p>
+```
+
+- Give each iframe a concise, unique title.
+- Make iframe sizing responsive without clipping controls or enlarged text.
+- Confirm keyboard users can enter, operate, and leave the embed.
+- Test controls, markers, popups, consent notices, and full-screen mode.
+- Keep the structured alternative outside the iframe and available when the
+  provider fails or is blocked.
+- Confirm changes made in the embed are reflected in the site's alternative.
+- Retest after provider, plugin, style, or configuration updates.
+
+Do not rely on a provider's accessibility claim, conformance report, or default
+configuration without testing the current rendered experience.
+
+### Map libraries
+
+Preserve a library's accessibility defaults unless testing supports a change.
+For example, Leaflet's current accessibility guidance states that its map
+container and markers are keyboard operable by default and that markers need
+descriptive alternatives. Plugins can change or degrade that behavior.
+
+Use the latest stable version allowed by the project, pin the version for
+repeatable builds, review release notes, and retest after updates. Do not
+recommend a plugin as universally accessible or use unpinned `@latest`
+dependencies in production examples.
+
+## Dynamic Updates and Status Messages
+
+Use live status messages selectively for completed, user-requested results:
+
+- search result count;
+- no results;
+- selected floor or layer with result count;
+- route calculation completed or failed; and
+- cluster expansion result count.
+
+Do not announce:
+
+- every map tile load;
+- continuous coordinates while panning;
+- every zoom animation frame;
+- every marker entering or leaving the viewport; or
+- duplicated visual and list updates separately.
+
+Keep important results visible in headings, lists, tables, and detail sections.
+A live region confirms a change but does not replace persistent content.
+
+## Data Quality and Accessibility Information
+
+Accessible presentation cannot correct inaccurate geographic data.
+
+- Identify the source and last update date.
+- Explain whether distances are straight-line, walking, driving, or transit.
+- Distinguish verified accessibility information from user-submitted or
+  inferred information.
+- Provide a way to report errors and temporary barriers.
+- Preserve missing or unknown values rather than presenting them as "No."
+- Avoid absolute route claims when conditions can change.
+- Include contact information when a critical accessibility feature should be
+  confirmed before travel.
+
+## Testing
+
+### Equivalent-purpose and task testing
+
+Test the visual map and structured alternative separately.
+
+1. List the map's documented purposes and essential tasks.
+2. Complete each task using the visual map.
+3. Complete each task using only the structured alternative and non-map
+   controls.
+4. Compare the information, results, actions, and conclusions available.
+5. Test with blind, low-vision, mobility-disabled, cognitively disabled, and
+   DeafBlind users as appropriate to the map and audience.
+
+Do not evaluate equivalence only by counting labels or checking that a table
+exists.
+
+### Keyboard testing
+
+- Reach and operate search, filters, layers, map controls, markers, clusters,
+  details, results, and full-screen mode.
+- Confirm focus order is logical and focus remains visible.
+- Verify focus is not hidden by floating controls or popups.
+- Confirm map updates do not lose focus.
+- Enter and leave the viewport and embedded map without a trap.
+- Test any scoped arrow keys and shortcuts against documented behavior.
+- Confirm the structured alternative supports the same actions.
+
+### Screen reader testing
+
+Test supported browser, operating system, map-library, and assistive-technology
+combinations. Record versions and relevant settings.
+
+- Navigate the page by headings, landmarks, forms, links, and controls.
+- Confirm map controls, markers, clusters, states, and results have useful
+  names and roles.
+- Verify status messages are concise and not repeated excessively.
+- Read structured descriptions, tables, directions, and details independently
+  of the map.
+- Confirm opening and closing details does not cause unexpected focus changes.
+
+Do not publish a fixed table promising identical map behavior from named screen
+readers. Support changes with browser, library, plugin, and assistive-technology
+versions.
+
+### Visual and low-vision testing
+
+- Test browser zoom at 200 percent and 400 percent.
+- Test narrow viewports and both orientations.
+- Test text spacing and enlarged default fonts.
+- Test light, dark, and forced-colors presentations.
+- Confirm important labels do not disappear or overlap.
+- Verify selected states, routes, boundaries, and focus indicators remain
+  distinguishable without color alone.
+- Confirm the structured alternative remains usable when map imagery is hidden.
+
+### Pointer and touch testing
+
+- Complete every task with a single pointer.
+- Operate zoom and pan without pinch or drag.
+- Verify alternatives to dragging markers or route points.
+- Check target size, spacing, overlap, and pointer cancellation.
+- Scroll the page past the map without an interaction trap.
+- Test supported touch and switch-control environments.
+
+### Data and integration testing
+
+- Compare marker count and content with the structured results.
+- Apply every filter and confirm both views remain synchronized.
+- Verify distances, units, coordinates, routes, and accessibility attributes.
+- Test empty, loading, error, offline, permission-denied, and provider-failure
+  states.
+- Test third-party embeds without editor or administrator privileges.
+- Retest after data, basemap, library, plugin, or provider updates.
+
+### Automated checks
+
+Automation can help detect:
+
+- missing iframe titles;
+- unnamed buttons and form controls;
+- invalid ARIA attributes and duplicate IDs;
+- focus-order regressions in component tests;
+- color-contrast issues in authored controls;
+- missing static-image alternatives;
+- map and list record-count mismatches; and
+- inaccessible loading or error states.
+
+Automation cannot determine equivalent purpose, direction accuracy, route
+accessibility, spatial comprehension, popup usability, or third-party keyboard
+behavior. Manual and user testing are required.
+
+## Common Failures
+
+| Failure | Correction |
 |---|---|
-| Blue line running north–south | A navigable transit route connecting the train station and the hospital |
-| Green polygon covering a district | An administrative boundary with specific planning or zoning significance |
-| Clustered pin icons near the waterfront | Multiple related points of interest sharing a category (e.g., accessible parking) |
-| Gradient fill across neighborhoods | A relative measure such as population density or flood risk level |
-| Dashed boundary line | A proposed or contested boundary, not yet formalized |
+| Using one generic `alt="Map"` | Describe the map's purpose and provide the task-appropriate structured alternative |
+| Repeating every visual label without identifying the map's purpose | Preserve essential tasks, spatial information, relationships, and conclusions |
+| Assuming a table or directions are always fully equivalent | Match the alternative to the documented purpose and add spatial descriptions or interfaces when needed |
+| Giving a complex table through `aria-describedby` | Provide visible, navigable HTML or a clearly associated link |
+| Adding `role="application"` to the map by default | Use named regions, native controls, ordinary content, and scoped keyboard behavior |
+| Capturing arrow keys while focus is elsewhere on the page | Scope map keys to the focused viewport and provide named controls |
+| Making every marker a Tab stop | Use a tested navigation model and synchronized location list |
+| Making every popup an `aria-modal="true"` dialog | Use ordinary non-modal details unless the interaction is genuinely modal |
+| Putting instructions such as "press Enter" in button names | Give the button a concise action name and rely on native semantics |
+| Building an incomplete custom listbox for search | Use a simple search and results list or implement the complete combobox pattern |
+| Claiming WCAG AA universally requires 44 by 44 targets | Apply the 24 by 24 Level AA criterion and use 44 by 44 as an inclusive or Level AAA target |
+| Treating 2.4.11 as Focus Appearance | Identify it as Focus Not Obscured; Focus Appearance is 2.4.13 at Level AAA |
+| Requiring pinch or drag | Provide single-pointer buttons and selection alternatives |
+| Applying one contrast ratio to every map pixel | Test essential authored text, controls, states, and graphical objects accurately |
+| Hiding an interactive map as decorative | Remove interaction or expose accessible controls, information, and alternatives |
+| Announcing every pan, tile, or marker update | Announce concise completed task results and keep persistent content visible |
+| Trusting a map provider or plugin without testing | Test the current configured version and preserve an external structured alternative |
+| Letting the map and location list use different data | Generate both from the same source and state |
 
-Describing only the visual representation ("a blue line on a white background") fails the equivalent purpose test. A semantically equivalent alternative describes what the map *communicates* ("bus route 12, which is fully accessible with step-free boarding at all stops, connecting City Hall and Central Hospital").
+## Definition of Done
 
-### Information Taxonomy for Maps
+- [ ] The map's purpose, audience, and essential tasks are documented.
+- [ ] The map type and required alternative formats are identified.
+- [ ] A person who does not use the visual map can complete every essential
+  task.
+- [ ] Static maps have appropriate concise alternatives and complex
+  descriptions.
+- [ ] Location lists, tables, data, and directions are visible, structured, and
+  easy to find.
+- [ ] Map and non-map views use the same data, filters, selections, and result
+  state.
+- [ ] Search, filters, layers, controls, markers, clusters, and details have
+  appropriate names, roles, states, and keyboard behavior.
+- [ ] The map does not use `role="application"` without documented need and
+  testing.
+- [ ] Large marker sets do not create an excessive sequential Tab order.
+- [ ] Users can enter, operate, and leave the map and embeds without a trap.
+- [ ] Pinch, path gestures, and dragging have single-pointer alternatives.
+- [ ] Targets meet WCAG 2.5.8, with 44 by 44 CSS pixels used where practical.
+- [ ] Color, position, shape, or visual styling is not the only way information
+  is conveyed.
+- [ ] Text, controls, states, focus indicators, and essential graphical objects
+  meet applicable contrast requirements.
+- [ ] Controls and alternatives work at 200 percent and 400 percent browser
+  zoom and on narrow viewports.
+- [ ] The map remains usable in forced-colors mode, or the complete structured
+  alternative remains available.
+- [ ] Status messages are concise and persistent results remain in the page.
+- [ ] Embedded maps have useful titles and alternatives outside the iframe.
+- [ ] Source, date, units, limitations, and uncertain accessibility data are
+  identified.
+- [ ] Keyboard, screen reader, low-vision, touch, pointer, error-state, and
+  equivalent-purpose tests have been completed.
+- [ ] People with relevant disabilities have tested essential map tasks.
+- [ ] Automated checks supplement, but do not replace, manual and user testing.
 
-Digital maps communicate information across multiple semantic layers. Text alternatives should address each layer that is relevant to the map's primary purpose:
+## Related WCAG Criteria
 
-1. **Spatial/locational** — Where features are (proximity, adjacency, coordinates, address)
-2. **Directional/navigational** — How to move between places (routes, turn-by-turn directions, orientation)
-3. **Categorical/typological** — What type of feature something is (transit stop, hospital, park, boundary)
-4. **Relational** — How features relate to each other (connected by, adjacent to, part of, blocked by)
-5. **Quantitative/scalar** — Relative measures shown visually (density, magnitude, coverage, distance)
-6. **Contextual** — The frame of reference (geographic scope, scale, time period, data currency)
+### Content and structure
 
-Not every layer applies to every map. Begin by identifying which layers are essential to the map's purpose, then confirm your text alternative covers each relevant layer.
+- [1.1.1 Non-text Content (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
+- [1.3.1 Info and Relationships (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)
+- [1.3.2 Meaningful Sequence (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)
+- [1.3.3 Sensory Characteristics (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/sensory-characteristics.html)
+- [1.3.4 Orientation (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/orientation.html)
+- [1.4.1 Use of Color (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
+- [1.4.3 Contrast (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [1.4.4 Resize Text (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html)
+- [1.4.10 Reflow (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
+- [1.4.11 Non-text Contrast (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [1.4.12 Text Spacing (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+- [1.4.13 Content on Hover or Focus (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
 
-**Example:** A transit accessibility map showing accessible bus stops across a city would require layers 1 (spatial — stop locations), 2 (navigational — routes between stops), 3 (categorical — stop type, e.g. accessible vs. not), 4 (relational — which stops connect which routes), and 6 (contextual — city name, date of data). Layer 5 (quantitative) would only apply if the map also encodes something like ridership density.
+### Keyboard and focus
 
-### Systematic Evaluation Criteria
+- [2.1.1 Keyboard (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)
+- [2.1.2 No Keyboard Trap (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html)
+- [2.1.4 Character Key Shortcuts (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts.html)
+- [2.4.3 Focus Order (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)
+- [2.4.6 Headings and Labels (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html)
+- [2.4.7 Focus Visible (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [2.4.11 Focus Not Obscured (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+- [2.4.13 Focus Appearance (Level AAA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)
 
-Use the following criteria to evaluate whether a text alternative serves the equivalent purpose for a digital map.
+### Pointer and input
 
-#### Purpose alignment
+- [2.5.1 Pointer Gestures (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html)
+- [2.5.2 Pointer Cancellation (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html)
+- [2.5.3 Label in Name (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)
+- [2.5.5 Target Size (Enhanced) (Level AAA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)
+- [2.5.7 Dragging Movements (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html)
+- [2.5.8 Target Size (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- [3.2.1 On Focus (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/on-focus.html)
+- [3.2.2 On Input (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html)
+- [3.3.1 Error Identification (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html)
+- [3.3.2 Labels or Instructions (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html)
+- [3.3.3 Error Suggestion (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion.html)
+- [4.1.2 Name, Role, Value (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)
+- [4.1.3 Status Messages (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)
 
-- Does the text alternative enable users to accomplish the same primary tasks as the visual map?
-- Is the core purpose of the map (wayfinding, context-setting, data communication, spatial comparison) fully served by the text alternative?
-- Can a user who cannot see the map form the same understanding of the geographic situation?
+## Related Guides
 
-#### Semantic completeness
+- [ARIA Live Regions Best Practices](./ARIA_LIVE_REGIONS_BEST_PRACTICES.md)
+- [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Image Alt Text Accessibility Best Practices](./IMAGE_ALT_TEXT_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Tables Accessibility Best Practices](./TABLES_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Touch and Pointer Accessibility Best Practices](./TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
 
-- All named features visible on the map are identified in the text alternative.
-- Spatial relationships — adjacency, routes, containment, separation — are expressed in words or structured data.
-- Feature categories or types are identified, not just coordinates or addresses.
-- Any quantitative information (density gradients, distance scales, risk levels) is expressed numerically or descriptively.
-- The legend or key is described, including what each color, symbol, or pattern means.
-
-#### Navigational fidelity (for route and wayfinding maps)
-
-- Routes are described in sequence from start through intermediate points to destination.
-- Key decision points, turns, and landmarks are included.
-- Accessibility attributes of routes are stated (step-free, ramp access, kerb cuts, surface type).
-- Where accessible alternatives to inaccessible routes exist, they are described.
-
-#### Contextual framing
-
-- The geographic scope and approximate scale of the map are stated.
-- The time period or data currency is noted where relevant (e.g., "as of March 2025").
-- The authority or source of the underlying data is identified for maps used in decision-making.
-
-### Selecting the Right Alternative Format
-
-Matching the text alternative format to the map's dominant semantic layer improves comprehension and usability:
-
-| Map purpose | Recommended alternative format |
-|---|---|
-| Show locations of services or facilities | Structured table: name, address, accessibility features |
-| Describe a route or navigation path | Ordered list of step-by-step directions |
-| Convey spatial and directional relationships | Prose with explicit directional language (north, adjacent, across from) |
-| Show quantitative distribution across areas | Data table with region names, values, and units |
-| Show administrative or boundary zones | List of zones with attributes and what they mean |
-| Show multiple overlapping data layers | Separate structured alternative for each layer, plus a combined summary |
-
-### Applying Equivalent Purpose in Practice
-
-1. **Identify the map's purpose first.** What task is the user expected to accomplish with this map? Start from purpose, not visual content.
-2. **List the semantic layers present.** Which of the six taxonomy layers (spatial, directional, categorical, relational, quantitative, contextual) are active in this map?
-3. **Draft the alternative for each layer.** Address each relevant layer in the text alternative.
-4. **Test task completion.** Ask: can a user relying solely on the text alternative complete the same tasks as a user who can see the map?
-5. **Iterate with users.** Equivalent purpose evaluation is most reliable when tested with blind and low-vision users who navigate by the text alternative alone.
-
----
+Use the project's
+[Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+to assign severity and priority. This guide does not define a universal
+severity scale.
 
 ## References
 
-### Standards
-
-- [WCAG 2.2 Success Criterion 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) — Text alternatives for images including maps
-- [WCAG 2.2 Success Criterion 1.3.3 Sensory Characteristics](https://www.w3.org/WAI/WCAG22/Understanding/sensory-characteristics.html) — Do not rely on shape, color, or location alone
-- [WCAG 2.2 Success Criterion 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) — Color not the sole conveyor of information
-- [WCAG 2.2 Success Criterion 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) — Text contrast 4.5:1 minimum
-- [WCAG 2.2 Success Criterion 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) — All functionality operable via keyboard
-- [WCAG 2.2 Success Criterion 2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) — Logical focus order
-- [WCAG 2.2 Success Criterion 2.4.11 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) — Visible focus indicators
-
-### Research
-
-- [Systematically Evaluating Equivalent Purpose for Digital Maps (arXiv:2512.05310)](https://arxiv.org/abs/2512.05310) — Systematic framework for evaluating whether text alternatives for digital maps serve the equivalent purpose as defined by WCAG 1.1.1, addressing the gap between visual and semantic map representation
-
-### Guidance and Community Resources
-
-- [Rick Hansen Foundation — Accessible Map](https://www.rickhansen.com/MAP) — Accessibility mapping resources
-- [Sparkgeo — The Accessibility of Web Maps](https://sparkgeo.com/blog/the-accessibility-of-web-maps/) — Practical guidance for web map accessibility
-- [AccessibilityOz — Interactive Map Accessibility Principles](https://www.accessibilityoz.com/factsheets/interactive-maps/interactive-map-accessibility-principles/) — Interactive map accessibility factsheet
-- [maptime/map-accessibility-guidelines](https://github.com/maptime/map-accessibility-guidelines) — Community-developed map accessibility guidelines
-- [University of Virginia Libraries — Web Accessibility and Maps](https://guides.lib.virginia.edu/c.php?g=1248895) — Library guidance on accessible maps
-- [W3C COGA — Technology-Assisted Indoor Navigation](https://w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html) — Research on accessible indoor navigation
-
-### Open Source Map Accessibility Projects
-
-- [mgifford/a11y-maps](https://github.com/mgifford/a11y-maps) — Related accessibility maps project
-- [DEFRA/interactive-map](https://github.com/DEFRA/interactive-map) — Accessible interactive map component
-- [sammyhawkrad/accessible-map](https://github.com/sammyhawkrad/accessible-map) — Accessible map implementation reference
-- [openindoormaps/openindoormaps](https://github.com/openindoormaps/openindoormaps) — Open indoor maps project
-- [AccessibleMaps/IndoorOSMtoSITConverter](https://github.com/AccessibleMaps/IndoorOSMtoSITConverter) — Indoor map data conversion for accessibility
-- [Accessible-InfoPoint/2.5D-Indoor-Maps](https://github.com/Accessible-InfoPoint/2.5D-Indoor-Maps) — Research project on accessible 2.5D indoor maps
+- [W3C WAI: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
+- [W3C WAI: Image Maps](https://www.w3.org/WAI/tutorials/images/imagemap/)
+- [W3C WAI-ARIA Authoring Practices: Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
+- [W3C COGA: Technology-Assisted Indoor Navigation and Wayfinding](https://w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html)
+- [Leaflet: A Guide to Basic Leaflet Accessibility](https://leafletjs.com/examples/accessibility/)
+- [Systematically Evaluating Equivalent Purpose for Digital Maps](https://arxiv.org/abs/2512.05310)
 
 ### Machine-Readable Standards
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+For AI systems and automated tooling, see
+[wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured
+accessibility standards:
 
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) — Machine-readable WCAG 2.2 normative content including non-text content and sensory characteristics criteria
-- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) — ARIA roles and properties relevant to map widgets
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) — Relationships across WCAG/ARIA/HTML standards
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [WAI-ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml)
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
