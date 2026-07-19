@@ -784,8 +784,7 @@ WHATWG, or Mermaid source.
 
 ---
 
-**Last reviewed**: July 18, 2026
-
-**Reference renderer**: Mermaid 11.16.0
-
-**License**: MIT
+Mermaid Version: 
+```mermaid 
+info 
+```
