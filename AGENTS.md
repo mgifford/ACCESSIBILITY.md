@@ -19,8 +19,28 @@ instruction files before editing.
 
 GitHub supports repository-wide, path-specific, and agent instruction files.
 Different tools may load different combinations. Keep
-[Copilot instructions](.github/copilot-instructions.md) as a concise,
-Copilot-specific summary of this file rather than a conflicting second policy.
+[Copilot instructions](.github/copilot-instructions.md) as a short compatibility
+entry point that links here and contains only Copilot-specific behavior. Do not
+summarize or duplicate this file there.
+
+### When Each Instruction File Is Useful
+
+- `AGENTS.md` is the canonical, tool-neutral repository contract. Keep the root
+  file. Add a nested `AGENTS.md` only when a directory genuinely needs different
+  instructions.
+- `.github/copilot-instructions.md` is optional but useful when GitHub Copilot is
+  used. Some Copilot surfaces load it but do not automatically load `AGENTS.md`,
+  so it provides a native entry point to the canonical instructions. It must
+  defer to `AGENTS.md` for shared policy.
+- `.github/instructions/*.instructions.md` is useful only for rules that apply to
+  particular paths. Do not create one merely because the format is supported.
+- `.github/agents/*.agent.md` is useful only for a distinct specialist role,
+  tool set, or workflow. Do not put general repository policy in an agent file.
+- `.github/prompts/*.prompt.md` is useful for a repeatable task a person chooses
+  to invoke. It is not an always-on policy file.
+
+Every instruction file must state its purpose and scope. Remove it when it no
+longer has a distinct consumer or behavior.
 
 If applicable instruction files conflict:
 
