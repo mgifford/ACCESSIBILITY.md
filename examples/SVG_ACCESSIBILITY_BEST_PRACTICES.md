@@ -22,8 +22,10 @@ A conforming implementation must:
 - provide sufficient text and non-text contrast;
 - make SVG-based controls keyboard operable with visible focus;
 - respect motion preferences and provide required animation controls;
-- remain understandable in supported light, dark, increased-contrast, and forced-colours modes; and
-- preserve accessibility markup during SVG optimization and reuse.
+- remain understandable in supported light, dark, increased-contrast, and forced-colours modes;
+- preserve accessibility markup during SVG optimization and reuse; and
+- prevent untrusted SVG content from executing code, loading unapproved
+  resources, or exhausting application resources.
 
 The presence of `<title>`, `<desc>`, `role="img"`, or `aria-label` does not by itself make an SVG accessible. The result must be tested in its final context.
 
@@ -564,9 +566,138 @@ If the standalone file is complex, include or link to an equivalent HTML descrip
 
 ---
 
-## 16. Optimization and Build Processing
+## 16. Security, Sanitization, and Build Processing
 
-SVG optimizers can remove or rewrite accessibility-critical content. Configure the build to preserve:
+SVG is an XML-based document format with active features. Depending on how it
+is embedded and processed, an SVG can contain scripts, event handlers, links,
+external resources, CSS, animation, filters, and HTML inside
+`<foreignObject>`. A file that looks like an image must not automatically be
+treated as inert content.
+
+Accessibility metadata must survive processing, but it must not be preserved
+by weakening the security boundary. Apply security and accessibility checks to
+the same final artifact.
+
+### Define the trust boundary
+
+Classify the SVG before processing it:
+
+| Source | Examples | Required treatment |
+|:---|:---|:---|
+| Author-controlled | Reviewed icons committed to the repository | Review changes, restrict build tooling, and validate final output. |
+| Generated from controlled source | Mermaid or chart output produced by a pinned local renderer | Treat the renderer and configuration as dependencies; validate the generated SVG. |
+| Platform-generated | Diagrams rendered by GitHub or another hosted service | Record the platform and observed renderer version; verify the hosted result. |
+| Untrusted | Uploads, pasted SVG, user-edited markup, remote files, or AI-generated output | Enforce limits, parse securely, sanitize with an SVG-aware allowlist, and validate before display or export. |
+
+A controlled renderer reduces the attack surface but does not make every
+future renderer version or plugin trustworthy. Review dependency and
+configuration changes that can alter SVG output.
+
+### Embedding context changes the risk
+
+An SVG loaded as an HTML `<img>` is more constrained than SVG inserted directly
+into the document. Inline SVG, `<object>`, `<embed>`, standalone SVG documents,
+and files that may later be reused inline have broader capabilities and require
+greater scrutiny.
+
+Do not distribute an unsafe file merely because the current page uses `<img>`.
+Another consumer may download it, open it directly, or embed it in a less
+restricted context.
+
+There is no single accessibility treatment that works unchanged for inline
+SVG, HTML `<img>`, CSS background images, standalone documents, and interactive
+graphics. Authoring and optimization tools should ask for the intended output
+context. For example, metadata inside an SVG does not replace HTML `alt` when
+the file is loaded through `<img>`, and a CSS background image is not exposed as
+meaningful content at all.
+
+### Sanitize untrusted SVG
+
+Use a maintained sanitizer or parser that explicitly supports SVG and can be
+configured with an allowlist for the project's output profile. A generic HTML
+allowlist may remove essential SVG features or permit features the application
+does not need.
+
+Do not:
+
+- insert untrusted SVG using `innerHTML` before sanitization;
+- treat well-formed XML as safe SVG;
+- treat `DOMParser`, `XMLSerializer`, a formatter, or SVGO as a sanitizer;
+- use regular expressions as an SVG sanitizer;
+- assume a filename, MIME type, extension, or successful image preview proves
+  that content is safe; or
+- modify sanitized markup with untrusted strings afterward.
+
+Sanitization policy should remove or reject features that are not intentionally
+supported, including:
+
+- `<script>` elements and event-handler attributes such as `onclick`;
+- `javascript:` and other unapproved URL schemes;
+- unexpected external `href` and legacy `xlink:href` references;
+- external resources in CSS, `@import`, `url()`, images, fonts, filters, and
+  other paint servers;
+- `<foreignObject>` and embedded HTML when they are not explicitly required;
+- unapproved animation, navigation, or interactive elements; and
+- processing instructions, DTDs, and external entities.
+
+This is not a universal blocklist. Prefer an allowlist containing only the SVG
+elements, attributes, URL schemes, and reference types required by the
+application. For example, a static icon service needs a much smaller profile
+than an interactive diagram editor.
+
+Same-document fragment references are commonly required for safe graphical
+features. A policy may intentionally permit references such as:
+
+```xml
+<use href="#download-icon"></use>
+<path marker-end="url(#arrowhead)"></path>
+<rect fill="url(#approved-gradient)"></rect>
+```
+
+Allowing `#fragment` references does not imply allowing arbitrary external URLs.
+Validate that every permitted fragment resolves to an allowed element in the
+same sanitized document.
+
+DOMPurify is one maintained sanitizer that supports SVG profiles, but its
+default or example configuration is not automatically a complete policy for
+every SVG application. Review the selected elements, attributes, URI handling,
+and hooks against the project's threat model. Sanitizing and then passing the
+result to code that modifies it unsafely can invalidate the protection.
+
+### Parse XML securely
+
+When SVG is parsed as XML on a server or in a build service:
+
+- disable DTD processing and external entity resolution;
+- prevent network and local-file access from the parser;
+- do not use XSLT or XInclude unless they are explicitly required and secured;
+- set input, nesting, entity, and processing limits; and
+- fail closed when parsing or sanitization fails.
+
+The exact controls depend on the XML library. Document the parser and its
+security configuration rather than assuming that all XML parsers have safe
+defaults.
+
+### Limit resource consumption
+
+SVG can consume substantial CPU, memory, or rendering time without executing a
+script. Apply limits appropriate to the service, including:
+
+- input and decompressed file size;
+- element and attribute counts;
+- path data and coordinate complexity;
+- nesting and `<use>` reference depth;
+- filter regions and filter-chain complexity;
+- embedded image, font, and data-URL size; and
+- rendered dimensions and processing time.
+
+Reject recursive references and content that exceeds the policy. Do not rely
+only on the browser to recover from pathological input.
+
+### Preserve accessibility during optimization
+
+SVG optimizers can remove or rewrite accessibility-critical content. Configure
+the build to preserve:
 
 - `viewBox`;
 - `<title>` and `<desc>` when they are used;
@@ -576,9 +707,72 @@ SVG optimizers can remove or rewrite accessibility-critical content. Configure t
 - styles for focus, themes, forced colours, and reduced motion; and
 - symbol IDs exposed as part of a public sprite interface.
 
-When inline SVG components are repeated, generate unique IDs for titles, descriptions, gradients, masks, and clipping paths. An optimizer that minifies every copy to the same IDs can break both rendering and accessible names.
+When inline SVG components are repeated, generate unique IDs for titles,
+descriptions, gradients, masks, and clipping paths. An optimizer that minifies
+every copy to the same IDs can break both rendering and accessible names.
 
-Sanitize untrusted uploaded SVG files. SVG can contain scripts, external references, animation, and other active content. Sanitization must also preserve whichever text alternatives are intentionally allowed.
+Do not enable an optimizer option merely because it reduces file size. Review
+what it removes, rewrites, combines, or externalizes. Lock the optimizer version
+and test configuration changes against representative fixtures.
+
+Separate optimization profiles when a tool serves different purposes:
+
+- An **edit-safe profile** should favour readable, stable structure and preserve
+  metadata, IDs, styles, groups, shapes, and precision needed for continued
+  editing.
+- A **production profile** may apply more structural changes only after the
+  asset is considered final and the resulting semantics, references, rendering,
+  and alternatives have been verified.
+
+Beautification and serialization are not optimization. Treat formatting-only
+changes separately so reviewers can distinguish them from transformations that
+may change structure or behaviour.
+
+Keep dependency versions aligned across all processing paths. If a browser tool
+loads SVGO from a CDN while command-line QA uses a package lock, document and
+test both versions or deliberately make them the same. A configuration verified
+against one optimizer version does not automatically govern another.
+
+### Validate after every material transformation
+
+A recommended processing sequence is:
+
+1. Apply input and resource limits.
+2. Parse using secure XML settings when XML parsing occurs.
+3. Sanitize untrusted input using the approved SVG profile.
+4. Apply only controlled transformations.
+5. Optimize using a reviewed, versioned configuration.
+6. Validate the final SVG for both security and accessibility.
+7. Insert, serve, or export only the validated result.
+
+If a later step can introduce untrusted markup, attributes, or URLs, sanitize
+again after that step. Always perform final validation after the last material
+transformation.
+
+Final validation should confirm that:
+
+- the SVG parses successfully and contains expected visible content;
+- no disallowed elements, attributes, URL schemes, external resources, DTDs,
+  or entity declarations remain;
+- every `aria-labelledby` and `aria-describedby` reference resolves;
+- allowed `<use>`, marker, clip-path, mask, filter, gradient, and other
+  `url(#id)` references resolve;
+- IDs are unique in the final inline document, not only in the individual file;
+- intended `<title>`, `<desc>`, role, ARIA, and language information remains;
+- referenced accessible names and descriptions are not hidden with
+  `aria-hidden="true"`;
+- an atomic `role="img"` has not hidden structured or interactive descendants
+  that users are expected to navigate;
+- semantic `<text>`, focus styling, themes, forced-colours rules, reduced-motion
+  rules, and `viewBox` remain when required; and
+- the accessible alternative still matches the rendered graphic.
+
+### Use browser protections as defence in depth
+
+A restrictive Content Security Policy can reduce the effect of some unsafe SVG
+features. It does not replace parsing, sanitization, resource limits, or output
+validation. Apply the same principle to other browser protections: use them as
+additional layers rather than as permission to insert untrusted markup.
 
 ---
 
@@ -591,6 +785,10 @@ Sanitize untrusted uploaded SVG files. SVG can contain scripts, external referen
 - Inspect accessible-name and description relationships.
 - Search repeated inline components for duplicate IDs.
 - Confirm that build optimization preserves required attributes and elements.
+- Classify the source as controlled, generated, platform-managed, or untrusted.
+- Identify the embedding contexts in which the file can be used.
+- Review sanitizer, parser, optimizer, and renderer configuration changes.
+- Confirm that final output validation covers security and accessibility.
 
 ### Browser and assistive-technology testing
 
@@ -613,6 +811,30 @@ Automated tools can detect missing `<img alt>`, some accessible-name problems, d
 
 No automated pass replaces manual SVG review.
 
+### Security and processing tests
+
+Maintain representative valid fixtures and adversarial fixtures. Test the
+complete processing pipeline, not only the sanitizer in isolation.
+
+| Test input or condition | Expected result |
+|:---|:---|
+| `<script>` or an event-handler attribute | Removed or rejected before rendering. |
+| Unsafe URL scheme | Removed or rejected. |
+| Unexpected external image, font, style, or link | Blocked unless explicitly permitted by policy. |
+| DTD or external entity | Rejected without resolving local or network resources. |
+| Unapproved `<foreignObject>` or embedded HTML | Removed or rejected. |
+| Recursive or excessive `<use>` references | Rejected by reference-depth or recursion validation. |
+| Oversized or excessively complex input | Rejected within documented resource limits. |
+| Permitted same-document gradient, marker, mask, or clip path | Preserved and still rendered correctly. |
+| Valid `<title>`, `<desc>`, ARIA references, and language | Preserved when required by the selected accessibility pattern. |
+| Repeated inline SVG instances | IDs remain unique in the final HTML document. |
+| Optimized output | Security rules still pass and the accessible alternative still matches. |
+| User-provided SVG displayed in an inline preview | Sanitized before any `innerHTML` or equivalent markup insertion. |
+| Browser and command-line optimizer paths | Use the documented versions and produce equivalent policy outcomes. |
+
+Run these tests whenever the sanitizer, parser, optimizer, renderer, allowlist,
+dependency version, or embedding path changes.
+
 ---
 
 ## 18. Common Failures
@@ -634,6 +856,18 @@ No automated pass replaces manual SVG review.
 | Every chart point is added to the tab order. | Provide a deliberate navigation model and an equivalent table or list. |
 | Reduced motion is implemented with `svg *` and `!important`. | Target each animated component and provide a meaningful static state. |
 | Passing an automated scan is treated as proof. | Test purpose, equivalence, announcements, keyboard use, themes, motion, and forced colours manually. |
+| Well-formed XML is treated as sanitized SVG. | Parse securely and apply an SVG-aware allowlist sanitizer. |
+| A regular expression removes `<script>` and is called a sanitizer. | Use a maintained SVG-aware sanitizer or secure parser with a documented policy. |
+| Sanitized SVG is later modified with untrusted strings. | Keep later transformations controlled or sanitize again before final validation. |
+| All external references are allowed because same-document gradients are needed. | Permit validated `#fragment` references separately from external URLs. |
+| Sanitization removes title IDs or graphical references and no one validates the result. | Validate ARIA and graphical references after the final transformation. |
+| CSP is treated as a replacement for sanitization. | Use CSP only as an additional browser protection. |
+| An optimizer update is accepted because the SVG still looks correct. | Lock and test the optimizer; verify semantics, references, focus, themes, and alternatives. |
+| An SVG is considered safe because it is currently embedded with `<img>`. | Consider downloads, standalone use, and future inline reuse when defining the security boundary. |
+| `DOMParser`, XML serialization, formatting, or SVGO is treated as sanitization. | Use those tools only for their intended parsing or optimization roles and add a real SVG sanitization policy. |
+| A preview injects user SVG with `innerHTML` after optimization. | Sanitize before preview insertion and validate the final export separately. |
+| One optimized file is described as accessible inline, through `<img>`, and as a CSS background. | Generate or document embedding-specific alternatives and semantics. |
+| A browser CDN uses a different optimizer version from command-line QA. | Align or explicitly test and document every processing version. |
 
 ---
 
@@ -657,6 +891,23 @@ No automated pass replaces manual SVG review.
 - [ ] The graphic remains usable at 200% and 400% zoom and on narrow screens.
 - [ ] Themes, increased contrast, and forced colours preserve meaning.
 - [ ] Optimization preserves accessibility-critical content and references.
+- [ ] Every SVG source is classified by trust level and intended embedding context.
+- [ ] Untrusted SVG is processed with input limits, secure parsing where
+      applicable, and an SVG-aware allowlist sanitizer.
+- [ ] Disallowed scripts, event handlers, URLs, external resources, embedded
+      HTML, DTDs, and entities are removed or rejected.
+- [ ] Permitted same-document graphical references survive processing and
+      resolve correctly.
+- [ ] Resource-exhaustion limits and recursive-reference handling are tested.
+- [ ] Security and accessibility validation runs after the last material
+      transformation.
+- [ ] Inline previews sanitize user-provided SVG before markup insertion.
+- [ ] Edit-safe and production optimization profiles are distinguished when
+      both are offered.
+- [ ] Browser, command-line, CI, and hosted processing versions are aligned or
+      independently documented and tested.
+- [ ] CSP and other browser protections are treated as defence in depth, not as
+      substitutes for sanitization.
 - [ ] The final implementation has been tested with relevant browsers and assistive technologies.
 
 ---
@@ -689,12 +940,25 @@ No automated pass replaces manual SVG review.
 - [Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.2/)
 - [WAI-ARIA Graphics Module](https://www.w3.org/TR/graphics-aria-1.0/)
 - [Scalable Vector Graphics 2](https://www.w3.org/TR/SVG2/)
+- [SVG 2: Scripting and Interactivity](https://www.w3.org/TR/SVG2/interact.html)
+- [SVG 2: Linking](https://www.w3.org/TR/SVG2/linking.html)
 - [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/)
+- [Content Security Policy Level 3](https://www.w3.org/TR/CSP3/)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
+- [SVGO Documentation](https://svgo.dev/docs/)
+- [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
 - [Understanding 1.1.1: Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
 - [Understanding 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
 - [Understanding 2.2.2: Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)
 - [Understanding 2.3.1: Three Flashes or Below Threshold](https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html)
 - [Understanding 2.3.3: Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)
+
+### Related implementation work
+
+- [A11y-SVG-Studio](https://github.com/mgifford/a11y-svg) explores
+  intent-aware SVG linting, accessibility-preserving optimization, contrast
+  checking, and theme previews. It is an implementation and test bed, not a
+  normative accessibility or security standard.
 
 ### Machine-readable standards
 
