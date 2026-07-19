@@ -4,78 +4,112 @@ title: Anchor Links Accessibility Best Practices
 
 # Anchor Links Accessibility Best Practices
 
-This document defines project-level expectations for creating accessible anchor links (in-page links and heading links). It covers link text quality, focus management, smooth-scroll animation, and testing.
+## Purpose
 
-## 1. Core Principle
+Anchor links navigate to a fragment within the current page or another page.
+They support skip navigation, tables of contents, heading permalinks, deep
+links, and links back to the top of a page.
 
-Anchor links let users jump to specific sections of a page. To be accessible, every anchor link must have meaningful text, a reachable target with a visible focus indicator, and must not cause motion-related harm when animation is used.
+An accessible anchor link needs a clear purpose, a unique and stable target,
+predictable keyboard and history behavior, and a destination that is visible
+and understandable after navigation.
 
-## 2. Meaningful Link Text
+This guide covers link text, fragment targets, skip links, focus management,
+sticky headers, motion, generated IDs, single-page applications, and testing.
 
-### Write descriptive anchor text
+## Core Principles
 
-Link text must make sense out of context. Screen reader users can navigate by listing all links on a page; vague phrases like "click here" or "read more" are not useful.
+1. Use a real `<a>` element with an `href` for navigation.
+2. Make the link's purpose clear from its text or programmatically determined
+   context.
+3. Prefer native fragment navigation before adding JavaScript.
+4. Give every target a unique, stable `id`.
+5. Keep the fragment in the URL so the location can be bookmarked and shared.
+6. Ensure the destination is not hidden behind a sticky header or other
+   authored content.
+7. Move focus when the pattern requires it, especially for skip links and
+   scripted route changes.
+8. Do not add every fragment target to the normal tab sequence.
+9. Avoid smooth scrolling by default. Respect reduced-motion preferences when
+   it is used.
+10. Test direct loading, reload, back and forward navigation, keyboard focus,
+    zoom, and supported assistive technologies.
 
-**Do not use:**
+## Use Links for Navigation
+
+Use an anchor when activation changes the URL or navigates to another location.
+Use a button when activation performs an action without navigation.
 
 ```html
-<!-- Avoid: vague, non-descriptive text -->
-<a href="#section">Click here</a>
-<a href="#section">Read more</a>
-<a href="#section">More</a>
+<!-- Navigation to a page fragment -->
+<a href="#installation">Installation instructions</a>
+
+<!-- An action that copies the fragment URL -->
+<button type="button" id="copy-installation-link">
+  Copy link to Installation
+</button>
 ```
 
-**Use instead:**
+Do not use dummy links such as:
 
 ```html
-<!-- Good: describes the target -->
-<a href="#installation">Installation instructions</a>
+<!-- Do not use these for actions -->
+<a href="#">Open settings</a>
+<a href="javascript:void(0)">Open settings</a>
+```
+
+An empty fragment normally navigates to the top of the document. A JavaScript
+URL does not provide ordinary link semantics, history, copying, opening in a
+new tab, or progressive enhancement.
+
+Do not add `role="link"` to a native anchor with an `href`. Its role is already
+provided by HTML.
+
+## Link Purpose and Accessible Names
+
+[WCAG 2.2 Success Criterion 2.4.4 Link Purpose (In Context)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
+requires the purpose of a link to be determinable from the link text alone or
+from the link text together with programmatically determined context.
+
+Understanding every link without context is the stronger
+[Level AAA Link Purpose (Link Only) criterion](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html).
+It is still a useful project goal because people may scan links or use a list
+of links provided by assistive technology.
+
+### Prefer descriptive text
+
+```html
+<a href="#keyboard-support">Keyboard support requirements</a>
 <a href="#wcag-criteria">Relevant WCAG success criteria</a>
 ```
 
-### Keep link text concise and front-loaded
-
-Put the most important words first. This helps users who scan headings or link lists.
+Avoid repeated vague text when clearer wording is available:
 
 ```html
-<!-- Good: key topic first -->
-<a href="#keyboard-support">Keyboard support requirements</a>
-
-<!-- Avoid: article or preposition first -->
-<a href="#keyboard-support">The requirements for keyboard support</a>
+<!-- Avoid when the destination can be named directly -->
+<a href="#keyboard-support">Click here</a>
+<a href="#wcag-criteria">Read more</a>
 ```
 
-### Do not rely on surrounding context
+Words such as "read more" are not automatically a WCAG Level A failure when
+programmatically determined context supplies the purpose. Clear link text is
+usually easier to scan, translate, operate by speech, and understand.
 
-The link must be understandable when read alone, without the surrounding sentence.
+### Add context without replacing visible text
 
-```html
-<!-- Avoid: meaning depends on surrounding prose -->
-<p>For more details, <a href="#criteria">see this section</a>.</p>
-
-<!-- Good: meaning is self-contained -->
-<p>For more details, see <a href="#criteria">WCAG success criteria for links</a>.</p>
-```
-
-### Add accessible names when the visible text cannot be changed
-
-When the visible text must stay short (for example, a heading link icon), add an accessible name with `aria-label` or visually-hidden text:
+If a design must retain repeated visible text, add meaningful text inside the
+link:
 
 ```html
-<!-- Visible icon link with accessible name -->
-<a href="#installation" aria-label="Link to Installation section">
-  <svg aria-hidden="true" focusable="false"><!-- anchor icon --></svg>
-</a>
-
-<!-- Visually-hidden technique (preferred when possible) -->
-<a href="#installation">
-  <span aria-hidden="true">#</span>
-  <span class="visually-hidden">Link to Installation section</span>
-</a>
+<p>
+  Keyboard testing finds barriers that automation misses.
+  <a href="#keyboard-testing">
+    Read more<span class="visually-hidden"> about keyboard testing</span>
+  </a>
+</p>
 ```
 
 ```css
-/* Standard visually-hidden helper */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -83,87 +117,267 @@ When the visible text must stay short (for example, a heading link icon), add an
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
 ```
 
-## 3. Target Elements and Focus Management
+Do not use `aria-label` to replace useful visible link text with a different
+name. An accessible name that contains the visible words supports speech input
+and meets the intent of WCAG 2.5.3 Label in Name.
 
-### Use a valid `id` on the target
+### Repeated and unique links
 
-Every anchor target must have a matching, unique `id`. Duplicate `id` values cause unpredictable behavior.
+- Links with the same purpose and destination should use consistent names.
+- Links with the same text but different destinations need sufficient context
+  to distinguish them.
+- Repeating the same destination in several parts of a long page can be
+  appropriate.
+- Do not add destination URLs to link names unless the URL itself is useful to
+  the reader.
+
+## Fragment Targets
+
+### Use a unique `id`
 
 ```html
-<!-- Target element -->
+<nav aria-label="On this page">
+  <a href="#installation">Installation</a>
+</nav>
+
 <h2 id="installation">Installation</h2>
-
-<!-- Link to it -->
-<a href="#installation">Jump to Installation</a>
 ```
 
-### Ensure the target can receive focus
+The fragment after `#` must resolve to the intended element. IDs must be unique
+within the document and must not contain ASCII whitespace.
 
-Non-interactive elements (headings, `<div>`, `<section>`) do not receive focus by default. If you need the browser to scroll the target into view **and** move keyboard focus to it (for example, after an in-page navigation), add `tabindex="-1"` to the target so it can be programmatically focused.
+HTML permits more characters than simple letters and hyphens, and fragments
+can use percent encoding. Prefer stable, readable IDs that work well in URLs,
+CSS, authoring tools, and content-management systems:
 
 ```html
-<h2 id="installation" tabindex="-1">Installation</h2>
+<!-- Stable and readable -->
+<h2 id="installation-guide">Installation guide</h2>
+
+<!-- Fragile when sections are reordered -->
+<h2 id="section-3">Installation guide</h2>
 ```
 
-`tabindex="-1"` removes the element from the natural tab order but allows `.focus()` to be called on it by scripts. Use this when you need to call `document.getElementById('installation').focus()` after navigation.
+Do not claim that all non-ASCII or punctuation characters are invalid. If a
+project restricts IDs to a simpler slug format, document it as an authoring
+convention rather than a WCAG requirement.
 
-### Do not trap focus
+### Keep published IDs stable
 
-After the user follows an anchor link, focus must be moveable naturally (Tab, Shift+Tab). Never leave the user stranded on a non-interactive element without a clear exit.
+Fragment URLs may be bookmarked, shared, indexed, or referenced from other
+documents. When a heading changes:
 
-### Provide a visible focus indicator on the target
+- preserve its existing ID when the destination is still conceptually the
+  same;
+- provide a compatible alias or redirect strategy when an ID must change;
+- update internal links and automated link checks; and
+- avoid regenerating every ID because heading punctuation or capitalization
+  changed.
 
-When a target heading or section receives focus (either natively or via `tabindex="-1"`), the focus indicator must be visible and meet WCAG contrast requirements. Do not suppress the default `:focus` style without providing an equivalent replacement.
+Generated slug systems must resolve duplicate headings deterministically and
+must produce the same ID during server rendering and client hydration.
+
+### Do not create empty or hidden destinations
+
+The target must be perceivable after navigation. Do not target:
+
+- an element with `hidden`, `display: none`, or `visibility: hidden`;
+- content inside a collapsed disclosure that remains closed;
+- a panel that is inactive and unavailable;
+- an empty marker far from the visible heading; or
+- an element removed during hydration.
+
+If a deep link points into collapsed or tabbed content, reveal the relevant
+container before scrolling or moving focus.
+
+## Focus Management
+
+Scrolling and focus are related but different. A visual scroll does not prove
+that keyboard focus or a screen reader's point of regard moved to a useful
+location.
+
+### Ordinary in-page links
+
+For a simple table of contents or heading link, start with native HTML and do
+not cancel the click:
+
+```html
+<a href="#testing">Testing</a>
+
+<h2 id="testing">Testing</h2>
+```
+
+Native behavior preserves the fragment, history, copying, opening in another
+tab, and operation without JavaScript. Test the supported browsers to confirm
+that after activation the next keyboard focus position is logical and the
+destination is conveyed adequately.
+
+Do not automatically add `tabindex="-1"` to every heading. Do not call
+`.focus()` for every fragment merely because JavaScript can do so. Programmatic
+focus may be appropriate when native behavior does not provide an
+understandable transition or when the application has intercepted navigation.
+
+### Skip links
+
+A skip link is a focus-navigation mechanism. Activating it must move focus past
+the repeated content to the main content. A reliable target can use
+`tabindex="-1"` so it can receive focus without becoming an extra tab stop.
+
+```html
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header>
+    <!-- Site identity and repeated navigation -->
+  </header>
+
+  <main id="main-content" class="skip-target" tabindex="-1">
+    <h1>Page title</h1>
+    <!-- Page content -->
+  </main>
+</body>
+```
+
+The skip link should be the first focusable control, or part of the first small
+set of skip links when a page offers several destinations. It may always be
+visible. If initially concealed, it must become fully visible when focused.
+
+After activation:
+
+- focus is in the main content;
+- the main heading or beginning of content is visible;
+- the next `Tab` reaches the first logical interactive element in the main
+  content; and
+- the skipped navigation is not traversed first.
+
+`tabindex="-1"` allows focus by script or browser fragment handling. It does
+not put the target in sequential tab order. Test the actual browser behavior;
+add narrowly scoped script only if the supported environment does not move
+focus reliably.
+
+### Scripted focus
+
+If custom navigation requires explicit focus, focus the destination after it
+exists and has been revealed:
+
+```js
+function focusFragmentTarget(target) {
+  if (!target.hasAttribute('tabindex')) {
+    target.setAttribute('tabindex', '-1');
+  }
+
+  target.focus({ preventScroll: true });
+  target.scrollIntoView({ block: 'start' });
+}
+```
+
+Do not add a positive `tabindex`. Do not focus a hidden element. Avoid leaving
+temporary `tabindex="-1"` attributes on large numbers of targets when they are
+no longer needed, unless they are intentional stable skip targets.
+
+When focus moves to a normally non-interactive target, provide a visible
+orientation cue:
 
 ```css
-/* Ensure heading anchor targets show focus when focused */
-h2:focus,
-h3:focus,
-h4:focus {
-  outline: 3px solid #005fcc;
+.skip-target:focus,
+.programmatic-focus-target:focus {
+  outline: 3px solid currentColor;
+  outline-offset: 0.25rem;
+}
+```
+
+Do not suppress the trigger link's own focus indicator. See the
+[Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Skip-Link Presentation
+
+This pattern moves the skip link just outside the viewport until it receives
+focus. It does not animate the link.
+
+```css
+.skip-link {
+  position: absolute;
+  z-index: 1000;
+  inset-block-start: 0;
+  inset-inline-start: 1rem;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  background: #111827;
+  font-weight: 700;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid #facc15;
   outline-offset: 2px;
-  scroll-margin-top: 1rem; /* accounts for sticky headers */
+}
+
+@media (forced-colors: active) {
+  .skip-link {
+    color: LinkText;
+    background: Canvas;
+    border: 1px solid LinkText;
+  }
+
+  .skip-link:focus {
+    outline-color: Highlight;
+  }
 }
 ```
 
-### Account for sticky or fixed headers
+Test at 400 percent zoom and with long translated text. The focused link must
+not be clipped by the viewport, a cookie banner, a fixed header, or an ancestor
+with `overflow: hidden`.
 
-Fixed navigation bars obscure the target element when an anchor link is followed. Use `scroll-margin-top` (or `scroll-padding-top` on the scroll container) to offset the scroll position:
+## Sticky and Fixed Headers
+
+Use CSS scroll offsets so fragment targets are not placed under a sticky
+header. Logical properties work with different writing modes.
 
 ```css
-/* Offset all heading targets by the height of a sticky header */
-:target {
-  scroll-margin-top: 4rem;
+:root {
+  --anchor-offset: 5rem;
 }
-```
 
-## 4. Smooth Scroll Animation and `prefers-reduced-motion`
-
-### Never use unconditional smooth scroll
-
-Smooth-scroll animation can cause nausea, dizziness, or disorientation for users with vestibular disorders. Never apply it unconditionally.
-
-**Do not use:**
-
-```css
-/* Avoid: applies animation unconditionally */
 html {
-  scroll-behavior: smooth;
+  scroll-padding-block-start: var(--anchor-offset);
+}
+
+h2[id],
+h3[id],
+main[id],
+.anchor-target {
+  scroll-margin-block-start: var(--anchor-offset);
 }
 ```
 
-### Wrap all animation in `prefers-reduced-motion`
+Use `scroll-padding-block-start` on the element that actually scrolls. For an
+internal scrolling region, setting it only on `html` has no effect.
 
-The `prefers-reduced-motion` media query reflects the user's operating-system preference to reduce motion. Always honour it:
+The offset must match the header at responsive breakpoints, zoom levels, and
+when banners appear or disappear. Do not assume one fixed pixel value works in
+every layout.
+
+WCAG 2.4.11 Focus Not Obscured (Minimum) also applies when authored content
+would entirely hide the focused link or control after navigation.
+
+## Motion and Scrolling
+
+The most robust default is immediate native scrolling. Smooth scrolling is a
+presentation enhancement, not a requirement for anchor links.
+
+If smooth scrolling is used, enable it only when the user has not requested
+reduced motion:
 
 ```css
-/* Only apply smooth scroll when the user has not requested reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -171,183 +385,366 @@ The `prefers-reduced-motion` media query reflects the user's operating-system pr
 }
 ```
 
-The same pattern applies to JavaScript-driven scroll:
+Keep the default behavior outside the media query. Do not pair smooth scroll
+with parallax, animated highlighting, or other motion that makes the
+destination harder to track.
+
+For JavaScript animation, query the same preference and use automatic
+scrolling when reduction is requested:
 
 ```js
-const prefersReducedMotion =
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const allowMotion = window.matchMedia(
+  '(prefers-reduced-motion: no-preference)'
+).matches;
 
-link.addEventListener('click', (event) => {
-  event.preventDefault();
-  const target = document.getElementById(link.hash.slice(1));
-  target.scrollIntoView({
-    behavior: prefersReducedMotion ? 'auto' : 'smooth',
-  });
-  target.focus({ preventScroll: true });
+target.scrollIntoView({
+  behavior: allowMotion ? 'smooth' : 'auto',
+  block: 'start'
 });
 ```
 
-### Do not animate other properties unconditionally
+Do not add JavaScript only to reproduce behavior available through native
+fragment navigation and CSS. Custom scrolling must still update the URL,
+manage history, handle focus when necessary, and work without animation.
 
-When decorating anchor links (for example, fade-in effects, sliding indicators, or scroll-spy highlights), apply the same `prefers-reduced-motion` guard:
+WCAG 2.3.3 Animation from Interactions is Level AAA. Respecting user motion
+preferences remains a strong inclusive-design practice for WCAG AA projects.
 
-```css
-@media (prefers-reduced-motion: no-preference) {
-  .anchor-highlight {
-    transition: background-color 0.3s ease;
-  }
-}
+## URL and History Behavior
+
+### Preserve the fragment
+
+After a user activates an anchor link, the URL should include the fragment:
+
+```text
+https://example.com/guide#keyboard-testing
 ```
 
-## 5. URL and Fragment Considerations
+This supports:
 
-### Update the URL fragment on navigation
+- bookmarking;
+- copying and sharing;
+- reloading at the same section;
+- browser back and forward navigation; and
+- links from other documents.
 
-When JavaScript intercepts an anchor click for smooth scroll, update `window.location.hash` or use `history.pushState` so the URL reflects the current position. This allows users to bookmark, share, and reload to the same location.
+Do not remove the hash after scrolling. Do not use `history.replaceState()` for
+ordinary user-initiated anchor navigation when that would prevent Back from
+returning to the previous location.
 
-```js
-history.pushState(null, '', '#' + targetId);
-```
+Prefer native links, which provide normal history behavior. If a router
+intercepts them, it must deliberately reproduce that behavior.
 
-### Keep `id` values stable and meaningful
+### Initial load, reload, and history
 
-Avoid auto-generated numeric IDs such as `#section-3`. Use meaningful, URL-friendly slugs that do not change when content is reordered:
+Test all of these paths:
+
+1. Open the complete URL with its fragment in a new tab.
+2. Reload while the fragment is present.
+3. Activate several anchor links and use Back and Forward.
+4. Load the page before delayed or hydrated content finishes rendering.
+5. Navigate to a fragment in another route of a single-page application.
+
+If the target is not present when the browser first processes the fragment, the
+page may remain at the wrong position. Render stable targets in the initial
+document where practical. Otherwise, handle the fragment after the relevant
+content is available without creating duplicate history entries.
+
+### Scroll-spy navigation
+
+A table of contents may indicate the section currently in view with
+`aria-current="location"`:
 
 ```html
-<!-- Prefer -->
-<h2 id="installation-guide">Installation guide</h2>
-
-<!-- Avoid -->
-<h2 id="section-3">Installation guide</h2>
+<nav aria-labelledby="on-this-page-heading">
+  <h2 id="on-this-page-heading">On this page</h2>
+  <ul>
+    <li><a href="#overview" aria-current="location">Overview</a></li>
+    <li><a href="#testing">Testing</a></li>
+  </ul>
+</nav>
 ```
 
-### Encode special characters
+Expose the current state visually as well. Keep only one link current. Do not
+announce every scroll-spy change with a live region, and do not add a new
+history entry whenever scrolling changes the current section.
 
-`id` values must not contain spaces or characters that require percent-encoding in URLs. Use hyphens as word separators:
+## Tables of Contents
+
+Use a labeled navigation landmark and a list of links:
 
 ```html
-<!-- Good -->
-<h2 id="api-reference">API Reference</h2>
-
-<!-- Avoid -->
-<h2 id="api reference">API Reference</h2>
+<nav aria-labelledby="contents-heading">
+  <h2 id="contents-heading">Contents</h2>
+  <ol>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#configuration">Configuration</a></li>
+    <li><a href="#testing">Testing</a></li>
+  </ol>
+</nav>
 ```
 
-## 6. Skip Links and In-Page Navigation
+- Match link wording closely to the destination heading.
+- Preserve the document's heading hierarchy.
+- Do not make the contents list so long that it becomes another block users
+  need to bypass.
+- For very long tables of contents, provide grouping or progressive
+  disclosure without hiding the essential navigation.
+- Do not place table-of-contents links in a tab widget merely for styling.
 
-### Provide a skip-to-main-content link
+## Heading Permalinks
 
-A skip link is the most common form of anchor link. It must be the first focusable element in the DOM and must be visible when focused:
+A permalink navigates to the heading's fragment. Keep it separate from the
+heading so its accessible name does not become part of the heading text.
 
 ```html
-<!-- Place immediately after <body> -->
-<a class="skip-link" href="#main-content">Skip to main content</a>
-
-<header><!-- navigation --></header>
-<main id="main-content" tabindex="-1">
-  <!-- page content -->
-</main>
+<div class="heading-with-permalink">
+  <h2 id="installation">Installation</h2>
+  <a class="permalink" href="#installation">
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/>
+      <path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/>
+    </svg>
+    <span class="visually-hidden">Permalink to Installation</span>
+  </a>
+</div>
 ```
 
-```css
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 1rem;
-  padding: 0.5rem 1rem;
-  background: #000;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none;
-  z-index: 9999;
-}
+The permalink must have:
 
-.skip-link:focus {
-  top: 1rem;
-}
+- an accessible name that identifies the section;
+- a visible focus indicator;
+- a usable target size when it is not within the inline-spacing exception;
+- sufficient visual contrast when the icon is needed to identify the link;
+  and
+- availability without requiring pointer hover.
 
-@media (prefers-reduced-motion: no-preference) {
-  .skip-link {
-    transition: top 0.1s ease;
-  }
-}
+If activation copies the URL instead of navigating, use a button named "Copy
+link to Installation" and provide a concise status message after the copy
+succeeds.
+
+## Back-to-Top Links
+
+Use an explicit target rather than an empty `#` when a persistent location is
+helpful:
+
+```html
+<header id="page-top" class="programmatic-focus-target" tabindex="-1">
+  <!-- Site header -->
+</header>
+
+<!-- Long page content -->
+
+<a href="#page-top">Back to top</a>
 ```
 
-### Table-of-contents links
+Ensure the target does not place focus behind sticky content. A back-to-top
+link should not appear so frequently that it adds noise to every short section.
 
-When providing in-page navigation (table of contents), follow the same rules as all anchor links: descriptive text, matching `id` targets, and no unconditional animation.
+## Single-Page Applications and Routers
 
-## 7. WCAG Success Criteria
+Routers often prevent the browser's default link behavior. An accessible
+router must handle both route and fragment navigation.
 
-| Criterion | Level | Relevance |
-| :--- | :--- | :--- |
-| [1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) | A | Icon-only anchor links require text alternatives |
-| [1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) | A | Heading structure that anchor links target must convey document structure semantically |
-| [2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) | A | Anchor links and their targets must be keyboard operable |
-| [2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) | A | Following an anchor link must not trap keyboard focus |
-| [2.4.1 Bypass Blocks](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html) | A | Skip links are an anchor-link implementation of this criterion |
-| [2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) | A | Focus must move to the anchor target in a logical order |
-| [2.4.4 Link Purpose (In Context)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) | A | Link text must be meaningful in context |
-| [2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | AA | Focused anchor targets must show a visible focus indicator |
-| [2.4.9 Link Purpose (Link Only)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html) | AAA | Link text should be understandable without surrounding context |
-| [2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) | AAA | Smooth scroll must respect `prefers-reduced-motion`; AAA target but strongly recommended |
+- Render a real anchor with a usable `href`, such as
+  `/settings#notifications`.
+- Do not use a button for route or fragment navigation.
+- Preserve modifier-click, open-in-new-tab, copying, and no-script behavior
+  when possible.
+- Wait until the destination route and target are rendered.
+- Reveal a collapsed parent before navigating to the target.
+- Update the URL and create the appropriate history entry.
+- Scroll the correct container.
+- Move focus when a route change or custom transition requires it.
+- Handle the fragment on initial load, `hashchange`, and back or forward
+  navigation.
+- Prevent stale asynchronous route content from moving focus after the user has
+  navigated elsewhere.
 
-## 8. Testing Expectations
+A full route change generally needs document-title and main-heading focus
+management. A same-page fragment change does not automatically need the same
+route announcement. See the
+[Navigation Accessibility Best Practices](./NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.md).
 
-### Automated checks
+## Testing
 
-Run automated checks with axe-core or equivalent:
+### Static and automated checks
 
-- Links must have accessible names (`link-name` rule).
-- `id` values must be unique (`duplicate-id` rule).
-- Images inside links must have alt text.
+Automation can help detect:
+
+- links without accessible names;
+- empty or dummy `href` values;
+- fragments that do not resolve to an element;
+- duplicate IDs;
+- IDs containing ASCII whitespace;
+- positive `tabindex` values;
+- focusable content hidden with `hidden` or `aria-hidden="true"`;
+- icon-only links without text alternatives; and
+- invalid nesting of interactive elements.
+
+For generated sites, run a link checker against the built output, not only the
+source Markdown. Test cross-page fragments as well as same-page fragments.
+
+Automation cannot confirm focus placement, sticky-header clearance, motion,
+history behavior, or whether the destination is understandable.
 
 ### Keyboard testing
 
-For each anchor link:
+For skip links:
 
-1. Tab to the anchor link and confirm focus is visible.
-2. Press **Enter** to follow the link.
-3. Confirm focus moves to the target or to the nearest focusable ancestor.
-4. Confirm the target is scrolled into view and not obscured by a fixed header.
-5. Tab forward from the target and confirm focus continues logically through the page.
+1. Start at the browser chrome and press `Tab`.
+2. Confirm the skip link is the first focusable control or part of the first
+   small set of skip links.
+3. Confirm it is fully visible and has a visible focus indicator.
+4. Press `Enter`.
+5. Confirm focus moves to the main content and the content is visible.
+6. Press `Tab` and confirm focus continues with the first logical control in
+   the main content.
+
+For every important anchor link:
+
+1. Reach the link by keyboard and confirm its focus indicator.
+2. Activate it with `Enter`.
+3. Confirm the correct target is visible and not obscured.
+4. Confirm the transition is understandable without relying on animation.
+5. Press `Tab` and `Shift+Tab` and verify logical focus order.
+6. Use Back and Forward and confirm history and focus remain usable.
 
 ### Screen reader testing
 
-With NVDA/Firefox, JAWS/Chrome, or VoiceOver/Safari:
+Test supported browser and screen reader combinations. Record versions,
+interaction mode, and relevant verbosity settings.
 
-1. Open the Links list (NVDA: Insert+F7; JAWS: Insert+F7; VoiceOver: VO+U then arrow to Links).
-2. Verify every anchor link has a unique, descriptive name.
-3. Activate an anchor link and confirm the screen reader announces the target heading or landmark.
+- Review the page's links list and confirm names are useful.
+- Activate the skip link and verify the main content is the new working
+  location.
+- Activate table-of-contents links and confirm the destination is
+  understandable.
+- Confirm permalink names identify their sections.
+- Test direct fragment URLs on initial load and reload.
+- Do not require a particular product to speak one exact phrase.
 
-### Motion testing
+### Visual, zoom, and motion testing
 
-1. In the operating system settings, enable **Reduce Motion** (macOS/iOS) or **Show animations in Windows** set to Off.
-2. Reload the page and follow an anchor link.
-3. Confirm no smooth-scroll animation occurs; the page should jump instantly to the target.
+- Test at 200 percent and 400 percent zoom.
+- Test narrow viewports and browser text-only zoom.
+- Confirm sticky headers and banners do not cover targets or focus.
+- Apply text-spacing overrides and test long translated link text.
+- Test high contrast and forced-colors modes.
+- Enable reduced motion and verify scrolling is immediate.
+- Test both left-to-right and right-to-left content.
+- Confirm focused skip links remain inside the viewport.
 
-## 9. Definition of Done
+### Touch and speech testing
 
-An anchor link implementation is complete when:
+- Confirm anchor links have adequate activation areas or meet an applicable
+  target-size exception.
+- Confirm heading permalinks do not require hover to appear.
+- Activate links with touch and verify the target is not hidden.
+- Use speech input with visible link text.
+- Confirm accessible names do not conflict with visible labels.
 
-- All links have descriptive, context-independent text or accessible names.
-- Target elements have unique, stable `id` values.
-- Focus moves to the target when the link is followed.
-- A visible focus indicator appears on the target.
-- Fixed headers are accounted for using `scroll-margin-top` or `scroll-padding-top`.
-- Smooth-scroll animation is only applied inside a `prefers-reduced-motion: no-preference` media query.
-- The URL fragment is updated so the location is bookmarkable.
-- Skip links are functional and visible on focus.
-- Automated, keyboard, screen reader, and motion tests pass.
+## Common Failures
 
-## 10. Further Reading
+| Failure | Correction |
+|---|---|
+| Using a button for fragment navigation | Use an anchor with an `href` |
+| Using `href="#"` as a JavaScript action | Use a button, or provide the real fragment destination |
+| Requiring every Level A link to make sense without context | Apply WCAG 2.4.4 accurately; treat link-only purpose as the Level AAA requirement and a strong design goal |
+| Replacing visible text with a different `aria-label` | Keep the visible words in the accessible name |
+| Linking to a missing or duplicate ID | Create one unique matching target |
+| Declaring all punctuation or non-ASCII IDs invalid | Use valid HTML; adopt simpler slugs as a documented convention |
+| Regenerating IDs whenever heading text changes | Preserve published deep links |
+| Moving focus to every heading automatically | Start with native navigation and add focus management where the interaction requires it |
+| Failing to move focus for a skip link | Use a focusable main target and verify the skip behavior |
+| Adding `tabindex="0"` to headings | Use `tabindex="-1"` only for intentional programmatic focus |
+| Scrolling to content hidden behind a sticky header | Use the correct scroll padding or margin and test responsive offsets |
+| Intercepting clicks without updating the fragment | Preserve URL and history behavior |
+| Using unconditional smooth scrolling | Use immediate scrolling or enable motion only for `no-preference` |
+| Pushing a history entry on every scroll-spy update | Update current state without polluting history |
+| Linking into closed or inactive content | Reveal the containing disclosure or panel before navigation |
+| Assuming a screen reader will announce one exact phrase | Test the resulting orientation and focus across supported combinations |
 
-- [Anchor Links and How to Make Them Awesome (codersblock.com)](https://codersblock.com/blog/anchor-links-and-how-to-make-them-awesome/)
-- [Are Your Anchor Links Accessible? (Amber Wilson)](https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/)
-- [prefers-reduced-motion (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)
-- [Understanding Success Criterion 2.4.1 Bypass Blocks (W3C)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html)
-- [Understanding Success Criterion 2.4.4 Link Purpose (W3C)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
-- [CSS Tricks: prefers-reduced-motion](https://css-tricks.com/almanac/rules/m/media/prefers-reduced-motion/)
-- [Skip Navigation Links (WebAIM)](https://webaim.org/techniques/skipnav/)
-- [Link Accessibility (WebAIM)](https://webaim.org/techniques/hypertext/)
+## Definition of Done
+
+- [ ] Navigation uses real anchors with meaningful `href` values.
+- [ ] Link purpose is clear from text or programmatically determined context.
+- [ ] Accessible names include useful visible label text.
+- [ ] Every fragment resolves to one visible target with a unique ID.
+- [ ] Published IDs are stable and generated IDs handle duplicates.
+- [ ] Native fragment behavior is preserved unless custom behavior is needed.
+- [ ] Skip links appear first, become visible on focus, and move focus beyond
+  repeated content.
+- [ ] Programmatic focus uses `tabindex="-1"`, never a positive value.
+- [ ] Focused links and intentional focus targets have visible indicators.
+- [ ] Sticky headers, banners, and internal scroll containers do not obscure
+  the destination.
+- [ ] The fragment remains bookmarkable and shareable.
+- [ ] Initial load, reload, Back, Forward, and cross-route fragments work.
+- [ ] Smooth scrolling is absent or limited to users with no reduced-motion
+  preference.
+- [ ] Tables of contents use semantic navigation and list markup.
+- [ ] Heading permalinks have section-specific names and usable targets.
+- [ ] Collapsed or delayed content is revealed before navigation.
+- [ ] Keyboard, screen reader, zoom, motion, touch, speech, and forced-colors
+  testing has been completed for supported environments.
+- [ ] Automated checks supplement, but do not replace, manual navigation and
+  focus testing.
+
+## Related WCAG Criteria
+
+- [1.3.1 Info and Relationships (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)
+- [1.4.10 Reflow (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
+- [1.4.11 Non-text Contrast (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [2.1.1 Keyboard (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)
+- [2.1.2 No Keyboard Trap (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html)
+- [2.3.3 Animation from Interactions (Level AAA)](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)
+- [2.4.1 Bypass Blocks (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html)
+- [2.4.3 Focus Order (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)
+- [2.4.4 Link Purpose (In Context) (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
+- [2.4.7 Focus Visible (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [2.4.9 Link Purpose (Link Only) (Level AAA)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html)
+- [2.4.11 Focus Not Obscured (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+- [2.5.3 Label in Name (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)
+- [2.5.8 Target Size (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- [3.2.4 Consistent Identification (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html)
+- [4.1.2 Name, Role, Value (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)
+
+## Related Guides
+
 - [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Navigation Accessibility Best Practices](./NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Speech Recognition Accessibility Best Practices](./SPEECH_RECOGNITION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Touch and Pointer Accessibility Best Practices](./TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+
+Use the project's
+[Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+to assign severity and priority. This guide does not define a universal
+severity scale.
+
+## References
+
+- [WCAG 2.2 Understanding 2.4.1: Bypass Blocks](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html)
+- [Technique G1: Link to the Main Content Area](https://www.w3.org/WAI/WCAG22/Techniques/general/G1)
+- [Technique G124: Links to Areas of the Page](https://www.w3.org/WAI/WCAG22/Techniques/general/G124)
+- [Technique G91: Link Text Describes Link Purpose](https://www.w3.org/WAI/WCAG22/Techniques/general/G91)
+- [Technique H78: Link Purpose from Its Enclosing Paragraph](https://www.w3.org/WAI/WCAG22/Techniques/html/H78)
+- [WCAG 2.2 Understanding 2.4.4: Link Purpose (In Context)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
+- [WCAG 2.2 Understanding 2.4.9: Link Purpose (Link Only)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html)
+- [Technique C39: Using `prefers-reduced-motion` in CSS](https://www.w3.org/WAI/WCAG22/Techniques/css/C39)
+- [Technique SCR40: Using `prefers-reduced-motion` in JavaScript](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR40)
+
+### Machine-Readable Standards
+
+For AI systems and automated tooling, see
+[wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured
+accessibility standards:
+
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
