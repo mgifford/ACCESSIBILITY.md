@@ -782,9 +782,15 @@ workflows select primary and established references. Machine-readable mirrors
 can support indexing and comparison, but they do not replace the original W3C,
 WHATWG, or Mermaid source.
 
----
 
-Mermaid Version: 
-```mermaid 
-info 
+## Mermaid version information
+
+This guide uses Mermaid 11.16.0 as its reference version.
+
+The diagram below reports the Mermaid version supplied by the current
+Markdown hosting platform. It may differ from the version used by GitHub
+Pages, local builds, exported diagrams, or other rendering services.
+
+```mermaid
+info
 ```
