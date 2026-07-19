@@ -35,8 +35,9 @@ testing. It targets WCAG 2.2 Level AA.
    alone.
 6. Test the final published output, not only the Mermaid source or an editor
    preview.
-7. Preserve secure rendering defaults and pin the Mermaid version used to
-   build or display documentation.
+7. Preserve secure rendering defaults. Pin Mermaid when the project controls
+   the renderer; otherwise record the hosted renderer version and verify the
+   capabilities the content requires.
 8. Keep source, descriptions, data, and exports synchronized.
 9. Avoid making a static diagram keyboard focusable.
 10. Include people with relevant disabilities in review of important or
@@ -591,7 +592,10 @@ allowed to inject markup or interaction.
 - Do not lower security merely to add essential links; provide them in HTML.
 - Treat user-supplied Mermaid source as untrusted input.
 - Use supported sanitization and a restrictive content security policy.
-- Pin Mermaid and renderer dependencies through the project's package lock.
+- Pin Mermaid and renderer dependencies through the project's package lock
+  when the project controls them.
+- For platform-managed rendering, record the observed version, observation
+  date, discovery method, and tested capabilities.
 - Do not load production dependencies from an unpinned `@latest` URL.
 - Review release notes and security advisories before upgrades.
 - Limit source size and diagram complexity to prevent rendering failures.
@@ -600,6 +604,90 @@ allowed to inject markup or interaction.
 The current Mermaid configuration schema also protects selected secure
 configuration keys from diagram-level overrides. Keep security decisions in
 site-owned configuration.
+
+### Controlled and platform-managed renderers
+
+The project may not control the Mermaid version that ultimately displays a
+diagram. Document the control model instead of calling every renderer pinned.
+
+| Rendering model | Version evidence | Project responsibility |
+|---|---|---|
+| Self-managed renderer | Package manifest, lockfile, container digest, or other versioned build configuration | Pin the dependency, review updates, test generated output, and retain a supported rollback path. |
+| Platform-managed renderer | Version probe, platform documentation, or a dated observation from the target service | Record what was observed, test required syntax and output, maintain an equivalent alternative, and recheck after platform changes. |
+| Pre-rendered static export | Version recorded by the export job or publishing workflow | Preserve the export with its source and alternative, then test the final embedding context. |
+
+GitHub.com Markdown, GitHub Enterprise Server, GitHub Pages, local previews,
+and exported files are separate rendering surfaces:
+
+- GitHub.com controls the Mermaid version used for Mermaid code blocks in its
+  Markdown interface.
+- GitHub Enterprise Server may use a different version depending on the
+  installed release.
+- GitHub Pages is a site build and hosting service. It does not automatically
+  inherit the Mermaid renderer used by GitHub.com Markdown. The Jekyll theme,
+  plugin, client script, or build pipeline determines whether and how Mermaid
+  is rendered.
+- A local editor preview can use yet another version and configuration.
+- An SVG, raster, PDF, or office-document export has its own transformation and
+  embedding requirements.
+
+Do not infer support on one surface from successful rendering on another.
+
+### Discover and record a hosted version
+
+GitHub documents the Mermaid `info` diagram as the way to check the version
+currently used by GitHub.com. This guide includes a live `info` probe in
+[Mermaid Version Information](#mermaid-version-information).
+
+The output is a live diagnostic, not a pinned dependency. It may change without
+a commit to the repository. It also reports only the renderer on the surface
+where the diagram is displayed.
+
+Record platform-managed rendering with enough detail to reproduce the check:
+
+| Field | Example |
+|---|---|
+| Surface | GitHub.com Markdown, GitHub Pages production, or GitHub Enterprise Server |
+| Control | Project-managed or platform-managed |
+| Version | Configured version or value displayed by `info` |
+| Discovery method | Lockfile, build log, `info` diagram, or platform release documentation |
+| Date observed | ISO date such as `2026-07-18` |
+| Required capabilities | Diagram types, accessibility declarations, theme behavior, security mode, and export format |
+| Fallback | Visible structured alternative, data table, list, or pre-rendered accessible asset |
+| Owner | Person or team responsible for rechecking |
+
+Because the `info` result is itself rendered as a diagram, do not make it the
+only accessible record. Add a plain-text observation to the project's renderer
+record, for example:
+
+```text
+Last manually observed on GitHub.com: Mermaid x.y.z on YYYY-MM-DD.
+```
+
+Label this as an observation rather than a guarantee. Recheck it when diagrams
+fail, when a platform or enterprise release changes, and before relying on a
+new Mermaid feature.
+
+### Verify capabilities, not only the version number
+
+A version string alone does not establish that the host exposes the expected
+output. For every supported publishing surface, verify:
+
+- the required diagram types parse and render;
+- `accTitle` and `accDescr` produce the expected title, description, and ARIA
+  relationships;
+- the host's sanitizer preserves required semantics and references;
+- security restrictions remain appropriate;
+- light, dark, increased-contrast, and forced-colours presentations remain
+  understandable;
+- several diagrams on one page do not produce conflicting IDs;
+- the visible structured alternative remains available if rendering fails; and
+- published exports preserve the information needed in their destination
+  format.
+
+When the host version is unknown, unavailable, or changing, rely only on
+features verified on that host and keep essential information outside the
+generated diagram.
 
 ## Authoring and Review Workflow
 
@@ -622,7 +710,10 @@ site-owned configuration.
 
 ### Before publication
 
-- Parse and render with the pinned production version.
+- When the project controls the renderer, parse and render with the pinned
+  production version.
+- When the platform controls the renderer, record its observed version and
+  verify required capabilities on the target surface.
 - Inspect the generated SVG and the final accessibility tree.
 - Validate the structured alternative against the diagram.
 - Test all supported themes, zoom levels, viewports, and exports.
@@ -647,7 +738,8 @@ Treat AI output as a draft.
 
 For meaningful diagrams, automation can check:
 
-- the exact Mermaid source parses with the pinned renderer;
+- the exact Mermaid source parses with the configured or currently observed
+  target renderer;
 - `accTitle:` is present and not commented out;
 - `accDescr:` or `accDescr { ... }` is present and not commented out;
 - title and description values are non-empty;
@@ -748,6 +840,9 @@ assistive-technology version.
 
 - Test the original Markdown or source preview.
 - Test the production page after sanitization and optimization.
+- Record whether each tested renderer is pinned or platform-managed.
+- For a hosted renderer, record the discovery method, observed version, and
+  date.
 - Test inline SVG, external SVG, and raster variants that are published.
 - Test print and PDF output when offered.
 - Test with JavaScript unavailable or rendering failed.
@@ -776,6 +871,10 @@ assistive-technology version.
 | Making static diagrams keyboard focusable | Keep static graphics out of the Tab order and focus real controls only |
 | Putting essential links only inside a diagram | Provide equivalent visible HTML links |
 | Loading Mermaid from an unpinned `@latest` dependency | Pin and review the production renderer version |
+| Describing a platform-managed renderer as pinned | Record the observed version, date, discovery method, and tested capabilities |
+| Assuming GitHub Pages uses GitHub.com's Mermaid version | Identify the renderer supplied by the Pages theme, plugin, script, or build pipeline |
+| Treating a live `info` diagram as a permanent version record | Keep a dated plain-text observation and recheck the target platform |
+| Testing on GitHub.com and assuming GitHub Enterprise Server behaves identically | Test the installed enterprise release as a separate rendering surface |
 | Using `securityLevel: 'loose'` without need | Keep strict security defaults and place essential interaction in HTML |
 | Trusting an editor preview instead of the published page | Test the production renderer, sanitizer, theme, embed mode, and exports |
 
@@ -800,7 +899,10 @@ assistive-technology version.
   scrolling have been tested.
 - [ ] Static diagrams do not add unnecessary keyboard stops.
 - [ ] Interactive links and controls have complete HTML alternatives.
-- [ ] The pinned production renderer parses the source without errors.
+- [ ] A controlled production renderer is pinned, or a platform-managed
+  renderer has a dated version observation and capability record.
+- [ ] GitHub.com, GitHub Enterprise Server, GitHub Pages, local preview, and
+  export surfaces used by the project have been treated separately.
 - [ ] The generated SVG contains and references the expected title and
   description.
 - [ ] IDs are unique in the final page and remain intact after optimization.
@@ -873,6 +975,8 @@ severity scale.
 - [Mermaid: Theme Configuration](https://mermaid.ai/open-source/config/theming.html)
 - [Mermaid: Configuration Schema](https://mermaid.ai/open-source/schemas/config.schema.json)
 - [Mermaid: Security](https://mermaid.ai/open-source/community/security.html)
+- [GitHub: Creating diagrams and checking the Mermaid version](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams#checking-your-version-of-mermaid)
+- [GitHub: About GitHub Pages and Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll)
 - [W3C WAI: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
 - [WAI-ARIA 1.2: `aria-roledescription`](https://www.w3.org/TR/wai-aria-1.2/#aria-roledescription)
 - [SVG Accessibility API Mappings 1.0](https://www.w3.org/TR/svg-aam-1.0/)
@@ -888,14 +992,24 @@ accessibility standards:
 - [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
 - [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
 
-## Mermaid version information
+## Mermaid Version Information
 
-This guide uses Mermaid 11.16.0 as its reference version.
+This guide uses Mermaid 11.16.0 as its reference version. The reference version
+identifies the documentation and behavior reviewed while maintaining this
+guide. It does not claim that every publishing platform uses Mermaid 11.16.0.
 
-The diagram below reports the Mermaid version supplied by the current
-Markdown hosting platform. It may differ from the version used by GitHub
-Pages, local builds, exported diagrams, or other rendering services.
+The diagram below reports the Mermaid version supplied by the current Markdown
+hosting platform. It may differ from the version used by GitHub Pages, local
+builds, GitHub Enterprise Server, exported diagrams, or other rendering
+services.
 
 ```mermaid
 info
 ```
+
+The `info` result is diagnostic and dynamic. Record its visible value and the
+observation date in plain text when version evidence is required.
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
