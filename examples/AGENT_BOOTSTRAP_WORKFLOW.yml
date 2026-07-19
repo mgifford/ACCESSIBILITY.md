@@ -1,88 +1,197 @@
-# Bootstrap ACCESSIBILITY.md using GitHub Copilot coding agent
+# Draft ACCESSIBILITY.md with GitHub Copilot CLI.
 #
-# HOW TO USE
-# ----------
-# 1. Copy this file to .github/workflows/bootstrap-accessibility.yml in your
-#    repository.
-# 2. Trigger it from the Actions tab → "Bootstrap ACCESSIBILITY.md" →
-#    "Run workflow".
-# 3. The Copilot coding agent will analyse your repository, fill in
-#    ACCESSIBILITY-template.md, and open a **draft** pull request for review.
+# PURPOSE
+# -------
+# This example manually generates an uncommitted ACCESSIBILITY.md draft and
+# uploads it as a workflow artifact for human review. It does not push a branch,
+# open a pull request, modify repository settings, or establish conformance.
 #
-# REQUIREMENTS
-# ------------
-# - A GitHub Copilot Individual, Business, or Enterprise subscription with the
-#   Copilot coding agent feature enabled.
-# - The following repository settings enabled:
-#     Settings → Copilot → "Allow Copilot to create and approve pull requests"
-# - The GITHUB_TOKEN permissions below (granted automatically by GitHub
-#   Actions; no additional secrets are required).
+# WHY COPILOT CLI
+# ---------------
+# The previous example referenced github/copilot-agent@v1. That action was not
+# verified in current official GitHub documentation. GitHub documents Copilot
+# CLI as a supported way to run a prompt in GitHub Actions.
 #
-# AGENT TASK
-# ----------
-# The full agent task description lives in:
-#   examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md
-# The workflow passes it verbatim to the Copilot coding agent.
+# GitHub also offers Copilot cloud-agent automations through the Agents
+# interface, but current documentation limits those automations to private and
+# internal repositories. This CLI example can be adapted more broadly, subject
+# to account and organization policies.
+#
+# BEFORE COPYING
+# --------------
+# 1. Read the current documentation:
+#    https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/automate-with-actions
+# 2. Copy this file to .github/workflows/bootstrap-accessibility.yml.
+# 3. Copy the current ACCESSIBILITY-template.md, AGENTS.md, and
+#    examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md into the target repository.
+# 4. Adapt relative links in the template for the target repository.
+# 5. Configure COPILOT_GITHUB_TOKEN as described below.
+# 6. Review all action pins, the Copilot CLI version, permissions, retention,
+#    cost, and organization policy before enabling the workflow.
+#
+# AUTHENTICATION
+# --------------
+# This example expects an Actions secret named COPILOT_GITHUB_TOKEN. Use a
+# fine-grained token with the Copilot Requests permission and only the
+# repository access required to read this repository. Organization-owned
+# repositories may be able to use GITHUB_TOKEN when the applicable Copilot CLI
+# policy is enabled; follow current GitHub documentation rather than widening a
+# personal token.
+#
+# Never use a broadly scoped personal access token for this example.
+#
+# VERSION REVIEW
+# --------------
+# Reviewed: 2026-07-19
+# Copilot CLI npm package: @github/copilot@1.0.71
+# Action tags were resolved to the full commit SHAs shown below on the review
+# date. Re-resolve and review them before copying this example.
 
-name: Bootstrap ACCESSIBILITY.md
+name: Draft ACCESSIBILITY.md
 
 on:
   workflow_dispatch:
     inputs:
-      draft_only:
+      confirmation:
         description: >-
-          Open the pull request as a draft (recommended – prevents accidental
-          merge before human review).
-        type: boolean
-        default: true
-        required: false
+          Type DRAFT to confirm that the workflow should create an uncommitted
+          artifact for human review.
+        required: true
+        type: string
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+
+concurrency:
+  group: accessibility-bootstrap-${{ github.repository }}
+  cancel-in-progress: false
 
 jobs:
-  bootstrap:
-    name: Run Copilot bootstrap agent
+  draft:
+    name: Generate draft artifact
+    if: ${{ inputs.confirmation == 'DRAFT' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # ------------------------------------------------------------------
-      # Extract the agent task description from the examples directory.
-      # COPILOT_BOOTSTRAP_AGENT_PROMPT.md contains human-readable prose
-      # plus exactly one ```text … ``` code block that holds the task.
-      # Only that block is passed to the agent; all surrounding Markdown
-      # and frontmatter is stripped.
-      # ------------------------------------------------------------------
-      - name: Extract agent task description
-        id: task
-        run: |
-          {
-            echo 'body<<AGENT_TASK_EOF'
-            awk '/^```text$/{found=1; next} /^```$/{if(found) exit} found{print}' \
-              examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md
-            echo 'AGENT_TASK_EOF'
-          } >> "$GITHUB_OUTPUT"
-
-      # ------------------------------------------------------------------
-      # Assign the task to the Copilot coding agent.
-      #
-      # The `github/copilot-agent` action (public preview) accepts a
-      # `task` input containing the full task description and then
-      # autonomously plans and executes the steps required to complete it,
-      # including creating branches, committing files, and opening PRs.
-      #
-      # See: https://docs.github.com/en/copilot/using-github-copilot/
-      #      using-github-copilot-for-pull-requests/
-      #      using-copilot-to-help-you-work-on-a-pull-request
-      # ------------------------------------------------------------------
-      - name: Assign task to Copilot coding agent
-        uses: github/copilot-agent@v1
+      - name: Check out repository without stored credentials
+        # actions/checkout v6, resolved 2026-07-19.
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
-          task: ${{ steps.task.outputs.body }}
-          # The agent opens its own PR. Pass the draft flag from the
-          # workflow_dispatch input so reviewers control this behaviour.
-          pr_draft: ${{ inputs.draft_only }}
+          persist-credentials: false
+
+      - name: Verify bootstrap inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "ACCESSIBILITY-template.md"
+            "examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md"
+          )
+
+          for required_file in "${required_files[@]}"; do
+            if [[ ! -f "$required_file" ]]; then
+              echo "Required file is missing: $required_file" >&2
+              exit 1
+            fi
+          done
+
+          if [[ -e "ACCESSIBILITY.md" ]]; then
+            echo "ACCESSIBILITY.md already exists." >&2
+            echo "Use a review task instead of the bootstrap workflow." >&2
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        # actions/setup-node v4, resolved 2026-07-19.
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+
+      - name: Install the reviewed Copilot CLI version
+        shell: bash
+        run: npm install --global @github/copilot@1.0.71
+
+      - name: Extract the bootstrap task
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prompt_file="$RUNNER_TEMP/accessibility-bootstrap-prompt.txt"
+
+          awk '
+            /^```text$/ { if (found) exit 2; found = 1; next }
+            /^```$/ && found { closed = 1; exit }
+            found { print }
+            END { if (!found || !closed) exit 3 }
+          ' examples/COPILOT_BOOTSTRAP_AGENT_PROMPT.md > "$prompt_file"
+
+          if [[ ! -s "$prompt_file" ]]; then
+            echo "The extracted bootstrap task is empty." >&2
+            exit 1
+          fi
+
+      - name: Generate ACCESSIBILITY.md draft
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${COPILOT_GITHUB_TOKEN:-}" ]]; then
+            echo "The COPILOT_GITHUB_TOKEN secret is not configured." >&2
+            exit 1
+          fi
+
+          prompt_file="$RUNNER_TEMP/accessibility-bootstrap-prompt.txt"
+
+          copilot \
+            --prompt "$(< "$prompt_file")" \
+            --allow-tool='read,write(ACCESSIBILITY.md)' \
+            --deny-tool='shell,url,memory' \
+            --no-ask-user
+
+      - name: Validate the generated draft
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -s "ACCESSIBILITY.md" ]]; then
+            echo "Copilot did not create a non-empty ACCESSIBILITY.md." >&2
+            exit 1
+          fi
+
+          unexpected_changes="$({
+            git status --porcelain=v1 --untracked-files=all
+          } | awk '$2 != "ACCESSIBILITY.md" { print }')"
+
+          if [[ -n "$unexpected_changes" ]]; then
+            echo "Unexpected files were changed:" >&2
+            echo "$unexpected_changes" >&2
+            exit 1
+          fi
+
+          placeholder_count="$({
+            grep -o '{{[^}][^}]*}}' ACCESSIBILITY.md || true
+          } | sort -u | wc -l | tr -d ' ')"
+
+          {
+            echo "## ACCESSIBILITY.md bootstrap"
+            echo
+            echo "A draft was generated but was not committed or published."
+            echo
+            echo "- Unique unresolved placeholders: $placeholder_count"
+            echo "- Repository files changed: ACCESSIBILITY.md only"
+            echo "- Required next step: download and review the artifact"
+            echo "- Conformance established: no"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload draft for human review
+        # actions/upload-artifact v4, resolved 2026-07-19.
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: accessibility-policy-draft-${{ github.run_id }}
+          path: ACCESSIBILITY.md
+          if-no-files-found: error
+          retention-days: 7
