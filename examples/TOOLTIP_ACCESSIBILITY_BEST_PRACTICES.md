@@ -4,282 +4,679 @@ title: Tooltip Accessibility Best Practices
 
 # Tooltip Accessibility Best Practices
 
-This document defines project-level requirements for accessible tooltip design, markup, keyboard interaction, and mobile support.
+## Purpose
 
-## 1. Core Principle
+A tooltip is a short, non-interactive description that appears automatically
+when its trigger receives keyboard focus or pointer hover. An accessible
+tooltip must be available to keyboard, pointer, touch, magnification, and
+assistive technology users without hiding essential information or blocking
+the interface.
 
-Tooltips must convey supplementary information to all users, regardless of input method or assistive technology. A tooltip that cannot be reached by keyboard or assistive technology is an accessibility barrier.
+Tooltips are often the wrong solution. Persistent visible text, a clear control
+label, a disclosure, or a dialog is usually easier to discover and use.
 
-## 2. What Is a Tooltip?
+This guide covers authored tooltips. Browser-controlled tooltips created by the
+HTML `title` attribute have different behavior and limitations.
 
-A tooltip is a short, transient text label that appears near a UI element when a user hovers over or focuses on that element. Tooltips:
+## Core Principles
 
-- Provide **supplementary** context (not essential information).
-- Are **non-interactive**: they cannot contain links, buttons, or form controls.
-- Disappear automatically when the trigger loses focus or hover state.
-- Are distinct from toggletips (which toggle on click) and popovers (which are persistent and may contain interactive content).
+1. Use a tooltip only for short supplementary information.
+2. Put instructions, errors, requirements, and other essential information in
+   persistent visible text.
+3. Give the trigger a complete accessible name without depending on the
+   tooltip.
+4. Show the same tooltip on keyboard focus and pointer hover.
+5. Keep focus on the trigger. A tooltip never receives focus.
+6. Let users dismiss the tooltip with `Escape` without moving focus.
+7. Keep it visible while the trigger or tooltip is hovered, or while the
+   trigger has focus.
+8. Do not close an active tooltip on a timer.
+9. Do not put links, buttons, or form controls inside a tooltip.
+10. Do not depend on a tooltip for touch access.
+11. Test positioning, magnification, zoom, text spacing, forced colors, and
+    supported assistive technologies.
 
-If the information in a tooltip is essential to completing a task, it belongs in persistent visible text, not a tooltip.
+## Choose the Right Pattern
 
-## 3. ARIA Pattern
-
-Use `role="tooltip"` with `aria-describedby` to associate the tooltip with its trigger:
-
-```html
-<!-- Trigger element -->
-<button
-  type="button"
-  aria-describedby="save-tooltip"
->
-  Save
-</button>
-
-<!-- Tooltip container (hidden until triggered) -->
-<div
-  id="save-tooltip"
-  role="tooltip"
-  hidden
->
-  Save changes to your draft
-</div>
-```
-
-Key rules:
-- The tooltip element must have `role="tooltip"`.
-- The trigger must reference the tooltip via `aria-describedby`.
-- Use `hidden` or `display: none` / `visibility: hidden` to conceal the tooltip until triggered; do **not** use `aria-hidden="true"` on an active tooltip.
-- Do not place `role="tooltip"` on the trigger element itself.
-- Each tooltip must have a unique `id`.
-
-### Icon-Only Triggers
-
-When the trigger has no visible label (for example, an icon button), provide an accessible name via `aria-label` in addition to the tooltip description:
-
-```html
-<button
-  type="button"
-  aria-label="Delete item"
-  aria-describedby="delete-tooltip"
->
-  <!-- SVG icon here -->
-</button>
-<div id="delete-tooltip" role="tooltip" hidden>
-  Permanently removes this item from your account
-</div>
-```
-
-## 4. Trigger Behavior
-
-Tooltips must appear on **both hover and keyboard focus** so keyboard-only users receive the same information as pointer users.
-
-```javascript
-const trigger = document.querySelector('[aria-describedby]');
-const tooltip = document.getElementById(trigger.getAttribute('aria-describedby'));
-
-function showTooltip() {
-  tooltip.removeAttribute('hidden');
-}
-
-function hideTooltip() {
-  tooltip.setAttribute('hidden', '');
-}
-
-trigger.addEventListener('mouseenter', showTooltip);
-trigger.addEventListener('mouseleave', hideTooltip);
-trigger.addEventListener('focusin',    showTooltip);
-trigger.addEventListener('focusout',   hideTooltip);
-```
-
-Additionally:
-- `Escape` must dismiss a visible tooltip without moving focus.
-- The tooltip must remain visible long enough for users to read it (minimum 1.5 seconds recommended; do not auto-hide solely on a short timer).
-- Do not dismiss a tooltip while the pointer is hovering over it (WCAG 1.4.13).
-
-## 5. WCAG 1.4.13 — Content on Hover or Focus (AA)
-
-WCAG 2.1 Success Criterion 1.4.13 adds three requirements for content that appears on hover or focus:
-
-| Requirement | Description |
+| Need | Use |
 |---|---|
-| **Dismissible** | The tooltip can be dismissed without moving pointer or focus (for example, `Escape` key). |
-| **Hoverable** | If the pointer triggers the tooltip, the user can move the pointer over the tooltip content without the tooltip disappearing. |
-| **Persistent** | The tooltip remains visible until the pointer or focus leaves the trigger, the user dismisses it, or the information is no longer valid. |
+| A control needs a clearer label | Improve its visible label |
+| Short supplementary text should appear automatically on focus or hover | Tooltip |
+| Instructions or requirements are needed to complete a task | Persistent visible help text |
+| A user explicitly asks to show or hide short help | Button-controlled disclosure |
+| The popup contains links, buttons, or other controls | Non-modal dialog or another appropriate popup pattern |
+| A decision is required before work can continue | Modal dialog or alert dialog |
+| An action completed or a process changed state | Status message, not a tooltip |
+| Text is truncated only because of layout | Allow wrapping, expansion, or another way to read the full text |
 
-An exception applies when the tooltip appearance is controlled entirely by the browser (for example, native `title` attribute tooltips), but these native tooltips have poor accessibility support across browsers and assistive technologies and should be avoided in favor of the ARIA tooltip pattern described in this guide.
+Calling every small popup a tooltip leads to incorrect semantics and keyboard
+behavior. Classify the interaction before choosing ARIA.
 
-## 6. Keyboard Interaction
+## What Is a Tooltip?
 
-| Key | Behavior |
+An authored tooltip:
+
+- describes an element;
+- appears automatically after focus or hover;
+- contains only non-interactive content;
+- does not receive focus;
+- is associated with its trigger through `aria-describedby`;
+- remains available while the trigger has focus or the pointer is over the
+  trigger or tooltip; and
+- can be dismissed with `Escape`.
+
+The WAI-ARIA specification defines `tooltip` as a contextual popup that
+displays a description for an element. The
+[ARIA Authoring Practices Guide tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
+documents expected interaction, but W3C currently marks that APG pattern as
+work in progress without task-force consensus. Treat it as useful guidance,
+not as a substitute for user testing.
+
+## WCAG 1.4.13: Content on Hover or Focus
+
+[WCAG 2.2 Success Criterion 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
+applies when receiving and then removing pointer hover or keyboard focus makes
+additional content appear and disappear.
+
+| Requirement | Tooltip behavior |
 |---|---|
-| `Tab` / `Shift+Tab` | Moves focus to and away from the trigger; tooltip shows/hides accordingly. |
-| `Escape` | Dismisses the tooltip while focus stays on the trigger. |
+| Dismissible | Provide a way to dismiss content without moving pointer or focus when the content obscures or replaces other content. `Escape` is the established tooltip interaction. |
+| Hoverable | If pointer hover opens it, the pointer can move onto the tooltip without closing it. |
+| Persistent | Keep it visible until hover or focus is removed, the user dismisses it, or the information is no longer valid. |
 
-Tooltips must **not** be focusable themselves (do not set `tabindex` on the tooltip container). They are descriptive overlays, not interactive widgets.
+The dismissible requirement has limited exceptions, including when the
+additional content does not obscure or replace other content. Do not design
+around the exception. Supporting `Escape` gives users a predictable way to
+remove content that may block what they need to see.
 
-## 7. Content Requirements
+Do not invent an auto-close duration. A tooltip that disappears after 1.5
+seconds, 5 seconds, or another fixed time does not meet the persistence
+requirement while its trigger remains active.
 
-- Keep tooltip text concise — ideally one short sentence or phrase.
-- Avoid repeating the accessible name of the trigger in the tooltip.
-- Never put essential information only inside a tooltip; provide an equivalent in persistent visible text or help text.
-- Do not include HTML links, buttons, or form controls inside a tooltip.
-- Write in plain language; follow reading level guidance appropriate for the audience.
+## ARIA and Accessible Description
 
-### When Not to Use a Tooltip
-
-Avoid tooltips when:
-- The label of the control is self-explanatory.
-- The information must be readable by all users at all times.
-- The control is on a touch-only interface where hover is not available.
-- The content is long enough to warrant a popover or help text instead.
-
-## 8. Mobile and Touch Considerations
-
-Hover-based tooltips do not work on touch screens. Strategies for mobile accessibility:
-
-- Use a **toggletip** pattern instead: the tooltip toggles visible on tap and is dismissed by tapping elsewhere or pressing a close button.
-- Expose tooltip content as visible help text beneath the control on small viewports.
-- Do not rely on long-press to reveal tooltips; it is not consistently supported and conflicts with system actions.
+Use `role="tooltip"` on the popup and reference its unique `id` from the
+trigger with `aria-describedby`.
 
 ```html
-<!-- Toggletip for touch interfaces -->
-<button
-  type="button"
-  aria-expanded="false"
-  aria-controls="info-toggletip"
-  aria-label="More information about password requirements"
->
-  <span aria-hidden="true">ⓘ</span>
-</button>
-<div id="info-toggletip" hidden>
-  Your password must be at least 12 characters and include a number.
-</div>
+<span class="tooltip-container" data-tooltip>
+  <button type="button"
+          aria-describedby="save-tooltip"
+          data-tooltip-trigger
+          data-tooltip-id="save-tooltip">
+    Save
+  </button>
+  <span id="save-tooltip" role="tooltip" hidden>
+    Saves changes to your draft.
+  </span>
+</span>
 ```
 
-For toggletips, toggle `aria-expanded` and `hidden` together and use `role="status"` or a live region if the content is dynamically injected, so screen readers announce it.
+Important details:
 
-## 9. Visual Design Requirements
+- Use a native interactive element for the trigger when the trigger performs
+  an action.
+- The trigger remains the only focusable element in this pattern.
+- The tooltip content should exist in the DOM before the trigger receives
+  focus so its description is available when focus is announced.
+- `aria-describedby` may contain a space-separated list of IDs. Preserve
+  existing help, error, or instruction references when adding a tooltip.
+- Do not put `role="tooltip"` on the trigger.
+- Do not add `aria-live`, `role="status"`, or `role="alert"` to a tooltip.
+- Do not use `aria-expanded` for an automatically displayed tooltip. The
+  trigger does not control an expandable interactive region.
+- Do not use `aria-haspopup` for a tooltip. `tooltip` is not one of that
+  property's popup values.
+- Let the tooltip's text provide its accessible name. Avoid an `aria-label`
+  that replaces different visible tooltip text.
 
-- **Color contrast**: Tooltip text must meet a minimum 4.5:1 contrast ratio against the tooltip background (WCAG 1.4.3). The tooltip background must meet 3:1 contrast against adjacent surfaces (WCAG 1.4.11).
-- **Position**: Position tooltips to avoid obscuring nearby content. Prefer placing them above or below the trigger, not over related text. Adjust position dynamically when close to viewport edges.
-- **Arrow/caret**: A visual pointer indicating which element the tooltip describes is strongly recommended for clarity. Its color must also meet contrast requirements.
-- **Size and spacing**: Text must be legible at the default zoom level. Do not set a `max-width` so small that text wraps into illegible lines.
-- **Animation**: If a tooltip animates in or out, respect `prefers-reduced-motion`:
+A directly referenced hidden description can contribute to accessible
+description calculation. Keeping the node in the DOM also avoids adding the
+description only after a screen reader has already announced focus. Still test
+the resulting name and description in supported combinations because
+presentation varies.
+
+### Preserve existing descriptions
+
+Do not overwrite an existing `aria-describedby` value:
+
+```html
+<label for="account-name">Account name</label>
+<input id="account-name"
+       aria-describedby="account-name-help account-name-tooltip">
+<p id="account-name-help">Use 4 to 30 characters.</p>
+<span id="account-name-tooltip" role="tooltip" hidden>
+  This name appears on your public profile.
+</span>
+```
+
+In many forms, the persistent help paragraph makes the tooltip unnecessary.
+Prefer the simpler design when both messages can remain visible.
+
+### Icon-only controls
+
+The tooltip is a description, not a replacement for the control's accessible
+name. Name an icon-only button independently.
+
+```html
+<span class="tooltip-container" data-tooltip>
+  <button type="button"
+          aria-label="Delete quarterly report"
+          aria-describedby="delete-tooltip"
+          data-tooltip-trigger
+          data-tooltip-id="delete-tooltip">
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M5 7h14M9 7V4h6v3m-8 0 1 13h8l1-13"/>
+    </svg>
+  </button>
+  <span id="delete-tooltip" role="tooltip" hidden>
+    Permanently deletes the report.
+  </span>
+</span>
+```
+
+The visible icon, accessible name, and description should agree about the
+action. Avoid repeating exactly the same words as both name and description.
+
+## Complete Interaction Example
+
+The following script supports multiple tooltip components. It tracks pointer
+hover, focus, and dismissal as separate states so one event does not close a
+tooltip that is still active for another reason.
+
+```js
+document.querySelectorAll('[data-tooltip]').forEach((container) => {
+  const trigger = container.querySelector('[data-tooltip-trigger]');
+  const tooltip = document.getElementById(trigger.dataset.tooltipId);
+
+  if (!tooltip || tooltip.getAttribute('role') !== 'tooltip') {
+    return;
+  }
+
+  let pointerWithin = false;
+  let triggerFocused = false;
+  let dismissed = false;
+
+  function updateTooltip() {
+    const shouldShow = !dismissed && (pointerWithin || triggerFocused);
+    tooltip.hidden = !shouldShow;
+  }
+
+  container.addEventListener('pointerenter', () => {
+    pointerWithin = true;
+    dismissed = false;
+    updateTooltip();
+  });
+
+  container.addEventListener('pointerleave', () => {
+    pointerWithin = false;
+    updateTooltip();
+  });
+
+  trigger.addEventListener('focus', () => {
+    triggerFocused = true;
+    dismissed = false;
+    updateTooltip();
+  });
+
+  trigger.addEventListener('blur', () => {
+    triggerFocused = false;
+    updateTooltip();
+  });
+
+  trigger.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !tooltip.hidden) {
+      dismissed = true;
+      updateTooltip();
+      event.stopPropagation();
+    }
+  });
+});
+```
+
+This implementation keeps the tooltip visible when:
+
+- the trigger has focus and the pointer leaves;
+- the pointer remains over the trigger; or
+- the pointer moves from the trigger onto the tooltip.
+
+After `Escape`, focus remains on the trigger. The tooltip can appear again
+after focus leaves and returns, or after the pointer leaves and re-enters the
+component.
+
+If a tooltip is inside another interface that also uses `Escape`, coordinate
+event handling so the most recently opened layer closes first. Do not create a
+keyboard trap.
+
+### CSS for the example
 
 ```css
-@media (prefers-reduced-motion: no-preference) {
+.tooltip-container {
+  position: relative;
+  display: inline-flex;
+}
+
+[role="tooltip"] {
+  position: absolute;
+  z-index: 10;
+  inset-block-start: calc(100% + 0.5rem);
+  inset-inline-start: 50%;
+  max-inline-size: min(20rem, calc(100vw - 2rem));
+  padding: 0.5rem 0.75rem;
+  color: #ffffff;
+  background: #111827;
+  border: 1px solid #111827;
+  border-radius: 0.25rem;
+  transform: translateX(-50%);
+  overflow-wrap: anywhere;
+}
+
+[role="tooltip"][hidden] {
+  display: none;
+}
+
+@media (forced-colors: active) {
   [role="tooltip"] {
-    transition: opacity 0.15s ease;
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
   }
 }
 ```
 
-## 10. CSS Implementation Notes
+This CSS demonstrates presentation, not collision detection. A production
+component must reposition the tooltip when it would leave the viewport or
+obscure important content. Test both left-to-right and right-to-left content.
 
-When building tooltip visuals with CSS alone (no JavaScript), ensure the tooltip is still exposed to assistive technologies on focus:
+If animation is added, keep it brief and avoid essential motion. Disable or
+reduce it when `prefers-reduced-motion: reduce` matches. Do not delay content
+long enough to make focus or hover feedback feel broken.
 
-```css
-/* Hide tooltip visually and from AT by default */
-[role="tooltip"] {
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-}
+## Pointer, Keyboard, and Focus Behavior
 
-/* Show on hover and keyboard focus of the trigger */
-.tooltip-trigger:hover [role="tooltip"],
-.tooltip-trigger:focus-within [role="tooltip"] {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
+### Keyboard
+
+| Key | Expected behavior |
+|---|---|
+| `Tab` or `Shift+Tab` | Moves focus normally. The tooltip appears when its trigger receives focus and closes after focus leaves, unless pointer hover still keeps it open. |
+| `Escape` | Dismisses the visible tooltip without moving focus. |
+
+Do not add the tooltip to the tab sequence. Do not move focus into it. Do not
+use arrow keys to navigate its text. Screen reader users can receive the
+content as the trigger's accessible description.
+
+### Pointer
+
+- Show the tooltip when the pointer hovers over the trigger.
+- Keep it visible while the pointer travels from the trigger to the tooltip.
+- Keep it visible while the pointer is over the tooltip.
+- Close it after the pointer leaves both areas, unless the trigger still has
+  focus.
+- Avoid gaps or overlays that cause pointer leave events during the path.
+- Do not set `pointer-events: none` on a visible tooltip that users must hover.
+
+### Focus indicator
+
+The tooltip must not hide the trigger's entire focus indicator. Keep the
+trigger visible and ensure its focus appearance meets the project's
+[keyboard accessibility guidance](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## Touch and Activation
+
+Touch devices do not provide dependable hover. A tap on an action button should
+perform the action, not unexpectedly become the only way to reveal necessary
+instructions first.
+
+Use one of these alternatives:
+
+- Keep the information visible near the control.
+- Include it in the control's accessible name or existing description when
+  appropriate.
+- Provide a separate help button that opens a disclosure.
+- Use a non-modal dialog when the additional content is structured or
+  interactive.
+
+### Button-controlled help is not a tooltip
+
+When a user activates a button to show content, use a disclosure or popup
+pattern. Do not give the content `role="tooltip"` and do not add a live region
+merely because it became visible.
+
+```html
+<button type="button"
+        id="password-help-button"
+        aria-expanded="false"
+        aria-controls="password-help">
+  Password requirements
+</button>
+
+<div id="password-help" hidden>
+  Use at least 12 characters. Include a number and a symbol.
+</div>
 ```
 
-Avoid using `display: none` in pure-CSS tooltip implementations when focus-within is the show mechanism, because `display: none` removes the element from the accessibility tree, making the referenced content unavailable to assistive technologies.
+```js
+const helpButton = document.getElementById('password-help-button');
+const helpPanel = document.getElementById('password-help');
 
-Use `visibility: hidden` / `visibility: visible` (or `opacity: 0` combined with `pointer-events: none`) for pure-CSS implementations so the referenced tooltip text remains available in the accessibility tree when shown.
+helpButton.addEventListener('click', () => {
+  const expanded = helpButton.getAttribute('aria-expanded') === 'true';
+  helpButton.setAttribute('aria-expanded', String(!expanded));
+  helpPanel.hidden = expanded;
+});
+```
 
-## 11. Testing Expectations
+The expanded state communicates the change. Focus remains on the button, and
+the content follows it in reading order. If the popup contains interactive
+controls or must manage focus, use an appropriate dialog or popup pattern.
 
-Minimum checks for each tooltip implementation:
+## Do Not Rely on the `title` Attribute
 
-- Trigger tooltip by hovering over the element; confirm it appears.
-- Trigger tooltip by keyboard-focusing the element (`Tab`); confirm it appears.
-- Press `Escape` while tooltip is visible; confirm it dismisses without moving focus.
-- Move pointer from the trigger onto the tooltip; confirm it remains visible.
-- Move pointer or focus away from trigger; confirm tooltip disappears.
-- Confirm tooltip text is read by screen reader as a description when trigger receives focus.
-- Confirm tooltip text meets color contrast requirements (4.5:1 text, 3:1 background boundary).
-- On a touch device or narrow viewport, confirm tooltip content is accessible without hover.
-- Confirm no `tabindex` is present on the tooltip container.
-- Confirm `aria-describedby` on the trigger matches the `id` on the tooltip.
+Browser-controlled `title` tooltips fall under the WCAG 1.4.13 exception when
+their visual presentation is entirely controlled by the user agent and is not
+modified by the author. That exception does not make the `title` attribute a
+dependable interface pattern.
 
-### Screen Reader Quick-Check
+Do not use `title` as the only:
 
-| Screen Reader | Browser | Expected behavior |
-|---|---|---|
-| NVDA | Chrome/Firefox | Tooltip description announced after accessible name on focus |
-| JAWS | Chrome/Edge | Tooltip description announced after accessible name on focus |
-| VoiceOver | Safari (macOS/iOS) | Tooltip description announced after accessible name on focus |
-| TalkBack | Chrome (Android) | Visible tooltip content must be accessible via tap interaction |
+- accessible name for a control;
+- source of instructions or validation requirements;
+- explanation of an icon;
+- way to reveal truncated text; or
+- access path for touch users.
 
-## 12. WCAG 2.2 Success Criteria Mapping
+Authors cannot ensure consistent keyboard, touch, magnification, timing, text
+size, or dismissal behavior for browser-controlled tooltips. Prefer a visible
+label or help text. Build an authored tooltip only when supplementary transient
+content is genuinely appropriate.
 
-| SC | Level | Applies because |
-|---|---|---|
-| 1.3.1 Info and Relationships | A | Tooltip must be programmatically associated with its trigger via `aria-describedby`. |
-| 1.4.3 Contrast (Minimum) | AA | Tooltip text must have at least 4.5:1 contrast against its background. |
-| 1.4.11 Non-text Contrast | AA | Tooltip boundaries and arrow must have 3:1 contrast against adjacent colors. |
-| 1.4.13 Content on Hover or Focus | AA | Tooltip must be dismissible, hoverable, and persistent. |
-| 2.1.1 Keyboard | A | Tooltip must be triggerable via keyboard focus without requiring a mouse. |
-| 2.1.2 No Keyboard Trap | A | Tooltip must never trap keyboard focus. |
-| 4.1.2 Name, Role, Value | A | `role="tooltip"` and `aria-describedby` must be correctly implemented. |
+## Disabled Controls
 
-## 13. Definition of Done
+A native disabled form control is normally removed from the tab sequence and
+may not dispatch the pointer or focus events a tooltip expects. Do not attach
+essential explanations only to a disabled control.
 
-A tooltip implementation is complete only when:
+Prefer visible text:
 
-- `role="tooltip"` is applied to the tooltip container and referenced via `aria-describedby` on the trigger.
-- The tooltip appears on both hover and keyboard focus.
-- `Escape` dismisses the tooltip without moving focus.
-- The tooltip remains visible when the pointer hovers over it.
-- Tooltip text meets 4.5:1 contrast; tooltip container boundary meets 3:1 contrast.
-- No interactive content exists inside the tooltip.
-- Essential information is also available in persistent visible text.
-- Touch and mobile users can access the same information.
-- Screen readers announce the tooltip description when the trigger receives focus.
-- `prefers-reduced-motion` is respected for any tooltip animations.
+```html
+<p id="publish-requirement">
+  Add a page title before publishing.
+</p>
+<button type="button" disabled aria-describedby="publish-requirement">
+  Publish
+</button>
+```
 
----
+The visible explanation remains available even though the button cannot
+receive focus. If a project uses `aria-disabled="true"` so a control remains
+focusable, remember that ARIA does not prevent activation. The application
+must suppress the action and maintain the correct disabled styling and state.
+
+## Content Requirements
+
+- Keep the content to a short phrase or sentence.
+- Describe the trigger; do not introduce an unrelated message.
+- Avoid repeating the trigger's accessible name word for word.
+- Do not include headings, lists, links, buttons, fields, or other controls.
+- Do not place error messages, legal text, security warnings, or task
+  requirements only in a tooltip.
+- Write in plain language.
+- Keep dynamic descriptions stable while the trigger has focus.
+- If the content needs structure or several sentences, use persistent help,
+  `aria-details` with an appropriate visible design, a disclosure, or a dialog
+  instead.
+
+Do not make ordinary prose focusable merely to attach a tooltip. Extra tab
+stops make keyboard navigation harder. If a term needs explanation, provide
+adjacent text, a glossary link, or an explicit help button.
+
+## Visual Presentation
+
+### Contrast
+
+- Normal-size tooltip text needs at least 4.5:1 contrast against its
+  background under WCAG 1.4.3.
+- Large text needs at least 3:1 contrast under the same criterion.
+- A boundary, shape, or arrow needs 3:1 contrast against adjacent colors under
+  WCAG 1.4.11 only when that visual information is required to identify the
+  component or its state.
+- A decorative arrow is not automatically subject to non-text contrast.
+- Do not rely on color alone to associate a tooltip with its trigger.
+
+### Zoom, reflow, and text spacing
+
+At 400 percent zoom and narrow viewport widths:
+
+- keep the tooltip within the viewport;
+- allow text to wrap;
+- avoid horizontal scrolling caused by the tooltip;
+- do not cover the entire trigger or critical adjacent content; and
+- preserve a usable way to dismiss it.
+
+Apply WCAG text-spacing overrides and confirm text is not clipped or
+overlapped. Avoid fixed heights and narrow fixed widths.
+
+### Positioning
+
+- Place the tooltip near its trigger without covering the trigger.
+- Detect viewport edges and reposition it.
+- Preserve the pointer path between trigger and tooltip.
+- Recalculate placement after zoom, resize, content changes, and changes in
+  text direction.
+- Avoid rendering inside an ancestor whose `overflow` clips the tooltip.
+- Use a suitable stacking order without covering modal dialogs or other active
+  layers.
+
+### Trigger size
+
+An icon button used as a trigger is still a control. Ensure it meets
+[WCAG 2.2 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+or a documented exception. The visible icon can be smaller than the target if
+the interactive area meets the requirement.
+
+## Component and Framework Guidance
+
+- Give every tooltip a unique ID, including across repeated components.
+- Render the descriptive node before focus reaches the trigger.
+- Keep `aria-describedby` synchronized with the tooltip ID.
+- Preserve other IDs already listed in `aria-describedby`.
+- Remove stale relationships when components unmount.
+- Avoid duplicate tooltips created by portals, hydration, or nested roots.
+- Store open, hovered, focused, and dismissed state explicitly rather than
+  guessing from one event.
+- Do not close on pointer leave when focus still keeps the tooltip active.
+- Do not close on blur when the pointer is still over the component.
+- Coordinate `Escape` behavior with dialogs and other nested overlays.
+- Use event types that match the supported input devices and test generated
+  DOM, not only component source.
+
+If a positioning library is used, inspect its rendered markup, focus handling,
+portal location, collision behavior, and cleanup. A library name is not
+evidence of accessibility.
+
+## Testing
+
+### Keyboard testing
+
+1. Reach the trigger with `Tab` and `Shift+Tab`.
+2. Confirm the tooltip appears without moving focus.
+3. Press `Escape` and confirm it closes while focus stays on the trigger.
+4. Continue tabbing and confirm there is no tooltip tab stop.
+5. Return to the trigger and confirm the tooltip can appear again.
+6. Verify the trigger's focus indicator remains visible.
+7. Confirm no keyboard trap occurs inside a surrounding dialog or popup.
+
+### Pointer and magnification testing
+
+1. Hover the trigger.
+2. Move the pointer slowly from the trigger onto every part of the tooltip.
+3. Confirm it remains visible during the complete path.
+4. Move off both elements and confirm it closes when focus is not retaining it.
+5. Hover while the trigger has keyboard focus, then leave with the pointer.
+   Confirm focus keeps the tooltip visible.
+6. Test with screen magnification and move the viewport while hovering the
+   tooltip.
+7. Press `Escape` without moving the pointer and confirm dismissal.
+
+### Touch testing
+
+- Confirm every action is usable without first discovering hover content.
+- Confirm essential information is visible or available through an explicit
+  control.
+- Test screen reader gestures as well as direct touch.
+- Verify that long press is not required.
+- Confirm a help disclosure can be opened and closed with touch and assistive
+  technology.
+
+### Screen reader testing
+
+Test supported browser and screen reader combinations. Record product
+versions, interaction mode, and relevant verbosity settings.
+
+Confirm that:
+
+- the trigger's accessible name is correct without the tooltip;
+- the tooltip text is exposed as a description;
+- name and description are not needlessly duplicated;
+- focus is not moved;
+- `Escape` dismisses the visual tooltip;
+- other help and error descriptions remain available; and
+- repeated focus does not produce stale or mismatched descriptions.
+
+Do not publish a fixed table promising identical announcements from particular
+screen readers. Accessible description presentation can vary by product,
+settings, mode, language, and version.
+
+### Visual and responsive testing
+
+Test:
+
+- 200 percent and 400 percent zoom;
+- narrow viewports;
+- browser text-only zoom;
+- WCAG text-spacing overrides;
+- high contrast and forced-colors modes;
+- reduced motion;
+- left-to-right and right-to-left text;
+- long translated content; and
+- placement near every viewport edge.
+
+### Automated checks
+
+Automation can help detect:
+
+- missing or duplicate IDs;
+- an `aria-describedby` reference that does not resolve;
+- invalid ARIA values;
+- focusable descendants inside a tooltip;
+- inadequate computed color contrast;
+- a hidden trigger; and
+- stale open tooltips in component tests.
+
+Automated tools cannot prove hoverability, persistence, usable positioning,
+correct screen reader presentation, or touch discoverability. Keep manual tests
+in the release process.
+
+## Common Failures
+
+| Failure | Correction |
+|---|---|
+| Showing the tooltip only on hover | Show it on keyboard focus too |
+| Hiding it when the pointer leaves the trigger | Keep it open while the pointer is over the trigger or tooltip |
+| Hiding it when pointer leaves even though focus remains | Track pointer and focus state separately |
+| Closing it after a fixed timeout | Keep it visible until trigger removal, dismissal, or invalidation |
+| Failing to support `Escape` | Dismiss without moving focus |
+| Moving focus into the tooltip | Keep focus on the trigger |
+| Putting a link or button in `role="tooltip"` | Use a disclosure, non-modal dialog, or other appropriate popup |
+| Using `aria-expanded` or `aria-haspopup` for an automatic tooltip | Use `aria-describedby` and `role="tooltip"` |
+| Adding a live region to activated help | Use the disclosure state and reading order |
+| Relying on `title` for a control label or instruction | Provide a visible label and persistent or authored help |
+| Overwriting existing `aria-describedby` IDs | Append and preserve all relevant references |
+| Attaching essential help only to a disabled control | Make the explanation visible |
+| Making clipped prose focusable only to show a tooltip | Allow wrapping or provide explicit expansion/help |
+| Requiring every tooltip border or arrow to have 3:1 contrast | Apply non-text contrast when the visual information is required |
+| Assuming one screen reader announcement is universal | Test supported combinations and document versions |
+
+## Definition of Done
+
+- [ ] A tooltip is the correct pattern for short supplementary information.
+- [ ] Essential information is visible without opening the tooltip.
+- [ ] The trigger has a complete accessible name without depending on the
+  tooltip.
+- [ ] The tooltip has `role="tooltip"` and a unique ID.
+- [ ] The trigger references it with `aria-describedby` without losing other
+  descriptions.
+- [ ] The descriptive node exists before focus reaches the trigger.
+- [ ] The tooltip appears on keyboard focus and pointer hover.
+- [ ] `Escape` dismisses it without moving focus.
+- [ ] It remains visible while the trigger has focus or the pointer is over the
+  trigger or tooltip.
+- [ ] It does not close on a fixed timer.
+- [ ] The tooltip and all descendants are not focusable.
+- [ ] No interactive or essential content is inside it.
+- [ ] Touch users have visible information or an explicit help control.
+- [ ] Disabled controls do not hide their explanation.
+- [ ] Text contrast meets WCAG 1.4.3.
+- [ ] Required boundaries and states meet WCAG 1.4.11.
+- [ ] The trigger's target size and focus indicator meet applicable WCAG 2.2
+  requirements.
+- [ ] The tooltip reflows, wraps, and remains operable at zoom and with text
+  spacing overrides.
+- [ ] Placement works at viewport edges, in forced colors, and in both text
+  directions.
+- [ ] Keyboard, pointer, touch, magnification, and supported screen reader
+  combinations have been tested manually.
+- [ ] Automated tests supplement, but do not replace, interaction testing.
+
+## Related WCAG Criteria
+
+- [1.3.1 Info and Relationships (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)
+- [1.4.3 Contrast (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [1.4.10 Reflow (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
+- [1.4.11 Non-text Contrast (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [1.4.12 Text Spacing (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+- [1.4.13 Content on Hover or Focus (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
+- [2.1.1 Keyboard (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)
+- [2.1.2 No Keyboard Trap (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html)
+- [2.4.7 Focus Visible (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [2.4.11 Focus Not Obscured (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+- [2.5.8 Target Size (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- [4.1.2 Name, Role, Value (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)
+
+## Related Guides
+
+- [ARIA Live Regions Best Practices](./ARIA_LIVE_REGIONS_BEST_PRACTICES.md)
+- [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Touch and Pointer Accessibility Best Practices](./TOUCH_POINTER_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+
+Use the project's
+[Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+to assign severity and priority. This guide does not define a universal
+severity scale.
 
 ## References
 
+- [WAI-ARIA 1.2: `tooltip` role](https://www.w3.org/TR/wai-aria-1.2/#tooltip)
+- [ARIA Authoring Practices Guide: Tooltip Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
+- [WCAG 2.2 Understanding 1.4.13: Content on Hover or Focus](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
+- [Technique SCR39: Making Content on Focus or Hover Hoverable, Dismissible, and Persistent](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR39)
+- [Failure F95: Content Shown on Hover Is Not Hoverable](https://www.w3.org/WAI/WCAG22/Techniques/failures/F95)
+- [Technique ARIA1: Using `aria-describedby`](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)
+- [Accessible Name and Description Computation 1.2](https://www.w3.org/TR/accname-1.2/)
+
 ### Machine-Readable Standards
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+For AI systems and automated tooling, see
+[wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured
+accessibility standards:
 
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content including SC 1.4.13
-- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) - ARIA tooltip role and aria-describedby
-- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml) - HTML element accessibility semantics for tooltip triggers
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/ARIA/HTML standards
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml)
+- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
 
-### Standards and Guidelines
+---
 
-- [ARIA Authoring Practices: Tooltip Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/) — WAI-ARIA Authoring Practices Guide definition and keyboard requirements
-- [WCAG 2.2 SC 1.4.13 Content on Hover or Focus](https://www.w3.org/TR/WCAG22/#content-on-hover-or-focus) — Normative requirement for dismissible, hoverable, and persistent content
-- [ARIA Specification: tooltip role](https://www.w3.org/TR/wai-aria-1.2/#tooltip) — Normative ARIA role definition
-
-### Design System References
-
-- [U.S. Web Design System (USWDS) — Tooltip](https://designsystem.digital.gov/components/tooltip/) — Federal design system implementation and guidance
-- [Carbon Design System — Tooltip Accessibility](https://carbondesignsystem.com/components/tooltip/accessibility/) — IBM Carbon design system accessibility notes
-- [Red Hat UX — Tooltip Accessibility](https://ux.redhat.com/elements/tooltip/accessibility/) — Enterprise UI accessibility implementation
-- [Salt Design System — Tooltip Accessibility](https://www.saltdesignsystem.com/salt/components/tooltip/accessibility) — J.P. Morgan Salt design system guidance
-
-### Articles and Research
-
-- [Smashing Magazine — Designing Tooltips for Mobile User Interfaces](https://www.smashingmagazine.com/2021/02/designing-tooltips-mobile-user-interfaces/) — Mobile-specific considerations and patterns
-- [Smashing Magazine — Modern CSS Tooltips and Speech Bubbles](https://www.smashingmagazine.com/2024/03/modern-css-tooltips-speech-bubbles-part1/) — Modern CSS tooltip implementation techniques
-- [CSS-Tricks — The Little Triangle in the Tooltip](https://css-tricks.com/the-little-triangle-in-the-tooltip/) — CSS caret/arrow techniques for tooltip pointers
-- [UserWay — Your Guide to Accessible Tooltips](https://userway.org/blog/your-guide-to-accessible-tooltips/) — Practical accessibility guidance for tooltip implementation
-- [Nielsen Norman Group — Tooltip Guidelines](https://www.nngroup.com/articles/tooltip-guidelines/) — UX research on tooltip best practices and when to use them
+This document is available under the repository's [MIT License](../LICENSE).
