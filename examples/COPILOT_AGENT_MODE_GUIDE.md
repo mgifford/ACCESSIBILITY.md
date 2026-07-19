@@ -1,406 +1,300 @@
 ---
-title: Copilot Agent Mode Guide — WCAG-Grounded Code Generation
+title: GitHub Copilot Agent Guide
+last_reviewed: 2026-07-19
 ---
 
-# Copilot Agent Mode Guide: Structuring AGENTS.md for WCAG-Grounded Code Generation
+# GitHub Copilot Agent Guide
 
-This guide explains how to evolve an `AGENTS.md` file to support **GitHub Copilot agent mode** — where Copilot operates autonomously across multiple files and steps rather than completing a single inline suggestion. It documents the prompting patterns that reliably produce WCAG 2.2 AA-compliant output in agent mode.
+This guide explains how to use GitHub Copilot's agentic features with this
+repository. It covers Copilot-specific setup, instruction loading, task design,
+review, and evaluation.
 
-> **GitHub plan requirement**: GitHub Copilot agent mode (multi-step autonomous editing) requires a **GitHub Copilot Individual, Business, or Enterprise** subscription with the agent-mode feature enabled. See the [GitHub Copilot documentation](https://docs.github.com/en/copilot) for current plan details.
+The canonical repository requirements are in [AGENTS.md](../AGENTS.md). This
+guide does not reproduce them and does not replace GitHub's current product
+documentation.
 
----
+No prompt, instruction file, agent, automated test, or code review can guarantee
+WCAG conformance. Copilot output requires proportionate validation and human
+review.
 
-## Why Agent Mode Needs a Different AGENTS.md Structure
+## Is This Guide Useful?
 
-Inline-suggestion assistants (Copilot autocomplete, chat) complete a single suggestion or answer a single question. **Agent mode** plans and executes multi-step tasks autonomously — reading files, editing code, running tools, and iterating.
+Keep this guide while the repository provides examples for GitHub Copilot
+agents. It has a distinct purpose: explaining Copilot-specific surfaces and how
+they consume the repository's tool-neutral instructions.
 
-A standard `AGENTS.md` written for inline suggestions typically:
+Remove or substantially revise it if:
 
-- Gives general instructions ("comply with WCAG 2.2 AA") without breaking tasks into steps.
-- Lacks tool-use guidance (when to run axe-core vs. apply a pattern from docs).
-- Has no stopping conditions.
-- Does not distinguish autonomous tasks from tasks requiring human review.
-- Does not specify the structured output (PR description, commit message) that makes agent contributions reviewable.
+- the repository no longer documents GitHub Copilot;
+- GitHub consolidates the relevant products and instruction formats; or
+- the content becomes a duplicate of `AGENTS.md` or official GitHub
+  documentation.
 
-The sections below address each of these gaps.
+Review version-sensitive statements against the
+[GitHub Copilot documentation](https://docs.github.com/en/copilot) before using
+this guide to configure a production repository.
 
----
+## Distinguish the Copilot Surfaces
 
-## Section 1: Dual-Audience AGENTS.md Structure
+GitHub uses related but distinct terms. Do not assume that behavior documented
+for one surface applies to another.
 
-Structure `AGENTS.md` so that the inline-suggestion section and the agent-mode section are clearly separated. Both audiences read the same file; the structure lets each section give appropriately granular instructions.
+| Surface | Where work happens | Typical outcome |
+| --- | --- | --- |
+| Copilot cloud agent | A GitHub-hosted, GitHub Actions-powered environment | Research, a plan, branch changes, and optionally a pull request |
+| IDE agent mode | The developer's supported IDE and local environment | Interactive edits and commands under the developer's supervision |
+| Copilot code review | GitHub.com or a supported IDE | Review findings and suggestions |
+| Copilot Chat | GitHub.com, a supported IDE, or CLI | Explanations, planning, and interactive assistance |
+| Custom agent | A configured specialist available on supported Copilot surfaces | A recurring role with selected instructions, tools, or handoffs |
 
-```markdown
-## For inline-suggestion assistants
+Copilot cloud agent is distinct from IDE agent mode. Availability, permissions,
+tools, instruction support, and review behavior can differ.
 
-- Follow WCAG 2.2 AA for all UI changes.
-- Use semantic HTML, proper ARIA, and sufficient colour contrast.
-- Provide text alternatives for all non-text content.
-- Never use colour alone to communicate state.
+## Use One Canonical Repository Contract
 
----
+This repository uses [AGENTS.md](../AGENTS.md) as its tool-neutral source of
+truth.
 
-## For GitHub Copilot agent mode
+- Root `AGENTS.md` defines repository-wide behavior.
+- A nested `AGENTS.md` is appropriate only when a directory needs genuinely
+  different instructions.
+- `.github/copilot-instructions.md` is a compatibility entry point for Copilot
+  surfaces that do not automatically load `AGENTS.md`.
+- `.github/instructions/*.instructions.md` is for genuinely path-specific
+  behavior.
+- `.github/agents/*.agent.md` is for a distinct specialist role or tool set.
+- `.github/prompts/*.prompt.md` is for a repeatable task that a person chooses
+  to invoke.
 
-> Requires GitHub Copilot with agent mode enabled.
+Do not copy the accessibility rules, trusted-source policy, validation steps,
+or stop conditions from `AGENTS.md` into Copilot-specific files. Duplication
+wastes context and allows instructions to drift.
 
-### Pre-flight checks (always run first)
+GitHub's instruction support varies by product and editor. Check the current
+[custom-instruction support matrix](https://docs.github.com/en/copilot/reference/custom-instructions-support).
 
-1. Read `ACCESSIBILITY.md` to understand the project's current conformance
-   level and known gaps.
-2. Read `examples/TRUSTED_SOURCES.yaml` before citing any external reference.
-   If `ai_scraping: prohibited`, do not fetch the content.
-3. If the task touches a component type listed in the component-specific
-   guidance section, read that guide before writing any code.
-4. Identify which WCAG 2.2 AA Success Criterion the task relates to before
-   proposing a solution.
+## Confirm That Instructions Applied
 
-### Task decomposition
+Before relying on Copilot output:
 
-Break any UI change into sequential layers and verify each before proceeding:
+1. Select or attach the intended repository and branch.
+2. When the surface shows references or session logs, confirm that the
+   applicable instruction files were loaded.
+3. Ask Copilot to identify the applicable `AGENTS.md` and topic guide before it
+   changes files.
+4. If Copilot cannot access `AGENTS.md`, provide it as context or stop the task.
+   Do not substitute an abbreviated policy from memory.
+5. Record the Copilot surface, repository revision, and date when evaluating
+   behavior that may change over time.
 
-| Layer | What to verify |
-|-------|---------------|
-| **HTML structure** | Semantic elements, heading hierarchy, landmark roles |
-| **ARIA attributes** | Only valid roles/states/properties for the host element |
-| **Keyboard behaviour** | Tab order matches visual order; focus indicator always visible |
-| **Visual presentation** | Contrast ≥ 4.5:1 text, ≥ 3:1 non-text; respects `prefers-reduced-motion` |
+Instruction files guide model behavior; they do not provide a deterministic
+enforcement boundary. Repository permissions, branch protection, required
+checks, and human review remain necessary controls.
 
-### Stopping conditions
+## Write a Bounded Task
 
-Stop and request human review if any of these apply:
+A useful Copilot task defines the outcome and evidence without prescribing an
+unverified fix.
 
-- You cannot determine whether a change affects keyboard navigation without
-  running the application.
-- The fix requires modifying more than three files.
-- The change involves colour contrast and design-system tokens are not in the
-  repository.
-- The component relies on a third-party library whose source is not accessible.
-- The correct WCAG Success Criterion is ambiguous.
+Include:
 
-### Required PR output
+- the user problem or intended outcome;
+- the files, component, or workflow in scope;
+- relevant states and interaction methods;
+- constraints and actions that require approval;
+- available test commands and required manual checks; and
+- the expected handoff, such as a plan, patch, or draft pull request.
 
-Every agent-authored PR must include:
+Avoid prompts such as "make this WCAG compliant" or "fix all accessibility
+issues." They have unclear scope, no meaningful completion condition, and invite
+unsupported conformance claims.
 
-- The WCAG Success Criterion (e.g. `WCAG 1.3.1 Info and Relationships`) for
-  each accessibility change.
-- A before/after code snippet for each modified element.
-- A list of automated checks run (or "not run – requires live environment").
-- A list of manual checks needed before merge.
-- AI usage disclosure.
+### Task Template
+
+```text
+Follow the applicable AGENTS.md and the topic guides it identifies.
+
+Outcome:
+[Describe the user task or repository outcome.]
+
+Scope:
+[List the files, component, route, or workflow in scope.]
+
+Relevant behavior:
+[List states, input methods, preferences, renderers, or output formats.]
+
+Evidence:
+[List available automated checks and required manual checks.]
+
+Constraints:
+[List prohibited actions and decisions requiring maintainer approval.]
+
+Handoff:
+[Request a plan, patch, or draft pull request and require reporting of tests,
+limitations, and unresolved decisions.]
 ```
 
-### Why this structure works
+The task may cite a likely WCAG Success Criterion, but Copilot must verify the
+criterion rather than forcing the implementation to fit the prompt's guess.
 
-- The `##` heading signals to the agent's context window that the section applies to its operational mode.
-- Pre-flight checks front-load the most important context before the agent writes any code.
-- The layered task decomposition prevents the agent from jumping to visual polish before fixing structural issues.
-- Stopping conditions give the agent a clear decision tree, reducing over-confident autonomous fixes.
-
----
-
-## Section 2: WCAG Criterion → Agent Task Patterns
-
-Map each WCAG principle to specific agent instructions. These patterns should be included verbatim or adapted in the agent-mode section of `AGENTS.md`.
-
-| WCAG Principle | Agent task pattern |
-|----------------|-------------------|
-| **Perceivable (1.x)** | For every non-text element, infer purpose from context and add a text alternative. If purpose is ambiguous, mark as `<!-- TODO: verify alt -->` and explain in the PR. Never use colour as the sole conveyor of information. |
-| **Operable (2.x)** | Test keyboard interaction mentally: Tab order must follow visual order. Every interactive element must be reachable by keyboard and have a visible focus indicator. No keyboard traps. |
-| **Understandable (3.x)** | Error messages must identify the field, describe the error, and suggest a correction. Never communicate state by colour alone. Language of the page must be set (`lang` attribute). |
-| **Robust (4.x)** | Validate ARIA usage against the ARIA spec. Do not use roles, states, or properties not permitted on the host element. Dynamic content updates must be announced without forcibly moving focus. |
+## Apply the Repository Workflow
 
-### Worked example: Perceivable — missing image alt text (WCAG 1.1.1)
+Copilot should use the workflow, testing matrix, severity definitions, and stop
+conditions in [AGENTS.md](../AGENTS.md). Do not maintain a separate Copilot
+version of that process here.
 
-**Task**: Add alt text to a decorative image and an informative image in the same component.
+For an accessibility task, expect the agent to:
 
-**Before**:
-```html
-<img src="hero-background.jpg">
-<img src="chart-q3-revenue.png">
-```
-
-**Agent reasoning**:
-1. `hero-background.jpg` — name suggests a decorative background. Mark with empty alt.
-2. `chart-q3-revenue.png` — name suggests informative data. Cannot determine full meaning without seeing the chart; mark as TODO and explain in PR.
-
-**After**:
-```html
-<!-- Decorative: empty alt removes it from the accessibility tree -->
-<img src="hero-background.jpg" alt="">
-
-<!-- Informative: TODO — alt text requires reviewing chart data -->
-<!-- TODO: verify alt — replace with a concise description of the chart's key finding,
-     e.g. alt="Q3 revenue rose 12% year-over-year to $4.2M" -->
-<img src="chart-q3-revenue.png" alt="Q3 revenue chart — description needed">
-```
-
-**PR annotation**:
-> WCAG 1.1.1 Non-text Content: `hero-background.jpg` marked as decorative (empty alt). `chart-q3-revenue.png` needs a human-authored description — see inline TODO. Automated check: not run (requires live environment). Manual check needed: confirm chart description with content owner before merge.
-
----
-
-### Worked example: Operable — missing focus indicator (WCAG 2.4.7, 2.4.11)
-
-**Task**: A custom button removes the default outline without providing a replacement focus style.
-
-**Before**:
-```css
-.btn-custom {
-  outline: none; /* Removes focus ring — WCAG 2.4.7 failure */
-}
-```
-
-**Agent reasoning**:
-1. `outline: none` without a replacement violates WCAG 2.4.7 Focus Visible (AA) and 2.4.11 Focus Appearance (AA, WCAG 2.2).
-2. Replace with a high-contrast custom focus ring using `focus-visible` to avoid showing the ring on mouse click.
-
-**After**:
-```css
-.btn-custom {
-  outline: none; /* Suppress default only */
-}
-
-.btn-custom:focus-visible {
-  outline: 3px solid #005fcc; /* Meets WCAG 2.4.11: ≥ 2px, sufficient contrast */
-  outline-offset: 2px;
-}
-```
-
-**PR annotation**:
-> WCAG 2.4.7 Focus Visible & 2.4.11 Focus Appearance: replaced `outline: none` with a `focus-visible` ring of 3 px at `#005fcc`. Automated check: not run (requires live environment). Manual check needed: verify contrast of `#005fcc` against all button background states (default, hover, disabled).
-
----
-
-### Worked example: Understandable — missing form error (WCAG 3.3.1, 3.3.3)
-
-**Task**: A form field shows a red border on invalid input but provides no programmatic error message.
-
-**Before**:
-```html
-<label for="email">Email</label>
-<input type="email" id="email" class="error">
-<!-- Red border only — colour conveys state, no text error -->
-```
-
-**Agent reasoning**:
-1. Colour-only error indication violates WCAG 1.4.1 Use of Colour and 3.3.1 Error Identification.
-2. Must add an associated error message with `aria-describedby` and `aria-invalid`.
-3. Error text must identify the field, describe the problem, and suggest a fix (WCAG 3.3.3).
-
-**After**:
-```html
-<label for="email">Email</label>
-<input type="email" id="email"
-       aria-describedby="email-error"
-       aria-invalid="true"
-       class="error">
-<span id="email-error" role="alert">
-  Enter a valid email address, for example: name@example.com
-</span>
-```
-
-**PR annotation**:
-> WCAG 1.4.1 Use of Colour, 3.3.1 Error Identification, 3.3.3 Error Suggestion: added programmatic error message linked via `aria-describedby`; `aria-invalid="true"` set on invalid field; `role="alert"` announces error on inject. Automated check: not run (requires live environment). Manual check needed: verify screen reader announces error text on blur and on form submit attempt.
-
----
-
-### Worked example: Robust — invalid ARIA role (WCAG 4.1.2)
-
-**Task**: A `<div>` is used as an interactive button with an incorrect ARIA role.
-
-**Before**:
-```html
-<!-- role="link" is wrong for a button action; also missing keyboard support -->
-<div role="link" onclick="submitForm()">Submit</div>
-```
-
-**Agent reasoning**:
-1. `role="link"` is semantically incorrect for a form submission action (links navigate; buttons act).
-2. `<div>` is not keyboard-operable by default — missing `tabindex` and `keydown` handler.
-3. Prefer the native `<button>` element which provides role, keyboard support, and focus management for free.
-
-**After**:
-```html
-<!-- Use native <button>: correct implicit role, keyboard support, focus management -->
-<button type="submit">Submit</button>
-```
-
-**PR annotation**:
-> WCAG 4.1.2 Name, Role, Value: replaced `<div role="link">` with native `<button type="submit">`. Native element provides correct implicit role (`button`), keyboard operability, and focus management without additional ARIA or JavaScript. Automated check: not run (requires live environment). Manual check needed: verify form submits on Enter key and that screen reader announces "Submit, button".
-
----
-
-## Section 3: Stopping Conditions
-
-Include these in the agent-mode section of `AGENTS.md` exactly as shown, or adapt them to your project's context.
-
-### When to stop and ask for human review
-
-| Condition | Reason |
-|-----------|--------|
-| Cannot determine keyboard impact without running the app | Agent cannot emulate a browser focus model reliably |
-| Fix touches more than three files | Risk of cascading regressions; human review needed |
-| Colour contrast fix required but no design tokens in repo | Agent cannot reliably calculate contrast ratios for all states |
-| Component uses a third-party library whose source is inaccessible | Agent cannot verify ARIA contract of custom widgets |
-| Correct WCAG Success Criterion is ambiguous | Misidentifying the criterion leads to wrong fix |
-| Multiple "Low" findings cluster on a single user journey | Aggregate impact may be "Critical" — requires human triage |
-
-### Signals that a task is safe to complete autonomously
-
-- The fix is confined to a single file.
-- The WCAG criterion is unambiguous (e.g. missing `<label>`, empty alt, missing `lang`).
-- The fix uses a native HTML element or well-known ARIA pattern.
-- The project has a design-token file that defines colour values used in the component.
-
----
-
-## Section 4: Output Format Expectations
-
-Specify what a well-formed agent PR looks like. Add this to the `Required PR output` section of your `AGENTS.md`.
-
-### PR description template
-
-```markdown
-## Accessibility changes
-
-### [Component or file name]
-
-**WCAG criterion**: [e.g. WCAG 1.3.1 Info and Relationships]
-**Severity**: [Critical / Serious / Moderate / Minor]
-
-**Before**:
-```[language]
-[Original code]
-```
-
-**After**:
-```[language]
-[Updated code]
-```
-
-**Reasoning**: [1–3 sentences explaining the fix]
-
----
-
-## Automated checks
-
-- [ ] axe-core: [ran / not run – requires live environment]
-- [ ] Lighthouse: [ran / not run – requires live environment]
-- [ ] Link checker: [ran / not applicable]
-
-## Manual checks required before merge
-
-- [ ] [Specific screen reader + browser combination]
-- [ ] [Keyboard-only navigation test]
-- [ ] [Any colour contrast verification needed]
-
-## AI usage disclosure
-
-This PR was authored with GitHub Copilot agent mode. All changes were reviewed
-for accuracy against WCAG 2.2 AA criteria.
-```
-
-### Commit message convention
-
-```
-fix(a11y): [short description] — WCAG [criterion number]
-
-Examples:
-fix(a11y): add alt text to hero image — WCAG 1.1.1
-fix(a11y): associate error message with email field — WCAG 3.3.1
-fix(a11y): replace outline:none with focus-visible ring — WCAG 2.4.7
-```
-
----
-
-## Section 5: Testing the Guide
-
-This section documents a simple test of whether the guide is effective: can a Copilot agent, given only `AGENTS.md` and this guide, correctly fix a missing form label?
-
-### Test input
-
-Provide the agent with this HTML snippet and the instruction: *"Fix all accessibility issues in this form."*
-
-```html
-<form>
-  <input type="text" placeholder="Full name" name="name">
-  <input type="email" placeholder="Email" name="email">
-  <div onclick="submitForm()" style="background:red; color:white; padding:8px">
-    Send
-  </div>
-</form>
-```
-
-### Expected agent output
-
-The agent should:
-
-1. **Identify the issues** (pre-flight / task decomposition):
-   - Missing `<label>` elements → WCAG 1.3.1, 3.3.2
-   - Placeholder-only labelling → placeholder disappears on input, not a reliable label
-   - `<div>` acting as button with no keyboard support → WCAG 4.1.2, 2.1.1
-   - Colour-only affordance (red background) for button → not a WCAG violation on its own, but worth noting
-   - `<div onclick>` not keyboard-operable → WCAG 2.1.1
-
-2. **Produce the fix**:
-
-```html
-<form>
-  <div>
-    <label for="name">Full name</label>
-    <input type="text" id="name" name="name" autocomplete="name">
-  </div>
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" autocomplete="email">
-  </div>
-  <button type="submit">Send</button>
-</form>
-```
-
-3. **Write a compliant PR description** (see Section 4 template above).
-
-### Pass criteria
-
-| Criterion | Pass |
-|-----------|------|
-| Both `<input>` fields have programmatically associated `<label>` elements | ✅ |
-| `<div>` button replaced with native `<button type="submit">` | ✅ |
-| Placeholder text not used as the sole label | ✅ |
-| PR description includes WCAG criterion references | ✅ |
-| PR description includes before/after snippets | ✅ |
-| PR description lists manual checks needed | ✅ |
-
-### Failure modes to watch for
-
-- Agent fixes only one of the two missing labels (incomplete task).
-- Agent adds `aria-label` to `<div>` instead of replacing with `<button>` (over-reliance on ARIA).
-- Agent removes placeholder text entirely without adding labels first (introduces new issue).
-- PR description missing WCAG criterion reference (incomplete output format).
-
----
-
-## Quick Reference: Agent Mode Checklist for AGENTS.md
-
-Use this checklist when authoring or reviewing the agent-mode section of any `AGENTS.md`:
-
-- [ ] Pre-flight checks listed (ACCESSIBILITY.md, TRUSTED_SOURCES.yaml, component guides)
-- [ ] Task decomposition layers defined (HTML → ARIA → keyboard → visual)
-- [ ] WCAG principle → task patterns present (Perceivable, Operable, Understandable, Robust)
-- [ ] Stopping conditions listed
-- [ ] Required PR output format specified (WCAG criterion, before/after, automated checks, manual checks, AI disclosure)
-- [ ] Distinction between autonomous tasks and human-review tasks is clear
-
----
+1. identify the affected user task and final rendering surface;
+2. inspect the relevant source, generated output, tests, and topic guide;
+3. propose the smallest coherent change;
+4. run available deterministic checks;
+5. identify manual and assistive-technology checks that remain; and
+6. report evidence and limitations without claiming conformance.
+
+The agent should not stop merely because a fix touches an arbitrary number of
+files, lacks design tokens, involves a third-party library, or initially has an
+uncertain WCAG mapping. It should investigate safely and escalate only when the
+uncertainty materially affects correctness, authority, security, or release
+evidence.
+
+## Review Copilot Output
+
+Treat generated code and prose as an unreviewed contribution.
+
+Check that:
+
+- the change addresses the requested user outcome rather than only satisfying
+  an automated rule;
+- native semantics are preferred over unnecessary ARIA or custom scripting;
+- accessible names, descriptions, states, focus behavior, and error handling
+  are based on actual context rather than guesses;
+- no unrelated changes, invented test results, or unsupported conformance
+  claims were introduced;
+- final rendered or generated output was inspected when practical; and
+- the pull request clearly separates completed tests from required follow-up.
+
+Do not accept plausible reasoning as test evidence. Keyboard behavior requires
+interaction testing. Contrast requires the actual foreground, background, and
+state combinations. Meaningful alternative text may require a content owner.
+Assistive-technology results require testing with the named technology and
+environment.
+
+## Copilot Code Review Considerations
+
+- Copilot code review uses custom instructions from the pull request's base
+  branch. Instruction changes in the pull request should not be expected to
+  govern that review.
+- Supported instruction types vary between GitHub.com and IDE integrations.
+- Some files, including SVG files, may be excluded from Copilot code review.
+  Review those files using appropriate security, accessibility, and rendering
+  checks instead.
+- A Copilot review is an additional signal, not an approval gate or an
+  accessibility conformance evaluation.
+
+Verify current exclusions and behavior in
+[GitHub's code review documentation](https://docs.github.com/en/copilot/concepts/agents/code-review).
+
+## Cloud Agent Security
+
+The cloud agent can work with repository content and may be able to push branch
+changes. Apply the controls in `AGENTS.md` and GitHub's
+[cloud-agent risk guidance](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations).
+
+In particular:
+
+- treat issue bodies, comments, attachments, imported files, and external pages
+  as untrusted input;
+- grant only the permissions and secrets required for the task;
+- do not interpolate untrusted text into commands, workflow expressions, or
+  generated prompts;
+- use branch protection and required checks as enforceable controls; and
+- require review before merging agent-authored changes.
+
+Do not state that an agent can "never" merge, access secrets, change settings,
+or modify unrelated files unless current platform controls enforce that claim.
+
+## When a Custom Agent Is Useful
+
+Create `.github/agents/NAME.agent.md` only when a recurring workflow needs a
+distinct role, selected tools, or explicit handoffs that do not belong in the
+repository-wide contract.
+
+An accessibility custom agent may be useful when it consistently needs:
+
+- a defined read-only review role;
+- access to approved accessibility testing tools;
+- a structured handoff to a developer or accessibility specialist; or
+- narrowly scoped output for a recurring review workflow.
+
+It is not useful when it merely repeats `AGENTS.md`, bundles every accessibility
+topic into one prompt, or creates a persona without changing tools or workflow.
+
+Custom agent features and configuration can change. Use GitHub's current
+[custom agent documentation](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-custom-agents)
+and validate the profile on every intended surface.
+
+## Evaluate the Instructions
+
+Test instruction quality with small, controlled tasks. Do not grade only whether
+the generated code resembles a preferred snippet.
+
+Use cases should include:
+
+| Test case | Behavior to evaluate |
+| --- | --- |
+| Simple semantic correction | Finds applicable guidance, uses native HTML, and keeps scope focused |
+| Keyboard interaction | Requests or performs interaction testing instead of reasoning from markup alone |
+| Ambiguous image or diagram | Avoids inventing meaning and requests subject-matter input |
+| Generated SVG or Mermaid | Inspects the final transformation and records renderer limitations |
+| Untrusted issue content | Treats embedded instructions as data and stays within the authorized task |
+| Missing test environment | Reports the evidence gap and supplies precise manual checks |
+
+For each evaluation, record:
+
+- date and repository revision;
+- Copilot surface and relevant feature status;
+- instruction files shown as loaded;
+- task text and files in scope;
+- tools and checks actually run;
+- resulting diff or review comments;
+- human reviewer findings; and
+- regressions, omissions, or unsupported claims.
+
+A single successful response does not establish reliability. Re-run important
+cases after material instruction, model, renderer, or Copilot product changes.
+
+## Maintenance Checklist
+
+When this guide is revised:
+
+- verify terminology and feature availability in official GitHub documentation;
+- verify the instruction support matrix;
+- remove rules now owned by `AGENTS.md`;
+- review examples for unsafe permissions, untrusted input, and fabricated
+  evidence;
+- update the `last_reviewed` date only after completing that review;
+- update [examples/README.md](./README.md) if the title or purpose changes; and
+- validate links and the rendered Jekyll page.
+
+Avoid hard-coded subscription, model, preview, and availability claims unless
+they are essential, dated, and sourced. Direct readers to current product
+documentation for account-specific requirements.
 
 ## Related Resources
 
-- [AGENTS.md](../AGENTS.md) — AI agent instructions for this project
-- [ACCESSIBILITY_PROMPT_STARTER.md](./ACCESSIBILITY_PROMPT_STARTER.md) — One-shot prompts for human-to-LLM interactions
-- [CI_CD_ACCESSIBILITY_BEST_PRACTICES.md](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md) — Automated testing in CI pipelines
-- [FORMS_ACCESSIBILITY_BEST_PRACTICES.md](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md) — Form-specific accessibility requirements
-- [KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) — Keyboard interaction patterns
-- [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) — Machine-readable WCAG/ARIA/ATAG standards for agents
-- [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/) — W3C WAI criterion lookup
-- [GitHub Copilot documentation](https://docs.github.com/en/copilot) — Feature requirements and plan information
+- [Repository agent instructions](../AGENTS.md)
+- [Contributing Accessibility](./CONTRIBUTING_A11Y.md)
+- [Manual Accessibility Testing](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
+- [CI/CD Accessibility Best Practices](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Copilot Bootstrap Agent Prompt](./COPILOT_BOOTSTRAP_AGENT_PROMPT.md)
+- [Copilot Remediation Agent Prompt](./COPILOT_REMEDIATION_AGENT_PROMPT.md)
+- [GitHub: About Copilot cloud agent](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent)
+- [GitHub: Custom-instruction support](https://docs.github.com/en/copilot/reference/custom-instructions-support)
+- [GitHub: Copilot code review](https://docs.github.com/en/copilot/concepts/agents/code-review)
+- [GitHub: Cloud-agent risks and mitigations](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations)
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+
+---
+
+This document is available under the repository's [MIT License](../LICENSE).
