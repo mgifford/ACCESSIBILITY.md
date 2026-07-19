@@ -892,7 +892,3 @@ Mermaid Version:
 ```mermaid 
 info 
 ```
-
----
-
-This document is available under the repository's [MIT License](../LICENSE).
