@@ -1,5 +1,5 @@
 ---
-title: Copilot Bootstrap Prompt for ACCESSIBILITY.md
+title: Copilot Bootstrap Prompt
 last_reviewed: 2026-07-19
 ---
 
