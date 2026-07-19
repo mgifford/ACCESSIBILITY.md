@@ -477,10 +477,14 @@ A Mermaid diagram is ready to publish when:
 - [WAI Images Tutorial: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
 - [WAI Tables Tutorial](https://www.w3.org/WAI/tutorials/tables/)
 
----
+## Mermaid version information
 
-Mermaid Version: 
+This guide uses Mermaid 11.16.0 as its reference version.
 
-```mermaid 
-info 
+The diagram below reports the Mermaid version supplied by the current
+Markdown hosting platform. It may differ from the version used by GitHub
+Pages, local builds, exported diagrams, or other rendering services.
+
+```mermaid
+info
 ```
