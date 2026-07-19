@@ -4,594 +4,632 @@ title: Image Alt Text Accessibility Best Practices
 
 # Image Alt Text Accessibility Best Practices
 
-Alt text (alternative text) makes images accessible to people who cannot see them — including blind and low-vision users relying on screen readers, users in low-bandwidth environments, search engines, and anyone whose images fail to load. Getting alt text right requires understanding the image's purpose, not just describing its visual appearance.
+Text alternatives make the information and function of images available when the images cannot be perceived or presented. Good alternative text is determined by the image's purpose in its specific context, not by the file alone.
 
-## 1. Core Mandate
+This guide focuses on HTML images. For inline SVG, charts, maps, and other specialized graphics, also use the related guides linked near the end of this document.
 
-**WCAG 2.2 Success Criterion 1.1.1 — Non-text Content (Level A):** Every non-text element must have a text alternative that conveys the same meaning and purpose. There are no exceptions for decorative images; those require an explicit empty alt attribute.
+## 1. Core Principles
 
-Alt text quality is one of the most consistently failing accessibility issues across the web. Automated tools can flag missing alt text, but only human judgment can determine whether the alt text is *meaningful* and *appropriate* for the context.
+1. **Communicate purpose and equivalent information.** Do not merely inventory visible objects.
+2. **Decide in context.** The same image may need different alternative text, or an empty alternative, in different uses.
+3. **Keep meaningful content available to everyone.** Put complex explanations, data, instructions, and important image text in visible page content when practical.
+4. **Hide only genuinely decorative or redundant images.** Use `alt=""` for an HTML image that assistive technology should ignore.
+5. **Name actions and destinations.** When an image is the only content of a link or button, its alternative identifies what the control does.
+6. **Do not invent details.** Never guess a person's identity, attributes, emotion, health, disability, or other sensitive information.
+7. **Do not rely on automation alone.** Tools can detect structural problems. People must judge meaning, accuracy, context, and redundancy.
+8. **Maintain alternatives with the content.** Update and translate the alternative when the image, purpose, surrounding text, or language changes.
 
-## 2. Severity Scale
+## 2. What WCAG 2.2 Requires
 
-| Severity | Example |
-|----------|---------|
-| **Critical** | Image conveying essential meaning has no alt text or `alt` attribute is entirely absent |
-| **Serious** | Functional image (button/link) has no text alternative, preventing keyboard/screen reader use |
-| **Moderate** | Alt text is present but inaccurate, redundant ("image of…"), or missing meaningful context |
-| **Minor** | Alt text is slightly verbose or could be improved but does not prevent understanding |
+[WCAG 2.2 Success Criterion 1.1.1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) requires non-text content to have a text alternative that serves the equivalent purpose, with specific handling for several situations.
 
-## 3. The Alt Text Decision Tree
+| Situation | Required outcome |
+| --- | --- |
+| Informative non-text content | Provide an equivalent text alternative. |
+| Control or input | Provide a name that describes its purpose. |
+| Time-based media | At least identify the media, in addition to the requirements under Guideline 1.2. |
+| Test or exercise that would be invalid in text | At least identify and describe its purpose. |
+| Specific sensory experience | At least provide descriptive identification. |
+| CAPTCHA | Identify and describe its purpose, and provide alternatives using different output modes. |
+| Pure decoration, formatting, or content not presented to users | Implement it so assistive technology can ignore it. |
 
-Use this flowchart (based on the [W3C WAI Images Tutorial decision tree](https://www.w3.org/WAI/tutorials/images/decision-tree/)) to determine what type of alt text to provide:
+Decorative images are not an exception that permits a missing `alt` decision. For an HTML `<img>` used as decoration, the usual implementation is a present but empty attribute: `alt=""`.
 
-```
-Does the image contain text?
-├── YES → Use the same text as the alt attribute (unless the text is decorative/logo)
-└── NO
-    └── Is the image used for a functional purpose (link, button)?
-        ├── YES → Describe the destination/action (e.g., "Go to homepage")
-        └── NO
-            └── Does the image convey information not present in surrounding text?
-                ├── YES
-                │   └── Is the image complex (chart, diagram, graph)?
-                │       ├── YES → Provide a short alt + long description in nearby text
-                │       └── NO  → Write a concise description of the content and meaning
-                └── NO
-                    └── Is the image purely decorative or redundant?
-                        ├── YES → Use empty alt: alt=""
-                        └── NO  → Re-evaluate — the image likely carries meaning
-```
+WCAG does not prescribe a universal character limit for alternative text. Use the shortest alternative that communicates the necessary purpose and information. Move substantial or structured information into visible page content.
 
-## 4. Image Categories and Requirements
+## 3. Use This Decision Process
 
-### 4.1 Informative Images
+Ask these questions in order for each use of an image:
 
-Images that convey information not expressed in surrounding text.
+1. **Is the image the only content that names a link, button, or other control?**
+   - Yes: provide a name that communicates the action or destination.
+   - No: continue.
+2. **Does the image contain text that is important here?**
+   - If the same words are already available as nearby real text, the image may use `alt=""`.
+   - If the words are not otherwise available, include the necessary words in the alternative or provide them as visible text.
+3. **Does the image add information, meaning, identity, state, instruction, or an intended impression?**
+   - For a simple image, write a concise equivalent alternative.
+   - For a complex image, provide a short identification plus an accessible detailed equivalent.
+4. **Is all of the image's relevant information already provided nearby?**
+   - Yes: use `alt=""` to avoid repetition.
+5. **Is the image purely decorative or only visual formatting?**
+   - Yes: use `alt=""`, or implement it as a CSS decorative image.
+6. **Is the purpose still unclear?**
+   - Clarify why the image is present before publishing. Do not guess and do not automatically choose either a description or an empty alternative.
 
-**Requirement:** Write alt text that describes the *information* conveyed, not the visual appearance.
+The [W3C WAI alt Decision Tree](https://www.w3.org/WAI/tutorials/images/decision-tree/) provides a concise version of this process.
 
-```html
-<!-- DO: Describe the meaning/content -->
-<img src="quarterly-growth.png" alt="Bar chart showing 23% revenue growth in Q3 2024">
+## 4. Informative Images
 
-<!-- DON'T: Describe the visual appearance only -->
-<img src="quarterly-growth.png" alt="Blue and green bar chart">
-
-<!-- DON'T: Use file names or generic labels -->
-<img src="quarterly-growth.png" alt="quarterly-growth.png">
-<img src="quarterly-growth.png" alt="image">
-```
-
-### 4.2 Decorative Images
-
-Images that are purely aesthetic and add no information beyond what is already provided in the page text.
-
-**Requirement:** Use an empty `alt` attribute (`alt=""`). Never omit the `alt` attribute — a missing `alt` attribute causes screen readers to announce the file name.
+An informative image contributes meaning that is not already available in nearby text. Describe the information or purpose that matters in the current context.
 
 ```html
-<!-- DO: Empty alt for decorative images -->
-<img src="decorative-divider.png" alt="">
-
-<!-- DO: aria-hidden for inline SVG decorations -->
-<svg aria-hidden="true" focusable="false">...</svg>
-
-<!-- DON'T: Omit alt entirely -->
-<img src="decorative-divider.png">
-
-<!-- DON'T: Use "decorative" or "spacer" as alt text -->
-<img src="decorative-divider.png" alt="decorative">
+<img
+  src="community-garden.jpg"
+  alt="Volunteers planting seedlings in raised garden beds">
 ```
 
-**When is an image truly decorative?**
-
-Too many images are incorrectly marked as decorative. An image is decorative only if:
-
-- It is purely aesthetic (a visual flourish, border, or texture)
-- It does not add any information beyond what surrounding text already conveys
-- Removing it would not affect a user's understanding of the content
-- It is not the only means of conveying an action (buttons, links)
-
-**A practical judgment test:** Can you imagine a person who can see the image remarking on its content? If so, the image has told them something and needs a text alternative. For example, if a child looking at a holiday brochure would say "that swimming pool has a cool slide!", the slide image conveys meaning and needs alt text.
-
-**If you find yourself debating whether an image is decorative, that is usually a sign that it is not.** Genuine decorative images are obvious — borders, spacers, background textures. Images that prompt discussion almost always carry meaning worth describing.
-
-**Content authors decide, not templates.** The person closest to the content — the author publishing the page — is best placed to judge whether an image warrants a text alternative. Enforcing `alt=""` via a CMS template is a fast path to WCAG failures, because the template cannot know what the image shows or why the author included it. If an author cannot explain why an image is on the page, that is a signal the image may not belong there at all — not that it is decorative.
-
-When in doubt, provide alt text. The cost of unnecessary alt text is low; the cost of missing alt text can be complete loss of meaning.
-
-### 4.3 Functional Images
-
-Images that are the only content of a link or button, where the image communicates the action or destination.
-
-**Requirement:** Describe the *function*, not the visual appearance.
+If the page discusses the garden's wheelchair-accessible paths, that information may be the important content:
 
 ```html
-<!-- DO: Describe the link destination -->
-<a href="/home">
-  <img src="logo.svg" alt="Go to homepage">
+<img
+  src="community-garden.jpg"
+  alt="Wide, level paths connect the garden's raised beds">
+```
+
+Do not add details that are unsupported or irrelevant. A literal description is appropriate when visual appearance is itself the information, such as in art history, product comparison, evidence review, or design critique.
+
+### 4.1 Context changes the alternative
+
+```html
+<!-- Adoption profile: identity and appearance are relevant. -->
+<img
+  src="buddy.jpg"
+  alt="Buddy, a golden retriever with a red collar">
+
+<!-- Article already says Buddy is a golden retriever with a red collar. -->
+<img src="buddy.jpg" alt="">
+
+<!-- Training article: the depicted action is relevant. -->
+<img
+  src="buddy.jpg"
+  alt="Buddy waits beside his handler before crossing the street">
+```
+
+Alternative text belongs to the image use, not permanently to the asset file.
+
+## 5. Decorative and Redundant Images
+
+Use an empty `alt` attribute when an HTML image adds no information or function in its context:
+
+```html
+<img src="decorative-wave.png" alt="">
+```
+
+Common examples include:
+
+- borders, textures, flourishes, and spacers;
+- an image that is fully described by adjacent text;
+- an icon that repeats text inside the same link or button;
+- an illustrative image included only for visual atmosphere.
+
+Do not omit the attribute:
+
+```html
+<!-- Wrong: the browser or assistive technology may expose the filename. -->
+<img src="decorative-wave.png">
+
+<!-- Wrong: this announces content that should be ignored. -->
+<img src="decorative-wave.png" alt="decorative wave">
+
+<!-- Correct. -->
+<img src="decorative-wave.png" alt="">
+```
+
+For `<img>`, prefer `alt=""` over adding `role="presentation"`. Do not use `aria-hidden="true"` to conceal an image that provides information or a control name.
+
+An unnecessary description is not harmless. It can interrupt reading order, repeat visible content, obscure nearby information, and make a page more tiring to navigate.
+
+## 6. Functional Images
+
+When an image is the only content of a link or control, its alternative describes the action or destination, not the icon's shape.
+
+### 6.1 Image-only link
+
+```html
+<a href="/">
+  <img src="acme-logo.svg" alt="Acme home">
 </a>
+```
 
-<!-- DO: Describe the button action -->
-<button>
-  <img src="search-icon.svg" alt="Search">
-</button>
+`Acme home` communicates both the organization and the destination. `Company logo` does not.
 
-<!-- DO: Use aria-label on the button, with empty alt on the image -->
-<button aria-label="Search">
-  <img src="search-icon.svg" alt="">
-</button>
+### 6.2 Image plus link text
 
-<!-- DON'T: Describe the appearance -->
-<a href="/home">
-  <img src="logo.svg" alt="Company logo image">
+When the text in the same link already describes the destination, make a redundant image decorative:
+
+```html
+<a href="/reports/annual">
+  <img src="report-cover.jpg" alt="">
+  <span>2026 annual report</span>
 </a>
+```
 
-<!-- DON'T: Leave functional images with empty alt (creates unlabelled control) -->
-<button>
-  <img src="search-icon.svg" alt="">
-  <!-- Missing accessible name on the button — use aria-label instead -->
+If the image adds information needed to understand the link, use complementary text rather than repeating the visible label.
+
+### 6.3 Button with visible text
+
+Visible text is usually the clearest label:
+
+```html
+<button type="submit">
+  <img src="search.svg" alt="">
+  <span>Search</span>
 </button>
 ```
 
-### 4.4 Complex Images
+### 6.4 Icon-only button
 
-Charts, graphs, diagrams, maps, and infographics where a short alt text cannot convey all the information.
-
-**Requirement:** Provide a short alt text summarizing the image's purpose AND a long description (adjacent text, expandable section, or linked page) conveying the full content.
+Put the control name on the button and hide the image from assistive technology:
 
 ```html
-<!-- Pattern 1: Alt summary + adjacent long description -->
+<button type="button" aria-label="Close dialog">
+  <img src="close.svg" alt="">
+</button>
+```
+
+If the control has a visible text label, its accessible name should contain that visible text. This supports people who use speech input and is required by [WCAG 2.2 Success Criterion 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html).
+
+### 6.5 Image submit buttons
+
+An `<input type="image">` uses `alt` to provide its control name:
+
+```html
+<input type="image" src="submit-order.png" alt="Submit order">
+```
+
+Prefer a normal `<button>` with real text when possible because it is easier to style, translate, and maintain.
+
+## 7. Images of Text and Logos
+
+Use real HTML text instead of an image of text when the technology can produce the required presentation. Real text can resize, reflow, adapt to user colors, and be translated more reliably.
+
+If an image contains important words that are not available nearby, include those words in the text alternative:
+
+```html
+<img
+  src="sale-banner.png"
+  alt="Summer sale: 50% off through July 31">
+```
+
+If the same message appears as real text next to the image, use an empty alternative:
+
+```html
+<img src="sale-banner.png" alt="">
+<p><strong>Summer sale:</strong> 50% off through July 31.</p>
+```
+
+For a poster, scanned notice, or screenshot containing substantial text, provide the full important text as visible page content. The `alt` can identify the image and point to that equivalent:
+
+```html
 <figure>
   <img
-    src="accessibility-adoption-chart.png"
-    alt="Line chart: WCAG AA adoption rose from 38% in 2020 to 67% in 2024"
-    aria-describedby="chart-desc">
-  <figcaption id="chart-desc">
-    Annual WCAG 2.1 Level AA adoption rates from 2020 to 2024 across a sample
-    of 10,000 public websites. Adoption grew steadily from 38% in 2020 to 45%
-    in 2021, 51% in 2022, 59% in 2023, and 67% in 2024, driven by increased
-    procurement requirements.
+    src="community-meeting-poster.jpg"
+    alt="Community meeting poster. Event details follow.">
+  <figcaption>
+    <p><strong>Community planning meeting</strong></p>
+    <p>September 12, 6:30 p.m., Central Library, Room 2.</p>
   </figcaption>
 </figure>
-
-<!-- Pattern 2: Long description linked separately -->
-<img
-  src="org-chart.png"
-  alt="Organizational chart: Engineering department structure"
-  aria-describedby="org-chart-longdesc">
-<div id="org-chart-longdesc">
-  <p>The Engineering department has three divisions reporting to the CTO:
-  Platform (12 engineers), Product (18 engineers), and Infrastructure (8 engineers).
-  Each division has one director and two team leads.</p>
-</div>
 ```
 
-### 4.5 Images of Text
+Logotypes are considered essential images of text under WCAG 1.4.5, but they still need an appropriate text alternative. Usually the organization or product name is sufficient. Add `home` when a logo is the only content of a home-page link.
 
-Images that contain text (screenshots, scanned documents, typographic art).
+## 8. Complex Images
 
-**Requirement:** Reproduce the exact text in the `alt` attribute. Prefer actual text over images of text whenever possible (WCAG 1.4.5).
+Charts, diagrams, maps, infographics, and other complex images need an equivalent that preserves the information and relationships required for the task.
 
-```html
-<!-- DO: Reproduce the exact text -->
-<img src="sale-banner.png" alt="Summer Sale: 50% off all items through July 31">
+Use two parts:
 
-<!-- DO: For logos with text, use the text as the alt -->
-<img src="company-logo.png" alt="Acme Corporation">
-
-<!-- DON'T: Describe that it is text -->
-<img src="sale-banner.png" alt="Sale banner showing promotional text">
-```
-
-### 4.6 Groups of Images
-
-When multiple images work together to convey a single piece of information (e.g., a star rating).
-
-**Requirement:** Provide alt text on only one image that conveys the group meaning; mark the others as decorative.
+1. a short alternative that identifies the image and its purpose or main conclusion;
+2. a visible detailed description, data table, ordered steps, nested list, or other structure that conveys the essential information.
 
 ```html
-<!-- Star rating: 4 out of 5 stars -->
-<img src="star-filled.png" alt="Rating: 4 out of 5 stars">
-<img src="star-filled.png" alt="">
-<img src="star-filled.png" alt="">
-<img src="star-filled.png" alt="">
-<img src="star-empty.png" alt="">
-```
-
-### 4.7 Linked Images with Adjacent Text
-
-When an image and text are together inside the same link.
-
-**Requirement:** Use `alt=""` on the image to avoid redundant announcements. The link text describes the destination.
-
-```html
-<!-- DO: Empty alt when link text describes the destination -->
-<a href="/articles/accessibility-guide">
-  <img src="accessibility-thumbnail.jpg" alt="">
-  <span>The Complete Accessibility Guide</span>
-</a>
-
-<!-- DON'T: Duplicate the link text in alt -->
-<a href="/articles/accessibility-guide">
-  <img src="accessibility-thumbnail.jpg" alt="The Complete Accessibility Guide">
-  The Complete Accessibility Guide
-</a>
-```
-
-## 5. Writing Quality Alt Text
-
-### Principles
-
-1. **Be concise but complete.** Aim for 125 characters or fewer for simple images; use long descriptions for complex images. Do not truncate meaning for the sake of brevity.
-
-2. **Describe the content and purpose, not the appearance.** "Person in a wheelchair using a laptop" is more useful than "image of a person".
-
-3. **Context is everything.** The same image can have different alt text depending on how it is used. A photo of a dog on a pet adoption page needs different alt text than the same photo used to illustrate a news article about animal rescue.
-
-4. **Do not start with "Image of", "Picture of", or "Photo of".** Screen readers already announce that they are reading an image. These prefixes waste characters and create a poor listening experience.
-
-5. **Avoid keyword stuffing.** Alt text serves users, not search engines. Stuffing alt text with keywords degrades the experience for screen reader users.
-
-6. **Include text that appears within the image.** If an image contains a heading, caption, or data, include that text in the alt.
-
-7. **Match the level of detail to the image's role.** A thumbnail used purely for navigation needs less detail than a standalone informative image.
-
-### Examples of Poor vs. Good Alt Text
-
-| Context | Poor Alt Text | Good Alt Text |
-|---------|--------------|---------------|
-| Product photo | `"image001.jpg"` | `"Red leather messenger bag with brass buckle closures"` |
-| Chart | `"chart.png"` | `"Bar chart: JavaScript (67%) is the most-used language, followed by Python (45%) and TypeScript (38%)"` |
-| Person | `"photo"` | `"Maria Chen, Director of Engineering, presenting at a conference"` |
-| Icon button | `"icon"` | `"Close dialog"` |
-| Decorative border | `"border"` | `""` (empty alt) |
-| Screenshot of error | `"screenshot"` | `"Error message: 'Your session has expired. Please log in again.'"` |
-| Infographic | `"infographic about web accessibility"` | Short summary alt + adjacent long description |
-
-## 6. Common Bad Alt Text Patterns
-
-The patterns below are detected by automated accessibility tools including [Sa11y](https://sa11y.netlify.app/), [Editoria11y](https://editoria11y.princeton.edu/), axe-core, and the [CivicActions alt-text scanner](https://github.com/CivicActions/site-evaluation-tools/blob/main/python/alt-text-scan.py). Automated detection only gets you so far — human review is always needed to confirm whether a description is meaningful in context.
-
-### 6.1 Missing or Absent Alt Attribute
-
-When the `alt` attribute is completely absent, most screen readers announce the image's filename or URL — rarely useful, often confusing.
-
-```html
-<!-- WRONG: No alt attribute — screen reader reads the filename -->
-<img src="Q3-revenue-chart-final-v2.png">
-
-<!-- RIGHT: Meaningful alt text -->
-<img src="Q3-revenue-chart-final-v2.png"
-     alt="Bar chart: Q3 2024 revenue reached $4.2M, up 18% from Q2">
-
-<!-- RIGHT: Empty alt for confirmed decorative images -->
-<img src="decorative-wave-border.png" alt="">
-```
-
-### 6.2 Filename or CMS-Injected Alt Text
-
-CMSs sometimes auto-populate the `alt` attribute with the filename, a URL fragment, or an injected message. None of these communicate meaning to users.
-
-```html
-<!-- WRONG: Filename echoed as alt text -->
-<img src="golden-retriever.jpg" alt="golden-retriever.jpg">
-<img src="hero-banner.png"      alt="hero-banner.png">
-
-<!-- WRONG: CMS-generated placeholder message -->
-<img src="dog.png"
-     alt="This image has an empty alt attribute; its file name is dog.png">
-
-<!-- RIGHT: Replace with a human-authored description -->
-<img src="golden-retriever.jpg"
-     alt="Golden retriever running through autumn leaves in a park">
-```
-
-### 6.3 Generic Single-Word Placeholders
-
-Single words that label the medium rather than the content are meaningless. The following values are flagged as errors by multiple accessibility checkers:
-
-```html
-<!-- WRONG: Medium label instead of a description -->
-<img src="photo.jpg"   alt="image">
-<img src="photo.jpg"   alt="photo">
-<img src="photo.jpg"   alt="graphic">
-<img src="photo.jpg"   alt="chart">
-<img src="photo.jpg"   alt="alt">         <!-- meta-placeholder -->
-<img src="spacer.gif"  alt="spacer">      <!-- use alt="" instead -->
-<img src="divider.png" alt="decorative">  <!-- use alt="" instead -->
-
-<!-- RIGHT: Empty alt for genuinely decorative images -->
-<img src="spacer.gif"  alt="">
-
-<!-- RIGHT: Meaningful description for informative images -->
-<img src="photo.jpg"   alt="Two engineers reviewing a system diagram on a whiteboard">
-```
-
-### 6.4 Draft and Placeholder Text
-
-Placeholder values intended for later completion that were never replaced ship silently as accessibility failures.
-
-```html
-<!-- WRONG: Unreplaced draft values -->
-<img src="portrait.jpg" alt="TBD">
-<img src="portrait.jpg" alt="TODO">
-<img src="portrait.jpg" alt="placeholder">
-<img src="portrait.jpg" alt="untitled">
-<img src="portrait.jpg" alt="null">
-<img src="portrait.jpg" alt="none">
-<img src="portrait.jpg" alt="alt text">   <!-- meta-placeholder -->
-<img src="portrait.jpg" alt="undefined">  <!-- CMS error output -->
-
-<!-- RIGHT: Write the description before publishing -->
-<img src="portrait.jpg"
-     alt="Dr. Amara Osei, Professor of Environmental Science, at the lab bench">
-```
-
-### 6.5 "Type" Prefix Phrases
-
-Starting alt text with "image of", "photo of", "graphic of", or "picture of" wastes characters and creates a poor listening experience — screen readers already identify the element as an image.
-
-```html
-<!-- WRONG: Redundant medium prefix -->
-<img src="team-photo.jpg" alt="Image of the team">
-<img src="team-photo.jpg" alt="Photo of team members">
-<img src="team-photo.jpg" alt="Graphic of our team">
-<img src="team-photo.jpg" alt="Picture of employees">
-
-<!-- RIGHT: Begin with the meaningful content immediately -->
-<img src="team-photo.jpg"
-     alt="The Civic Innovations team of 12 staff gathered outside City Hall">
-```
-
-### 6.6 Machine-Generated or CMS-Injected Codes
-
-Some CMSs generate cryptic identifiers or database keys as alt text. These are machine-readable but meaningless to people.
-
-```html
-<!-- WRONG: System-generated codes -->
-<img src="img_4521.jpg" alt="$700VIDEOSABOUTTURTLESALL2SECONDSLONG">
-<img src="banner.png"   alt="node--article--field-image--hero--full">
-<img src="photo.png"    alt="IMG_20241103_145832">
-
-<!-- RIGHT: A human-readable description -->
-<img src="img_4521.jpg"
-     alt="Sea turtles swimming over a coral reef in the Caribbean">
-```
-
-### 6.7 Alt Text That Duplicates a Figcaption
-
-When an image inside a `<figure>` has an `alt` that exactly copies the `<figcaption>`, screen readers announce the same text twice. [Sa11y](https://sa11y.netlify.app/) flags this pattern specifically.
-
-The correct approach depends on context:
-
-- **If the figcaption fully describes the image:** Use `alt=""` so screen readers proceed directly to the caption.
-- **If the image adds meaning beyond the caption:** Write a *complementary* alt that adds context rather than copying the caption word for word.
-
-```html
-<!-- WRONG: Alt text is a verbatim copy of the figcaption -->
 <figure>
-  <img src="annual-report-cover.jpg"
-       alt="2024 Annual Report cover showing the city skyline at dusk">
-  <figcaption>2024 Annual Report cover showing the city skyline at dusk</figcaption>
-</figure>
-<!-- Screen reader announces: "2024 Annual Report cover showing the city
-     skyline at dusk. Image. 2024 Annual Report cover showing the city
-     skyline at dusk." — needlessly repetitive -->
-
-<!-- RIGHT option 1: Caption fully describes — use empty alt -->
-<figure>
-  <img src="annual-report-cover.jpg" alt="">
-  <figcaption>2024 Annual Report cover showing the city skyline at dusk</figcaption>
-</figure>
-
-<!-- RIGHT option 2: Alt adds complementary context not in the caption -->
-<figure>
-  <img src="annual-report-cover.jpg"
-       alt="Warm orange and purple hues silhouette the downtown skyline at dusk">
-  <figcaption>2024 Annual Report: A year of growth for the city</figcaption>
+  <img
+    src="revenue-trend.png"
+    alt="Line chart showing revenue rising each quarter in 2025. Data table follows.">
+  <figcaption>
+    <p>
+      Revenue increased from $1.2 million in the first quarter to
+      $2.1 million in the fourth quarter.
+    </p>
+    <table>
+      <caption>Quarterly revenue for 2025</caption>
+      <thead>
+        <tr>
+          <th scope="col">Quarter</th>
+          <th scope="col">Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Q1</th><td>$1.2 million</td></tr>
+        <tr><th scope="row">Q2</th><td>$1.5 million</td></tr>
+        <tr><th scope="row">Q3</th><td>$1.8 million</td></tr>
+        <tr><th scope="row">Q4</th><td>$2.1 million</td></tr>
+      </tbody>
+    </table>
+  </figcaption>
 </figure>
 ```
 
-### 6.8 Name-Only Alt for Person Portraits
+The detailed equivalent should communicate the relevant:
 
-A portrait image with only the subject's name as alt text provides minimal context. Why is this image on the page? What does it tell a screen reader user that the surrounding text does not?
+- values, labels, units, scales, and source;
+- trends, comparisons, outliers, and uncertainty;
+- sequence, hierarchy, or relationships;
+- instructions or decisions supported by the image;
+- visual properties when they are themselves meaningful.
+
+Prefer descriptions that are visible to everyone. If the description is on another page or elsewhere on the same page, provide a clear nearby link. Do not rely on the obsolete `longdesc` attribute.
+
+Use `aria-describedby` only for a concise, plain-text description. Content referenced by `aria-describedby` is commonly exposed as a single description and can lose headings, tables, and other navigation structure. It is not a substitute for visible structured content.
+
+See [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) and [Maps Accessibility Best Practices](./MAPS_ACCESSIBILITY_BEST_PRACTICES.md).
+
+## 9. Figures and Captions
+
+`<figcaption>` provides a visible caption for a `<figure>`. It does not justify omitting the `alt` attribute from an informative `<img>`.
+
+Choose the relationship between alternative and caption deliberately:
+
+- If the caption already provides the full equivalent information, use `alt=""` to avoid repetition.
+- If the image adds information beyond the caption, make the `alt` complementary.
+- If the caption is a title, credit, source, or commentary rather than an equivalent, the image still needs its own alternative.
 
 ```html
-<!-- POOR: Name only — barely more useful than no alt text -->
-<img src="j-smith.jpg" alt="J Smith">
-
-<!-- BETTER: Include role and context relevant to the page -->
-<img src="j-smith.jpg"
-     alt="Dr. Jane Smith, Chief Medical Officer, presenting at the 2024 health summit">
-
-<!-- ACCEPTABLE: Adjacent figcaption is sufficiently descriptive -->
 <figure>
-  <img src="j-smith.jpg" alt="">
-  <figcaption>Dr. Jane Smith, Chief Medical Officer</figcaption>
+  <img
+    src="river-at-dawn.jpg"
+    alt="Mist rises above the river as two canoeists approach the bridge">
+  <figcaption>Morning commute, photograph by Lena Ortiz</figcaption>
 </figure>
 ```
 
-> **Judgment note:** The name "J Smith" read in isolation tells a screen reader user only that an image exists of someone by that name. But when accompanied by a descriptive adjacent caption, an empty alt is often the right choice to avoid double-announcing the name.
+Do not copy the same sentence into both `alt` and `<figcaption>`. Do not put copyright, licensing, or photo-credit information only in `alt`; keep that information visible.
 
-### 6.9 Excessively Long Alt Text for Simple Images
+## 10. Groups and Collections of Images
 
-Alt text that runs longer than approximately 250 characters degrades the screen reader experience for simple images. For complex images requiring extensive description, use a long description technique instead (see [Section 4.4 — Complex Images](#44-complex-images)).
-
-```html
-<!-- WRONG: Paragraph-length alt for a simple button image -->
-<img src="login-button.png"
-     alt="This is the login button which allows registered users of our platform
-          to securely authenticate using their email address and password
-          credentials in order to gain access to their personalized dashboard
-          and account settings. Please click this button if you already have
-          an account with us.">
-
-<!-- RIGHT: Concise and functional -->
-<img src="login-button.png" alt="Log in to your account">
-```
-
-### 6.10 Keyword-Stuffed Alt Text
-
-Padding alt text with SEO keywords harms screen reader users without benefiting search rankings.
+When several images combine to express one value, provide the value once and hide the repeated visual units:
 
 ```html
-<!-- WRONG: Keyword list masquerading as alt text -->
-<img src="shoes.jpg"
-     alt="buy shoes online cheap shoes discount shoes running shoes sale shoes free shipping">
-
-<!-- RIGHT: Describe what the image shows -->
-<img src="shoes.jpg" alt="Blue and white running shoes with cushioned sole">
+<p>
+  <span>Rating: 4 out of 5</span>
+  <span aria-hidden="true">★★★★☆</span>
+</p>
 ```
 
-## 7. Context-Sensitive Alt Text
+If separate `<img>` elements must be used, one alternative can describe the combined value and the others can use `alt=""`.
 
-The same image can require different alt text in different contexts. Always consider the surrounding content.
+When a collection contains distinct meaningful images, each image needs an alternative appropriate to its role. A gallery caption can describe the collection, while each image alternative distinguishes that item.
+
+## 11. Responsive Images and Art Direction
+
+In a `<picture>` element, place the `alt` attribute on the fallback `<img>`, not on `<source>`:
 
 ```html
-<!-- Context 1: Article about animal therapy programs
-     The key information is the therapy setting -->
-<img src="golden-retriever.jpg"
-     alt="A therapy dog visiting patients in a hospital ward">
-
-<!-- Context 2: Pet adoption listing
-     The key information is the breed and appearance -->
-<img src="golden-retriever.jpg"
-     alt="Golden retriever, 2 years old, named Buddy">
-
-<!-- Context 3: Decorative header image on a veterinary clinic website
-     The image adds no information beyond the visual style -->
-<img src="golden-retriever.jpg" alt="">
+<picture>
+  <source media="(min-width: 60rem)" srcset="team-wide.jpg">
+  <source media="(min-width: 30rem)" srcset="team-medium.jpg">
+  <img
+    src="team-close.jpg"
+    alt="The support team gathered around a conference table">
+</picture>
 ```
 
-## 8. CSS Background Images
+Every responsive source must communicate substantially the same information. If art direction changes the image's meaning, one shared alternative may no longer be accurate. Change the content model or provide equivalent visible text rather than allowing the alternative to contradict a source image.
 
-CSS background images declared with `background-image` do not support `alt` text. Use them only for decorative purposes. If a CSS background image conveys meaning, replace it with an `<img>` element with proper alt text.
+## 12. CSS Background Images
+
+CSS background images do not provide image semantics or an `alt` attribute. They are suitable for decoration or when equivalent information and function are already present as real content.
 
 ```css
-/* OK: Decorative pattern — no accessible name needed */
-.hero {
-  background-image: url('geometric-pattern.svg');
+.page-banner {
+  background-image: url("decorative-grid.svg");
 }
 ```
 
+Do not place the only instruction, status, label, or meaningful image in CSS:
+
 ```html
-<!-- NOT OK: Meaningful image as CSS background (invisible to screen readers) -->
-<div style="background-image: url('award-badge.png')"><!-- no text alternative --></div>
+<!-- Wrong: the award exists only as a background image. -->
+<div class="award-badge"></div>
 
-<!-- DO: Use <img> for meaningful images -->
-<img src="award-badge.png" alt="Winner: Best Accessibility Tool 2024">
+<!-- Better: provide the information in HTML. -->
+<p class="award-badge">Winner, 2026 Inclusive Design Award</p>
 ```
 
-## 9. Automated Testing vs. Human Review
+Background images may disappear when user styles, high-contrast settings, forced colors, print styles, content blockers, or network failures are active. The page must not depend on them for essential content or operation.
 
-| What Automated Tools Can Detect | What Requires Human Review |
-|---------------------------------|---------------------------|
-| Missing `alt` attribute | Whether alt text is meaningful |
-| Empty alt on functional images | Whether alt text matches context |
-| Alt text that equals the file name | Whether a decorative image actually needs alt text |
-| Alt text over a length threshold | Whether long descriptions are accurate |
-| Repeated alt text on distinct images | Whether the level of detail is appropriate |
-| Suspicious prefix phrases ("image of", "photo of") | Whether the description conveys the right meaning |
-| Known placeholder values ("TBD", "null", "undefined") | Whether content-author intent was decorative or informative |
-| Alt text identical to adjacent figcaption | Whether the alt or the caption should be kept (or both) |
-| Machine-generated CMS codes as alt text | Whether the replacement description is accurate |
+## 13. Image Maps and Other Image Technologies
 
-Automated tools such as axe-core detect structural alt text issues. Human review is always required to evaluate quality.
+For a client-side image map:
 
-## 10. Definition of Done Checklist
+- give the `<img>` an alternative that provides the overall context;
+- give each linked `<area>` an `alt` that describes its destination or action;
+- provide equivalent ordinary text links when needed for responsive or input support.
 
-Before publishing any page with images:
+```html
+<img
+  src="campus-map.png"
+  alt="Campus buildings"
+  usemap="#campus-buildings">
 
-- [ ] Every `<img>` element has an `alt` attribute (even decorative images use `alt=""`)
-- [ ] Decorative images use `alt=""` and are confirmed to add no meaning
-- [ ] Functional images (links, buttons) describe the action or destination
-- [ ] Alt text does not begin with "image of", "picture of", or "photo of"
-- [ ] Alt text does not repeat the file name or generic label ("image", "photo", "graphic", "chart")
-- [ ] Alt text is not a draft placeholder ("TBD", "TODO", "null", "none", "undefined", "placeholder")
-- [ ] Alt text is not a machine-generated code or CMS-injected message
-- [ ] Complex images (charts, diagrams) have both a short alt and a long description
-- [ ] Images of text reproduce the exact text in the alt attribute
-- [ ] Grouped images convey combined meaning via one image's alt (others are `alt=""`)
-- [ ] Linked images with adjacent link text use `alt=""` on the image
-- [ ] Figures with a `<figcaption>` do not duplicate the caption verbatim in the `alt`
-- [ ] Portrait images include the person's role and context, not just their name
-- [ ] CSS background images are decorative (meaningful images use `<img>`)
-- [ ] Alt text has been reviewed in context, not just in isolation
-- [ ] Alt text has been tested with a screen reader (NVDA + Firefox or VoiceOver + Safari)
-
-## 11. Key WCAG Criteria
-
-| Criterion | Level | Requirement |
-|-----------|-------|-------------|
-| [1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) | A | All non-text content has a text alternative |
-| [1.4.5 Images of Text](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text.html) | AA | Use real text instead of images of text where possible |
-| [1.4.9 Images of Text (No Exception)](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text-no-exception.html) | AAA | Images of text are used only for decoration or where essential |
-| [4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) | A | All UI components have accessible names and roles |
-
-## 12. Testing Alt Text
-
-### Manual Testing with Screen Readers
-
-1. **NVDA + Firefox (Windows):** Press `I` to navigate images. Listen to what is announced.
-2. **VoiceOver + Safari (macOS/iOS):** Use VO+Command+G to navigate images.
-3. **TalkBack (Android):** Explore by touch and listen for image descriptions.
-
-### Using the Images List
-
-Most screen readers provide a list of all images on the page:
-
-- **NVDA:** Insert+F7 → Images tab
-- **JAWS:** Insert+F3 → select Images
-- **VoiceOver:** Use the rotor (VO+U), select Images
-
-Review this list to spot missing or generic alt text across the full page.
-
-### Automated Testing
-
-```bash
-# axe-core CLI (requires @axe-core/cli)
-axe --tags wcag2a,wcag2aa https://example.com
-
-# Check specifically for image-related rules:
-# image-alt, image-redundant-alt, input-image-alt, area-alt, object-alt
+<map name="campus-buildings">
+  <area
+    shape="rect"
+    coords="20,30,120,100"
+    href="/library"
+    alt="Central Library">
+  <area
+    shape="rect"
+    coords="140,30,240,100"
+    href="/student-centre"
+    alt="Student Centre">
+</map>
 ```
 
-## 13. References
+For inline SVG, use the patterns in [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md). For `<canvas>`, provide equivalent fallback content and keyboard-operable alternatives to any interaction. Do not assume that `aria-label` alone can replace complex canvas content.
 
-### Authoritative Standards
+## 14. Writing Useful Alternative Text
 
-- [W3C WAI — Images Tutorial and Decision Tree](https://www.w3.org/WAI/tutorials/images/decision-tree/) (W3C Web Accessibility Initiative)
-- [WCAG 2.2 — 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) (W3C)
-- [Section 508 — Alternative Text](https://www.section508.gov/create/alternative-text/) (U.S. General Services Administration)
-- [Canada.ca — Alternative Text and Long Description Best Practices](https://a11y.canada.ca/en/alternative-text-and-long-description-best-practices/) (Government of Canada)
+### 14.1 Include what matters
 
-### Practitioner Guides
+Consider:
 
-- [Writing Effective Alt Text](https://webaim.org/techniques/alttext/) (WebAIM)
-- [Great Alt Text: An Introduction](https://www.deque.com/blog/great-alt-text-introduction/) (Deque Systems)
-- [Alt Text for Accessibility](https://www.levelaccess.com/blog/alt-text-for-accessibility/) (Level Access)
-- [How to Write Great Alt Text](https://www.nngroup.com/articles/write-alt-text/) (Nielsen Norman Group)
-- [Describe Content Images](https://accessibility.huit.harvard.edu/describe-content-images) (Harvard University HUIT)
-- [Image Alt Text Best Practices](https://help.siteimprove.com/support/solutions/articles/80000863904-accessibility-image-alt-text-best-practices) (Siteimprove)
-- [Decorative Images](https://www.w3.org/WAI/tutorials/images/decorative/) (W3C WAI Images Tutorial)
+- why the image was selected;
+- what information a person needs for the surrounding task;
+- what nearby text already communicates;
+- whether the medium, composition, color, direction, or emotion is relevant;
+- whether an action, destination, identity, state, or relationship is shown;
+- whether a full description should be visible to everyone.
 
-### Accessibility Checkers That Inspect Alt Text
+### 14.2 Do not follow blanket wording bans
 
-- [Sa11y](https://sa11y.netlify.app/) — flags suspicious alt text, alt matching figcaption, and placeholder patterns
-- [Editoria11y](https://editoria11y.princeton.edu/) — flags missing alt, filename alt, placeholder alt, and machine-generated codes
-- [axe-core](https://github.com/dequelabs/axe-core) — rules: `image-alt`, `image-redundant-alt`, `input-image-alt`, `area-alt`, `object-alt`
-- [CivicActions alt-text scanner](https://github.com/CivicActions/site-evaluation-tools/blob/main/python/alt-text-scan.py) — scans sites for suspicious and meaningless alt text patterns
-- [Drupal Alt Text Validation module](https://www.drupal.org/project/alt_text_validation) — CMS-level validation of alt text patterns
+Prefixes such as `image of` or `photo of` are often redundant, but the medium can matter. `Oil painting of the harbor after the storm` communicates information that `Harbor after the storm` does not. Use the medium when it changes meaning, source, interpretation, or task.
 
-### Educational Institutions
+There is no reliable rule that a certain word count is always correct. Avoid filenames, keyword lists, filler, and unnecessary repetition. Preserve the complete meaning even when that requires a detailed visible description.
 
-- [Alternative Text and Long Description Best Practices](https://accessibility.ecampusontario.ca/accessibility/best-practices/alt-text/) (eCampus Ontario)
-- [Accessibility — Images and Alt Text](https://accessibility.asu.edu/articles/images) (Arizona State University)
-- [Image Alt Text](https://accessibility.psu.edu/images/alttext/) (Penn State University)
-- [Accessibility Tip: Writing Alt Text](https://udayton.edu/blogs/onlinelearning/2026/accessibility-tip-2.php) (University of Dayton)
+### 14.3 Use punctuation and natural language
 
-### Machine-Readable Standards
+Write in the language of the page. Use normal capitalization and punctuation so synthesized speech and Braille output are understandable. Do not force punctuation tricks to control a specific screen reader's pauses.
 
-- [WCAG 2.2 machine-readable](https://github.com/mgifford/wai-yaml-ld/blob/main/wcag22/wcag22.yaml)
-- [ARIA specification](https://github.com/mgifford/wai-yaml-ld/blob/main/aria/aria.yaml)
+### 14.4 Handle identity and sensitive attributes carefully
+
+Use a person's name only when their identity is known, relevant, and appropriate to publish. Do not infer race, ethnicity, gender identity, disability, diagnosis, religion, age, emotion, or relationship from appearance.
+
+Describe a visible characteristic only when it contributes to the purpose. For example, a guide about step-free entrances may need to describe the depicted route and mobility equipment. A generic staff portrait usually does not.
+
+### 14.5 Do not treat SEO text as an alternative
+
+Alternative text is for equivalent information and function. Do not add marketing phrases, search keywords, copyright notices, or unrelated metadata.
+
+## 15. Common Failure Patterns
+
+| Failure | Better approach |
+| --- | --- |
+| Missing `alt` on an informative `<img>` | Provide an equivalent alternative. |
+| Missing `alt` on a decorative `<img>` | Use `alt=""`. |
+| `alt="image"`, `alt="photo"`, or `alt="graphic"` | Describe the relevant content or purpose. |
+| Filename, URL, database ID, or generated code as `alt` | Replace it with contextual author-written text. |
+| `alt="decorative"` or `alt="spacer"` | Use `alt=""`. |
+| `alt="TBD"`, `alt="TODO"`, `alt="null"`, or similar placeholder | Block publication until the author makes a real decision. |
+| Text alternative repeats nearby link text or caption | Use `alt=""` or complementary text. |
+| Icon-only control named by its shape | Name the action or destination. |
+| `title` used instead of `alt` | Use `alt`; do not rely on hover-only text. |
+| `aria-label` added to `<img>` instead of `alt` | Use the native `alt` attribute for HTML images. |
+| Full chart data forced into a long `alt` | Use a short alternative plus visible structured data. |
+| Every image begins with `image of` | Include the medium only when it matters. |
+| Every portrait includes guessed demographics or emotion | Include only known, relevant, appropriate information. |
+| One asset-level alternative reused everywhere | Author an alternative for each context. |
+| AI-generated text published without review | Require contextual human approval. |
+
+## 16. CMS and Authoring Requirements
+
+A content system should support the decision, not merely require a non-empty field.
+
+### 16.1 Authoring interface
+
+Provide authors with:
+
+- a required choice such as **Informative**, **Functional**, **Decorative or redundant**, or **Needs detailed description**;
+- an alternative-text field that permits a deliberately empty value for decorative images;
+- context explaining where and how the image will be used;
+- a visible preview of surrounding headings, captions, links, and controls;
+- a structured field or nearby content area for detailed descriptions;
+- per-use alternatives when the same asset appears in different contexts;
+- translation status and language controls;
+- a way to revisit the decision when the image or content changes.
+
+Do not automatically fill empty fields with filenames, asset titles, captions, or previous alternatives. A caption, credit, internal asset name, and text alternative serve different purposes.
+
+### 16.2 Publication validation
+
+Block publication when:
+
+- no alt decision has been made;
+- an informative image has no alternative or equivalent visible text;
+- a functional image does not give its control a useful name;
+- a complex image lacks its necessary detailed equivalent;
+- a placeholder or filename was inserted as the alternative.
+
+Do not block a deliberate `alt=""` solely because the field is empty. Instead, require the author to confirm that the image is decorative or redundant in that use.
+
+### 16.3 Maintenance
+
+Include images in content review, translation, and expiration workflows. When an image is replaced, do not silently retain the old alternative. When content is localized, translate the alternative into the page language and recheck culturally specific references.
+
+## 17. AI-Assisted Alternative Text
+
+AI can suggest a draft description, but it cannot reliably know the editorial purpose, surrounding task, intended audience, or whether the image is redundant.
+
+An AI-assisted workflow should:
+
+1. provide the image plus safe surrounding context;
+2. ask for purpose-equivalent text, not a visual inventory;
+3. distinguish informative, functional, decorative, and complex uses;
+4. identify uncertainty rather than fabricate details;
+5. avoid inferring sensitive attributes or identifying unknown people;
+6. avoid exposing private images or metadata to an unapproved service;
+7. require a responsible person to review the suggestion in the rendered context;
+8. preserve the author's deliberate empty-alt decision;
+9. send complex images for a detailed human-authored equivalent;
+10. record that the content needs review again when the source image changes.
+
+Do not let AI-generated confidence replace editorial accountability. A fluent description can still be inaccurate, biased, irrelevant, or unsafe.
+
+## 18. Testing
+
+### 18.1 Manual content review
+
+For every image use:
+
+1. identify the image's purpose in the current task;
+2. compare its relevant information with nearby text;
+3. inspect the actual `alt` value or control name;
+4. confirm that decorative images are ignored;
+5. confirm that informative alternatives are accurate and not repetitive;
+6. confirm that functional images communicate the action or destination;
+7. read complex descriptions and verify values, order, and relationships against the image;
+8. check the page language and translation;
+9. review privacy, identity, and sensitive descriptions;
+10. verify that responsive sources communicate the same meaning.
+
+### 18.2 Keyboard and assistive technology review
+
+Use the project's supported browser and assistive technology combinations. Navigate the page in reading order and operate every image-based link or control. Confirm that:
+
+- the image alternative is exposed in the correct place;
+- decorative images do not create announcements or navigation stops;
+- links and controls have concise, distinct, purpose-oriented names;
+- visible control labels are contained in accessible names;
+- structured descriptions remain navigable as headings, lists, or tables;
+- focus and operation do not depend on pointing at the image.
+
+Do not make one screen reader and browser combination a universal Definition of Done. Test the environments the product supports and use additional combinations when a failure appears implementation-specific.
+
+### 18.3 Automated checks
+
+Automation can help detect:
+
+- missing `alt` attributes;
+- empty alternatives on some interactive images;
+- missing names on image buttons or image-map areas;
+- filenames, placeholders, or repeated suspicious values;
+- duplicated alternatives in some contexts;
+- inaccessible image markup patterns.
+
+Automation cannot reliably determine:
+
+- whether the image is informative or decorative in context;
+- whether the alternative communicates the intended meaning;
+- whether a description is accurate, complete, biased, or unsafe;
+- whether nearby text already provides the equivalent;
+- whether a complex description preserves all necessary relationships;
+- whether a different alternative is needed for another use of the same asset.
+
+Store the tool and rule version with results. Review a tool's finding before turning it into a confirmed issue. See [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md).
+
+## 19. Definition of Done
+
+Before publishing or closing an image accessibility issue, verify that:
+
+- [ ] every image use has an explicit purpose and alt decision;
+- [ ] every meaningful `<img>` has an accurate contextual `alt`;
+- [ ] every decorative or fully redundant `<img>` has `alt=""`;
+- [ ] no filename, placeholder, keyword list, credit, or unrelated metadata is used as `alt`;
+- [ ] functional images provide useful link or control names;
+- [ ] visible control labels are included in accessible names;
+- [ ] important words shown only in an image are also available as text alternatives or visible text;
+- [ ] complex images have a short identification and an accessible detailed equivalent;
+- [ ] captions and alternatives complement rather than duplicate each other;
+- [ ] responsive sources convey the same essential meaning;
+- [ ] CSS images are not the only source of information or function;
+- [ ] alternatives use the page language and are included in translation workflows;
+- [ ] descriptions do not invent identity, emotion, or sensitive attributes;
+- [ ] AI-generated suggestions received contextual human review;
+- [ ] manual review was completed in the rendered context;
+- [ ] relevant image-based links and controls were tested with keyboard and supported assistive technologies;
+- [ ] automated checks were supplemented by human judgment;
+- [ ] the original user-facing barrier was retested after remediation.
+
+## 20. Related WCAG 2.2 Criteria
+
+| Criterion | Level | Relevance |
+| --- | --- | --- |
+| [1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) | A | Provides equivalent alternatives or appropriate handling for non-text content. |
+| [1.4.5 Images of Text](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text.html) | AA | Uses real text instead of images of text unless the image is customizable or the presentation is essential. |
+| [1.4.9 Images of Text (No Exception)](https://www.w3.org/WAI/WCAG22/Understanding/images-of-text-no-exception.html) | AAA | Restricts images of text to pure decoration or essential presentation. |
+| [2.4.4 Link Purpose (In Context)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) | A | Requires image-only and combined links to communicate their purpose in context. |
+| [2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) | A | Requires visible control text to be contained in the programmatic name. |
+| [4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) | A | Requires image-based controls to expose an appropriate name and role. |
+
+WCAG techniques are informative examples, not mandatory implementations. Judge conformance against the normative success criteria.
+
+## 21. Related Guides
+
+- [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Maps Accessibility Best Practices](./MAPS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+
+## References
+
+- [W3C WAI Images Tutorial](https://www.w3.org/WAI/tutorials/images/)
+- [W3C WAI alt Decision Tree](https://www.w3.org/WAI/tutorials/images/decision-tree/)
+- [W3C WAI Informative Images](https://www.w3.org/WAI/tutorials/images/informative/)
+- [W3C WAI Decorative Images](https://www.w3.org/WAI/tutorials/images/decorative/)
+- [W3C WAI Functional Images](https://www.w3.org/WAI/tutorials/images/functional/)
+- [W3C WAI Images of Text](https://www.w3.org/WAI/tutorials/images/textual/)
+- [W3C WAI Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
+- [W3C WAI Groups of Images](https://www.w3.org/WAI/tutorials/images/groups/)
+- [W3C WAI Image Maps](https://www.w3.org/WAI/tutorials/images/imagemap/)
+- [Understanding WCAG 2.2 Success Criterion 1.1.1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
+- [Technique H37: Using alt attributes on img elements](https://www.w3.org/WAI/WCAG22/Techniques/html/H37)
+- [Technique H67: Using null alt text for images assistive technology should ignore](https://www.w3.org/WAI/WCAG22/Techniques/html/H67)
+- [Technique H2: Combining adjacent image and text links](https://www.w3.org/WAI/WCAG22/Techniques/html/H2)
+
+## Machine-Readable Standards Metadata
+
+```yaml
+standards:
+  wcag:
+    version: "2.2"
+    uri: "https://www.w3.org/TR/WCAG22/"
+  primary_success_criterion:
+    id: "1.1.1"
+    name: "Non-text Content"
+    level: "A"
+    uri: "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+related_success_criteria:
+  - id: "1.4.5"
+    name: "Images of Text"
+    level: "AA"
+  - id: "1.4.9"
+    name: "Images of Text (No Exception)"
+    level: "AAA"
+  - id: "2.4.4"
+    name: "Link Purpose (In Context)"
+    level: "A"
+  - id: "2.5.3"
+    name: "Label in Name"
+    level: "A"
+  - id: "4.1.2"
+    name: "Name, Role, Value"
+    level: "A"
+```
+
+## License
+
+This document is available under the repository's [MIT License](../LICENSE).
