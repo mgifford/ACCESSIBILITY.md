@@ -4,305 +4,890 @@ title: Mermaid Accessibility Best Practices
 
 # Mermaid Accessibility Best Practices
 
-AGPL-3.0-or-later License - See LICENSE file for full text  
-Copyright (c) 2026 Mike Gifford
+## Purpose
 
-**Normative reference for authoring, annotation, linting, and the "Generate prompt to improve this diagram" workflow.**
+Mermaid turns text definitions into diagrams such as flowcharts, sequence
+diagrams, state diagrams, class diagrams, timelines, charts, and architecture
+views. The source is easier to version and review than manually drawn artwork,
+but generated diagrams are not automatically accessible.
 
-Based on:
-- Léonie Watson's [Accessible SVG flowcharts](https://tink.uk/accessible-svg-flowcharts/)
-- Carie Fisher's [Accessible SVGs: Perfect Patterns For Screen Reader Users](https://cariefisher.com/#/writing/accessible-svg-patterns-comparison)
-- W3C ARIA Authoring Practices Guide
-- WCAG 2.2 Level AA
+Accessible Mermaid content depends on four layers:
 
----
+1. the diagram source and its accessibility metadata;
+2. the exact Mermaid renderer and configuration;
+3. the generated SVG or raster output; and
+4. the way the publishing platform embeds and exposes that output.
 
-## 1. Required Metadata
+This guide covers accessible titles and descriptions, complex-diagram
+alternatives, generated SVG, color and contrast, light and dark presentation,
+keyboard interaction, responsive output, security, exports, linting, and
+testing. It targets WCAG 2.2 Level AA.
 
-Every Mermaid diagram **must** include:
+## Core Principles
 
-```mermaid
-%%accTitle Brief title (max 100 characters)
-%%accDescr Detailed description explaining what the diagram shows and why
-```
+1. Treat a generated Mermaid diagram as non-text content unless the rendered
+   nodes and relationships are proven to have useful semantics.
+2. Add `accTitle` and `accDescr` using valid Mermaid syntax.
+3. Provide visible structured alternatives for diagrams whose essential
+   information does not fit in a concise SVG description.
+4. Match the alternative format to the diagram's purpose and relationships.
+5. Do not rely on color, shape, position, line style, or visual reading order
+   alone.
+6. Test the final published output, not only the Mermaid source or an editor
+   preview.
+7. Preserve secure rendering defaults and pin the Mermaid version used to
+   build or display documentation.
+8. Keep source, descriptions, data, and exports synchronized.
+9. Avoid making a static diagram keyboard focusable.
+10. Include people with relevant disabilities in review of important or
+    complex diagrams.
 
-### Title Requirements
-- **Concise and descriptive** — Should identify the diagram type and subject
-- **No more than 100 characters** — Accessible for all screen readers
-- **Unique within page** — Each diagram needs its own title
-- **Meaningful** — "Diagram" or "Flowchart" alone is insufficient
+## Decide Whether a Diagram Is Needed
 
-### Description Requirements
-- **Complete explanation** — Describe the diagram's purpose, key elements, and relationships
-- **Conversational tone** — Write as if explaining to someone who cannot see the visual
-- **Include key decisions/branches** — For flowcharts: mention critical decision points
-- **No more than 500 characters recommended** — Longer descriptions should consider alternative presentation
+Do not use a diagram when a heading, short list, table, or few sentences would
+communicate the information more clearly. Mermaid is useful when relationships,
+sequence, branching, hierarchy, timing, or spatial grouping materially improve
+understanding.
 
-### Example: Decision Tree
-```mermaid
-graph TD
-    A[User Login] --> B{Valid Credentials?}
-    B -->|Yes| C[Grant Access]
-    B -->|No| D[Show Error]
-    C --> E[Load Dashboard]
-    D --> F[Retry Login]
+Before authoring, document:
 
-%%accTitle User Authentication Flowchart
-%%accDescr Describes a login process where credentials are validated. If valid, the user is granted access and the dashboard loads. If invalid, an error message is shown and the user can retry.
-```
+- the diagram's purpose;
+- the question it should answer;
+- the essential nodes, participants, states, values, or events;
+- the essential relationships and their direction;
+- whether the diagram is static or interactive;
+- the structured alternative that will preserve its purpose; and
+- the renderers and publishing platforms that must support it.
 
----
+Reducing unnecessary complexity improves the visual diagram and every
+alternative presentation.
 
-## 2. SVG Accessibility Requirements
+## Use Valid Mermaid Accessibility Syntax
 
-### Pattern 11 Implementation (Carie Fisher)
+### `accTitle`
 
-All output SVGs must implement **Pattern 11:**
-
-```html
-<svg role="img" aria-labelledby="title-id desc-id">
-  <title id="title-id">Diagram Title</title>
-  <desc id="desc-id">Diagram Description</desc>
-  <!-- diagram content -->
-</svg>
-```
-
-**Rationale:** Pattern 11 is the most reliable pattern across different screen reader/browser combinations. While it may repeat content in some configurations, it never ignores accessibility elements.
-
-### Required Attributes
-- `role="img"` — Required for consistent screen reader support
-- `xmlns="http://www.w3.org/2000/svg"` — Required for standalone SVG usage
-- `aria-labelledby="title-id desc-id"` — Both IDs must be referenced (aria-labelledby is more reliable than aria-describedby)
-
-### ID Generation Rules
-- All IDs must be **unique** within the SVG
-- Use collision-resistant format: `{prefix}-{timestamp}-{randomString}`
-- Preserve IDs across transformations when possible
-- Never reuse IDs across multiple diagrams on same page
-
----
-
-## 3. Semantic Structure for Flowcharts
-
-Following Léonie Watson's patterns:
-
-### Root-Level Structure
-```html
-<svg role="img" aria-labelledby="...">
-  <title>...</title>
-  <desc>...</desc>
-  <g role="list">
-    <!-- Each logical node -->
-    <g role="listitem">
-      <title>Node label</title>
-      <!-- node content -->
-    </g>
-  </g>
-</svg>
-```
-
-### Node Requirements
-- Each node must have a **single accessible name** via `<title>`
-- Node text must be **meaningful and non-repetitive**
-- Decorative shapes must be **hidden from accessibility tree** (aria-hidden="true" or role="presentation")
-
-### Edge/Link Handling
-- Arrows/connectors are **hidden by default** (aria-hidden="true")
-- Named links (e.g., "Yes"/"No" in decisions) must be **contextual**
-- Example: `"Yes, proceed to processing"` instead of just `"Yes"`
-
----
-
-## 4. Node Type Annotation (Future)
-
-The tool should support optional annotations for node type inference:
+`accTitle` supplies the accessible title. Current Mermaid syntax uses the
+keyword followed by a colon and a single-line value:
 
 ```mermaid
+flowchart TD
+    accTitle: Account recovery decision flow
+    A[Submit email address] --> B{Account found?}
+    B -->|Yes| C[Send recovery link]
+    B -->|No| D[Show recovery help]
+```
+
+The title should concisely identify the subject and diagram type when that
+context is useful. Mermaid does not define a universal 100-character limit.
+Write the shortest title that distinguishes the diagram on the page.
+
+### `accDescr`
+
+Use a colon for a single-line description:
+
+```mermaid
+flowchart LR
+    accTitle: Publishing workflow
+    accDescr: Content moves from drafting through accessibility review to publication.
+    A[Draft] --> B[Accessibility review] --> C[Publish]
+```
+
+For a multi-line description, omit the colon after `accDescr` and use braces:
+
+```mermaid
+flowchart TD
+    accTitle: Account recovery decision flow
+    accDescr {
+      A user submits an email address. If an account is found, the system sends
+      a recovery link and confirms that it was sent. If no account is found,
+      the system shows recovery help and offers a support contact.
+    }
+    A[Submit email address] --> B{Account found?}
+    B -->|Yes| C[Send recovery link]
+    B -->|No| D[Show recovery help]
+    C --> E[Confirm link sent]
+    D --> F[Offer support contact]
+```
+
+Mermaid does not define a universal 500-character maximum. Keep the SVG
+description concise enough to be useful as an image description. Move detailed
+steps, data, and relationships into visible, structured HTML.
+
+### Do not comment out the metadata
+
+Mermaid comments begin with `%%`. These lines are comments, not accessibility
+metadata:
+
+```text
+%%accTitle This is ignored as a comment
+%%accDescr This is also ignored as a comment
+```
+
+Use `accTitle:` and `accDescr:` exactly as documented. Parse and render the
+source with the project's exact Mermaid version to catch syntax support and
+diagram-type differences.
+
+### Do not invent directives
+
+Lines such as these are not standard Mermaid accessibility syntax:
+
+```text
 %%a11y-node A type=question
-%%a11y-node B type=statement
-%%a11y-node C type=process
 %%a11y-edge A->B ariaLabel="Yes, continue"
 ```
 
-**Node Types:**
-- `question` — Decision point (diamond, should contain a question)
-- `statement` — Action or process (rectangle)
-- `process` — Multi-step operation
-- `endpoint` — Start or end (rounded rectangle)
+They are comments unless a separate project-specific preprocessor implements
+them. Do not document them as Mermaid features. If a project introduces custom
+annotations, define their schema, transformation, validation, and fallback
+behavior separately.
 
----
+## Write Useful Titles and Descriptions
 
-## 5. Validation Rules
+### Accessible title
 
-### Pre-Export Validation
-Before exporting, the tool must verify:
+A good `accTitle`:
 
-1. **Metadata present** — Both `%%accTitle` and `%%accDescr` exist
-2. **Title length** — ≤100 characters
-3. **Description present** — ≥10 characters, ≤500 recommended
-4. **SVG well-formed** — No parsing errors
-5. **IDs unique** — No duplicate IDs within SVG
-6. **Role attributes** — `role="img"` on root SVG
-7. **ARIA labelledby** — Both title and desc IDs referenced
-8. **Contrast** — WCAG 4.5:1 (text), 3:1 (non-text) in light AND dark modes
+- identifies the subject;
+- distinguishes the diagram from others on the page;
+- includes the type only when it helps; and
+- avoids filenames, internal IDs, or generic labels such as "Diagram."
 
-### Warnings (Non-blocking)
-- Description > 500 characters (consider alternative presentation)
-- Node with no accessible label (suggest adding title)
-- Monochromatic diagram (no color validation possible)
+Examples:
 
-### Errors (Blocking Export)
-- Missing `%%accTitle`
-- Missing `%%accDescr`
-- Invalid Mermaid syntax
-- Contrast failures in both light and dark modes
+- "Account recovery decision flow"
+- "Payment service request sequence"
+- "Order states and permitted transitions"
+- "Quarterly release timeline"
 
----
+### Accessible description
 
-## 6. Dark Mode Handling
+A useful `accDescr` states:
 
-### Theming Requirements
-- **Light mode default** — WCAG 4.5:1 text, 3:1 non-text
-- **Dark mode support** — Same contrast ratios must apply
-- **Color strategy** — Use CSS custom properties or `currentColor` where possible
-- **Validation** — Both themes must pass contrast checks
+- the diagram's purpose;
+- the starting context or orientation;
+- the main elements or participants;
+- the essential sequence, hierarchy, values, or relationships;
+- important decisions, exceptions, or outcomes; and
+- where a complete visible alternative is available when needed.
 
-### Example SVG with Dark Mode Support
+Do not merely list colors and shapes. "A blue rectangle points to a green
+diamond" describes appearance without explaining meaning.
+
+Do not copy every node label into one long sentence. A flattened description
+becomes difficult to navigate and does not preserve structure.
+
+### Visible title and description
+
+Important diagrams should also have visible context. A page heading or figure
+caption helps everyone understand why the diagram is present.
+
 ```html
-<svg role="img" xmlns="http://www.w3.org/2000/svg">
-  <title>Data Flow</title>
-  <desc>Shows data moving from input to output</desc>
-  <style>
-    @media (prefers-color-scheme: dark) {
-      .line { stroke: #e0e0e0; }
-      .text { fill: #ffffff; }
+<figure aria-labelledby="recovery-flow-heading">
+  <h2 id="recovery-flow-heading">Account recovery flow</h2>
+
+  <pre class="mermaid">
+flowchart TD
+    accTitle: Account recovery decision flow
+    accDescr: A recovery request either sends a link or offers additional help. Complete steps follow the diagram.
+    A[Submit email address] --&gt; B{Account found?}
+    B --&gt;|Yes| C[Send recovery link]
+    B --&gt;|No| D[Show recovery help]
+  </pre>
+
+  <figcaption>
+    <a href="#recovery-flow-description">Read the account recovery steps</a>.
+  </figcaption>
+</figure>
+```
+
+The HTML example escapes `>` because the Mermaid source is embedded in HTML.
+Markdown Mermaid fences do not need that escaping.
+
+## Provide Structured Alternatives
+
+`accDescr` creates an SVG description, not a navigable document structure.
+Complex diagrams need visible HTML that supports headings, lists, tables,
+links, definitions, and task completion.
+
+| Mermaid diagram type | Useful structured alternative |
+|---|---|
+| Flowchart or decision tree | Ordered steps plus nested lists or a decision table showing conditions and outcomes |
+| Sequence diagram | Participant list and a table of messages in chronological order |
+| State diagram | State definitions and a transition table with trigger, source, destination, and outcome |
+| Class diagram | Class definitions, properties, methods, inheritance, and relationship table |
+| Entity relationship diagram | Entity definitions, keys, attributes, cardinality, and relationship table |
+| Gantt chart or timeline | Task or event table with dates, duration, owner, status, milestones, and dependencies |
+| Pie, XY, quadrant, radar, or Sankey chart | Summary of findings and the underlying data table with units and categories |
+| Mind map or tree | Properly nested heading or list hierarchy |
+| Architecture, C4, or block diagram | Component inventory, responsibilities, boundaries, interfaces, and relationship table |
+| Git graph | Chronological branch, merge, and release history |
+| User journey | Ordered stages, user goals, actions, emotions, barriers, and opportunities |
+
+### Flowchart alternative
+
+```html
+<section id="recovery-flow-description"
+         aria-labelledby="recovery-flow-description-heading">
+  <h3 id="recovery-flow-description-heading">Account recovery steps</h3>
+  <ol>
+    <li>The user submits an email address.</li>
+    <li>
+      The system checks for an account:
+      <ul>
+        <li>If an account exists, send a recovery link and confirm it was sent.</li>
+        <li>If no account exists, show recovery help and offer support.</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+```
+
+### Sequence diagram alternative
+
+```mermaid
+sequenceDiagram
+    accTitle: Password reset request sequence
+    accDescr {
+      The user requests a reset from the website. The website asks the identity
+      service to create a token, then asks the email service to send the link.
+      The website confirms the request to the user.
     }
-  </style>
-  <!-- diagram content -->
+    actor User
+    participant Site as Website
+    participant Identity as Identity service
+    participant Email as Email service
+    User->>Site: Request password reset
+    Site->>Identity: Create reset token
+    Identity-->>Site: Return token
+    Site->>Email: Send reset link
+    Email-->>Site: Confirm queued message
+    Site-->>User: Confirm request
+```
+
+```html
+<table>
+  <caption>Password reset request messages</caption>
+  <thead>
+    <tr>
+      <th scope="col">Step</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>User</td><td>Website</td><td>Request password reset</td></tr>
+    <tr><td>2</td><td>Website</td><td>Identity service</td><td>Create reset token</td></tr>
+    <tr><td>3</td><td>Identity service</td><td>Website</td><td>Return token</td></tr>
+    <tr><td>4</td><td>Website</td><td>Email service</td><td>Send reset link</td></tr>
+    <tr><td>5</td><td>Email service</td><td>Website</td><td>Confirm queued message</td></tr>
+    <tr><td>6</td><td>Website</td><td>User</td><td>Confirm request</td></tr>
+  </tbody>
+</table>
+```
+
+### Keep alternatives synchronized
+
+Whenever possible, generate the diagram and its alternative from the same
+reviewed data model. If they are maintained separately:
+
+- require both in the same change;
+- compare nodes, participants, values, edges, and conditions;
+- identify the diagram version or update date; and
+- assign an owner for content review.
+
+Do not expose raw Mermaid source as the only alternative. Source syntax may be
+helpful to developers, but it is not automatically an equivalent explanation
+for all users.
+
+## Understand Mermaid's Generated SVG
+
+Current Mermaid documentation states that the renderer automatically adds an
+`aria-roledescription` based on the diagram type. When `accTitle` and
+`accDescr` are provided, it also generates:
+
+- `<title>` and `<desc>` elements;
+- `aria-labelledby` referencing the title; and
+- `aria-describedby` referencing the description.
+
+A simplified current output resembles:
+
+```html
+<svg aria-labelledby="generated-title-id"
+     aria-describedby="generated-description-id"
+     aria-roledescription="flowchart-v2"
+     id="generated-diagram-id">
+  <title id="generated-title-id">Account recovery decision flow</title>
+  <desc id="generated-description-id">
+    A recovery request either sends a link or offers additional help.
+  </desc>
+  <!-- Generated diagram content -->
 </svg>
 ```
 
----
+The exact IDs, classes, diagram-type value, internal elements, and attributes
+can change by Mermaid version and integration. Do not copy generated IDs into
+source or depend on undocumented internal class names.
 
-## 7. Linting Checklist
+### Do not replace Mermaid's label relationships blindly
 
-Apply this checklist before accepting any diagram for export:
+The renderer currently uses `aria-labelledby` for the title and
+`aria-describedby` for the description. Do not rewrite both as one
+`aria-labelledby` value without a tested reason. A label identifies the image;
+a description provides additional information.
 
-- [ ] `%%accTitle` present and ≤100 chars
-- [ ] `%%accDescr` present and ≥10 chars
-- [ ] SVG has `role="img"`
-- [ ] SVG has `xmlns="http://www.w3.org/2000/svg"`
-- [ ] `<title>` element exists with unique ID
-- [ ] `<desc>` element exists with unique ID
-- [ ] `aria-labelledby` references both title and desc IDs
-- [ ] All IDs are unique within SVG
-- [ ] Decorative elements have aria-hidden or role="presentation"
-- [ ] WCAG contrast passes in light mode (4.5:1 text, 3:1 non-text)
-- [ ] WCAG contrast passes in dark mode (4.5:1 text, 3:1 non-text)
-- [ ] No parsing errors in Mermaid source
-- [ ] No parsing errors in SVG output
+Some publishing systems add `role="img"` to treat the SVG as one atomic image.
+Others expose the root SVG through its native SVG accessibility mapping. If a
+post-processing step adds a role, verify the computed name, description, and
+screen reader behavior. Do not present one hand-authored SVG pattern as a
+guarantee across every Mermaid renderer and host.
 
----
+### Node-by-node semantics are not automatic
 
-## 8. User Prompts for Improvement
+`accTitle` and `accDescr` describe the diagram as a whole. They do not make
+every generated node, edge, arrow, participant, or value a useful accessible
+object.
 
-When the tool detects ambiguity, it must prompt the user:
+Do not automatically add `role="list"` and `role="listitem"` to generated SVG
+groups. A visual layout is not necessarily a list, DOM order may not match the
+meaningful reading order, and list semantics do not express branching,
+cardinality, timing, containment, or graph relationships.
 
-### Decision Node Prompt
+If users need to inspect or operate individual items, provide an accessible
+HTML view or build and test a purpose-specific interactive component. Generated
+SVG internals are a fragile foundation for a complex widget.
+
+### Generated IDs
+
+IDs need to be unique in the final HTML document. They do not need to be unique
+across unrelated pages or separate external SVG documents.
+
+- Let Mermaid manage its generated IDs.
+- Check the final page for duplicates when several inline diagrams are present.
+- Do not generate accessibility IDs from timestamps and random strings merely
+  to appear collision-resistant.
+- Use Mermaid's `deterministicIds` configuration when stable generated output
+  or snapshot testing requires it.
+- If using `deterministicIDSeed`, design the render pipeline so separate inline
+  diagrams cannot receive colliding IDs.
+- Preserve every referenced ID during sanitization, optimization, and export.
+
+### `xmlns`
+
+The SVG namespace declaration is important when SVG is serialized or served as
+a standalone XML document. It is not an accessibility attribute and is not a
+universal linting requirement for inline SVG parsed in an HTML document.
+
+## Embedding and Export Modes
+
+Accessibility behavior changes with the embedding method.
+
+| Output or embedding mode | Responsibility |
+|---|---|
+| Inline SVG generated in the page | Preserve generated title, description, ARIA references, language, styles, and unique IDs |
+| External SVG through `<img>` | Give the HTML image an appropriate `alt`; do not assume the external SVG's internal title and description are exposed |
+| Raster PNG or JPEG | Give the HTML image `alt` and provide any long structured alternative in HTML |
+| `<object>` or iframe | Give the embedding element a useful accessible name, test entry and exit behavior, and provide an external HTML alternative |
+| CSS background image | Use only for decoration or provide the complete information in ordinary HTML |
+| PDF or office-document export | Add appropriate document tags, alternative text, reading order, and visible alternative; SVG metadata is not a substitute for document accessibility |
+| Markdown platform renderer | Test the platform's exact Mermaid version, sanitizer, theme, and output accessibility |
+
+### External SVG example
+
+```html
+<figure>
+  <img src="account-recovery-flow.svg"
+       alt="Account recovery either sends a reset link or provides additional support."
+       width="960"
+       height="540">
+  <figcaption>
+    <a href="#recovery-flow-description">Read the complete account recovery steps</a>.
+  </figcaption>
+</figure>
 ```
-Is this a decision point (question)?
-⚫ Yes, this is a decision (e.g., "Check if valid?")
-⚫ No, this is an action/process (e.g., "Check password")
-```
 
-### Edge Label Prompt
-```
-Add contextual label for "Yes" branch:
-[Example: "Yes, create account"]
-```
+Do not leave the HTML `alt` empty solely because the source SVG contains a
+`<title>` and `<desc>`.
 
-### Description Clarification
-```
-Your description is very brief. Consider explaining:
-- What triggers this diagram?
-- What are the key decision points?
-- What happens at the end?
-```
+### Standalone downloads
 
----
+If users can download an SVG:
 
-## 9. Contrast Checking (WCAG 2.x and APCA)
+- retain its title and description;
+- include the correct namespace and view box;
+- preserve text as text when practical;
+- identify language where the format and reader support it;
+- test the file independently of the source page; and
+- provide the structured HTML or data alternative near the download.
 
-### WCAG Contrast Ratio
-Calculate per WCAG formula:
-```
-(Lmax + 0.05) / (Lmin + 0.05)
-```
+## Choose Clear Diagram Content
 
-Where L (luminance) is calculated from RGB:
-```
-L = 0.2126 * R + 0.7152 * G + 0.0722 * B
-(with component gamma adjustments)
-```
+### Nodes and participants
 
-### APCA (Advanced Perceptual Contrast Algorithm)
-**Note:** APCA applies **only to text**, not decorative fills.
+- Use human-readable labels rather than internal IDs.
+- Expand uncommon abbreviations in the page or alternative.
+- Keep labels concise without removing necessary meaning.
+- Give visually similar nodes distinct textual labels.
+- Do not use shape alone to distinguish a decision, process, database, or
+  external system.
+- State participant roles and boundaries in the structured alternative.
 
-- Text against background: Use APCA values for reference
-- Non-text (shapes, borders): Use WCAG only
+### Edges and relationships
 
-### Validation Thresholds
-- **Light mode** — WCAG 7:1 preferred, 4.5:1 minimum for text
-- **Dark mode** — Same ratios
-- **Non-text** — 3:1 minimum in both modes
-- **Large text** (18px+) — May use 3:1
+- Label branches when the outcome is not otherwise clear.
+- Use labels such as "Approved" and "Needs revision" when they are clearer than
+  generic "Yes" and "No."
+- Preserve direction and source-to-destination meaning in the alternative.
+- Explain unlabeled relationships when their meaning depends on line style,
+  arrow type, or position.
+- Do not use connector color alone to encode status or relationship type.
 
----
+### Reading order and layout
 
-## 10. Known Limitations
+Choose a direction that matches the content and document language. Reduce line
+crossings and avoid layouts that imply relationships through proximity alone.
 
-Document these limitations in diagram metadata or UI:
+Visual placement is not a programmatic reading order. State the intended
+sequence or hierarchy in the description and structured alternative.
 
-1. **Mermaid's native a11y support** is limited; this tool enhances it
-2. **Very complex diagrams** may need alternative representations
-3. **Color-only differentiation** (e.g., different colors for status) should include additional indicators
-4. **Monochromatic diagrams** cannot have contrast validated
-5. **Animation support** depends on Mermaid version
+## Color and Contrast
 
----
+### Apply WCAG 2.2 ratios
+
+- Normal text generally needs at least 4.5 to 1 contrast.
+- Text meeting WCAG's large-scale definition generally needs at least 3 to 1.
+- Do not treat 18 CSS pixels alone as the large-text threshold.
+- Visual information required to understand meaningful nodes, boundaries,
+  connectors, data marks, and states generally needs at least 3 to 1 against
+  adjacent colors under WCAG 1.4.11.
+- Not every decorative fill needs 3 to 1 against every neighboring fill when
+  labels, outlines, or other cues preserve the information.
+
+Use the WCAG 2.x contrast method for WCAG 2.2 conformance. APCA and WCAG 3 work
+can be monitored for research, but they do not replace WCAG 2.2 contrast tests.
+
+### Do not rely on color alone
+
+Combine color with:
+
+- direct labels;
+- line styles;
+- patterns;
+- icons with text alternatives;
+- border treatments;
+- shape plus textual identification; or
+- values in the structured alternative.
+
+This applies to status, ownership, participant groups, critical paths, data
+series, positive or negative outcomes, and selected states.
+
+### Test actual themes
+
+Mermaid themes and derived colors can change. The current theming documentation
+states that custom theme variables use hex colors and that the `base` theme is
+the modifiable base theme.
+
+- Centralize theme configuration instead of styling individual generated
+  elements by unstable internal selectors.
+- Test text, fills, borders, connector lines, arrowheads, notes, labels, focus,
+  and data marks.
+- Test every site-supported light and dark presentation.
+- Test diagrams inside the actual background and container colors.
+- Test forced-colors mode and keep the structured alternative usable when SVG
+  styling is lost.
+- Recheck themes after Mermaid updates.
+
+Do not assume that selecting Mermaid's `dark` theme or adding a
+`prefers-color-scheme` rule automatically produces accessible dark mode.
+
+## Responsive Layout, Zoom, and Reflow
+
+SVG can scale without pixelation, but scaling a dense diagram can make its text
+too small to read.
+
+- Include a useful `viewBox` in exported SVG.
+- Do not clip the diagram when text is resized or browser zoom reaches 200
+  percent and 400 percent.
+- Let users open a larger view or download an SVG when that improves access.
+- Keep the visible title, summary, alternative, and controls reflowable.
+- Avoid fixed pixel dimensions that overflow small viewports without a usable
+  scroll or enlargement path.
+- Test long labels and translations.
+- Do not disable browser zoom.
+
+WCAG 1.4.10 allows an exception for parts of content that require a
+two-dimensional layout for meaning or use. A complex diagram can require
+two-dimensional scrolling. The surrounding title, description, controls, and
+structured alternative still need to reflow.
+
+## Keyboard and Interactive Diagrams
+
+### Static diagrams
+
+A static diagram does not need `tabindex="0"`. Keyboard focus should move to
+links, buttons, and other controls, not to every decorative SVG group.
+
+If a diagram is visually scrollable, ensure keyboard users can reach and scroll
+its container without becoming trapped, and also provide a structured
+alternative that does not depend on two-dimensional scrolling.
+
+### Links and click actions
+
+Avoid putting the only path to essential links or actions inside a diagram.
+Provide visible HTML links or controls nearby.
+
+If Mermaid links or click actions are enabled:
+
+- each link is keyboard reachable;
+- its purpose is understandable from its accessible name and context;
+- focus is visible and not obscured;
+- pointer and keyboard actions produce the same result;
+- the accessible name includes the visible label for speech input;
+- target size and hover or focus content meet applicable criteria; and
+- every action has an equivalent HTML path.
+
+Do not simulate a button with a non-focusable generated SVG group.
+
+### Interactive exploration
+
+When users must select nodes, expand branches, filter data, or inspect details,
+build an accessible interaction model outside the generated static SVG or use a
+tested component designed for that task.
+
+Define:
+
+- native roles and controls;
+- keyboard behavior;
+- focus order and restoration;
+- names, states, and values;
+- status announcements;
+- touch and pointer alternatives; and
+- a non-visual representation of the same state.
+
+Mermaid source plus ARIA attributes does not by itself define an accessible
+graph-navigation widget.
+
+## Motion and Animation
+
+Avoid decorative animation in diagrams. If animation, automatic updates, or
+moving paths are added by a host or plugin:
+
+- provide pause, stop, or hide controls when WCAG 2.2.2 applies;
+- respect `prefers-reduced-motion`;
+- avoid flashes that exceed WCAG thresholds;
+- do not use motion as the only indicator of change; and
+- keep the final state available in text.
+
+Do not make accessibility claims based on Mermaid animation behavior without
+testing the exact version and integration.
+
+## Secure and Stable Rendering
+
+Accessibility and security can fail together when untrusted diagram source is
+allowed to inject markup or interaction.
+
+- Keep Mermaid's `securityLevel: 'strict'` default unless a reviewed use case
+  requires another mode.
+- Do not lower security merely to add essential links; provide them in HTML.
+- Treat user-supplied Mermaid source as untrusted input.
+- Use supported sanitization and a restrictive content security policy.
+- Pin Mermaid and renderer dependencies through the project's package lock.
+- Do not load production dependencies from an unpinned `@latest` URL.
+- Review release notes and security advisories before upgrades.
+- Limit source size and diagram complexity to prevent rendering failures.
+- Render errors as accessible text without exposing sensitive details.
+
+The current Mermaid configuration schema also protects selected secure
+configuration keys from diagram-level overrides. Keep security decisions in
+site-owned configuration.
+
+## Authoring and Review Workflow
+
+### Before authoring
+
+- Decide whether a diagram materially improves understanding.
+- Identify purpose, audience, essential relationships, and alternative format.
+- Select a Mermaid diagram type that matches the information.
+- Confirm the target renderer supports that diagram type and accessibility
+  syntax.
+
+### During authoring
+
+- Add valid `accTitle:` and `accDescr:` lines.
+- Use clear node, participant, edge, state, and data labels.
+- Keep visual complexity proportionate to the task.
+- Avoid color-only and shape-only meaning.
+- Write the structured alternative alongside the source.
+- Keep essential links and controls in HTML.
+
+### Before publication
+
+- Parse and render with the pinned production version.
+- Inspect the generated SVG and the final accessibility tree.
+- Validate the structured alternative against the diagram.
+- Test all supported themes, zoom levels, viewports, and exports.
+- Test the actual Markdown, documentation, or application host.
+- Record the reviewer, render version, date, and known limitations.
+
+### AI-generated diagrams
+
+Treat AI output as a draft.
+
+- Verify every node, edge, value, date, state, and relationship against the
+  source material.
+- Rewrite generic or inaccurate accessibility descriptions.
+- Check that the structured alternative matches the final diagram.
+- Reject invented Mermaid directives and unsupported configuration.
+- Do not infer security, accessibility, or conformance from successful visual
+  rendering.
+
+## Linting and Automated Validation
+
+### Source checks
+
+For meaningful diagrams, automation can check:
+
+- the exact Mermaid source parses with the pinned renderer;
+- `accTitle:` is present and not commented out;
+- `accDescr:` or `accDescr { ... }` is present and not commented out;
+- title and description values are non-empty;
+- prohibited custom directives are not mistaken for Mermaid features;
+- external links and click actions follow project policy; and
+- a complex diagram references a visible structured alternative.
+
+Do not enforce arbitrary universal character counts. A lint rule can warn about
+unusually long content for human review, but length alone does not determine
+quality.
+
+### Rendered-output checks
+
+For inline SVG, automation can check:
+
+- generated `<title>` and `<desc>` elements exist when supplied in source;
+- `aria-labelledby` resolves to the generated title;
+- `aria-describedby` resolves to the generated description;
+- IDs are unique in the final page;
+- sanitization or optimization did not remove referenced elements;
+- the diagram has no unintended focusable descendants;
+- interactive elements have names, roles, states, keyboard behavior, and
+  visible focus; and
+- render errors are exposed as text.
+
+For external `<img>` output, check the HTML image's `alt`, not only the internal
+SVG metadata.
+
+### Contrast checks
+
+Automated contrast testing needs the actual rendered pairs:
+
+- text against its effective background;
+- essential node and group boundaries against adjacent colors;
+- essential connector lines and arrowheads against their backgrounds;
+- focus indicators and interactive states; and
+- every supported light and dark theme.
+
+"Monochrome" is not a reason to skip contrast testing. Black-and-white or
+single-hue diagrams still have measurable text, line, and boundary contrast.
+
+Automation cannot determine whether the description is equivalent, the reading
+order is meaningful, the alternative preserves relationships, or the diagram
+is understandable. Manual and user review are required.
+
+## Testing
+
+### Content and equivalent-purpose testing
+
+1. State the question the diagram should answer.
+2. Identify every essential relationship, branch, value, state, event, or
+   dependency.
+3. Answer the question using the visual diagram.
+4. Answer it using only the title, description, and structured alternative.
+5. Compare the available information, sequence, relationships, and conclusions.
+6. Correct both representations together.
+
+Do not judge equivalence only by counting node labels.
+
+### Keyboard testing
+
+- Confirm static SVG is not an unnecessary Tab stop.
+- Operate every diagram link, control, popup, and enlargement action.
+- Verify visible focus and logical focus order.
+- Enter and leave scrollable or embedded diagrams without a trap.
+- Confirm every diagram action has an equivalent HTML path.
+- Test character shortcuts if an integration adds them.
+
+### Screen reader testing
+
+Test supported browser, operating system, renderer, host, and
+assistive-technology combinations. Record versions and settings.
+
+- Navigate to the diagram in context.
+- Confirm the computed accessible name and description.
+- Check whether the diagram is exposed as an image, graphic, document, or
+  another role by the final host.
+- Read the visible structured alternative by headings, lists, and tables.
+- Confirm duplicate or excessively long announcements are avoided.
+- Test every interactive element and status message.
+
+Do not publish a fixed table promising identical announcements across named
+screen readers. Results depend on the host, browser, SVG mode, and current
+assistive-technology version.
+
+### Visual and low-vision testing
+
+- Test normal and large default text.
+- Test 200 percent and 400 percent browser zoom.
+- Test narrow viewports and both orientations.
+- Test every supported light and dark presentation.
+- Test forced-colors mode.
+- Confirm labels, nodes, lines, arrowheads, legends, and focus remain visible.
+- Confirm long translations do not overlap or disappear.
+- Verify a usable enlargement or download path for dense diagrams.
+
+### Export and platform testing
+
+- Test the original Markdown or source preview.
+- Test the production page after sanitization and optimization.
+- Test inline SVG, external SVG, and raster variants that are published.
+- Test print and PDF output when offered.
+- Test with JavaScript unavailable or rendering failed.
+- Test several diagrams on one page for duplicate IDs.
+- Retest after Mermaid, plugin, theme, sanitizer, or host updates.
+
+## Common Failures
+
+| Failure | Correction |
+|---|---|
+| Writing `%%accTitle` or `%%accDescr` | Use the valid `accTitle:` and `accDescr:` keywords without the Mermaid comment prefix |
+| Requiring arbitrary 100-character and 500-character limits | Write concise useful metadata and use visible structure for detail |
+| Treating successful rendering as proof of accessibility | Inspect the final SVG, accessibility tree, host, and alternative |
+| Depending only on `<desc>` for a complex diagram | Provide visible headings, lists, tables, or prose that preserve structure |
+| Exposing raw Mermaid source as the only alternative | Provide a plain-language, task-appropriate representation |
+| Adding list semantics to every generated SVG group | Treat the diagram as a whole or build a tested purpose-specific interface |
+| Replacing `aria-describedby` with `aria-labelledby` for the description | Preserve distinct label and description relationships unless testing supports a change |
+| Generating title IDs from timestamps and random strings | Let Mermaid manage IDs and use deterministic rendering where stability is required |
+| Requiring globally unique IDs across unrelated pages | Require uniqueness in each final document and preserve referenced IDs |
+| Treating `xmlns` as an accessibility attribute for all inline SVG | Require it for serialized standalone SVG contexts, not as universal accessibility metadata |
+| Inventing `%%a11y-node` and `%%a11y-edge` syntax | Use supported Mermaid syntax or document a real preprocessing extension separately |
+| Using 18 CSS pixels as the large-text threshold | Apply WCAG's large-scale text definition accurately |
+| Using APCA as a WCAG 2.2 pass or fail test | Use WCAG 2.x ratios for WCAG 2.2 conformance |
+| Claiming monochrome diagrams cannot be contrast tested | Test every meaningful text, line, boundary, and background pair |
+| Assuming a dark Mermaid theme passes dark-mode requirements | Test actual colors in every supported presentation |
+| Making static diagrams keyboard focusable | Keep static graphics out of the Tab order and focus real controls only |
+| Putting essential links only inside a diagram | Provide equivalent visible HTML links |
+| Loading Mermaid from an unpinned `@latest` dependency | Pin and review the production renderer version |
+| Using `securityLevel: 'loose'` without need | Keep strict security defaults and place essential interaction in HTML |
+| Trusting an editor preview instead of the published page | Test the production renderer, sanitizer, theme, embed mode, and exports |
+
+## Definition of Done
+
+- [ ] The diagram's purpose, audience, and essential relationships are
+  documented.
+- [ ] Mermaid is the clearest appropriate presentation for the content.
+- [ ] The source uses valid `accTitle:` syntax without a comment prefix.
+- [ ] The source uses valid single-line or multi-line `accDescr` syntax.
+- [ ] The title and description are concise, accurate, and reviewed.
+- [ ] Complex content has a visible structured alternative matched to its
+  diagram type.
+- [ ] The diagram and alternative are synchronized.
+- [ ] Nodes, participants, edges, states, values, and dates use meaningful
+  labels.
+- [ ] Color, shape, position, and line style are not the only cues.
+- [ ] Text, essential graphical objects, controls, and focus meet applicable
+  contrast requirements.
+- [ ] Light, dark, and forced-colors presentations have been tested.
+- [ ] Browser zoom, text enlargement, narrow viewports, and two-dimensional
+  scrolling have been tested.
+- [ ] Static diagrams do not add unnecessary keyboard stops.
+- [ ] Interactive links and controls have complete HTML alternatives.
+- [ ] The pinned production renderer parses the source without errors.
+- [ ] The generated SVG contains and references the expected title and
+  description.
+- [ ] IDs are unique in the final page and remain intact after optimization.
+- [ ] External images have appropriate HTML `alt` values.
+- [ ] SVG, raster, print, PDF, and embedded outputs are accessible as published.
+- [ ] Secure rendering defaults remain in place or exceptions are documented
+  and reviewed.
+- [ ] Render failures provide accessible text and the alternative remains
+  available.
+- [ ] Keyboard, screen reader, low-vision, contrast, platform, and
+  equivalent-purpose testing has been completed.
+- [ ] Automated checks supplement, but do not replace, manual and user review.
+
+## Related WCAG Criteria
+
+### Content and visual presentation
+
+- [1.1.1 Non-text Content (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
+- [1.3.1 Info and Relationships (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)
+- [1.3.2 Meaningful Sequence (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)
+- [1.3.3 Sensory Characteristics (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/sensory-characteristics.html)
+- [1.3.4 Orientation (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/orientation.html)
+- [1.4.1 Use of Color (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)
+- [1.4.3 Contrast (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+- [1.4.4 Resize Text (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html)
+- [1.4.10 Reflow (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
+- [1.4.11 Non-text Contrast (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+- [1.4.12 Text Spacing (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+- [1.4.13 Content on Hover or Focus (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
+
+### Keyboard, motion, and interaction
+
+- [2.1.1 Keyboard (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)
+- [2.1.2 No Keyboard Trap (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html)
+- [2.1.4 Character Key Shortcuts (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts.html)
+- [2.2.2 Pause, Stop, Hide (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)
+- [2.3.1 Three Flashes or Below Threshold (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html)
+- [2.4.3 Focus Order (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)
+- [2.4.4 Link Purpose (In Context) (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
+- [2.4.7 Focus Visible (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)
+- [2.4.11 Focus Not Obscured (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)
+- [2.5.3 Label in Name (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)
+- [2.5.8 Target Size (Minimum) (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- [4.1.2 Name, Role, Value (Level A)](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)
+- [4.1.3 Status Messages (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)
 
 ## Related Guides
 
-Mermaid diagrams are closely related to these guides in this project:
+- [Charts and Graphs Accessibility Best Practices](./CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Color Contrast Accessibility Best Practices](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Image Alt Text Accessibility Best Practices](./IMAGE_ALT_TEXT_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Light and Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)
+- [SVG Accessibility Best Practices](./SVG_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Tables Accessibility Best Practices](./TABLES_ACCESSIBILITY_BEST_PRACTICES.md)
+- [User Personalization Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Mermaid Diagram Types](./MERMAID_DIAGRAM_TYPES.md)
+- [Mermaid Transformation Best Practices](./MERMAID_TRANSFORMATION_BEST_PRACTICES.md)
+- [CI/CD Accessibility Best Practices](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 
-- [SVG Accessibility Best Practices](SVG_ACCESSIBILITY_BEST_PRACTICES.md) — Mermaid diagrams are exported as SVG. The SVG accessibility rules for `<title>`, `<desc>`, `role="img"`, `aria-labelledby`, forced-colors, and ID preservation all apply to Mermaid output.
-- [Charts and Graphs Accessibility Best Practices](CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) — Mermaid is commonly used to create flowcharts and sequence diagrams; the charts guide covers text alternatives, data table fallbacks, color encoding, and interactive accessibility requirements that apply when Mermaid diagrams are used as data visualizations.
-- [CI/CD Accessibility Best Practices — Section 5](CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#5-accessibility-tree-testing) — To verify that Mermaid SVG output is correctly announced by screen readers, use Playwright aria snapshots or Guidepup's virtual screen reader. Section 5 of the CI/CD guide explains how to assert the accessibility tree structure (e.g., `role="img"` with the correct accessible name) in automated tests.
-
----
+Use the project's
+[Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+to assign severity and priority. This guide does not define a universal
+severity scale.
 
 ## References
 
-### W3C Specifications
-
-- **W3C ARIA**: https://www.w3.org/WAI/ARIA/apg/
-- **WCAG 2.2**: https://www.w3.org/WAI/WCAG22/quickref/
+- [Mermaid: Accessibility Options](https://mermaid.ai/open-source/config/accessibility.html)
+- [Mermaid: Configuration](https://mermaid.ai/open-source/config/configuration.html)
+- [Mermaid: Theme Configuration](https://mermaid.ai/open-source/config/theming.html)
+- [Mermaid: Configuration Schema](https://mermaid.ai/open-source/schemas/config.schema.json)
+- [Mermaid: Security](https://mermaid.ai/open-source/community/security.html)
+- [W3C WAI: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
+- [WAI-ARIA 1.2: `aria-roledescription`](https://www.w3.org/TR/wai-aria-1.2/#aria-roledescription)
+- [SVG Accessibility API Mappings 1.0](https://www.w3.org/TR/svg-aam-1.0/)
 
 ### Machine-Readable Standards
 
-For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured accessibility standards:
+For AI systems and automated tooling, see
+[wai-yaml-ld](https://github.com/mgifford/wai-yaml-ld) for structured
+accessibility standards:
 
-- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml) - Machine-readable WCAG 2.2 normative content
-- [ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml) - ARIA-focused informative catalog
-- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml) - Relationships across WCAG/ARIA/SVG standards
-
-### Additional Reading
-
-- **Léonie Watson's Accessible SVG Flowcharts**: https://tink.uk/accessible-svg-flowcharts/
-- **Carie Fisher's Pattern Testing**: https://cariefisher.com/#/writing/accessible-svg-patterns-comparison
+- [WCAG 2.2 (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wcag-2.2-normative.yaml)
+- [WAI-ARIA Informative (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/wai-aria-informative.yaml)
+- [HTML Living Standard Accessibility (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/html-living-standard-accessibility.yaml)
+- [Standards Link Graph (YAML)](https://github.com/mgifford/wai-yaml-ld/blob/main/kitty-specs/001-wai-standards-yaml-ld-ingestion/research/standards-link-graph.yaml)
 
 ---
 
-**Last Updated:** January 16, 2026  
-**Version:** 1.0  
-**Status:** Normative Reference
+This document is available under the repository's [MIT License](../LICENSE).
