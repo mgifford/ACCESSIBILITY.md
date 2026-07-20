@@ -29,6 +29,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 2. **Add CI workflows** → Copy from [examples/](./examples/) directory
 3. **Configure AI agents** → Use [AGENTS.md](./AGENTS.md) as a guide
 4. **Read the framework** → Continue below to understand the approach
+5. **Review the registry** → [TRUSTED_SOURCES.yaml](./examples/TRUSTED_SOURCES.yaml)
 
 **Looking for specific files?** See the [Repository Structure](#-repository-structure) below.
 
