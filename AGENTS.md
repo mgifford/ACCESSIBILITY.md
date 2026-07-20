@@ -272,9 +272,10 @@ test results. Keep source, output, and alternatives synchronized.
 
 ## Trusted Sources
 
-Use [TRUSTED_SOURCES.yaml](examples/TRUSTED_SOURCES.yaml) as a discovery and
-review registry, not as proof that every included source is authoritative,
-current, or licensed for reuse.
+This keeps the policy centralized while making the registry easier for both
+people and agents to discover. Use [TRUSTED_SOURCES.yaml](examples/TRUSTED_SOURCES.yaml) 
+as a discovery and review registry, not as proof that every included source 
+is authoritative, current, or licensed for reuse.
 
 When researching:
 
