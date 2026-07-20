@@ -1,73 +1,218 @@
+# Validate rendered Jekyll output for accessibility-related regressions.
+#
+# PURPOSE
+# -------
+# This reference workflow builds the final Jekyll site, validates its generated
+# HTML, runs the repository's Lighthouse CI configuration, and uploads concise
+# debugging evidence. It is suitable for pull-request feedback after it has
+# been tested in the adopting repository.
+#
+# It does not establish WCAG conformance, perform manual or assistive-technology
+# testing, scan authenticated user tasks, create or close issues, invoke an AI
+# agent, deploy, or modify repository settings.
+#
+# PROJECT FIT
+# -----------
+# This version is tailored to mgifford/ACCESSIBILITY.md. It uses the repository's
+# Gemfile.lock, Jekyll build, and .lighthouserc.json. Adapt the build, paths, and
+# test commands for another project.
+#
+# The HTML validator is the blocking rule-based check. Lighthouse follows the
+# checked-in .lighthouserc.json. In this repository that configuration currently
+# warns when the accessibility category score is below 0.9; it does not fail on
+# that score. Neither result is a conformance percentage.
+#
+# BEFORE COPYING
+# --------------
+# 1. Read examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md and
+#    examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md.
+# 2. Confirm the final build command and output directory.
+# 3. Review HTML Validate and Lighthouse rules against current rendered output.
+# 4. Resolve and review current action commits and npm package versions.
+# 5. Prefer adding Node tools to a package manifest and lockfile when the target
+#    project uses Node. Exact versions are invoked directly here because this
+#    Jekyll repository does not currently have a package.json.
+# 6. Test the workflow in a branch or disposable repository before making its
+#    status check required.
+# 7. Configure a branch rule or ruleset separately if the check should block
+#    merge. A workflow file alone does not make a check required.
+# 8. Retire overlapping workflows after this replacement is validated so the
+#    same Lighthouse work is not run twice.
+#
+# REQUIRED-CHECK BEHAVIOR
+# -----------------------
+# The workflow intentionally has no path filter. GitHub documents that a
+# required workflow skipped by path or branch filtering can remain pending and
+# block merge. The stable job name is "Rendered site accessibility". Keep it
+# unique if it becomes a required check.
+#
+# SECURITY MODEL
+# --------------
+# The workflow token has read-only repository access. Checkout credentials are
+# not persisted. No secrets are passed to code from the pull request. Third-
+# party actions are pinned to reviewed full commit SHAs.
+#
+# npm still downloads and executes the exact package versions listed below.
+# A package version is not an immutable content hash. Review package provenance,
+# release notes, install behavior, and organization policy before use.
+#
+# VERSION REVIEW
+# --------------
+# Reviewed: 2026-07-19
+# html-validate: 11.5.6
+# @lhci/cli: 0.15.1
+# Verifying the Lighthouse CLI command on the review date emitted deprecation
+# warnings for several transitive npm packages. Review the resolved dependency
+# tree and organization policy before enabling it; the exact top-level version
+# does not remove transitive supply-chain risk.
+# Action releases were resolved to the full commit SHAs shown below on the
+# review date. Re-resolve and review them before copying this example.
+
 name: Accessibility Shift-Left
 
 on:
   pull_request:
-    paths:
-      - "**/*.html"
-      - "**/*.md"
-      - "**/*.js"
-      - "**/*.jsx"
-      - "**/*.ts"
-      - "**/*.tsx"
-      - "**/*.vue"
-      - "**/*.svelte"
-      - ".github/workflows/**"
   push:
     branches: [main]
-  schedule:
-    - cron: "0 6 * * 1"
+  merge_group:
+    types: [checks_requested]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: accessibility-shift-left-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  a11y-ci-gate:
-    name: A11y PR Gate
+  rendered-site-accessibility:
+    name: Rendered site accessibility
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    timeout-minutes: 20
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+    steps:
+      - name: Check out repository without stored credentials
+        # actions/checkout v6, resolved 2026-07-19.
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
-          node-version: "22"
-          cache: "npm"
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run accessibility checks
-        run: npm run test:a11y
-
-  accessibility-scanner:
-    name: GitHub Accessibility Scanner
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run scanner
-        uses: github/accessibility-scanner@v2
+      - name: Set up Ruby
+        # ruby/setup-ruby v1.316.0, resolved 2026-07-19.
+        uses: ruby/setup-ruby@d45b1a4e94b71acab930e56e79c6aa188764e7f9
         with:
-          url: ${{ vars.ACCESSIBILITY_SCAN_URL }}
-          repo_token: ${{ secrets.GH_TOKEN }}
-          # Optional auth inputs for gated sites:
-          # login_url: ${{ vars.ACCESSIBILITY_LOGIN_URL }}
-          # username: ${{ secrets.ACCESSIBILITY_USERNAME }}
-          # password: ${{ secrets.ACCESSIBILITY_PASSWORD }}
+          ruby-version: "3.2"
+          bundler-cache: true
 
-  required-check-summary:
-    name: Required Check Summary
-    runs-on: ubuntu-latest
-    needs: [a11y-ci-gate]
-    if: always()
-    steps:
-      - name: Enforce gate outcome
+      - name: Set up Node.js
+        # actions/setup-node v4, resolved 2026-07-19.
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24"
+
+      - name: Build the final Jekyll site
+        id: build
+        continue-on-error: true
+        env:
+          JEKYLL_ENV: production
+        shell: bash
         run: |
-          if [ "${{ needs.a11y-ci-gate.result }}" != "success" ]; then
-            echo "A11y PR gate failed."
+          set -euo pipefail
+          bundle exec jekyll build --trace
+
+      - name: Validate generated HTML
+        id: html_validate
+        if: ${{ steps.build.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir --mode=700 reports
+
+          npm exec --yes \
+            --package=html-validate@11.5.6 \
+            -- html-validate "_site/**/*.html" \
+            2>&1 | tee reports/html-validate.txt
+
+      - name: Run Lighthouse CI
+        id: lighthouse
+        if: ${{ steps.build.outcome == 'success' }}
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm exec --yes \
+            --package=@lhci/cli@0.15.1 \
+            -- lhci autorun --config=.lighthouserc.json
+
+      - name: Upload debugging evidence
+        if: ${{ always() }}
+        # actions/upload-artifact v4, resolved 2026-07-19.
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: accessibility-shift-left-${{ github.run_id }}
+          path: |
+            reports
+            .lighthouseci
+          if-no-files-found: ignore
+          include-hidden-files: true
+          retention-days: 7
+
+      - name: Summarize results
+        if: ${{ always() }}
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          HTML_OUTCOME: ${{ steps.html_validate.outcome }}
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## Accessibility shift-left"
+            echo
+            echo "- Jekyll build: $BUILD_OUTCOME"
+            echo "- Generated HTML validation: $HTML_OUTCOME"
+            echo "- Lighthouse CI command: $LIGHTHOUSE_OUTCOME"
+            echo "- WCAG conformance established: no"
+            echo "- Manual testing performed: no"
+            echo
+            echo "Review the logs and artifact for rule details."
+            echo "Apply the manual checks required by the changed user task."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce configured checks
+        if: ${{ always() }}
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          HTML_OUTCOME: ${{ steps.html_validate.outcome }}
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          failed=0
+
+          if [[ "$BUILD_OUTCOME" != "success" ]]; then
+            echo "The Jekyll build did not succeed." >&2
+            failed=1
+          fi
+
+          if [[ "$HTML_OUTCOME" != "success" ]]; then
+            echo "Generated HTML validation did not succeed." >&2
+            failed=1
+          fi
+
+          if [[ "$LIGHTHOUSE_OUTCOME" != "success" ]]; then
+            echo "The Lighthouse CI command did not succeed." >&2
+            failed=1
+          fi
+
+          if [[ "$failed" -ne 0 ]]; then
+            echo "Review the preceding steps and uploaded evidence." >&2
             exit 1
           fi
+
+          echo "Configured rendered-site checks completed successfully."
