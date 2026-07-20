@@ -1,9 +1,95 @@
+# Optional local accessibility feedback for a Jekyll documentation project.
+#
+# PURPOSE
+# -------
+# This sample provides two local hooks:
+#
+# 1. A fast pre-commit hook validates changed .html and .htm files.
+# 2. A slower pre-push hook builds Jekyll and validates generated HTML in _site.
+#
+# The hooks are developer conveniences. They are not repository enforcement and
+# can be absent or bypassed. Repeat required checks in CI; see
+# A11Y_SHIFT_LEFT_WORKFLOW.yml.
+#
+# SCOPE AND LIMITATIONS
+# ---------------------
+# HTML Validate can find standards, WCAG-related, and best-practice patterns in
+# the HTML it parses. This configuration does not evaluate Markdown semantics
+# before rendering, browser interaction, keyboard behavior, focus management,
+# accessible-name quality, themes, preferences, assistive technologies, or
+# complete user tasks. A clean result does not establish WCAG conformance.
+#
+# The pre-push hook is tailored to mgifford/ACCESSIBILITY.md. Another project
+# must replace the Jekyll build and output path with its real rendering process.
+#
+# INSTALLATION
+# ------------
+# 1. Install pre-commit from its official documentation:
+#    https://pre-commit.com/
+# 2. Copy this file to .pre-commit-config.yaml.
+# 3. Review the package version, rules, file filters, build command, and output.
+# 4. Install both hook types:
+#
+#    pre-commit install --hook-type pre-commit --hook-type pre-push
+#
+# 5. Test every configured hook against the repository:
+#
+#    pre-commit run --all-files
+#    pre-commit run --hook-stage pre-push --all-files
+#
+# The pre-push hook requires the repository's Ruby and Bundler dependencies.
+# Run bundle install before invoking it locally.
+#
+# SECURITY AND REPRODUCIBILITY
+# ----------------------------
+# pre-commit creates an isolated Node environment for these hooks and installs
+# the exact top-level npm version listed in additional_dependencies. An npm
+# version is not an immutable content hash and does not pin every transitive
+# dependency. Review package provenance, the resolved dependency tree, release
+# notes, install behavior, and organization policy before use.
+#
+# Do not pass secrets to these hooks. Filenames and repository content are
+# untrusted input. The fast hook passes filenames as separate arguments rather
+# than interpolating them into shell text.
+#
+# VERSION REVIEW
+# --------------
+# Reviewed: 2026-07-19
+# html-validate: 11.5.6
+
+fail_fast: false
+
 repos:
   - repo: local
     hooks:
-      - id: accessibility-checks
-        name: Run accessibility checks
-        entry: bash -lc 'npm run lint:a11y && npm run test:a11y:changed'
-        language: system
-        pass_filenames: false
+      - id: accessibility-html-changed
+        name: Validate changed HTML
+        description: >-
+          Run HTML Validate on changed HTML source files for fast local
+          feedback.
+        entry: html-validate
+        language: node
+        additional_dependencies:
+          - html-validate@11.5.6
+        files: \.(html?|xhtml)$
+        exclude: ^_site/
+        pass_filenames: true
+        require_serial: true
         stages: [pre-commit]
+
+      - id: accessibility-rendered-site
+        name: Build and validate rendered Jekyll site
+        description: >-
+          Build the final Jekyll output and validate every generated HTML file
+          before push.
+        entry: >-
+          bash -c 'set -euo pipefail;
+          JEKYLL_ENV=production bundle exec jekyll build --quiet;
+          html-validate "_site/**/*.html"'
+        language: node
+        additional_dependencies:
+          - html-validate@11.5.6
+        pass_filenames: false
+        always_run: true
+        require_serial: true
+        stages: [pre-push]
