@@ -250,7 +250,7 @@ Copy relevant guides to your project's documentation:
 
 ### Step 6: Reference trusted sources
 
-Copy the vetted accessibility resources list:
+Copy the accessibility source discovery and review registry.
 
 ```bash
 cp examples/TRUSTED_SOURCES.yaml docs/
