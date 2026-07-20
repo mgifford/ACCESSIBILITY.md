@@ -358,3 +358,10 @@ Modern CSS theme architecture should:
 * Treat accessibility as part of the design system rather than a separate concern.
 * Improve maintainability through clear abstraction layers.
 * Make accessibility easier to audit at scale.
+
+See Also
+
+• MODERN_CSS_THEME_ARCHITECTURE.md
+• USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md
+• COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md
+• FOCUS_INDICATOR_ACCESSIBILITY_BEST_PRACTICES.md
