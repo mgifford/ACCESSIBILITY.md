@@ -4,22 +4,25 @@ title: Accessibility Bug Reporting Best Practices
 
 # Accessibility Bug Reporting Best Practices
 
-This guide explains how to record, triage, fix, and verify accessibility findings. It applies to findings from disabled users, manual evaluation, automated tools, code review, and support channels.
+This guide explains how to record, triage, fix, and verify accessibility findings. It applies to findings reported by disabled people, observed during testing with disabled people, found through manual accessibility evaluation, detected by automated tools, identified in code review, or received through support channels.
 
-A useful report lets another person understand the barrier, reproduce it when possible, judge its impact, identify the responsible source, and verify the correction. Not every field applies to every finding. Do not delay a valid report because a selector, tool rule, WCAG mapping, or code-level fix is unavailable.
+A useful report lets another person understand the barrier, identify the people affected, reproduce it when possible, judge its impact, identify the responsible source, and verify the correction. Not every field applies to every finding. Do not delay a valid report because a selector, tool rule, WCAG mapping, or code-level fix is unavailable.
 
 ## 1. Principles
 
 1. **Describe the barrier before the standard.** State what task or interaction fails and under what conditions.
-2. **Record observed facts.** Separate observations from assumptions, suspected causes, and suggested fixes.
-3. **Collect only relevant context.** Browser, assistive technology, viewport, preferences, and account state matter only when they affect the result.
-4. **Protect people and systems.** Remove personal data, credentials, tokens, private content, and unnecessary account information from every attachment and code sample.
-5. **Treat tool output as evidence, not a conformance decision.** Automated checks can find many failures, but they cannot establish that a page or product conforms to WCAG.
-6. **Separate severity from priority.** Task impact and workaround quality inform severity. Reach, frequency, deadlines, regression status, and business context inform priority.
-7. **Fix the source when possible.** A correction in a shared component, template, content model, or design token is usually safer than many page-specific patches.
-8. **Close with verification evidence.** A code change, an automated pass, or a visual check alone may not prove that the user-facing barrier is gone.
+2. **Identify the people affected.** Describe the relevant access needs, interaction methods, disability experience, or assistive technologies when the evidence supports doing so. Do not infer a diagnosis or imply that one person represents an entire disability group.
+3. **State the evidence basis.** Distinguish user reports, testing with disabled people, manual evaluation, automated results, and reasoned inference.
+4. **Record observed facts.** Separate observations from assumptions, suspected causes, and suggested fixes.
+5. **Use complementary testing methods.** Automated testing, manual accessibility evaluation, and testing with disabled people answer different questions. None is a complete substitute for the others.
+6. **Collect only relevant context.** Browser, assistive technology, viewport, preferences, and account state matter only when they affect the result.
+7. **Protect people and systems.** Remove personal data, credentials, tokens, private content, and unnecessary account information from every attachment and code sample.
+8. **Treat tool output as evidence, not a conformance decision.** Automated checks can find many failures, but they cannot establish that a page or product conforms to WCAG.
+9. **Separate severity from priority.** Task impact and workaround quality inform severity. Reach, frequency, deadlines, regression status, and business context inform priority.
+10. **Fix the source when possible.** A correction in a shared component, template, content model, or design token is usually safer than many page-specific patches.
+11. **Close with verification evidence.** A code change, automated pass, or visual check alone may not prove that the user-facing barrier is gone.
 
-## 2. Findings, Issues, and Conformance
+## 2. Findings, Issues, Testing, and Conformance
 
 These terms describe different things:
 
@@ -29,6 +32,9 @@ These terms describe different things:
 | **Issue** | Tracked work that may contain one or more related findings. |
 | **Occurrence** | One place or state in which a finding appears. |
 | **Root cause** | The source that produces one or more occurrences, such as a shared component. |
+| **Affected people** | The people whose task or experience is confirmed or reasonably expected to be affected. Describe them only as specifically as the evidence allows. |
+| **Manual accessibility evaluation** | Human evaluation of an interface using relevant inputs, settings, inspection methods, and assistive technologies. |
+| **Testing with disabled people** | Evaluation in which disabled participants use representative tasks and provide evidence from lived experience. This is distinct from an evaluator operating assistive technology. |
 | **Conformance conclusion** | A conclusion about a defined scope, standard, level, and evaluation method. |
 
 A failed automated rule does not automatically prove a WCAG failure. A passed automated rule does not prove conformance. Confirm the result and its scope before making a conformance claim.
@@ -41,14 +47,16 @@ Include the following when it is known and relevant:
 | --- | --- |
 | **Title** | Component or location, failure, and task effect. |
 | **Location and state** | Safe URL or route, component name, build, and the state in which the problem appears. |
-| **Task and impact** | What the person is trying to do and how the barrier affects that task. |
+| **People affected** | The people, access needs, interaction methods, or assistive technology users confirmed or likely to be affected. Record more than one group when relevant. |
+| **Evidence basis and confidence** | Whether the impact is based on a user report, testing with disabled people, manual evaluation, an automated result, or reasoned inference, plus any uncertainty or scope limit. |
+| **Task and impact** | What the person is trying to do, how the barrier affects that task, and the quality or cost of any workaround. |
 | **Steps or conditions** | The shortest reliable path to the problem, including required preconditions. |
 | **Expected result** | The user-facing behavior that should occur. |
 | **Actual result** | What was observed, including relevant output from assistive technology. |
 | **Environment** | Only the browser, operating system, assistive technology, input, viewport, zoom, preferences, or locale that affect the result. |
 | **Evidence** | A small, redacted excerpt or accessible attachment when it makes the finding easier to understand. |
 
-Do not reject a report from a user because it lacks technical details. A triager can add a locator, standards mapping, or diagnostic evidence later.
+Do not reject a report from a user because it lacks technical details. A triager can add a locator, standards mapping, diagnostic evidence, or verification plan later.
 
 ## 4. Write a Specific Title
 
@@ -159,16 +167,29 @@ association. When focus moves to the field, NVDA announces only its label.
 
 Avoid putting a particular ARIA attribute or JavaScript method in the expected result unless the product contract requires that implementation. Put possible code changes under **Suggested fix**.
 
-## 8. Describe User Impact Precisely
+## 8. Identify the People Affected and Describe Impact
 
-Describe the affected interaction and the consequence. Do not infer a person's diagnosis or claim that every member of a disability group has the same experience.
+Every report should connect the barrier to people and a task, not only to a technical defect, tool rule, or standard.
+
+Describe people in terms of relevant access needs, interaction methods, disability experience, or assistive technology when the evidence supports it. Do not guess a diagnosis, require a person to disclose one, or imply that every person in a disability group will have the same experience.
+
+Record the basis and limits of the impact statement:
+
+| Evidence status | Meaning |
+| --- | --- |
+| **Reported or confirmed by affected people** | A disabled person reported the barrier, or it was observed while disabled participants performed the task. Record the participant and task scope without exposing identity or private information. |
+| **Observed through manual evaluation** | An evaluator reproduced the barrier using the relevant interaction method, setting, or assistive technology. This is evidence of the behavior, but it is not the same as testing with disabled people. |
+| **Likely** | The affected population and impact are reasonably inferred from the observed behavior but have not been confirmed with affected people. |
+| **Unknown or needs review** | The finding comes from automation or technical inspection and its user impact has not yet been established. |
 
 Useful impact statement:
 
 ```text
-People using screen readers are not notified that submission failed. They may
-continue waiting or search the form for an error. The task is possible only
-after reviewing the form field by field.
+People who use screen readers are likely to be affected, including some blind
+and low-vision people. Manual evaluation with NVDA and Firefox found that
+submission failure was not announced. A person may continue waiting or review
+the form field by field to find the error. The impact has not yet been confirmed
+through testing with disabled participants.
 ```
 
 Less useful statement:
@@ -179,13 +200,16 @@ This affects blind people and violates WCAG.
 
 When known, record:
 
+- the people, access needs, or interaction methods affected;
+- whether the impact was reported, observed, inferred, or remains unknown;
 - the task that is blocked or made harder;
 - whether the person can perceive, understand, navigate, or operate the control;
 - the quality and cost of any workaround;
 - whether the result can cause loss of data, time, money, privacy, or safety;
-- whether the barrier is repeated in a shared workflow.
+- whether the barrier is repeated in a shared workflow;
+- the limits of the evaluation or participant sample.
 
-User impact may be reported even when no WCAG criterion has been identified.
+A report can identify more than one affected population. Avoid assuming a one-to-one relationship between a WCAG criterion or automated rule and a disability group. User impact may be reported even when no WCAG criterion has been identified.
 
 ## 9. Record the Relevant Environment
 
@@ -281,12 +305,12 @@ For automated or semi-automated results, preserve:
 Tool and version: [name and version]
 Rule ID and version: [identifier and version]
 Configuration: [ruleset, tags, exclusions, and relevant options]
-Test method: Automated / Semi-automated / Manual
+Test method: Automated / Semi-automated / Manual / User-reported / Testing with disabled people
 Raw outcome: [tool's original outcome]
 Human review: Confirmed / Rejected / Needs review
 ```
 
-Keep a tool's impact or confidence value separate from the project's severity. Tool metadata is a heuristic and may not reflect the task, context, workaround, or root cause.
+Keep a tool's impact or confidence value separate from the project's severity. Tool metadata is a heuristic and may not reflect the task, context, workaround, affected people, or root cause.
 
 ### 11.3 ACT outcomes
 
@@ -300,7 +324,71 @@ If a result uses the [ACT Rules Format 1.1](https://www.w3.org/TR/act-rules-form
 
 Send `cantTell` results for review. A `passed` or `inapplicable` rule result may still require other tests before drawing a conclusion about a WCAG requirement.
 
-## 12. Separate Severity, Priority, Reach, and Confidence
+## 12. Plan Complementary Testing and Verification
+
+Automated testing, manual accessibility evaluation, and testing with disabled people provide different evidence. A verification plan should state which methods are required, why they are appropriate, and what their limits are.
+
+### 12.1 Automated testing
+
+Automated testing can identify some machine-testable patterns and provide repeatable regression coverage. It cannot determine all user impact, usability, or conformance.
+
+For automated findings:
+
+- preserve the raw result and configuration;
+- require human review before treating the result as a confirmed user-facing barrier;
+- add or update automated regression coverage when practical;
+- do not treat an automated pass as sufficient closure evidence.
+
+### 12.2 Manual accessibility evaluation
+
+Manual evaluation is required when the result depends on human judgment or interaction. A user-facing correction identified by automation should be manually retested in the original interaction before closure.
+
+Depending on the finding, manual evaluation may include:
+
+- keyboard operation, focus order, focus visibility, and focus management;
+- pointer, touch, switch, and speech input;
+- screen reader output and accessibility-tree inspection;
+- zoom, reflow, text spacing, orientation, and responsive states;
+- forced colors, contrast preferences, color schemes, and reduced motion;
+- labels, instructions, errors, status messages, and dynamic updates;
+- relevant loading, empty, expanded, collapsed, selected, disabled, and error states.
+
+Test the supported environments relevant to the finding. Do not require every browser and assistive technology combination for every issue when a smaller, risk-based set is sufficient. Record what was tested and what was not.
+
+### 12.3 Testing with disabled people
+
+Testing with disabled people examines real tasks and lived interaction. It can identify barriers, confusing workflows, and ineffective workarounds that standards-based evaluation or an evaluator using assistive technology may miss.
+
+Plan testing with disabled people when:
+
+- the affected task is critical, such as authentication, payment, health, education, employment, safety, or access to public services;
+- the barrier or proposed correction has major or uncertain impact;
+- the interface uses a complex, novel, or highly interactive component;
+- the quality or practicality of a workaround is unclear;
+- reports from disabled people conflict with technical test results;
+- the team intends to make broader claims about usability or accessibility;
+- repeated reports suggest that technical evaluation is missing part of the experience.
+
+Do not use disabled participants to rediscover obvious, known failures that should be fixed first. Recruit participants whose access needs and experience are relevant to the task. Make research materials, consent, communication, scheduling, and compensation accessible. Protect participant identity and private information.
+
+Record the participant scope, relevant characteristics, tasks, methods, results, and limitations. One participant can confirm that person's experience, but should not be treated as representative of every person with the same disability.
+
+Testing with disabled people does not replace evaluation against accessibility standards. Standards-based and manual evaluation do not replace learning directly from disabled people.
+
+### 12.4 Verification plan
+
+A report or linked test plan should record:
+
+```text
+Automated checks: Required / Not required / Planned / Completed
+Manual checks: Required / Not required / Planned / Completed
+Relevant supported environments: [list]
+Testing with disabled people: Required / Not required / Not yet determined / Planned / Completed
+Rationale: [risk, task, uncertainty, or scope]
+Evaluation scope and limitations: [what was and was not covered]
+```
+
+## 13. Separate Severity, Priority, Reach, Frequency, and Confidence
 
 These fields answer different questions:
 
@@ -310,13 +398,13 @@ These fields answer different questions:
 | **Priority** | When should the responsible team address it? |
 | **Reach** | How many people, pages, components, or workflows may be affected? |
 | **Frequency** | How often does the condition or occurrence appear? |
-| **Confidence** | How certain is the team that the finding and its cause are understood? |
+| **Confidence** | How certain is the team that the finding, affected people, impact, and cause are understood? |
 
 Frequency and reach can increase priority, but they do not change what happened in one occurrence. Do not automatically turn a low-severity issue into a higher-severity issue because it appears on many pages.
 
-Projects should define and calibrate their own scales with disabled users and product teams. One possible task-impact scale is:
+Projects should define and calibrate their own scales with disabled people and product teams. One possible task-impact scale is:
 
-| Example level | Task impact and workaround |
+| Severity | Definition |
 | --- | --- |
 | **Blocker** | A core task cannot be completed, or there is a serious safety, privacy, or data-loss risk, with no reasonable workaround. |
 | **Major** | A task fails, is unreliable, or requires a substantial workaround. |
@@ -336,7 +424,7 @@ Priority may also consider:
 - risk of further content or component reuse;
 - fix complexity and dependencies.
 
-## 13. Record Scope, Frequency, and Root Cause
+## 14. Record Scope, Frequency, and Root Cause
 
 Describe what was actually checked:
 
@@ -351,9 +439,9 @@ Unchecked scope: Mobile app and authenticated administrator flow
 
 Do not extrapolate from a sample without saying that it is an estimate. A sitewide template defect and seven unrelated content errors may have the same count but require different work.
 
-Group findings conservatively. Combine occurrences when they share the same remediation unit or confirmed root cause. Do not merge findings only because they have the same rule ID or a similar selector. Preserve representative URLs, states, and exceptions within a grouped issue.
+Group findings conservatively. Combine occurrences when they share the same remediation unit or confirmed root cause. Do not merge findings only because they have the same rule ID or a similar selector. Preserve representative URLs, states, affected populations, and exceptions within a grouped issue.
 
-## 14. Suggested Fixes and Acceptance Criteria
+## 15. Suggested Fixes and Acceptance Criteria
 
 A suggested fix is helpful but optional. Label it as a proposal and explain why it is expected to address the barrier. The responsible team may know a safer source-level correction.
 
@@ -373,11 +461,13 @@ Acceptance criteria should describe verifiable behavior:
 - Keyboard focus remains predictable.
 - The behavior works in the supported browser and assistive technology combinations.
 - Existing visible labels, instructions, and error summaries still work.
+- The original interaction is manually retested.
+- Testing with disabled people is completed when required by the verification plan.
 ```
 
 Avoid acceptance criteria that specify only an attribute, selector, screenshot, or automated rule result. Those checks may support verification, but the user-facing outcome is the target.
 
-## 15. Markdown Issue Template
+## 16. Markdown Issue Template
 
 Adapt this template to the organization. Fields marked as optional should remain optional.
 
@@ -410,9 +500,16 @@ Adapt this template to the organization. Fields marked as optional should remain
 
 [Describe what was observed.]
 
-### User impact
+### People affected and impact
 
-[Describe the affected task, consequence, and workaround if known.]
+- People confirmed or likely to be affected:
+- Relevant access needs, interaction methods, or assistive technologies:
+- Affected task:
+- Consequence:
+- Workaround and its cost, if any:
+- Evidence basis: User report / Testing with disabled people / Manual evaluation / Automated result / Reasoned inference
+- Confidence: Confirmed for reported scope / Observed / Likely / Unknown
+- Scope limits or uncertainty:
 
 ### Relevant environment
 
@@ -436,6 +533,15 @@ Adapt this template to the organization. Fields marked as optional should remain
 - Test method and raw outcome:
 - Human review: Confirmed / Rejected / Needs review
 
+### Verification plan
+
+- Automated checks: Required / Not required / Planned / Completed
+- Manual checks: Required / Not required / Planned / Completed
+- Relevant supported environments:
+- Testing with disabled people: Required / Not required / Not yet determined / Planned / Completed
+- Rationale:
+- Evaluation scope and limitations:
+
 ### Scope and source
 
 - Occurrences and sample checked:
@@ -449,17 +555,22 @@ Adapt this template to the organization. Fields marked as optional should remain
 ### Acceptance criteria
 
 - [ ] The reported user-facing barrier is no longer present.
-- [ ] The original environment and interaction have been retested.
-- [ ] Relevant adjacent inputs, states, and supported environments have been checked.
+- [ ] The original environment and interaction have been manually retested.
+- [ ] An automated pass was not treated as sufficient evidence on its own.
+- [ ] Relevant adjacent inputs, states, preferences, and supported environments have been checked.
+- [ ] Relevant keyboard, pointer, touch, speech, and assistive technology interactions have been checked.
+- [ ] Testing with disabled people was completed when required by the verification plan.
+- [ ] The impact statement does not go beyond the available evidence.
 - [ ] Appropriate regression coverage has been added or updated.
 
 ### Privacy and attachment check
 
 - [ ] Secrets, personal data, and private content have been removed.
+- [ ] Participant information is included only with informed permission and a valid need.
 - [ ] Screenshots are described and recordings have captions or transcripts.
 ```
 
-## 16. Example Report
+## 17. Example Report
 
 ### Checkout: card error text is not associated with the field
 
@@ -488,9 +599,11 @@ The card number error is associated with the field. When focus returns to the fi
 
 The visible error appears, but the field has no programmatic error association. When focus returns to the field, NVDA announces only `Card number, edit`.
 
-**Impact**
+**People affected and impact**
 
-People using screen readers may not know which visible error belongs to the field. The available workaround is to navigate through surrounding content after each failed attempt.
+People who use screen readers are likely to be affected, including some blind and low-vision people. They may not know which visible error belongs to the field. The available workaround is to navigate through surrounding content after each failed attempt.
+
+The behavior was observed during manual evaluation with NVDA and Firefox. It has not yet been confirmed through testing with disabled participants, so the impact statement is limited to a reasoned assessment of this interaction.
 
 **Relevant environment**
 
@@ -507,21 +620,35 @@ Relationship: Confirmed failure
 Method: Manual test with assistive technology
 ```
 
+**Verification plan**
+
+```text
+Automated checks: Add regression coverage for the programmatic error association
+Manual checks: Retest error identification, focus behavior, and screen reader output
+Supported environments: Relevant supported browser and screen reader combinations
+Testing with disabled people: Planned
+Rationale: Checkout is a critical payment task and the practical error-recovery experience matters
+Scope limit: Initial observation covers NVDA with Firefox only
+```
+
 **Acceptance criteria**
 
 - The error remains identified in text.
 - The field exposes the error association and invalid state programmatically.
 - Moving focus to the field makes its label, invalid state, and error available.
+- The error is discoverable without reviewing every field.
 - Keyboard focus remains predictable.
-- The correction is retested with the supported form error pattern.
+- The correction is manually retested with the supported form error pattern.
+- The corrected checkout error flow is evaluated with disabled participants who regularly use screen readers before the correction is treated as verified for that participant scope.
+- Automated regression coverage is added or updated where practical.
 
-## 17. Machine-Readable Finding Example
+## 18. Machine-Readable Finding Example
 
-Machine-readable output can support imports, reporting, and regression analysis. It must not require fields that do not exist for manual findings.
+Machine-readable output can support imports, reporting, and regression analysis. It must not require fields that do not exist for manual or user-reported findings.
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "title": "Checkout: card error text is not associated with the field",
   "reported_at": "2026-07-18T14:30:00-04:00",
   "location": {
@@ -546,10 +673,23 @@ Machine-readable output can support imports, reporting, and regression analysis.
   ],
   "expected": "The field exposes its label, invalid state, and associated error programmatically.",
   "actual": "A visible error appears, but the field has no error association and NVDA announces only its label.",
+  "affected_people": [
+    {
+      "description": "People who use screen readers",
+      "examples": [
+        "some blind people",
+        "some low-vision people"
+      ],
+      "status": "likely",
+      "evidence_basis": "manual-evaluation",
+      "scope_limit": "Observed with NVDA and Firefox; not yet evaluated with disabled participants"
+    }
+  ],
   "impact": {
     "task": "Correct payment details",
     "effect": "The person may not know which visible error belongs to the field.",
-    "workaround": "Navigate through surrounding content after each attempt."
+    "workaround": "Navigate through surrounding content after each attempt.",
+    "confidence": "observed-behavior-with-inferred-impact"
   },
   "environment": {
     "browser": "Firefox 140",
@@ -579,10 +719,29 @@ Machine-readable output can support imports, reporting, and regression analysis.
     "rule": null,
     "act_outcome": null
   },
+  "verification": {
+    "automated": {
+      "required": true,
+      "status": "planned"
+    },
+    "manual": {
+      "required": true,
+      "status": "completed-for-original-finding"
+    },
+    "testing_with_disabled_people": {
+      "required": true,
+      "status": "planned",
+      "rationale": "The defect affects a critical checkout task."
+    }
+  },
   "scope": {
     "occurrences_observed": 1,
     "pages_checked": 1,
-    "shared_component": true
+    "shared_component": true,
+    "unchecked_scope": [
+      "other supported screen readers",
+      "mobile application"
+    ]
   },
   "evidence": {
     "attachments": [],
@@ -592,33 +751,38 @@ Machine-readable output can support imports, reporting, and regression analysis.
     "The error remains identified in text.",
     "The field exposes the error association and invalid state programmatically.",
     "Moving focus to the field makes its label, invalid state, and error available.",
-    "Keyboard focus remains predictable."
+    "Keyboard focus remains predictable.",
+    "The original interaction is manually retested.",
+    "Testing with disabled screen reader users is completed for the planned participant scope."
   ]
 }
 ```
 
 Projects that formalize this structure should version their schema, document null and omitted values, validate imports, and plan migrations. Preserve the tool's raw output separately when exact round-trip fidelity matters.
 
-## 18. Automation and AI Guardrails
+## 19. Automation and AI Guardrails
 
-Automation can collect and organize evidence. It should not invent certainty.
+Automation can collect and organize evidence. It should not invent certainty, affected populations, or lived experience.
 
 An automated or AI-assisted reporting workflow should:
 
 1. preserve the raw result, tool version, rule version, configuration, time, and tested URL or route;
-2. label the method as automated, semi-automated, manual, or user-reported;
+2. label the method as automated, semi-automated, manual, user-reported, or testing with disabled people;
 3. retain the tool's original outcome and put `cantTell` or uncertain results into a review queue;
 4. remove credentials and personal data before sending evidence to another system;
-5. avoid generating a WCAG mapping, impact statement, severity, or root cause when the evidence does not support it;
-6. require human validation according to the project's risk and triage rules before creating high-impact work or conformance claims;
-7. group occurrences only when the remediation unit or root cause is sufficiently established;
-8. update an existing issue with new occurrences instead of silently discarding them as duplicates;
-9. preserve disagreements between a tool result and human review;
-10. require user-facing retesting before closure when the barrier cannot be fully verified by automation.
+5. avoid generating a WCAG mapping, affected population, impact statement, severity, or root cause when the evidence does not support it;
+6. distinguish confirmed participant evidence, manual observation, and reasoned inference;
+7. require human validation according to the project's risk and triage rules before creating high-impact work or conformance claims;
+8. group occurrences only when the remediation unit or root cause is sufficiently established;
+9. update an existing issue with new occurrences instead of silently discarding them as duplicates;
+10. preserve disagreements between a tool result, evaluator review, and participant feedback;
+11. require manual user-facing retesting before closure when automation cannot verify the outcome;
+12. record whether testing with disabled people is required, planned, completed, or not required, including the rationale;
+13. never claim that testing with disabled people occurred unless it actually did.
 
 Do not close an issue only because the original automated rule passes. The implementation may have changed the selector, hidden the tested node, or introduced a different barrier.
 
-## 19. Deduplication and Identifiers
+## 20. Deduplication and Identifiers
 
 Use the issue tracker's ID as the durable identity for tracked work. A scan fingerprint can help correlate repeated results, but it is not a permanent bug ID.
 
@@ -634,40 +798,44 @@ If fingerprints are used:
 
 A useful correlation key may include route pattern, source component, rule, relevant state, and environment. The right inputs depend on the product. A generated selector and a shortened hash are not guaranteed to be stable or unique.
 
-## 20. Finding Lifecycle
+## 21. Finding Lifecycle
 
-Use a lifecycle that keeps evidence, ownership, and verification connected:
+Use a lifecycle that keeps people, evidence, ownership, and verification connected:
 
-1. **Capture:** Record the barrier, location, state, impact, and safe evidence.
+1. **Capture:** Record the barrier, location, state, people affected, impact, evidence basis, and safe evidence.
 2. **Triage:** Confirm the result when possible, identify missing context, and separate severity from priority.
 3. **Isolate:** Find the source component, template, content model, token, or process that produces the occurrences.
 4. **Assign:** Give the issue an owner who can change the source, not only the individual page.
-5. **Define:** Agree on user-facing acceptance criteria and the supported test environments.
+5. **Define:** Agree on user-facing acceptance criteria, supported test environments, and a verification plan.
 6. **Correct:** Fix the source and update relevant documentation, examples, or content guidance.
 7. **Prevent:** Add proportionate automated, unit, integration, or manual regression coverage.
 8. **Retest:** Repeat the original interaction and check relevant adjacent inputs, states, preferences, and supported environments.
-9. **Close:** Record what changed, the verification evidence, remaining limitations, and any follow-up work.
+9. **Evaluate with disabled people:** Complete planned participant testing where the task, risk, or uncertainty requires it.
+10. **Close:** Record what changed, verification evidence, participant scope where applicable, remaining limitations, and follow-up work.
 
 If a fix is partial, record the remaining occurrences or environments rather than closing the broader issue as complete.
 
-## 21. Definition of Done
+## 22. Definition of Done
 
 Before closing an accessibility issue, verify that:
 
 - [ ] the original user-facing barrier is no longer present;
-- [ ] the original steps and relevant environment were retested;
+- [ ] the people affected and impact are described no more broadly than the evidence supports;
+- [ ] the original steps and relevant environment were manually retested;
 - [ ] expected and actual behavior now agree;
 - [ ] the source-level fix covers the intended occurrences;
-- [ ] relevant keyboard, pointer, touch, speech, and assistive technology interactions were checked;
+- [ ] relevant keyboard, pointer, touch, switch, speech, and assistive technology interactions were checked;
 - [ ] relevant states such as error, loading, expanded, disabled, and responsive layouts were checked;
 - [ ] active color, contrast, motion, text-size, zoom, and forced-colors preferences were checked when relevant;
 - [ ] the fix did not remove information or functionality from another presentation;
 - [ ] regression coverage was added or updated where practical;
 - [ ] automated results were supplemented by manual testing where automation cannot verify the outcome;
+- [ ] testing with disabled people was completed when required by the verification plan;
+- [ ] participant scope and limitations were recorded without unnecessary personal information;
 - [ ] verification evidence is accessible, redacted, and linked to the tracked issue;
 - [ ] remaining limitations and follow-up issues are documented.
 
-## 22. Reporting Barriers to an External Organization
+## 23. Reporting Barriers to an External Organization
 
 Look first for the organization's accessibility statement, accessibility contact, support channel, or feedback form. Write for the person receiving the report, who may not be an accessibility specialist.
 
@@ -675,11 +843,12 @@ Lead with:
 
 - the page or feature;
 - the barrier you observed;
+- the people or interaction methods affected, when known and safe to share;
 - the task it prevents or complicates;
 - concise steps and relevant environment details;
 - a request for acknowledgement or follow-up.
 
-WCAG references and suggested fixes are optional. Do not include passwords, personal information, private account content, or sensitive documents. There is no universal response deadline or escalation path. Appropriate follow-up depends on the organization, contract, service, and jurisdiction. This guide is not legal advice, and a reporter is not obligated to provide unpaid testing or remediation work.
+WCAG references and suggested fixes are optional. A reporter should not be required to disclose a diagnosis or other private information. Do not include passwords, personal information, private account content, or sensitive documents. There is no universal response deadline or escalation path. Appropriate follow-up depends on the organization, contract, service, and jurisdiction. This guide is not legal advice, and a reporter is not obligated to provide unpaid testing or remediation work.
 
 ### External report template
 
@@ -693,7 +862,9 @@ I encountered an accessibility barrier in [page or feature].
 Location: [safe URL, route, or feature name]
 Task: [what you were trying to do]
 Barrier: [what happened]
+People or interaction methods affected, if known: [description]
 Impact: [how this affected the task]
+Evidence basis: [personal experience, observation, manual evaluation, or other basis]
 
 Steps or conditions:
 1. [Step]
@@ -712,33 +883,40 @@ Thank you.
 
 For more guidance, see [Contacting Organizations about Inaccessible Websites](https://www.w3.org/WAI/teach-advocate/contact-inaccessible-websites/).
 
-## 23. Common Reporting Failures
+## 24. Common Reporting Failures
 
 Avoid these patterns:
 
 - requiring a full DOM XPath, HTML excerpt, tool rule, or WCAG criterion before accepting a report;
 - copying an exact URL that contains a token or personal data;
 - reporting only `fails WCAG` without describing the user-facing behavior;
+- inferring a disability group or population-wide impact from a WCAG criterion or tool rule;
 - treating a tool result as a confirmed defect or a conformance conclusion;
+- treating an evaluator's use of assistive technology as equivalent to testing with disabled people;
 - assigning severity from a tool's impact field or automatically increasing it by occurrence count;
 - claiming that a viewport width proves the physical device type;
 - listing every assistive technology version instead of the environment actually tested;
 - merging unrelated occurrences because the rule ID or selector looks similar;
 - prescribing a code change without behavior-based acceptance criteria;
 - attaching an unexplained screenshot or an uncaptioned recording;
+- skipping manual testing because an automated check passes;
 - closing after a code merge or automated pass without repeating the original interaction;
-- disclosing a reporter's diagnosis, identity, or private content without informed permission;
+- using disabled participants to rediscover known basic failures that should have been corrected first;
+- generalizing one participant's experience to an entire disability group;
+- disclosing a reporter's or participant's diagnosis, identity, or private content without informed permission;
 - promising legal outcomes or universal response timelines.
 
-## 24. Evaluation and Interchange Notes
+## 25. Evaluation and Interchange Notes
 
 The [WCAG-EM overview](https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/) describes a method for defining an evaluation scope, exploring a website, selecting a representative sample, evaluating it, and reporting findings. Use a current, appropriate evaluation method when the work is intended to support a conformance conclusion. A collection of issue reports is not, by itself, a complete conformance evaluation.
 
 The [Evaluation Report Template](https://www.w3.org/WAI/test-evaluate/report-template/) provides adaptable reporting fields. The information needed varies with the evaluation context.
 
+[Involving Users in Evaluating Web Accessibility](https://www.w3.org/WAI/test-evaluate/involving-users/) and [Using Combined Expertise to Evaluate Web Accessibility](https://www.w3.org/WAI/test-evaluate/combined-expertise/) explain how evaluation with disabled people complements standards-based and technical evaluation. Participant findings should be reported with their scope and limitations, and should not be generalized beyond the evidence.
+
 [Evaluation and Report Language, EARL](https://www.w3.org/WAI/standards-guidelines/earl/) can be useful for exchanging test results between tools. EARL 1.0 is published as a non-normative W3C Working Group Note, not a W3C Recommendation. It should not be a required format for routine issue reports. ACT Rules Format 1.1 includes non-normative JSON-LD and EARL examples for ACT result exchange.
 
-## 25. Related Guides
+## 26. Related Guides
 
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [AXE Rules Coverage](./AXE_RULES_COVERAGE.md)
@@ -777,10 +955,9 @@ standards:
     uri: "https://www.w3.org/TR/EARL10-Schema/"
 reporting_scope:
   conformance_claim: false
+  supports_user_reported_findings: true
+  supports_testing_with_disabled_people: true
   supports_manual_findings: true
   supports_automated_findings: true
+  requires_manual_review_of_automated_findings: true
 ```
-
-## License
-
-This document is available under the repository's [MIT License](../LICENSE).
