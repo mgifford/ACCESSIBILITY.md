@@ -1,3 +1,7 @@
+---
+title: Modern CSS Theme Architecture
+---
+
 # Modern CSS Theme Architecture
 
 > Build theme systems that are accessible, maintainable, and adaptable by separating design decisions from implementation details.
@@ -334,12 +338,12 @@ This document provides architectural guidance.
 
 For implementation details, see:
 
-* `USER_PREFERENCE_THEMING_ACCESSIBILITY_BEST_PRACTICES.md`
-* `COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md`
-* Focus indicator guidance
-* Reduced motion guidance
-* Forced colours guidance
-* Accessible typography guidance
+* [USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) — user preference controls and CSS media queries
+* [COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md) — contrast requirements and CSS patterns
+* [LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) — light and dark theme implementation
+* Focus indicator guidance in the manual testing guide
+* Reduced motion guidance in the user personalization guide
+* Forced colours guidance in the color contrast guide
 
 Those documents explain how to implement accessible interfaces.
 
@@ -361,6 +365,6 @@ Modern CSS theme architecture should:
 
 See Also
 
-* USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md
-* COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md
-* FOCUS_INDICATOR_ACCESSIBILITY_BEST_PRACTICES.md
+* [USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+* [COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md)
+* [LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md)

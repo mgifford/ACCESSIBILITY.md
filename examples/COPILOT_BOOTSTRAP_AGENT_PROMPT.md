@@ -165,7 +165,7 @@ source in the handoff so a reviewer can verify it.
 
 ## 5. Validate the Draft
 
-1. Search for every remaining "{{" placeholder and list it in the handoff.
+1. Search for every remaining {% raw %}`{{`{% endraw %} placeholder and list it in the handoff.
 2. Check headings, lists, tables, link purpose, and relative links.
 3. Build or render the documentation using the repository's documented process
    when the environment is available.

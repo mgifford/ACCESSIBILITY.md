@@ -234,27 +234,125 @@ For each interactive element, verify:
 3. Test with different color modes (light/dark theme)
 4. Test focus indicators (must be 3:1 against adjacent colors)
 
-### 6.2 Magnification and Zoom Testing
+### 6.2 Zoom, Text Resize, and Reflow Testing
 
-**Test at 200% zoom:**
+This section covers three related but distinct requirements. Conflating them produces incomplete testing.
+
+#### SC 1.4.4 Resize Text (Level AA)
+
+Content must be resizable up to 200% without loss of content or functionality. Test at 200% zoom on a 1280px viewport. This verifies that text can be enlarged and the page remains usable at that zoom level.
+
+**Steps:**
 1. Set browser zoom to 200% (Ctrl/Cmd + +)
 2. Verify all content is readable
-3. Verify no content is cut off
-4. Verify no horizontal scrolling on standard viewport (1280px)
+3. Verify no content is cut off or overlapping
+4. Verify no horizontal scrolling on a 1280px viewport
 5. Test responsive behavior at different zoom levels
 
-**Test with screen magnification:**
+#### SC 1.4.10 Reflow (Level AA)
+
+Content must reflow at 400% zoom (or a 320px equivalent CSS width) without requiring two-dimensional scrolling for vertical content. This is a different test from the 200% zoom check above.
+
+**Steps:**
+1. Set browser zoom to 400% (Ctrl/Cmd + + + +), or set viewport width to 320px
+2. Verify content is presented in a single column without horizontal scrolling
+3. Verify no content is cut off, overlapped, or hidden
+4. Verify interactive elements remain operable (can be reached and activated)
+5. Verify reading order is logical without visual layout cues
+
+**Exceptions (SC 1.4.10 does not apply to):**
+- horizontal scrolling is required for content that uses spatial layout essential to meaning (e.g., data tables, maps, diagrams, video players, toolbars)
+- content does not use two-dimensional layout (e.g., a single-column text page)
+
+**Page-level overflow as an indicator:** A page that triggers horizontal scroll at 400% zoom is a high-value indicator that Reflow has not been achieved. Investigate whether the content falls within the exceptions before concluding a failure. Automated tools that detect overflow at 320px can flag candidates, but human judgment is needed to confirm the finding and evaluate exceptions.
+
+**Related low-vision checks (test alongside Reflow):**
+- **SC 1.4.4 Text Resize:** Does text enlarge to 200% without loss?
+- **SC 1.4.12 Text Spacing:** Can text spacing be adjusted without content loss? (line height to 1.5×, paragraph spacing to 2×, letter spacing to 0.12×, word spacing to 0.16×)
+- **SC 1.4.13 Content on Hover or Focus:** Can hover/focus content be dismissed, persistent, and hoverable without overlapping?
+
+#### Automated Reflow Indicator Checks
+
+Playwright can test for overflow at 320px width as an indicator of Reflow issues:
+
+```javascript
+import { chromium } from 'playwright';
+
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 320, height: 568 } });
+await page.goto('http://localhost:4000/');
+
+const hasHorizontalScroll = await page.evaluate(() => {
+  return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+});
+
+console.log('Potential Reflow issue:', hasHorizontalScroll);
+```
+
+This is an indicator test, not a Reflow conformance check. Human judgment is needed to:
+- confirm the overflow is not within an exception
+- verify content is not cut off or overlapped
+- verify interactive elements remain operable
+- test actual content at 400% zoom, not only 320px width
+
+#### Screen Magnification
+
+For users who employ screen magnification software:
 - Windows: Magnifier (Windows + +)
 - macOS: Zoom (System Preferences → Accessibility → Zoom)
-- Check: Can users pan around page? Are labels close to fields?
+- Check: Can users pan around page? Are labels close to fields? Is focus tracked when magnified?
 
 ### 6.3 Focus Indicator Testing
 
+Focus indicator testing involves three distinct WCAG success criteria with different requirements and levels.
+
+#### SC 2.4.7 Focus Visible (Level AA)
+
+Any keyboard-focusable element must have a visible focus indicator. This is a binary check: either a visible indicator exists or it does not.
+
 **Verify for each focusable element:**
 - [ ] Focus indicator is visible (outline, border, or background change)
-- [ ] Contrast meets 3:1 requirement against adjacent colors
-- [ ] Focus indicator is not removed (unless replaced with better style)
-- [ ] Focus indicator doesn't obscure content
+- [ ] Focus indicator is not removed unless replaced with a superior alternative
+- [ ] Focus indicator is not obscured by other content
+
+#### SC 1.4.11 Non-text Contrast (Level AA)
+
+Focus indicators on UI components must have a contrast ratio of at least 3:1 against adjacent colors. This applies to the focus indicator itself, not to the component's normal state.
+
+**Verify for each focusable element:**
+- [ ] Focus indicator contrast meets 3:1 against adjacent colors
+- [ ] The 3:1 ratio is measured against the focus indicator color and the adjacent background or component color
+- [ ] Custom focus styles meet the contrast requirement (not just the default outline)
+
+#### SC 2.4.13 Focus Appearance (Level AAA)
+
+This AAA criterion is stricter than SC 2.4.7. It requires:
+- a minimum area equal to the perimeter of the focusable element multiplied by 2 CSS pixels
+- a contrast ratio of at least 3:1 between focused and unfocused states
+- the focus indicator must not be fully obscured by author-created content
+
+Focus Appearance is a Level AAA criterion. Projects targeting AA conformance are not required to meet it, but meeting it provides stronger accessibility. Document whether your project targets this criterion.
+
+#### CWAC Screenshot-Difference Testing
+
+The [CWAC](https://github.com/GOVTNZ/cwac/) project uses a screenshot-difference approach to detect focus indicator changes:
+
+1. Capture a screenshot of the page in an unfocused state
+2. Tab to each focusable element and capture a screenshot
+3. Compare the two images to detect visual changes
+
+This approach can detect:
+- focus indicators that disappear in certain contexts
+- focus indicators that have insufficient contrast
+- focus indicators that are obscured by other elements
+
+**Limitations:**
+- requires a reference screenshot for each element, which may be impractical for large pages
+- pixel-level comparison may produce false positives from anti-aliasing or rendering differences
+- does not measure contrast ratio directly (it detects whether a change occurred)
+- does not verify that the focus indicator meets SC 1.4.11 or SC 2.4.13
+
+Use this as a supplementary check alongside manual verification, not as a sole focus indicator test.
 
 ### 6.4 Forced Colors Mode Testing
 
@@ -634,7 +732,10 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 - [BROWSER_SUPPORT.md](../BROWSER_SUPPORT.md) - Browser and AT support matrix
 - [KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) - Keyboard interaction patterns
 - [FORMS_ACCESSIBILITY_BEST_PRACTICES.md](./FORMS_ACCESSIBILITY_BEST_PRACTICES.md) - Form accessibility requirements
+- [COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md](./COLOR_CONTRAST_ACCESSIBILITY_BEST_PRACTICES.md) - Contrast requirements and patterns
+- [LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md](./LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md) - Theme testing
+- [USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) - User preferences and overrides
 
 ---
 
-**Last Updated:** 2026-04-24
+**Last Updated:** 2026-07-25
