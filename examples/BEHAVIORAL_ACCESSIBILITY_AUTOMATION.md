@@ -72,7 +72,7 @@ it does **not** make them a conformance test. See Section 3.
 
 ## 2. Topics covered here
 
-### 2.1 Reflow risk (WCAG 2.2 SC 1.4.10)
+### 2.1 Reflow risk (WCAG 2.2 SC 1.4.10) — shipped and tested
 
 A page-level indicator: resize to a narrow viewport (320 CSS pixels wide is
 the SC 1.4.10 reference width), attempt a horizontal scroll, and measure
@@ -80,7 +80,7 @@ whether the document is wider than its viewport. See
 [`examples/playwright/reflow-risk.mjs`](./playwright/reflow-risk.mjs) and
 Section 4.
 
-### 2.2 Focus Visible (WCAG 2.2 SC 2.4.7)
+### 2.2 Focus Visible (WCAG 2.2 SC 2.4.7) — shipped and tested
 
 A per-component indicator: send real Tab key presses, resolve the actual
 focused element (including through open shadow roots), and compare
@@ -88,7 +88,7 @@ screenshots of the region around that element before and after focus moves.
 See [`examples/playwright/focus-visible-risk.mjs`](./playwright/focus-visible-risk.mjs)
 and Section 5.
 
-### 2.3 Focus obscuration (WCAG 2.2 SC 2.4.11 Focus Not Obscured)
+### 2.3 Focus obscuration (WCAG 2.2 SC 2.4.11 Focus Not Obscured) — documented gap, not implemented
 
 A focus indicator can exist and still be useless if sticky headers, cookie
 banners, or other fixed-position content sit on top of it. A behavioral
@@ -104,7 +104,7 @@ comparison alone cannot detect overlap. Geometry comparison is the natural
 next module; treat any current "pass" from the Focus Visible check as
 silent on obscuration until that module exists.
 
-### 2.4 Focus order evidence
+### 2.4 Focus order evidence — shipped, evidence only (no verdict)
 
 Automation can *record* the sequence of elements a real Tab traversal
 visits — which is exactly what `checkFocusVisibleRisk` does as a side
@@ -114,7 +114,7 @@ is evidence for a human reviewer, not a verdict. Treat the `stops` array in
 a Focus Visible result as a focus-order transcript in addition to a set of
 indicator verdicts.
 
-### 2.5 Text resizing and clipping (WCAG 2.2 SC 1.4.4 Resize Text)
+### 2.5 Text resizing and clipping (WCAG 2.2 SC 1.4.4 Resize Text) — documented gap, not implemented
 
 A behavioral check can set a page zoom or font-size multiplier, wait for
 layout, and look for the same signals as Reflow (overflow, clipped text,
@@ -127,7 +127,7 @@ for a zoom-based variant. See Section 6 of
 for why Resize Text and Reflow are distinct checks that should not be
 conflated.
 
-### 2.6 Text spacing (WCAG 2.2 SC 1.4.12)
+### 2.6 Text spacing (WCAG 2.2 SC 1.4.12) — documented gap, not implemented
 
 A behavioral check can inject the WCAG-specified user style override (line
 height to 1.5×, paragraph spacing to 2×, letter spacing to 0.12em, word
@@ -136,7 +136,7 @@ same overflow/clipping detection as Reflow. Not yet implemented in this
 repository; documented here as a known gap and a natural extension of the
 Reflow module's measurement helpers.
 
-### 2.7 Content on hover or focus (WCAG 2.2 SC 1.4.13)
+### 2.7 Content on hover or focus (WCAG 2.2 SC 1.4.13) — documented gap, not implemented
 
 A behavioral check can hover or focus a trigger element, wait for
 additional content to appear, then verify: the new content can be
@@ -155,6 +155,35 @@ the checks in this guide *after* triggering the relevant interaction, not
 only against the page's default state — the same principle
 [Shift-Left Accessibility Automation](./SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md#3-unit-and-component-tests)
 applies to axe-core scans.
+
+### 2.9 Implementation status at a glance
+
+Section 2 mixes two different kinds of content: topics with a shipped,
+tested module in [`examples/playwright/`](./playwright/README.md), and
+topics that are discussed here — sometimes at length, with a fixture that
+documents the gap — but have **no runnable check in this repository**.
+The subsection headings above are marked accordingly; this table
+summarizes them in one place so a reader does not have to infer status
+from prose.
+
+| Topic | Status | Where the code/evidence lives |
+| --- | --- | --- |
+| Reflow risk (2.1) | Shipped and tested | [`reflow-risk.mjs`](./playwright/reflow-risk.mjs), [`tests/reflow-risk.test.mjs`](./playwright/tests/reflow-risk.test.mjs) |
+| Focus Visible (2.2) | Shipped and tested | [`focus-visible-risk.mjs`](./playwright/focus-visible-risk.mjs), [`tests/focus-visible-risk.test.mjs`](./playwright/tests/focus-visible-risk.test.mjs) |
+| Focus obscuration (2.3) | Documented gap — no module | Gap documented by fixture [`09-indicator-hidden-under-sticky.html`](./playwright/fixtures/focus-visible/09-indicator-hidden-under-sticky.html) only |
+| Focus order evidence (2.4) | Shipped, but evidence only — not a verdict | Recorded as a side effect of `checkFocusVisibleRisk` in [`focus-visible-risk.mjs`](./playwright/focus-visible-risk.mjs) (the `stops` array) |
+| Text resizing and clipping (2.5) | Documented gap — no module | No fixture yet; [`reflow-risk.mjs`](./playwright/reflow-risk.mjs)'s stabilization/measurement helpers are noted as reusable for a future zoom-based variant |
+| Text spacing (2.6) | Documented gap — no module | No fixture yet; described as a natural extension of the Reflow module's measurement helpers |
+| Content on hover or focus (2.7) | Documented gap — no module | No fixture yet |
+| Dynamic UI states (2.8) | Not a standalone check — a usage principle for 2.1/2.2 | Applies the shipped checks after triggering an interaction, rather than adding new code |
+
+A "documented gap" entry means: this guide describes the check that
+*should* exist, and in some cases a fixture demonstrates why the existing
+shipped checks cannot cover it, but no module implements the check
+itself. Do not cite these subsections as evidence that automation exists
+for that WCAG success criterion — cite Section 9's coverage matrix and
+the "documented gap" marker instead, and treat the topic as manual-review
+territory until a module ships.
 
 ## 3. Result vocabulary: indicator, confirmed failure, cantTell, manual review
 

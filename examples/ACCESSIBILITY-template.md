@@ -186,7 +186,7 @@ Every contribution must:
 9. avoid claiming testing that a person or tool did not perform;
 10. for changes affecting layout or keyboard focus, apply the applicable
     checks in
-    [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
+    [Behavioral Accessibility Automation](BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
     Reflow risk at a 320 CSS-pixel-equivalent viewport, and behavioral
     Focus Visible testing. Review automated indicators, record any SC
     1.4.10 exceptions and unresolved `cantTell` results, and do not treat
@@ -198,7 +198,7 @@ Every contribution must:
     repeated findings by probable shared cause instead of filing one
     issue per affected page; and never treat an unreviewed indicator as a
     confirmed WCAG failure (see
-    [Behavioral Accessibility Automation §3.2](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale)).
+    [Behavioral Accessibility Automation §3.2](BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale)).
 
 ### Pull request evidence
 
