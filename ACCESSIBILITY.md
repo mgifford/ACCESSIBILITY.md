@@ -20,7 +20,7 @@
 | Last reviewed | 2026-07-19 |
 
 The reusable starting point for other projects is
-[ACCESSIBILITY-template.md](ACCESSIBILITY-template.md). This file describes
+[ACCESSIBILITY-template.md](examples/ACCESSIBILITY-template.md). This file describes
 the commitments and limitations of this repository itself.
 
 ## 2. Commitment
@@ -50,7 +50,7 @@ We aim to:
 This commitment applies to:
 
 - the repository's Markdown, HTML, CSS, JavaScript, and Jekyll output;
-- [ACCESSIBILITY-template.md](ACCESSIBILITY-template.md);
+- [ACCESSIBILITY-template.md](examples/ACCESSIBILITY-template.md);
 - guidance and examples in [examples](examples/);
 - sample workflows, prompts, and configuration;
 - SVG, Mermaid, charts, tables, images, and other visual content;
@@ -525,7 +525,7 @@ Review this file and affected guidance:
 
 ## 18. Quick Reference
 
-- Reusable template: [ACCESSIBILITY-template.md](ACCESSIBILITY-template.md)
+- Reusable template: [ACCESSIBILITY-template.md](examples/ACCESSIBILITY-template.md)
 - Contribution overview: [CONTRIBUTING.md](CONTRIBUTING.md)
 - Detailed contributor guidance:
   [CONTRIBUTING_A11Y.md](examples/CONTRIBUTING_A11Y.md)
