@@ -25,9 +25,23 @@
  * This module produces per-tab-stop RISK INDICATORS. A "visible-change-near-
  * element" verdict is not proof the indicator has sufficient size, contrast,
  * or usability (SC 1.4.11, SC 2.4.13) — those require separate testing or
- * manual review. A "confirmed-no-visible-change" verdict can be conclusive
- * for SC 2.4.7 on a given component only when focus demonstrably moved to
- * an applicable, rendered component and the page was visually stable.
+ * manual review. A "confirmed-no-visible-change" verdict means no pixel
+ * difference above the configured threshold was detected within the padded
+ * comparison region, on a page load where focus demonstrably moved to an
+ * applicable, rendered component and the page was visually stable. Treat it
+ * as "no significant pixel change detected in the covered region," not as an
+ * unconditional claim that no visible indicator exists — an indicator
+ * rendered outside the padded region, below the pixel-diff threshold, or
+ * obscured by other content can all produce this same verdict. See
+ * examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md sections 3.2 and 5.4.
+ *
+ * At site or fleet scale, do not treat a large batch of
+ * confirmed-no-visible-change or potential-reflow-barrier results as
+ * independent findings without reviewing whether they share a root cause
+ * (e.g. one shared component or template). See section 3.2 of the
+ * canonical guide for why per-target false-positive probabilities compound
+ * across many targets, and section 6 for the recommended fixture / PR /
+ * scheduled-scan cadence and root-cause clustering vocabulary.
  */
 
 /**
@@ -342,7 +356,8 @@ export async function checkFocusVisibleRisk(page, url, options = {}) {
     notes: [
       'Each stop result is a behavioural risk indicator, not proof of SC 1.4.11/2.4.13 conformance.',
       'A visible-change-detected verdict does not establish that the indicator has sufficient size, contrast, or usability.',
-      'A confirmed-no-visible-change verdict is conclusive for SC 2.4.7 on that component only when focus demonstrably moved, the component was in the captured region, and the page was visually stable.',
+      'A confirmed-no-visible-change verdict means no pixel difference above the configured threshold was detected within the padded comparison region, when focus demonstrably moved, the component was in the captured region, and the page was visually stable. It is not an unconditional claim that no visible indicator exists: an indicator outside the padded region, below the pixel-diff threshold, or obscured by other content can produce the same verdict. See BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md sections 3.2 and 5.4.',
+      'At scale, review repeated findings for a shared root cause (e.g. a component or template) before treating each affected page as an independent defect. See BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2.',
     ],
   };
 

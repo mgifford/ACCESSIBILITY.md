@@ -7,15 +7,30 @@ import { readFile } from 'node:fs/promises';
  * treating every indicator as a blocking failure produces noisy, low-trust
  * CI. Projects should choose which categories are worth blocking on.
  *
+ * IMPORTANT: --fail-on reads a raw count from results.json. It has no
+ * baseline-comparison capability — it cannot distinguish a reviewed,
+ * previously-confirmed regression from a first-seen, unreviewed
+ * indicator. Do NOT point --fail-on at reflow.potentialReflowBarrier or
+ * focusVisible.confirmedNoVisibleChange as a general policy: an
+ * unreviewed Reflow indicator has not ruled out the normative SC 1.4.10
+ * exception, and an unreviewed confirmed-no-visible-change result has not
+ * been through human review either. See
+ * examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2 and
+ * examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#risk-indicators-and-build-gates.
+ * Reviewed-baseline comparison is not implemented here; treat any
+ * --fail-on use against those two paths as a documented gap, not a
+ * supported pattern, until that capability exists.
+ *
  * Usage:
- *   node lib/check-policy.mjs results.json --fail-on=focusVisible.confirmedNoVisibleChange
- *   node lib/check-policy.mjs results.json --fail-on=reflow.potentialReflowBarrier
+ *   node lib/check-policy.mjs results.json --fail-on=reflow.testError,focusVisible.testError
  *   node lib/check-policy.mjs results.json --warn-on=reflow.cantTell,focusVisible.cantTell
  *
- * Dotted paths (e.g. "focusVisible.confirmedNoVisibleChange") are read
- * from the results.json summary counts. --fail-on exits non-zero if any
- * named count is greater than zero. --warn-on only prints a warning and
- * always exits zero. Multiple paths may be comma-separated.
+ * Dotted paths (e.g. "reflow.testError") are read from the results.json
+ * summary counts. --fail-on exits non-zero if any named count is greater
+ * than zero. --warn-on only prints a warning and always exits zero.
+ * Multiple paths may be comma-separated. A test-error count is a safe
+ * default --fail-on target because it means the check itself did not run
+ * correctly, not that a human has yet to review a finding.
  */
 
 function parseArgs(argv) {

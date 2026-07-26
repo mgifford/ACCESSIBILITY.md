@@ -392,6 +392,12 @@ provide precise manual steps for a reviewer.
 - Do not describe “hypothetical” test results as evidence.
 - Do not convert an automated score into a WCAG conformance percentage.
 - Do not silently suppress a finding; document reason, owner, and review date.
+- Do not recommend blocking CI on an unreviewed risk indicator. At site or
+  fleet scale, group repeated findings by probable shared cause and
+  report unique root causes separately from affected instances. Reserve
+  blocking recommendations for deterministic failures or reproducible
+  regressions against a reviewed baseline. See
+  [Behavioral Accessibility Automation §3.2](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale).
 
 ### Manual testing
 

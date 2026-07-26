@@ -224,6 +224,53 @@ When animations are not the subject of the test, emulate reduced motion and
 disable nonessential animation to improve determinism. Never remove an
 animation from the product merely to make a screenshot pass.
 
+## Risk Indicators and Build Gates
+
+Behavioral checks such as Reflow risk and Focus Visible testing (see
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale))
+produce indicators, not conformance verdicts. A small per-target
+false-positive probability compounds across many pages, components,
+states, or builds, and website findings are frequently correlated across
+shared templates and components. Converting every indicator into a
+blocking build failure produces noisy, low-trust CI and encourages
+bypassing the check rather than fixing the underlying pattern. Read the
+canonical explanation before choosing a gating policy; this section gives
+the resulting operational rules only.
+
+| Result | Default CI treatment |
+| --- | --- |
+| Deterministic confirmed failure | May block |
+| Confirmed regression against a reviewed baseline | May block |
+| Risk indicator | Report and route for review |
+| `cantTell` | Report as incomplete coverage |
+| Test error | Report as scan-health failure |
+| Reviewed exception | Do not block until its review expires |
+
+Do not prescribe automatic blocking merely because a result is
+machine-readable. A first-seen risk indicator has not been reviewed and
+has not ruled out a normative exception (see, for example, the SC 1.4.10
+two-dimensional-layout exception); blocking on it treats an unreviewed
+signal as a confirmed failure.
+
+Fleet-wide and site-wide scans additionally require:
+
+- separating unique root-cause clusters from affected instances, and
+  reporting both — not one issue per affected URL;
+- comparing new findings against a reviewed baseline before deciding
+  severity;
+- recording the detector, browser, and baseline versions used for the
+  scan;
+- giving every reviewed exception an owner, a reason, and an expiry date;
+- periodically sampling apparently clean results to investigate
+  false negatives, since a check with no findings has not been shown to
+  have zero false negatives.
+
+See
+[Behavioral Accessibility Automation section 6](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#6-running-these-checks-at-fleet-scale)
+for the fixture/PR/scheduled-scan cadence and the definitions of unique
+finding, affected instance, affected page, and root-cause cluster used
+above.
+
 ## CI Workflow Pattern
 
 The following GitHub Actions outline is intentionally incomplete. Replace every

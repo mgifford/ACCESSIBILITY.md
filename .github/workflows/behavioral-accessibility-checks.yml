@@ -18,6 +18,16 @@ name: Behavioral Accessibility Checks
 # examples/playwright/README.md). Projects adopting this workflow should
 # choose an explicit policy — see the commented BLOCKING POLICY step below
 # — rather than silently converting every indicator into a failed build.
+#
+# Why indicators stay non-blocking by default: a small per-target
+# false-positive probability compounds once a check runs across many
+# pages, and website findings are frequently correlated across shared
+# templates and components, so one shared defect can look like many
+# independent failures. See
+# examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2 (false
+# positives at site and fleet scale) and
+# examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#risk-indicators-and-build-gates
+# before enabling any blocking policy below.
 
 on:
   pull_request:
@@ -115,19 +125,35 @@ jobs:
         run: node lib/summarize-results.mjs results.json >> "$GITHUB_STEP_SUMMARY"
 
       # --- BLOCKING POLICY (disabled by default) ---
-      # Uncomment and adjust one or more of the following to enforce a
-      # policy. Do not silently convert every Reflow risk indicator into a
-      # failed build — choose a narrow, documented rule such as:
       #
-      # - name: Block confirmed missing focus indications
-      #   if: always()
-      #   working-directory: examples/playwright
-      #   run: node lib/check-policy.mjs results.json --fail-on=focusVisible.confirmedNoVisibleChange
+      # See examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2 and
+      # examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#risk-indicators-and-build-gates
+      # before enabling any of this. Blocking should normally be limited to
+      # deterministic failures or reproducible regressions against a
+      # REVIEWED baseline — not a first-seen risk indicator or a
+      # confirmed-for-one-page-load result that has not yet been reviewed.
       #
-      # - name: Block unreviewed page-level overflow
-      #   if: always()
-      #   working-directory: examples/playwright
-      #   run: node lib/check-policy.mjs results.json --fail-on=reflow.potentialReflowBarrier
+      # `check-policy.mjs --fail-on=<path>` currently only reads the raw
+      # counts produced by run-site-checks.mjs (e.g.
+      # reflow.potentialReflowBarrier, focusVisible.confirmedNoVisibleChange).
+      # It has NO baseline-comparison capability: it cannot tell a
+      # reviewed, previously-confirmed regression apart from an
+      # indicator nobody has looked at yet. Do not wire up an example like
+      # "Block unreviewed page-level overflow" against that raw count — an
+      # unreviewed Reflow indicator has not ruled out the normative SC
+      # 1.4.10 two-dimensional-layout exception (see section 4.4 of the
+      # canonical guide), so failing the build on it treats an unreviewed
+      # signal as a confirmed WCAG failure.
+      #
+      # A "Block confirmed reflow regressions" (or "...focus regressions")
+      # policy — one that only fails when a *previously reviewed and
+      # recorded* baseline result gets worse — needs reviewed-baseline
+      # storage and comparison logic that does not exist yet in
+      # examples/playwright/lib/. Implement and test that capability before
+      # enabling a blocking step here; do not uncomment --fail-on against a
+      # raw indicator count as a substitute.
+      #
+      # Non-blocking policies remain safe to enable, e.g.:
       #
       # - name: Treat cantTell as a required manual follow-up, not a failure
       #   if: always()

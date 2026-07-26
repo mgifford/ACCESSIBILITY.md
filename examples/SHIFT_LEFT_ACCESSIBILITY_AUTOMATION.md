@@ -240,6 +240,20 @@ fixed in the change.
 Tool severities are inputs to triage. Map them to the project taxonomy only
 after reviewing the affected task and user impact.
 
+Classify each result (indicator, confirmed failure, `cantTell`, test
+error, reviewed exception) before choosing a CI treatment for it; do not
+let a single "failed" status collapse that distinction. Gate on
+regressions against a reviewed baseline, not on first-seen indicators.
+When a check runs across many pages or components, group repeated
+findings by probable shared cause (a component or template) and report
+unique findings separately from the count of affected instances — do not
+open one issue per affected page. Never treat an unreviewed indicator as
+a confirmed WCAG failure. See
+[Behavioral Accessibility Automation section 3.2](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale)
+and
+[CI/CD Accessibility Best Practices: Risk Indicators and Build Gates](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#risk-indicators-and-build-gates)
+for why and how.
+
 ## 7. Test the Final Output
 
 Source checks are insufficient when a build or runtime transforms content.

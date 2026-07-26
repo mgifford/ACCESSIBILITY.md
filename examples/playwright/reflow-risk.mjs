@@ -20,6 +20,13 @@
  * presentations, toolbars) that only a human reviewer can confirm. A clean
  * result does not prove SC 1.4.10 conformance, and an overflow result does
  * not prove a violation.
+ *
+ * At site or fleet scale, do not treat every affected page as an
+ * independent finding: pages typically share templates and components, so
+ * one shared defect can produce many affected pages from one root cause.
+ * See examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2 for why
+ * per-target false-positive probabilities compound across many targets,
+ * and section 6 for root-cause clustering vocabulary.
  */
 
 /** @typedef {'no-overflow-detected'|'potential-reflow-barrier'|'cant-tell'|'test-error'} ReflowVerdict */
@@ -235,8 +242,9 @@ export async function checkReflowRisk(page, url, options = {}) {
     timestamp: new Date().toISOString(),
     notes: [
       'This is a page-level overflow risk indicator, not a conformance check.',
-      'SC 1.4.10 exempts content that requires two-dimensional layout for usage or meaning; a human reviewer must confirm any exception applies.',
+      'SC 1.4.10 exempts content that requires two-dimensional layout for usage or meaning; a human reviewer must confirm any exception applies. An unreviewed overflow finding has not ruled out this exception and should not be treated as a confirmed WCAG failure.',
       'A clean (no-overflow-detected) result does not prove SC 1.4.10 conformance.',
+      'At scale, review repeated findings for a shared root cause (e.g. a component or template) before treating each affected page as an independent defect. See BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3.2.',
     ],
   };
 

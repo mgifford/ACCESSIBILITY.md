@@ -372,7 +372,7 @@ CWAC's `FocusIndicatorAudit` does **not**:
 This repository's own reusable implementation,
 [`examples/playwright/focus-visible-risk.mjs`](./playwright/focus-visible-risk.mjs),
 is an independent reimplementation of the documented method (see
-[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#7-cwac-attribution)
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#8-cwac-attribution)
 for the full attribution and license statement), and deliberately departs
 from the whole-page-reference approach: it captures a fresh
 unfocused/focused screenshot pair for each Tab stop, scoped to a padded

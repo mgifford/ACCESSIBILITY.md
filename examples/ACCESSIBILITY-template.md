@@ -183,14 +183,22 @@ Every contribution must:
 7. state what was not tested and any known limitations;
 8. update documentation, tests, structured alternatives, and change records
    together;
-9. avoid claiming testing that a person or tool did not perform; and
+9. avoid claiming testing that a person or tool did not perform;
 10. for changes affecting layout or keyboard focus, apply the applicable
     checks in
     [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
     Reflow risk at a 320 CSS-pixel-equivalent viewport, and behavioral
     Focus Visible testing. Review automated indicators, record any SC
     1.4.10 exceptions and unresolved `cantTell` results, and do not treat
-    a clean automated result as proof of conformance.
+    a clean automated result as proof of conformance; and
+11. when a check runs across many pages, components, or a fleet-wide
+    scan, classify each result (indicator, confirmed failure, `cantTell`,
+    test error, reviewed exception) before deciding whether it blocks a
+    build; gate only on regressions against a reviewed baseline; group
+    repeated findings by probable shared cause instead of filing one
+    issue per affected page; and never treat an unreviewed indicator as a
+    confirmed WCAG failure (see
+    [Behavioral Accessibility Automation §3.2](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale)).
 
 ### Pull request evidence
 

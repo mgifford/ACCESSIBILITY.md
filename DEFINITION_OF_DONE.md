@@ -22,6 +22,7 @@ Use this checklist to decide when an accessibility report is ready to publish.
 - [ ] Automated checks are reported (or marked "not run" with a reason).
 - [ ] Manual checks are reported (keyboard and screen reader spot checks at minimum).
 - [ ] For layout or keyboard-focus changes, Reflow risk (320 CSS-pixel-equivalent viewport) and behavioral Focus Visible testing were applied per [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md), with indicators reviewed and any exceptions or unresolved `cantTell` results recorded — not treated as conformance.
+- [ ] If the report covers many pages, components, or a fleet-wide scan, findings are grouped into probable root-cause clusters and reported as unique findings with affected-instance counts, not one row per affected page (see [Behavioral Accessibility Automation §3.2](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#32-false-positives-at-site-and-fleet-scale)).
 - [ ] Critical or High accessibility issues are clearly flagged.
 
 ## 4) Actions and accountability are defined

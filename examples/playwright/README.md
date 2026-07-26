@@ -144,7 +144,7 @@ No CWAC source code was copied or translated. Both modules here are
 scratch in JavaScript against Playwright. Full attribution, including a
 statement of what was copied/translated/adapted/reimplemented for each
 check, is in
-[BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md](../BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#7-cwac-attribution).
+[BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md](../BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#8-cwac-attribution).
 
 ## Related documentation
 
