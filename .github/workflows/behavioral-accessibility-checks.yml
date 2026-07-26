@@ -1,0 +1,167 @@
+name: Behavioral Accessibility Checks
+
+# Builds the Jekyll site, serves it locally, and runs the Reflow and Focus
+# Visible behavioral risk checks in examples/playwright/ against a small
+# set of representative rendered pages.
+#
+# This workflow does NOT establish WCAG conformance. It produces machine-
+# readable risk indicators and confirmed-for-instance findings that still
+# require human review. See examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md
+# for the full result vocabulary (indicator / confirmed failure / cantTell
+# / manual review required) before changing this workflow's pass/fail
+# behavior.
+#
+# Policy note: by default this workflow only WARNS (uploads results as an
+# artifact and annotates the run) and does not fail the build on Reflow or
+# Focus Visible indicators, because both checks can produce false
+# positives (see the "Known limitations" section of
+# examples/playwright/README.md). Projects adopting this workflow should
+# choose an explicit policy — see the commented BLOCKING POLICY step below
+# — rather than silently converting every indicator into a failed build.
+
+on:
+  pull_request:
+    paths:
+      - "examples/playwright/**"
+      - "examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md"
+      - "**.md"
+      - "_layouts/**"
+      - "assets/**"
+      - ".github/workflows/behavioral-accessibility-checks.yml"
+  push:
+    branches: [main]
+    paths:
+      - "examples/playwright/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: behavioral-a11y-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  behavioral-checks:
+    name: Reflow and Focus Visible behavioral checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+
+      - name: Install Playwright example dependencies
+        working-directory: examples/playwright
+        run: npm ci
+
+      - name: Install pinned Chromium
+        working-directory: examples/playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run fixture test suite
+        working-directory: examples/playwright
+        run: npm test
+
+      - name: Serve built Jekyll site
+        working-directory: _site
+        run: |
+          python3 -m http.server 4000 &
+          echo $! > /tmp/site-server.pid
+          for i in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:4000/ > /dev/null; then
+              echo "Site is up"
+              break
+            fi
+            sleep 0.5
+          done
+
+      - name: Run behavioral checks against representative pages
+        working-directory: examples/playwright
+        run: node lib/run-site-checks.mjs
+        env:
+          SITE_BASE_URL: http://127.0.0.1:4000
+
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f /tmp/site-server.pid ]; then
+            kill "$(cat /tmp/site-server.pid)" || true
+          fi
+
+      # --- Reporting: indicators are separate from confirmed failures ---
+      # results.json (produced by run-site-checks.mjs) separates counts for
+      # reflow.potentialReflowBarrier (indicator), focusVisible.confirmedNoVisibleChange
+      # (confirmed-for-instance failure), and *.cantTell (inconclusive).
+      - name: Summarize results
+        if: always()
+        working-directory: examples/playwright
+        run: node lib/summarize-results.mjs results.json >> "$GITHUB_STEP_SUMMARY"
+
+      # --- BLOCKING POLICY (disabled by default) ---
+      # Uncomment and adjust one or more of the following to enforce a
+      # policy. Do not silently convert every Reflow risk indicator into a
+      # failed build — choose a narrow, documented rule such as:
+      #
+      # - name: Block confirmed missing focus indications
+      #   if: always()
+      #   working-directory: examples/playwright
+      #   run: node lib/check-policy.mjs results.json --fail-on=focusVisible.confirmedNoVisibleChange
+      #
+      # - name: Block unreviewed page-level overflow
+      #   if: always()
+      #   working-directory: examples/playwright
+      #   run: node lib/check-policy.mjs results.json --fail-on=reflow.potentialReflowBarrier
+      #
+      # - name: Treat cantTell as a required manual follow-up, not a failure
+      #   if: always()
+      #   working-directory: examples/playwright
+      #   run: node lib/check-policy.mjs results.json --warn-on=reflow.cantTell,focusVisible.cantTell
+
+      - name: Upload results (JSON)
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: behavioral-accessibility-results-${{ github.run_id }}
+          path: examples/playwright/results.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload screenshots (only produced for findings)
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: behavioral-accessibility-screenshots-${{ github.run_id }}
+          path: examples/playwright/screenshots/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  conformance-note:
+    name: Conformance disclaimer
+    needs: behavioral-checks
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: State scope explicitly
+        run: |
+          echo "This workflow produces Reflow and Focus Visible behavioral" >> "$GITHUB_STEP_SUMMARY"
+          echo "risk indicators. It does NOT establish WCAG 2.2 conformance." >> "$GITHUB_STEP_SUMMARY"
+          echo "See examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md section 3." >> "$GITHUB_STEP_SUMMARY"

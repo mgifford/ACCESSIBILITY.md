@@ -182,8 +182,15 @@ Every contribution must:
 6. include automated and manual evidence appropriate to the change;
 7. state what was not tested and any known limitations;
 8. update documentation, tests, structured alternatives, and change records
-   together; and
-9. avoid claiming testing that a person or tool did not perform.
+   together;
+9. avoid claiming testing that a person or tool did not perform; and
+10. for changes affecting layout or keyboard focus, apply the applicable
+    checks in
+    [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
+    Reflow risk at a 320 CSS-pixel-equivalent viewport, and behavioral
+    Focus Visible testing. Review automated indicators, record any SC
+    1.4.10 exceptions and unresolved `cantTell` results, and do not treat
+    a clean automated result as proof of conformance.
 
 ### Pull request evidence
 

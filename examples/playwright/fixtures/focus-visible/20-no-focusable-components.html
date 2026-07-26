@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a page with no sequentially focusable components at all.
+  Expected focus-visible-risk verdict: the very first Tab press should
+  leave focus on <body> (or move it directly to browser chrome), producing
+  a single skipped-not-applicable stop and then loop termination.
+  Rationale: confirms the check terminates cleanly rather than looping or
+  erroring when there is nothing to test.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: no focusable components</title>
+</head>
+<body>
+  <h1>Static page</h1>
+  <p>This page has no links, buttons, or form fields.</p>
+</body>
+</html>

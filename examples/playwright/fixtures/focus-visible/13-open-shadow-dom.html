@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a focusable control inside an open shadow root.
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: exercises the deepest-active-element resolution across an
+  open shadow boundary; the custom element's internal button has its own
+  focus style.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: open shadow DOM</title>
+</head>
+<body>
+  <h1>Custom element with shadow DOM</h1>
+  <shadow-button></shadow-button>
+  <script>
+    class ShadowButton extends HTMLElement {
+      connectedCallback() {
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = `
+          <style>
+            button { outline: none; border: 1px solid #333; padding: 0.5rem 1rem; background: #fff; }
+            button:focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+          </style>
+          <button type="button">Shadow button</button>
+        `;
+      }
+    }
+    customElements.define('shadow-button', ShadowButton);
+  </script>
+</body>
+</html>

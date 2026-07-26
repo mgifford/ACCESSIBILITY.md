@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a same-origin iframe containing a focusable control.
+  Expected focus-visible-risk verdict: cant-tell-no-coverage when focus
+  enters the iframe. Rationale: this example's resolveActiveElementInfo
+  detects that document.activeElement is an <iframe> and reports
+  cant-tell-no-coverage rather than silently skipping or guessing;
+  reaching inside the frame requires the caller to also drive
+  page.frameLocator() explicitly, which is out of scope for this minimal
+  example. Serve iframe-inner.html from the same fixtures server so the
+  frame is same-origin.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: same-origin iframe</title>
+</head>
+<body>
+  <h1>Page with an iframe</h1>
+  <p><button type="button">Button before the iframe</button></p>
+  <iframe src="./14-iframe-inner.html" title="Embedded content" width="300" height="150"></iframe>
+</body>
+</html>

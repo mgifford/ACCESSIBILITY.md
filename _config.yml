@@ -7,6 +7,14 @@ markdown: kramdown
 kramdown:
   input: GFM
 plugins: []
+exclude:
+  - examples/playwright/node_modules
+  - examples/playwright/tests
+  - examples/playwright/package.json
+  - examples/playwright/package-lock.json
+  - examples/playwright/lib
+  - examples/playwright/results.json
+  - examples/playwright/screenshots
 defaults:
   - scope:
       path: ""

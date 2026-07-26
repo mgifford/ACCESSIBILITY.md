@@ -252,6 +252,10 @@ The repository currently includes:
 - [Shift-left automation guidance](examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md).
 - A [sample pre-commit configuration](examples/PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml).
 - A [sample accessibility workflow](examples/A11Y_SHIFT_LEFT_WORKFLOW.yml).
+- [Behavioral accessibility automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
+  reusable, tested Playwright checks for Reflow risk (SC 1.4.10) and
+  Focus Visible behavioral risk (SC 2.4.7), with a
+  [sample CI workflow](.github/workflows/behavioral-accessibility-checks.yml).
 
 Some of these are reference assets rather than evidence that every repository
 page is automatically evaluated. Consult the workflow files and
@@ -276,6 +280,13 @@ Check, as applicable:
 - touch targets, pointer cancellation, dragging alternatives, and gestures;
 - screen reader reading and interaction for representative tasks; and
 - final GitHub, GitHub Pages, SVG, raster, print, and PDF output.
+
+Applicable changes should also apply
+[Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md):
+test Reflow risk at a 320 CSS-pixel-equivalent viewport, perform
+behavioral Focus Visible testing, review automated indicators rather than
+treating a clean result as conformance, and record exceptions and
+unresolved `cantTell` results. Retain evidence proportionate to risk.
 
 ### Browser and assistive technology support
 

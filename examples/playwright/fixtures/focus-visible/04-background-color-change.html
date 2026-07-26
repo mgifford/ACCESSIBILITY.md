@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+  Fixture: background-color change as the focus indicator (no outline).
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: outline is removed but a strong background color change on
+  focus still produces a detectable pixel difference within the element's
+  own bounding box.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: background color change</title>
+<style>
+  button { outline: none; background: #fff; border: 1px solid #333; padding: 0.5rem 1rem; }
+  button:focus-visible { background: #ffe58a; }
+</style>
+</head>
+<body>
+  <h1>Background-color focus indicator</h1>
+  <p><button type="button">Click me</button></p>
+</body>
+</html>

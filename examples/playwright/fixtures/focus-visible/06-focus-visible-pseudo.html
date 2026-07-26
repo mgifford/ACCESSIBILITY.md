@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+  Fixture: :focus-visible used correctly (indicator shows on keyboard focus).
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: this test drives focus via real Tab key presses, which is
+  exactly the input :focus-visible is designed to react to, so the
+  indicator should always appear during this check.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: focus-visible pseudo-class</title>
+<style>
+  button { outline: none; border: 1px solid #333; padding: 0.5rem 1rem; background: #fff; }
+  button:focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+</style>
+</head>
+<body>
+  <h1>:focus-visible only</h1>
+  <p><button type="button">Click me</button></p>
+</body>
+</html>

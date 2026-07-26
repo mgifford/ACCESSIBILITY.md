@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+  Fixture: the previous element's indicator disappears exactly as the new
+  element (which has no indicator of its own) gains focus.
+  Expected focus-visible-risk verdict: confirmed-no-visible-change for the
+  second control (focus demonstrably moved to it, so this is conclusive,
+  not merely a potential-missing-indicator). Rationale: a page-wide "did anything change" check
+  would see the outgoing indicator vanish and could misreport this as a
+  pass; because this check's region is scoped to the newly focused
+  element's own bounding box (not the previous one), the disappearing
+  neighbour does not leak into this stop's verdict.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: previous indicator disappears</title>
+<style>
+  #first:focus-visible { outline: 3px solid #1a73e8; }
+  #second { outline: none; }
+</style>
+</head>
+<body>
+  <h1>Adjacent controls, one with no indicator</h1>
+  <p><button id="first" type="button">Has an indicator</button></p>
+  <p><button id="second" type="button">Has no indicator</button></p>
+</body>
+</html>

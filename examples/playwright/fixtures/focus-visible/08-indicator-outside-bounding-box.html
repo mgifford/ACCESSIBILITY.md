@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  Fixture: indicator rendered outside the element's own bounding box
+  (e.g. a large negative-margin glow on a distant pseudo-element).
+  Expected focus-visible-risk verdict: visible-change-detected, PROVIDED the
+  region padding is generous enough to include the offset glow; with a
+  small padding value this can register as confirmed-no-visible-change
+  (a false negative for this valid, if unusually offset, pattern).
+  Rationale: documents that region-scoped comparison has a configurable
+  padding tradeoff — too small risks missing indicators offset from the
+  element; too large risks pulling in unrelated page content.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: indicator outside bounding box</title>
+<style>
+  body { padding: 3rem; }
+  button { outline: none; position: relative; padding: 0.5rem 1rem; }
+  button:focus-visible::after {
+    content: "";
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    box-shadow: 0 0 0 3px #1a73e8;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <h1>Offset indicator</h1>
+  <p><button type="button">Click me</button></p>
+</body>
+</html>

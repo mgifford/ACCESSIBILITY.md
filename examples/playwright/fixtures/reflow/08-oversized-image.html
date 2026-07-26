@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+  Fixture: an oversized image without responsive constraints.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: the image has explicit width/height attributes wider than
+  the viewport and no max-width: 100% rule, forcing page overflow.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: oversized image</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+</style>
+</head>
+<body>
+  <h1>Photo gallery</h1>
+  <img
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Crect width='800' height='400' fill='%23999'/%3E%3C/svg%3E"
+    width="800" height="400" alt="Wide landscape photo">
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+  Fixture: outline: none with no replacement indicator.
+  Expected focus-visible-risk verdict: confirmed-no-visible-change
+  Rationale: this is the canonical SC 2.4.7 failure — the default outline
+  is suppressed and nothing replaces it, so no pixels change on focus.
+  Because focus demonstrably moves between elements, this is a CONCLUSIVE
+  finding, not merely a potential-missing-indicator.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: outline none, no replacement</title>
+<style>
+  a, button, input { outline: none; }
+</style>
+</head>
+<body>
+  <h1>Missing focus indicator</h1>
+  <p><a href="#section">Skip to section</a></p>
+  <p><button type="button">Click me</button></p>
+  <h2 id="section">Section</h2>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  Fixture: responsive page that reflows correctly.
+  Expected reflow-risk verdict: no-overflow-detected
+  Rationale: single fluid column, no fixed pixel widths wider than the
+  viewport, images scaled with max-width: 100%.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: responsive pass</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  img { max-width: 100%; height: auto; display: block; }
+  .card { border: 1px solid #ccc; padding: 1rem; margin-block-end: 1rem; }
+</style>
+</head>
+<body>
+  <h1>Responsive article</h1>
+  <p>This page uses fluid layout and scales images. At 320 CSS pixels wide
+  it should present in a single column with no horizontal scrolling.</p>
+  <div class="card">
+    <h2>Section</h2>
+    <p>Ordinary paragraph content that wraps normally within the viewport.</p>
+  </div>
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='600' height='300' fill='%23ccc'/%3E%3C/svg%3E" alt="Placeholder illustration">
+</body>
+</html>

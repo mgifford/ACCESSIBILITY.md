@@ -359,6 +359,12 @@ Axe-core 4.11 includes **100+** automated accessibility checks organized into ca
 - Some rules are combined on pages to maximize coverage
 - Best practices rules are tested across multiple pages
 - Rules disabled by default (AAA, Experimental) are noted but not extensively tested
+- axe-core does not perform behavioral testing: it does not resize the
+  viewport, send keyboard input, or compare rendered states. Reflow risk
+  (SC 1.4.10) and Focus Visible behavioral evidence (SC 2.4.7) require the
+  checks documented in
+  [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md),
+  not axe-core rule scans.
 
 ---
 

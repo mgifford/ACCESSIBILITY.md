@@ -174,6 +174,7 @@ and testing.
 
 - [Contributing Accessibility](examples/CONTRIBUTING_A11Y.md)
 - [Manual Accessibility Testing](examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
+- [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) — Reflow risk and Focus Visible behavioral testing with reusable Playwright modules
 - [Browser and Assistive Technology Support](BROWSER_SUPPORT.md)
 - [Accessibility Bug Reporting](examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [CI/CD Accessibility](examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
@@ -238,6 +239,11 @@ Apply these requirements when relevant:
   and auditory information.
 
 An automated rule pass does not establish that these requirements are met.
+For changes affecting layout or keyboard focus, apply the behavioral checks
+in [Behavioral Accessibility Automation](examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md)
+(Reflow risk at a 320 CSS-pixel-equivalent viewport, behavioral Focus
+Visible testing) and record any exceptions or unresolved `cantTell`
+results rather than treating a clean automated result as conformance.
 
 ## SVG, Mermaid, and Transformation Rules
 

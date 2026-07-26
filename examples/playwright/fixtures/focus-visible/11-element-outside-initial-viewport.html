@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a focusable element positioned outside the initial viewport.
+  Expected focus-visible-risk verdict: visible-change-detected, same as a
+  normal in-viewport control.
+  Rationale: real browsers automatically scroll a newly Tab-focused
+  element into view before the next paint, so by the time this check
+  reads the element's bounding rect it is typically already back inside
+  the viewport. This fixture exists to document that browser behaviour
+  (not a check limitation): a page relying on "the user will never Tab to
+  this" is not a safe assumption, because the browser brings it on-screen
+  regardless. See fixture 12 for a page long enough that this native
+  scroll-into-view still leaves most of the document out of any single
+  screenshot.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: element outside initial viewport</title>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  .spacer { height: 1400px; padding: 1rem; }
+  button:focus-visible { outline: 3px solid #1a73e8; }
+</style>
+</head>
+<body>
+  <div class="spacer">
+    <h1>Scroll down for the button</h1>
+    <p>The button below starts well outside the viewport.</p>
+  </div>
+  <p><button type="button">Off-screen button</button></p>
+</body>
+</html>

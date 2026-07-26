@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--
+  Fixture: fixed-width layout.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: the page wrapper has a hard-coded min-width wider than 320px,
+  forcing horizontal scroll at the Reflow viewport.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: fixed-width layout</title>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  .wrapper { min-width: 980px; padding: 1rem; box-sizing: border-box; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Fixed-width page</h1>
+    <p>This wrapper never shrinks below 980px, so at 320 CSS pixels the
+    page overflows horizontally. This is a genuine Reflow barrier, not an
+    excepted two-dimensional layout.</p>
+  </div>
+</body>
+</html>

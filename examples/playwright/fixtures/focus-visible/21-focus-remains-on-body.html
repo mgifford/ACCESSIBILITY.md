@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!--
+  Fixture: focus remains on <body> after Tab because the only control is
+  intentionally inert (disabled).
+  Expected focus-visible-risk verdict: skipped-not-applicable, then the
+  loop should terminate rather than spin, because beforeInfo and afterInfo
+  never change.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: focus stays on body</title>
+</head>
+<body>
+  <h1>Only a disabled control</h1>
+  <p><button type="button" disabled>Disabled button</button></p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a single focusable element, after which focus leaves the
+  document (simulated by giving the page exactly one tabbable control, so
+  the next Tab moves focus to the browser's own UI).
+  Expected focus-visible-risk verdict: one visible-change-detected stop for
+  the button, then a skipped-not-applicable stop reporting that focus left
+  the document, and the loop should stop cleanly (not error, not hang).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: focus leaves the document</title>
+<style>
+  button:focus-visible { outline: 3px solid #1a73e8; }
+</style>
+</head>
+<body>
+  <h1>Only one focusable control</h1>
+  <p><button type="button">Only button on the page</button></p>
+</body>
+</html>

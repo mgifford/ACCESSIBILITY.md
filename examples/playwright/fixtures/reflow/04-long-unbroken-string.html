@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a long unbroken string (e.g. a URL or token) without wrapping.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: without overflow-wrap/word-break, a long token forces the
+  containing block wider than the viewport.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: long unbroken string</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  /* Intentionally no overflow-wrap / word-break, to demonstrate the barrier. */
+  p { white-space: normal; }
+</style>
+</head>
+<body>
+  <h1>Page with an unbroken long string</h1>
+  <p>Reference: https://example.com/a/very/long/path/segment/that/keeps/going/without/any/spaces/or/hyphens/to/allow/wrapping/abcdefghijklmnopqrstuvwxyz0123456789</p>
+</body>
+</html>

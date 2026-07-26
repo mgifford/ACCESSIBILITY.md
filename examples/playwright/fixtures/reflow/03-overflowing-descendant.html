@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+  Fixture: an overflowing descendant inside an otherwise responsive page.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: the outer page is fluid, but one inner element has a fixed
+  pixel width wider than the viewport, pushing page-level scrollWidth out.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: overflowing descendant</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  .promo-banner { width: 600px; background: #eee; padding: 1rem; }
+</style>
+</head>
+<body>
+  <h1>Page with an oversized descendant</h1>
+  <p>Most of this page is responsive, but the promo banner below has a
+  fixed 600px width.</p>
+  <div class="promo-banner">This banner does not shrink below 600px.</div>
+</body>
+</html>

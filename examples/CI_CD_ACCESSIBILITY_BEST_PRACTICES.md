@@ -43,6 +43,7 @@ a regression.
 | Browser rule scans | axe-core or equivalent | Detectable rules in rendered states | Complete WCAG coverage or usability |
 | Semantic assertions | Role queries and ARIA snapshots | Accessibility-tree structure and changes | Exact screen-reader speech |
 | Visual checks | Screenshots, contrast tools, reflow checks | Theme and layout regressions | Meaning, keyboard access, or text alternatives |
+| Behavioral checks | Reflow risk (320 CSS-pixel-equivalent viewport), Focus Visible (real Tab input + screenshot diff) | Rendered-page evidence static tools cannot produce | WCAG conformance; see [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) |
 | End-to-end tests | Keyboard and pointer task flows | Operability, focus, state changes, errors | Assistive-technology interoperability by itself |
 | Manual and assistive-technology testing | Task-based evaluation | Quality, sequence, interaction, and compatibility | Universal behavior across all configurations |
 
@@ -540,6 +541,7 @@ not update snapshots or baselines solely to make CI green.
 
 ## Related Project Guidance
 
+- [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) — Reflow risk and Focus Visible checks, with a [sample CI workflow](../.github/workflows/behavioral-accessibility-checks.yml)
 - [Contributing Accessibility](./CONTRIBUTING_A11Y.md)
 - [Manual Accessibility Testing](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [Accessibility Bug Reporting](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)

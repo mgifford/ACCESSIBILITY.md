@@ -238,33 +238,40 @@ For each interactive element, verify:
 
 This section covers three related but distinct requirements. Conflating them produces incomplete testing.
 
+These are two distinct success criteria with different tests. Do not conflate them: a page can pass one and fail the other, and horizontal scrolling at 200% zoom is not automatically a failure of either.
+
 #### SC 1.4.4 Resize Text (Level AA)
 
-Content must be resizable up to 200% without loss of content or functionality. Test at 200% zoom on a 1280px viewport. This verifies that text can be enlarged and the page remains usable at that zoom level.
+Content must be resizable up to 200% without loss of content or functionality. This checks text enlargement specifically — it does not itself require eliminating horizontal scrolling.
 
 **Steps:**
 1. Set browser zoom to 200% (Ctrl/Cmd + +)
 2. Verify all content is readable
 3. Verify no content is cut off or overlapping
-4. Verify no horizontal scrolling on a 1280px viewport
+4. Verify functionality (menus, forms, controls) still works at 200%
 5. Test responsive behavior at different zoom levels
 
 #### SC 1.4.10 Reflow (Level AA)
 
-Content must reflow at 400% zoom (or a 320px equivalent CSS width) without requiring two-dimensional scrolling for vertical content. This is a different test from the 200% zoom check above.
+Content must be presented without loss of information or functionality, and without requiring scrolling in two dimensions, at a viewport width equivalent to 320 CSS pixels for content that scrolls vertically (or a height equivalent to 256 CSS pixels for content that scrolls horizontally). A common way to test the 320-pixel-wide requirement on a desktop browser is a 1280 CSS-pixel-wide viewport at 400% zoom — the two are equivalent because zooming in by 4× on a 1280px viewport leaves 320 effective CSS pixels of width. This is a different test from the 200% zoom check above, and horizontal scrolling that appears only at 200% zoom is not by itself a Reflow failure.
 
 **Steps:**
-1. Set browser zoom to 400% (Ctrl/Cmd + + + +), or set viewport width to 320px
-2. Verify content is presented in a single column without horizontal scrolling
+1. Set the viewport to 320 CSS pixels wide (or set browser zoom to 400% on a 1280px viewport)
+2. Verify content does not require horizontal scrolling to read (for non-excepted content — see below)
 3. Verify no content is cut off, overlapped, or hidden
 4. Verify interactive elements remain operable (can be reached and activated)
-5. Verify reading order is logical without visual layout cues
+5. Verify reading order, relationships, and operation are preserved without relying on the original visual layout
 
-**Exceptions (SC 1.4.10 does not apply to):**
-- horizontal scrolling is required for content that uses spatial layout essential to meaning (e.g., data tables, maps, diagrams, video players, toolbars)
-- content does not use two-dimensional layout (e.g., a single-column text page)
+**The exception, precisely:** SC 1.4.10 exempts only the **parts of content that require two-dimensional layout for their usage or meaning** — not the page as a whole, and not "any page that happens to use a single column." Normative examples include data tables, maps, diagrams, video players, games, presentations, and interfaces requiring a persistently visible toolbar.
 
-**Page-level overflow as an indicator:** A page that triggers horizontal scroll at 400% zoom is a high-value indicator that Reflow has not been achieved. Investigate whether the content falls within the exceptions before concluding a failure. Automated tools that detect overflow at 320px can flag candidates, but human judgment is needed to confirm the finding and evaluate exceptions.
+This has consequences a reviewer must check:
+- An excepted component does not exempt the rest of the page. The heading above a data table, the introductory paragraph, filters, search controls, and pagination around it must still reflow normally — only the component that genuinely needs two dimensions is excepted.
+- Within an excepted component, individual sections may still need to reflow. A table's overall grid may need two dimensions to convey row/column relationships, but that does not automatically exempt a single cell's own text content.
+- "Requires" is a meaning test, not a convenience test. A component that merely looks better in a wide fixed layout, without losing information or functionality if it reflowed, is not exempt.
+
+**Single column is a technique, not the requirement.** SC 1.4.10 does not itself require a single-column layout. Its actual requirements are: no loss of information or functionality; no two-dimensional scrolling for non-excepted content; content readable without repeated horizontal panning; and preserved operation, relationships, and reading order. A single column is simply a common way projects satisfy those requirements — a multi-column layout that still meets them is not automatically a failure.
+
+**Page-level overflow as an indicator:** A page that triggers horizontal scroll at 400% zoom (or the 320 CSS-pixel equivalent) is a high-value indicator that Reflow has not been achieved. Investigate whether the overflowing content falls within the exception described above before concluding a failure. Automated tools that detect overflow at 320px can flag candidates, but human judgment is needed to confirm the finding and evaluate exceptions. See [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#4-reflow-risk-in-detail) for a reusable, tested Playwright implementation and its documented limitations.
 
 **Related low-vision checks (test alongside Reflow):**
 - **SC 1.4.4 Text Resize:** Does text enlarge to 200% without loss?
@@ -273,27 +280,23 @@ Content must reflow at 400% zoom (or a 320px equivalent CSS width) without requi
 
 #### Automated Reflow Indicator Checks
 
-Playwright can test for overflow at 320px width as an indicator of Reflow issues:
+A reusable, tested Playwright module for Reflow risk detection —
+[`examples/playwright/reflow-risk.mjs`](./playwright/reflow-risk.mjs) — is
+documented in full in
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#4-reflow-risk-in-detail).
+It sets a 320 CSS-pixel viewport, waits for layout to stabilize (fonts,
+images, and JavaScript), attempts a horizontal scroll following the method
+used by the [CWAC](https://github.com/GOVTNZ/cwac) `ReflowAudit`, measures
+overflow, works for right-to-left documents, and returns a structured
+result distinguishing `no-overflow-detected`, `potential-reflow-barrier`,
+and `cant-tell` (page did not stabilize).
 
-```javascript
-import { chromium } from 'playwright';
-
-const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 320, height: 568 } });
-await page.goto('http://localhost:4000/');
-
-const hasHorizontalScroll = await page.evaluate(() => {
-  return document.documentElement.scrollWidth > document.documentElement.clientWidth;
-});
-
-console.log('Potential Reflow issue:', hasHorizontalScroll);
-```
-
-This is an indicator test, not a Reflow conformance check. Human judgment is needed to:
-- confirm the overflow is not within an exception
+This is an indicator test, not a Reflow conformance check. Human judgment
+is needed to:
+- confirm any detected overflow is not within the SC 1.4.10 exception (see above)
 - verify content is not cut off or overlapped
 - verify interactive elements remain operable
-- test actual content at 400% zoom, not only 320px width
+- test actual content at 400% zoom, not only at the 320-pixel-equivalent width
 
 #### Screen Magnification
 
@@ -333,26 +336,58 @@ This AAA criterion is stricter than SC 2.4.7. It requires:
 
 Focus Appearance is a Level AAA criterion. Projects targeting AA conformance are not required to meet it, but meeting it provides stronger accessibility. Document whether your project targets this criterion.
 
-#### CWAC Screenshot-Difference Testing
+#### Behavioral Screenshot-Difference Testing
 
-The [CWAC](https://github.com/GOVTNZ/cwac/) project uses a screenshot-difference approach to detect focus indicator changes:
+The [CWAC](https://github.com/GOVTNZ/cwac/) (Centralised Web Accessibility
+Checker) project, developed by the Web Standards team at Te Pūnaha
+Matihiko, New Zealand Government, uses a screenshot-difference approach in
+its `FocusIndicatorAudit`:
 
-1. Capture a screenshot of the page in an unfocused state
-2. Tab to each focusable element and capture a screenshot
-3. Compare the two images to detect visual changes
+1. Sends actual Tab key presses.
+2. Takes an initial reference screenshot of the whole page.
+3. Takes a screenshot after each subsequent Tab press.
+4. Compares pixel values between the reference and each screenshot.
+5. Reports a finding when no captured pixels changed following a Tab
+   press.
 
-This approach can detect:
-- focus indicators that disappear in certain contexts
-- focus indicators that have insufficient contrast
-- focus indicators that are obscured by other elements
+CWAC's `FocusIndicatorAudit` does **not**:
+- measure focus-indicator contrast (SC 1.4.11) — it has no contrast
+  computation, only a pixel-equality check;
+- prove that a detected visual change is local to the focused element —
+  its comparison is whole-page, so any page-wide change can satisfy its
+  "something changed" test;
+- determine that a detected indicator is sufficiently perceptible — it
+  only reports whether any pixels differed, not by how much or where;
+- distinguish a genuinely missing indicator from one that is completely
+  obscured by other content — both can register the same way;
+- guarantee that unrelated animation elsewhere on the page did not cause
+  the detected change (CWAC mitigates this with a separate
+  animation-settling wait before testing, but the focus-comparison step
+  itself remains whole-page);
+- compare a distinct focused and unfocused reference image for every
+  individual element — it uses one initial whole-page reference and
+  compares each subsequent Tab-stop screenshot against that same
+  reference.
 
-**Limitations:**
-- requires a reference screenshot for each element, which may be impractical for large pages
-- pixel-level comparison may produce false positives from anti-aliasing or rendering differences
-- does not measure contrast ratio directly (it detects whether a change occurred)
-- does not verify that the focus indicator meets SC 1.4.11 or SC 2.4.13
+This repository's own reusable implementation,
+[`examples/playwright/focus-visible-risk.mjs`](./playwright/focus-visible-risk.mjs),
+is an independent reimplementation of the documented method (see
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#7-cwac-attribution)
+for the full attribution and license statement), and deliberately departs
+from the whole-page-reference approach: it captures a fresh
+unfocused/focused screenshot pair for each Tab stop, scoped to a padded
+region around that element's own bounding box. This closes some of the
+limitations above (a page-wide animation cannot masquerade as that
+element's indicator) while introducing its own documented tradeoffs (an
+indicator rendered well outside the padded region can be missed). See
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md#5-focus-visible-risk-in-detail)
+for the full detail, including which findings are conclusive versus
+indicators.
 
-Use this as a supplementary check alongside manual verification, not as a sole focus indicator test.
+**Neither implementation, nor any screenshot-diff approach alone,**
+verifies that a focus indicator meets SC 1.4.11 (contrast) or SC 2.4.13
+(minimum area, AAA). Use screenshot-difference testing as a supplementary
+check alongside manual verification, not as a sole focus indicator test.
 
 ### 6.4 Forced Colors Mode Testing
 
@@ -728,6 +763,7 @@ For AI systems and automated tooling, see [wai-yaml-ld](https://github.com/mgiff
 ---
 
 **Related Documentation:**
+- [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) - Canonical guide to Reflow risk, Focus Visible, and other rendered-page behavioral checks, with reusable tested Playwright modules
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - How to contribute, including testing expectations
 - [BROWSER_SUPPORT.md](../BROWSER_SUPPORT.md) - Browser and AT support matrix
 - [KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) - Keyboard interaction patterns

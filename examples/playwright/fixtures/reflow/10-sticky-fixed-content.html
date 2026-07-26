@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  Fixture: sticky/fixed content alongside a responsive layout.
+  Expected reflow-risk verdict: no-overflow-detected
+  Rationale: a fixed-position toolbar can be a legitimate part of the
+  interface but must not force page-level horizontal overflow. This
+  fixture keeps the fixed element within the viewport width so it does
+  not create a barrier; contrast with fixture 02 for a failing case.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: sticky/fixed content</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding-top: 3rem; }
+  .toolbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: #333; color: #fff; padding: 0.75rem 1rem;
+    box-sizing: border-box;
+  }
+  main { padding: 1rem; }
+</style>
+</head>
+<body>
+  <div class="toolbar">Persistent toolbar</div>
+  <main>
+    <h1>Page with a fixed toolbar</h1>
+    <p>The toolbar stays fixed to the top but is width-constrained to the
+    viewport, so it does not cause horizontal overflow.</p>
+  </main>
+</body>
+</html>

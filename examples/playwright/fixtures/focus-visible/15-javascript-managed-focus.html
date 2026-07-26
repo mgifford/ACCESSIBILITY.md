@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  Fixture: JavaScript-managed focus (a button click moves focus elsewhere).
+  Expected focus-visible-risk verdict: for the plain Tab sequence this
+  behaves like fixture 06 (visible-change-detected on each stop); this
+  fixture documents that JS-driven focus changes triggered by *other*
+  interactions (not Tab) are outside what a pure Tab-sequence check
+  observes, and would need an interaction-specific test.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: JavaScript-managed focus</title>
+<style>
+  button:focus-visible, input:focus-visible { outline: 3px solid #1a73e8; }
+</style>
+</head>
+<body>
+  <h1>JS-managed focus</h1>
+  <p><button id="opener" type="button">Open panel</button></p>
+  <div id="panel" hidden>
+    <label for="panel-input">Panel field</label>
+    <input id="panel-input" type="text">
+  </div>
+  <script>
+    document.getElementById('opener').addEventListener('click', () => {
+      const panel = document.getElementById('panel');
+      panel.hidden = false;
+      document.getElementById('panel-input').focus();
+    });
+  </script>
+</body>
+</html>

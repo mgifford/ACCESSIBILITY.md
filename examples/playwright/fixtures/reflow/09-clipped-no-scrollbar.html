@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+  Fixture: clipped content without a scrollbar (overflow: hidden).
+  Expected reflow-risk verdict: no-overflow-detected (page-level scroll check
+  will not find horizontal scroll, because overflow is hidden rather than
+  scrollable) — but this is a FALSE-NEGATIVE RISK worth documenting.
+  Rationale: content is clipped and permanently inaccessible rather than
+  causing a scrollbar. Automated scrollWidth/clientWidth checks can miss
+  this because there is no scrollable overflow to detect; only visual
+  inspection or additional clipping heuristics (e.g. comparing children's
+  bounding rects to their ancestors) can catch it. This fixture exists to
+  document that limitation, not to claim the check catches it.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: clipped content, no scrollbar</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  .clip-box { width: 100%; overflow: hidden; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <h1>Clipped content</h1>
+  <div class="clip-box">
+    This sentence is long enough that part of it is silently clipped and
+    never becomes reachable by scrolling, because overflow is hidden.
+  </div>
+</body>
+</html>

@@ -170,6 +170,12 @@ full_width: true
           <p>Screen reader, keyboard, visual, Reflow, and focus testing techniques with step-by-step checklists</p>
         </article>
       </a>
+      <a class="card" href="./examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.html">
+        <article>
+          <h3>Behavioral Accessibility Automation</h3>
+          <p>Reusable, tested Playwright checks for Reflow risk and Focus Visible, with CI integration and result schemas</p>
+        </article>
+      </a>
       <a class="card" href="./examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.html">
         <article>
           <h3>Accessibility Bug Reporting Best Practices</h3>

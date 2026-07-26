@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+  Fixture: RTL page with a fixed-width layout.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: same fixed-width barrier as fixture 02, but in an RTL
+  document, to confirm overflow detection works in both directions.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: RTL fixed-width layout</title>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  .wrapper { min-width: 980px; padding: 1rem; box-sizing: border-box; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>صفحة بعرض ثابت</h1>
+    <p>هذا الغلاف لا يصغر عن 980 بكسل، لذلك يحدث تمرير أفقي عند 320 بكسل.</p>
+  </div>
+</body>
+</html>

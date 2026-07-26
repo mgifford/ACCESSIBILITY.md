@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+  Fixture: unrelated continuous animation elsewhere on the page.
+  Expected focus-visible-risk verdict: cant-tell-unstable at the page
+  level (waitForVisualStability never settles because the spinner never
+  stops), even though the tested button's own focus indicator is fine.
+  Rationale: demonstrates why whole-page stability must be checked before
+  trusting any pixel comparison — an animating decorative element can
+  make the entire page read as "unstable" under this example's
+  same-page-stability precondition. Production implementations may want
+  to scope stability checking to the tested region only, as a documented
+  enhancement.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: unrelated animation</title>
+<style>
+  button:focus-visible { outline: 3px solid #1a73e8; }
+  .spinner {
+    width: 16px; height: 16px; border: 3px solid #ccc; border-top-color: #1a73e8;
+    border-radius: 50%; display: inline-block;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <h1>Page with a spinner <span class="spinner" aria-hidden="true"></span></h1>
+  <p><button type="button">Button with a normal indicator</button></p>
+</body>
+</html>

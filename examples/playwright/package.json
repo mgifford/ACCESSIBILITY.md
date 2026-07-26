@@ -1,0 +1,19 @@
+{
+  "name": "accessibility-md-behavioral-playwright-examples",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reusable Playwright behavioural accessibility risk checks (Reflow, Focus Visible) for ACCESSIBILITY.md",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/**/*.test.mjs",
+    "test:reflow": "node --test tests/reflow-risk.test.mjs",
+    "test:focus-visible": "node --test tests/focus-visible-risk.test.mjs",
+    "serve:fixtures": "node lib/serve-fixtures.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

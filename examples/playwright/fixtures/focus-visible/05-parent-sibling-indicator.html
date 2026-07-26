@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a parent or sibling element is used as the visual indicator.
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: the focused control itself has outline: none, but a sibling
+  icon changes color via the :focus-visible + selector. Because the
+  region padding around the focused element's bounding box is generous
+  enough to include immediately adjacent siblings in typical layouts,
+  this should still register as a visible change; if the sibling is far
+  outside the padded region it may instead register as
+  confirmed-no-visible-change (a false negative for this valid pattern),
+  which is a documented limitation of region-scoped comparison worth
+  noting in review.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: parent/sibling indicator</title>
+<style>
+  .control-row { display: inline-flex; align-items: center; gap: 0.5rem; }
+  button { outline: none; }
+  .indicator-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: transparent;
+  }
+  button:focus-visible + .indicator-dot { background: #1a73e8; }
+</style>
+</head>
+<body>
+  <h1>Sibling-based indicator</h1>
+  <p class="control-row">
+    <button type="button">Click me</button>
+    <span class="indicator-dot" aria-hidden="true"></span>
+  </p>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+  Fixture: right-to-left (RTL) page, responsive.
+  Expected reflow-risk verdict: no-overflow-detected
+  Rationale: exercises the RTL branch of horizontal-scroll detection.
+  scrollX behaviour for RTL documents varies by rendering engine (some
+  report 0 or negative values); the check must not assume a fixed sign
+  and should compare scroll movement magnitude instead.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: RTL page</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+</style>
+</head>
+<body>
+  <h1>صفحة متجاوبة</h1>
+  <p>هذه صفحة تستخدم تخطيطًا متجاوبًا باتجاه من اليمين إلى اليسار. يجب ألا
+  يظهر أي تمرير أفقي عند عرض 320 بكسل.</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a table causing page-level overflow (no scroll container).
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: even though tables can qualify for the SC 1.4.10 exception,
+  this table is not isolated in its own scrollable region, so the whole
+  page scrolls horizontally including the heading and paragraph above it.
+  That is a barrier regardless of the table's own exception status.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: table causing page overflow</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  table { border-collapse: collapse; min-width: 900px; }
+  th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+</style>
+</head>
+<body>
+  <h1>Quarterly results</h1>
+  <p>This paragraph is forced to scroll along with the table below it,
+  because the table has no scroll container of its own.</p>
+  <table>
+    <caption>Revenue by region and quarter</caption>
+    <thead>
+      <tr><th>Region</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>North</td><td>120</td><td>130</td><td>110</td><td>140</td><td>500</td></tr>
+      <tr><td>South</td><td>90</td><td>95</td><td>100</td><td>105</td><td>390</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

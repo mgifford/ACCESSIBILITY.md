@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a barely perceptible pixel change (1px border, near-identical color).
+  Expected focus-visible-risk verdict: uncertain by design — may register as
+  either visible-change-detected or confirmed-no-visible-change depending on
+  the pixel-diff threshold. Rationale: this fixture exists to document that
+  a raw pixel-diff check cannot by itself confirm SC 2.4.7 (visible) or
+  SC 1.4.11 (3:1 contrast); a change so subtle it is barely machine-
+  detectable is exactly the case that requires human/contrast-tool review
+  regardless of which way the automated check leans.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: barely perceptible change</title>
+<style>
+  body { background: #f6f6f6; }
+  button {
+    outline: none; background: #f6f6f6; border: 1px solid #f0f0f0;
+    padding: 0.5rem 1rem;
+  }
+  button:focus-visible { border-color: #eeeeee; }
+</style>
+</head>
+<body>
+  <h1>Barely perceptible focus change</h1>
+  <p><button type="button">Click me</button></p>
+</body>
+</html>

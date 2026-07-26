@@ -282,6 +282,13 @@ WebKit automation is not evidence that Safari and VoiceOver were tested. An
 ARIA snapshot is not a screen-reader transcript. Record the exact environment
 for any interoperability claim.
 
+Reflow risk at a 320 CSS-pixel-equivalent viewport and behavioral Focus
+Visible testing are part of this coverage layer, not the browser-rule-scan
+layer above. See
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md)
+for the reusable Playwright checks, their result vocabulary, and documented
+limitations.
+
 See [Browser Support](../BROWSER_SUPPORT.md) and
 [Manual Accessibility Testing](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md).
 
@@ -474,6 +481,10 @@ patch to approve its own exception.
 - [ ] Final rendered, transformed, sanitized, optimized, or exported output is
   tested.
 - [ ] Applicable browsers, themes, preferences, and viewports are covered.
+- [ ] For layout or keyboard-focus changes, Reflow risk and behavioral
+  Focus Visible checks were run per
+  [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md),
+  with indicators reviewed rather than treated as conformance.
 - [ ] Manual and assistive-technology testing was completed or handed off
   precisely.
 - [ ] Findings include actionable, accessible evidence.
@@ -486,6 +497,7 @@ patch to approve its own exception.
 
 ## Related Project Guidance
 
+- [Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md)
 - [CI/CD Accessibility Best Practices](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Contributing Accessibility](./CONTRIBUTING_A11Y.md)
 - [Manual Accessibility Testing](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+  Fixture: layout that changes after fonts/JavaScript load.
+  Expected reflow-risk verdict: potential-reflow-barrier
+  Rationale: the page is responsive on first paint, but injected content
+  after a short delay adds a fixed-width element, so the check must wait
+  for layout to stabilize before measuring, or it will produce a false
+  no-overflow-detected result.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflow fixture: late layout shift</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  .late-widget { width: 700px; background: #eee; padding: 1rem; display: none; }
+</style>
+</head>
+<body>
+  <h1>Page with delayed content</h1>
+  <p>A wide widget is injected 800ms after load to simulate late
+  JavaScript execution.</p>
+  <div class="late-widget" id="late-widget">Delayed wide widget</div>
+  <script>
+    setTimeout(() => {
+      document.getElementById('late-widget').style.display = 'block';
+    }, 1500);
+  </script>
+</body>
+</html>

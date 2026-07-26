@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  Fixture: focus indicator hidden underneath sticky/fixed content.
+  Expected focus-visible-risk verdict: this is a FOCUS OBSCURATION case
+  (SC 2.4.11 Focus Not Obscured), not purely SC 2.4.7. The element may
+  show visible-change-detected in isolation (the indicator does change
+  pixels) while still being obscured by the sticky header in the actual
+  viewport. Rationale: documents the difference between "an indicator
+  exists" and "the indicator is perceivable" — geometry/overlap analysis
+  (comparing the focused element's rect to the sticky header's rect) is
+  needed in addition to pixel diffing to catch this case; see
+  BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md for the focus-obscuration
+  discussion.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: indicator hidden under sticky header</title>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  .sticky-header {
+    position: sticky; top: 0; background: #333; color: #fff;
+    padding: 1rem; height: 60px; box-sizing: border-box; z-index: 10;
+  }
+  .content { padding: 1rem; }
+  .early-link { display: block; margin-top: -40px; outline: 3px solid transparent; }
+  .early-link:focus-visible { outline-color: #1a73e8; }
+</style>
+</head>
+<body>
+  <div class="sticky-header">Sticky header</div>
+  <div class="content">
+    <a class="early-link" href="#next">Link positioned under the sticky header when focused</a>
+    <p id="next">Rest of the page content.</p>
+  </div>
+</body>
+</html>

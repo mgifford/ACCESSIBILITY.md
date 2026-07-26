@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  Fixture: focus is immediately removed by script after being set.
+  Expected focus-visible-risk verdict: confirmed-no-visible-change or
+  skipped-not-applicable, depending on timing — documents a known race:
+  this example waits 80ms after Tab before reading document.activeElement,
+  so a script that blurs within that window can make focus appear to
+  never have moved. Rationale: mirrors a real anti-pattern (scripts that
+  fight the browser's focus management) and documents the check's timing
+  sensitivity rather than claiming to catch every such case.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: immediate focus removal</title>
+<style>
+  button:focus-visible { outline: 3px solid #1a73e8; }
+</style>
+</head>
+<body>
+  <h1>Focus removed immediately</h1>
+  <p><button id="vanishing" type="button">Focus vanishes immediately</button></p>
+  <script>
+    document.getElementById('vanishing').addEventListener('focus', (event) => {
+      event.target.blur();
+    });
+  </script>
+</body>
+</html>

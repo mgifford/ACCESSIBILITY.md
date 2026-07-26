@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a valid, visible custom outline.
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: outline is replaced, not removed; a thick, high-contrast
+  outline should produce a clearly detectable pixel difference.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: valid custom outline</title>
+<style>
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid #1a73e8;
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <h1>Custom outline</h1>
+  <p><a href="#section">Skip to section</a></p>
+  <p><button type="button">Click me</button></p>
+  <h2 id="section">Section</h2>
+</body>
+</html>

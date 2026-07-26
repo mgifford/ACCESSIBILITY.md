@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a text input with a blinking caret.
+  Expected focus-visible-risk verdict: visible-change-detected — but for
+  a reason that also needs care: the caret itself blinks, which can
+  register as a "visible change" independent of whether the input also
+  has a proper focus outline. Rationale: documents that a positive result
+  here is not automatically strong evidence of a *deliberate* focus
+  indicator; combine with a check for outline/border/background changes
+  when reviewing input fields specifically.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: blinking caret</title>
+<style>
+  input { outline: none; border: 1px solid #333; padding: 0.4rem; }
+</style>
+</head>
+<body>
+  <h1>Text input with only a caret</h1>
+  <p>
+    <label for="text-field">Text field</label>
+    <input id="text-field" type="text">
+  </p>
+</body>
+</html>

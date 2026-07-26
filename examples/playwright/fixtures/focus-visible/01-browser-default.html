@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<!--
+  Fixture: browser-default focus indicator (no custom CSS).
+  Expected focus-visible-risk verdict for the link and button: confirmed-no-visible-change should NOT occur; expect visible-change-detected.
+  Rationale: the user agent's default focus ring is present and should
+  produce a visible pixel change when focused.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: browser default</title>
+</head>
+<body>
+  <h1>Browser-default focus styles</h1>
+  <p><a href="#section">Skip to section</a></p>
+  <p><button type="button">Click me</button></p>
+  <p><input type="text" placeholder="Type here"></p>
+  <h2 id="section">Section</h2>
+</body>
+</html>

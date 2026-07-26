@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a page longer than 10,000 CSS pixels.
+  Expected focus-visible-risk verdict: focusable elements near the top
+  behave normally (visible-change-detected); elements far down the page
+  are cant-tell-no-coverage under this example's viewport-only capture,
+  same limitation as fixture 11 at a larger scale.
+  Rationale: CWAC's FocusIndicatorAudit caps its resized browser height at
+  10,000px specifically because some pages are effectively unbounded;
+  this fixture documents that same practical limit.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: very long page</title>
+<style>
+  body { margin: 0; font-family: sans-serif; padding: 1rem; }
+  .filler { height: 400px; border-bottom: 1px dashed #ccc; }
+  button:focus-visible { outline: 3px solid #1a73e8; }
+</style>
+</head>
+<body>
+  <h1>Very long page</h1>
+  <p><button type="button">Button near the top</button></p>
+  <!-- 30 filler sections x 400px ≈ 12,000px of additional height -->
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <div class="filler"></div><div class="filler"></div><div class="filler"></div>
+  <p><button type="button">Button far down the page</button></p>
+</body>
+</html>

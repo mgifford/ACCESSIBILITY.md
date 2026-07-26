@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+  Fixture: a skip link that is visually hidden until focused.
+  Expected focus-visible-risk verdict: visible-change-detected
+  Rationale: the link moves from off-screen to on-screen on focus, which
+  is a large, unambiguous pixel change — a common and valid pattern.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus fixture: skip link revealed on focus</title>
+<style>
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: #1a73e8; color: #fff; padding: 0.5rem 1rem;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <nav>
+    <a href="#">Nav item one</a>
+  </nav>
+  <main id="main">
+    <h1>Main content</h1>
+  </main>
+</body>
+</html>
