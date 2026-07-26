@@ -784,19 +784,28 @@ Do not close an issue only because the original automated rule passes. The imple
 
 ## 20. Deduplication and Identifiers
 
-Use the issue tracker's ID as the durable identity for tracked work. A scan fingerprint can help correlate repeated results, but it is not a permanent bug ID.
+Use the issue tracker's ID as the durable identity for tracked work, not a scan request ID or a computed fingerprint. A **tracker ID** is assigned by a work-tracking system; a **scan request ID** identifies why a scan ran, and it is not automatically a defect tracker for every finding the scan produces.
+
+A fingerprint can help correlate repeated results, but it is not a permanent bug ID:
+
+- an **occurrence fingerprint** correlates a result at one normalized location;
+- a **pattern fingerprint** correlates candidate patterns within a defined scope, such as a repository or product;
+- a **display ID** is a short, human-readable alias derived from a fingerprint; it is convenient in reports and conversations, but it is not the authoritative key and may collide.
+
+Matching fingerprints support grouping and investigation. They do not by themselves prove a shared root cause, and absence from a later scan does not by itself prove resolution.
 
 If fingerprints are used:
 
-- version the fingerprint algorithm;
+- version the fingerprint algorithm and profile;
 - include the tool and rule version where relevant;
 - normalize URLs and selectors carefully;
 - expect fingerprints to change when markup or routing changes;
 - retain collision checks and the original evidence;
 - do not infer `mobile` or `desktop` from a width threshold;
-- do not merge results solely because their hashes match.
+- do not merge results solely because their hashes match;
+- retain legacy identifiers when a fingerprint algorithm changes rather than discarding them.
 
-A useful correlation key may include route pattern, source component, rule, relevant state, and environment. The right inputs depend on the product. A generated selector and a shortened hash are not guaranteed to be stable or unique.
+For the full conceptual model, including scan run IDs, root causes, heuristic clusters, legacy identifiers, and migration between fingerprint versions, see [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md).
 
 ## 21. Finding Lifecycle
 
@@ -918,6 +927,7 @@ The [Evaluation Report Template](https://www.w3.org/WAI/test-evaluate/report-tem
 
 ## 26. Related Guides
 
+- [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md)
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [AXE Rules Coverage](./AXE_RULES_COVERAGE.md)
 - [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)

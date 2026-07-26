@@ -16,6 +16,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 - [MANUAL_ACCESSIBILITY_TESTING_GUIDE](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [BEHAVIORAL_ACCESSIBILITY_AUTOMATION](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) - Reflow risk and Focus Visible behavioral testing, with reusable tested [Playwright modules](./playwright/README.md)
 - [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+- [ACCESSIBILITY_FINDING_TRACKING](./ACCESSIBILITY_FINDING_TRACKING.md) - Canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, display IDs, and legacy identifier migration
 - [GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION](./GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)
 - [TEST_COVERAGE](./TEST_COVERAGE.md)
 - [RULES_SUMMARY](./RULES_SUMMARY.md)
