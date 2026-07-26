@@ -187,7 +187,7 @@ The following example shows the concepts together. It is conceptual. The hash va
 }
 ```
 
-A future machine-readable fingerprint profile will define the exact hashing serialization, normalization algorithm, and published test vectors. Do not treat SHA-256 as encryption, and do not treat any hash function as collision-free; a matching fingerprint is evidence for correlation, not proof of identity.
+The [fingerprint profiles](./fingerprints/README.md) define the exact hashing serialization, normalization algorithm, and published test vectors for `a11y/pattern/v1` and `a11y/occurrence/v1`. Do not treat SHA-256 as encryption, and do not treat any hash function as collision-free; a matching fingerprint is evidence for correlation, not proof of identity.
 
 ## Lifecycle States
 
@@ -276,6 +276,7 @@ This guide does not change either implementation.
 
 ## Related Guides
 
+- [Fingerprint Profiles](./fingerprints/README.md) - normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, canonicalization, and golden test vectors
 - [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Contributing Accessibility Guide](./CONTRIBUTING_A11Y.md)
 - [Examples Index](./README.md)

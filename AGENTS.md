@@ -178,6 +178,7 @@ and testing.
 - [Browser and Assistive Technology Support](BROWSER_SUPPORT.md)
 - [Accessibility Bug Reporting](examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Accessibility Finding Tracking](examples/ACCESSIBILITY_FINDING_TRACKING.md) — canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, and legacy identifier migration
+- [Fingerprint Profiles](examples/fingerprints/README.md) — normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, RFC 8785 canonicalization, and golden test vectors. Stable profiles and their published vectors are append-only: do not edit one in place if the change could alter a generated identifier. Create a new profile version and migration plan instead. Run `cd examples/fingerprints && npm ci && npm run check` after changing fingerprint documentation, profile files, normalization profiles, display-ID rules, test vectors, or their dependencies.
 - [CI/CD Accessibility](examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Shift-Left Automation](examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md)
 - [Progressive Enhancement](examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
