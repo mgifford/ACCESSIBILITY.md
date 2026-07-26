@@ -19,6 +19,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 - [ACCESSIBILITY_FINDING_TRACKING](./ACCESSIBILITY_FINDING_TRACKING.md) - Canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, display IDs, and legacy identifier migration
 - [fingerprints/README](./fingerprints/README.md) - Normative `a11y/pattern/v1` and `a11y/occurrence/v1` fingerprint contracts, RFC 8785 canonicalization, and executable golden test vectors
 - [schemas/README](./schemas/README.md) - Versioned JSON Schema (`schema_version: "2.0"`) for machine-readable accessibility findings, with validated complete, minimal, and manual examples
+- [migrations/ACCESSIBILITY_MIGRATION_PROFILES](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - Verified `drupal-core` and `open-scans` legacy identifier formats, gaps, and migration requirements for adopting the fingerprint profiles
 - [GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION](./GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)
 - [TEST_COVERAGE](./TEST_COVERAGE.md)
 - [RULES_SUMMARY](./RULES_SUMMARY.md)

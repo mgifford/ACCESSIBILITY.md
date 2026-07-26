@@ -250,32 +250,13 @@ The detailed schema and migration-index format for these steps belong in a later
 
 ## Repository-Specific Examples
 
-These examples describe migration scenarios, not established facts about the current implementation of either project. Verify current behavior in each project's own source before relying on these details.
-
-### `drupal-core`
-
-Drupal currently has several incompatible historical identifier forms, including `DRU-`, `INS-`, `MS-`, shortened hashes, and full SHA-256 hashes. A migration under this model would:
-
-- preserve existing published values;
-- name their legacy profiles;
-- add the new identifiers alongside them; and
-- avoid implying that all existing Drupal values were generated using the same contract.
-
-### `open-scans`
-
-`open-scans` currently separates page-specific findings from cross-page patterns but uses shortened and overlapping public identifier forms. A migration under this model would:
-
-- retain the existing values;
-- add explicit occurrence and pattern concepts;
-- distinguish their display prefixes;
-- separate scan requests from defect trackers;
-- retain issue-local history; and
-- avoid classifying an absent finding as resolved without comparable coverage.
+`drupal-core` and `open-scans` each have their own legacy identifier formats, verified against their current source and documented in [Accessibility Migration Profiles](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md). That guide is the canonical source for the exact hash inputs, known gaps (such as `open-scans` pattern IDs currently having no target-scope input), and the migration requirements for adopting `a11y/pattern/v1` and `a11y/occurrence/v1` in either project. Do not restate or re-derive those details here.
 
 This guide does not change either implementation.
 
 ## Related Guides
 
+- [Accessibility Migration Profiles](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - verified `drupal-core` and `open-scans` legacy identifier formats and migration requirements
 - [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema (`schema_version: "2.0"`) for the complete machine-readable finding record, with [a complete example](./schemas/accessibility-finding-v2.example.json), [a minimal example](./schemas/accessibility-finding-v2-minimal.example.json), and [a manual/user-reported example](./schemas/accessibility-finding-v2-manual.example.json)
 - [Fingerprint Profiles](./fingerprints/README.md) - normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, canonicalization, and golden test vectors
 - [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
