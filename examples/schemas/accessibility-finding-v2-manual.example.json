@@ -1,0 +1,49 @@
+{
+  "schema_version": "2.0",
+  "title": "Newsletter signup: error message is not read out after submitting an invalid email",
+  "reported_at": "2026-05-14T11:02:00-04:00",
+  "source": {
+    "method": "user-reported",
+    "reporter_reference": "support-ticket-48213"
+  },
+  "location": {
+    "component": "Newsletter signup form",
+    "safe_url": "https://example.com/newsletter"
+  },
+  "description": {
+    "summary": "Submitting the newsletter form with an invalid email address shows a red message, but nothing was announced while using a screen reader.",
+    "actual": "A red error message appeared near the email field, but the person using a screen reader was not told an error occurred."
+  },
+  "affected_people": [
+    {
+      "description": "A person who uses a screen reader",
+      "examples": [
+        "the reporter"
+      ],
+      "status": "reported",
+      "evidence_basis": "user-reported",
+      "scope_limit": "Based on one person's report; the specific screen reader and browser were not provided."
+    }
+  ],
+  "impact": {
+    "task": "Sign up for the newsletter",
+    "effect": "The person did not know why the form did not submit or what to fix.",
+    "confidence": "reported-only"
+  },
+  "evidence": {
+    "redacted": true,
+    "contains_personal_data": false
+  },
+  "verification": {
+    "manual": {
+      "required": true,
+      "status": "planned",
+      "rationale": "The report has not yet been reproduced by the team."
+    },
+    "testing_with_disabled_people": {
+      "required": false,
+      "status": "not-required",
+      "rationale": "Not yet determined whether this warrants dedicated participant testing; the underlying error-announcement pattern is well understood and can likely be verified through manual evaluation first."
+    }
+  }
+}

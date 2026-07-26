@@ -1,0 +1,219 @@
+{
+  "notes": [
+    "Each case is a complete finding record that is expected to FAIL schema validation for the stated reason.",
+    "validate-accessibility-findings.mjs runs every case and fails the whole check if any case unexpectedly passes, or if a case fails for a different keyword/path than declared here."
+  ],
+  "cases": [
+    {
+      "id": "IV-01-truncated-fingerprint",
+      "reason": "Truncated authoritative fingerprint: only 12 hex characters instead of the required 64.",
+      "expected_failure": {
+        "instancePath": "/tracking/fingerprints/a11y~1pattern~1v1/value",
+        "keyword": "pattern"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: truncated fingerprint",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "fingerprints": {
+            "a11y/pattern/v1": {
+              "algorithm": "sha-256",
+              "value": "57869bae817f"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "IV-02-uppercase-fingerprint",
+      "reason": "Uppercase authoritative fingerprint value; the pattern requires all-lowercase hex.",
+      "expected_failure": {
+        "instancePath": "/tracking/fingerprints/a11y~1occurrence~1v1/value",
+        "keyword": "pattern"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: uppercase fingerprint",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "fingerprints": {
+            "a11y/occurrence/v1": {
+              "algorithm": "sha-256",
+              "value": "4A201C8916E0A3F58B423910E388EF607584A4C88911AF24F4B77A0C84BB6A02"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "IV-03-display-id-as-fingerprint",
+      "reason": "A shortened display ID used where the full authoritative fingerprint value is required.",
+      "expected_failure": {
+        "instancePath": "/tracking/fingerprints/a11y~1pattern~1v1/value",
+        "keyword": "pattern"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: display ID as fingerprint",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "fingerprints": {
+            "a11y/pattern/v1": {
+              "algorithm": "sha-256",
+              "value": "A11Y-PAT-57869BAE817F"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "IV-04-malformed-tracker-uri",
+      "reason": "tracking.tracker_ids[].id is not a valid RFC 3986 URI reference.",
+      "expected_failure": {
+        "instancePath": "/tracking/tracker_ids/0/id",
+        "keyword": "format"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: malformed tracker URI",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "tracker_ids": [
+            {
+              "id": "this is not a uri: it has a bare colon and spaces",
+              "relationship": "tracks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "IV-05-unsupported-lifecycle-status",
+      "reason": "tracking.lifecycle.status uses a value outside the documented enum.",
+      "expected_failure": {
+        "instancePath": "/tracking/lifecycle/status",
+        "keyword": "enum"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: unsupported lifecycle status",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "lifecycle": {
+            "status": "closed-wontfix"
+          }
+        }
+      }
+    },
+    {
+      "id": "IV-06-resolved-without-status-basis",
+      "reason": "tracking.lifecycle.status is \"resolved\" but status_basis is missing.",
+      "expected_failure": {
+        "instancePath": "/tracking/lifecycle",
+        "keyword": "required"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: resolved without status basis",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "lifecycle": {
+            "status": "resolved"
+          }
+        }
+      }
+    },
+    {
+      "id": "IV-07-invalid-date-time",
+      "reason": "reported_at is not a valid RFC 3339 date-time value.",
+      "expected_failure": {
+        "instancePath": "/reported_at",
+        "keyword": "format"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: invalid date-time",
+        "reported_at": "July 18th 2026, sometime in the afternoon",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": []
+      }
+    },
+    {
+      "id": "IV-08-invalid-location-scope",
+      "reason": "location.scope uses a value outside the documented enum.",
+      "expected_failure": {
+        "instancePath": "/location/scope",
+        "keyword": "enum"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: invalid location scope",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "location": {
+          "scope": "entire-internet"
+        }
+      }
+    },
+    {
+      "id": "IV-09-missing-title",
+      "reason": "The required top-level title field is missing.",
+      "expected_failure": {
+        "instancePath": "",
+        "keyword": "required"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": []
+      }
+    },
+    {
+      "id": "IV-10-malformed-fingerprint-profile-entry",
+      "reason": "A fingerprint profile entry is missing its required algorithm field.",
+      "expected_failure": {
+        "instancePath": "/tracking/fingerprints/a11y~1pattern~1v1",
+        "keyword": "required"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: malformed fingerprint profile entry",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "tracking": {
+          "fingerprints": {
+            "a11y/pattern/v1": {
+              "value": "57869bae817fb90e13c94ef1d0908a1b7a642324f5cb61d9e0f56fd82f21ba02"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

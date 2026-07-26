@@ -548,6 +548,19 @@ Adapt this template to the organization. Fields marked as optional should remain
 - Suspected or confirmed root cause:
 - Related issue or regression:
 
+### Tracking and correlation (optional)
+
+- Tracker IDs:
+- Scan request ID:
+- Scan run ID:
+- Occurrence fingerprint profile and value:
+- Pattern fingerprint profile and value:
+- Display IDs:
+- Legacy identifiers:
+- Migration status:
+
+Reporters are not expected to calculate these values manually. Leave this section blank if unknown; see [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md) and [examples/schemas/](./schemas/README.md) for how these are computed and assigned.
+
 ### Suggested fix (optional)
 
 [Describe a possible approach without replacing acceptance criteria.]
@@ -644,121 +657,60 @@ Scope limit: Initial observation covers NVDA with Firefox only
 
 ## 18. Machine-Readable Finding Example
 
-Machine-readable output can support imports, reporting, and regression analysis. It must not require fields that do not exist for manual or user-reported findings.
+The JSON format described here is optional. It exists to support imports, reporting, and regression analysis, and it must not require fields that do not exist for manual or user-reported findings.
+
+The canonical, versioned, schema-validated format is `schema_version: "2.0"`, defined in [examples/schemas/](./schemas/README.md). It replaces the illustrative `schema_version: "1.1"` shape previously shown in this section. A concise excerpt of the same checkout example, using the current schema, looks like this:
 
 ```json
 {
-  "schema_version": "1.1",
+  "schema_version": "2.0",
   "title": "Checkout: card error text is not associated with the field",
   "reported_at": "2026-07-18T14:30:00-04:00",
-  "location": {
-    "route": "/checkout/payment",
-    "safe_url": "https://example.com/checkout/payment",
-    "component": "Payment form",
-    "locator": {
-      "type": "stable-css",
-      "value": "[data-component='payment-form']"
+  "source": {
+    "method": "manual-evaluation"
+  },
+  "tracking": {
+    "fingerprints": {
+      "a11y/occurrence/v1": {
+        "algorithm": "sha-256",
+        "value": "4a201c8916e0a3f58b423910e388ef607584a4c88911af24f4b77a0c84bb6a02"
+      }
+    },
+    "lifecycle": {
+      "status": "new",
+      "status_basis": "No matching occurrence fingerprint was found in comparable retained history."
     }
   },
-  "state": {
-    "build": "2026.07.18.2",
-    "account_role": "test customer",
-    "ui": "empty card number submitted"
+  "location": {
+    "safe_url": "https://example.com/checkout/payment",
+    "component": "Payment form"
   },
-  "steps": [
-    "Open the payment step with NVDA and Firefox.",
-    "Leave the card number empty.",
-    "Move to Submit order with Tab and press Enter.",
-    "Move focus back to the card number field with Shift+Tab."
-  ],
-  "expected": "The field exposes its label, invalid state, and associated error programmatically.",
-  "actual": "A visible error appears, but the field has no error association and NVDA announces only its label.",
+  "description": {
+    "summary": "The visible card error is not programmatically associated with the field.",
+    "expected": "The field exposes its label, invalid state, and associated error programmatically.",
+    "actual": "A visible error appears, but the field has no error association and NVDA announces only its label."
+  },
   "affected_people": [
     {
       "description": "People who use screen readers",
-      "examples": [
-        "some blind people",
-        "some low-vision people"
-      ],
       "status": "likely",
       "evidence_basis": "manual-evaluation",
-      "scope_limit": "Observed with NVDA and Firefox; not yet evaluated with disabled participants"
+      "scope_limit": "Observed with NVDA and Firefox; not yet evaluated with disabled participants."
     }
-  ],
-  "impact": {
-    "task": "Correct payment details",
-    "effect": "The person may not know which visible error belongs to the field.",
-    "workaround": "Navigate through surrounding content after each attempt.",
-    "confidence": "observed-behavior-with-inferred-impact"
-  },
-  "environment": {
-    "browser": "Firefox 140",
-    "operating_system": "Windows 11 24H2",
-    "assistive_technology": "NVDA 2026.1",
-    "input": "keyboard",
-    "viewport_css_pixels": {
-      "width": 1280,
-      "height": 720
-    },
-    "zoom": "100%",
-    "locale": "en-CA"
-  },
-  "standards": [
-    {
-      "standard": "WCAG 2.2",
-      "criterion": "1.3.1",
-      "name": "Info and Relationships",
-      "level": "A",
-      "relationship": "confirmed-failure"
-    }
-  ],
-  "test_result": {
-    "method": "manual",
-    "status": "confirmed",
-    "tool": null,
-    "rule": null,
-    "act_outcome": null
-  },
-  "verification": {
-    "automated": {
-      "required": true,
-      "status": "planned"
-    },
-    "manual": {
-      "required": true,
-      "status": "completed-for-original-finding"
-    },
-    "testing_with_disabled_people": {
-      "required": true,
-      "status": "planned",
-      "rationale": "The defect affects a critical checkout task."
-    }
-  },
-  "scope": {
-    "occurrences_observed": 1,
-    "pages_checked": 1,
-    "shared_component": true,
-    "unchecked_scope": [
-      "other supported screen readers",
-      "mobile application"
-    ]
-  },
-  "evidence": {
-    "attachments": [],
-    "redacted": true
-  },
-  "acceptance_criteria": [
-    "The error remains identified in text.",
-    "The field exposes the error association and invalid state programmatically.",
-    "Moving focus to the field makes its label, invalid state, and error available.",
-    "Keyboard focus remains predictable.",
-    "The original interaction is manually retested.",
-    "Testing with disabled screen reader users is completed for the planned participant scope."
   ]
 }
 ```
 
-Projects that formalize this structure should version their schema, document null and omitted values, validate imports, and plan migrations. Preserve the tool's raw output separately when exact round-trip fidelity matters.
+See [examples/schemas/accessibility-finding-v2.example.json](./schemas/accessibility-finding-v2.example.json) for the complete record this excerpt is drawn from, including environment, standards mapping, test results, scope, verification, and acceptance criteria.
+
+Key points:
+
+- Manual and user-reported findings do not require any automation fields. [examples/schemas/accessibility-finding-v2-minimal.example.json](./schemas/accessibility-finding-v2-minimal.example.json) and [accessibility-finding-v2-manual.example.json](./schemas/accessibility-finding-v2-manual.example.json) are valid, schema-conformant findings with no fingerprint, no tracker ID, no WCAG mapping, and no technical locator.
+- Fingerprints are optional and, when present, are computed under the frozen profiles in [examples/fingerprints/](./fingerprints/README.md). This guide does not define how a fingerprint is generated.
+- A tracker ID may be assigned later, after triage; it must never be computed from finding content. See [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md).
+- The full schema, its `$defs`, and validated examples are maintained in [examples/schemas/](./schemas/README.md), not duplicated here.
+
+Preserve the tool's raw output separately by reference when exact round-trip fidelity matters; `source.raw_result_reference` and `evidence.references` exist for this.
 
 ## 19. Automation and AI Guardrails
 
@@ -928,6 +880,7 @@ The [Evaluation Report Template](https://www.w3.org/WAI/test-evaluate/report-tem
 ## 26. Related Guides
 
 - [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md)
+- [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema and validated examples for the machine-readable finding format
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [AXE Rules Coverage](./AXE_RULES_COVERAGE.md)
 - [Keyboard Accessibility Best Practices](./KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md)

@@ -5,20 +5,31 @@ name: Fingerprint Contract
 # profile or published golden vector was edited in place. See
 # examples/fingerprints/README.md for the profiles this protects and why.
 #
+# Also verifies the accessibility-finding-v2 JSON Schema in examples/schemas/:
+# that it compiles, that its valid examples pass and invalid examples fail
+# for their documented reason, and that fingerprints embedded in its
+# examples still match the frozen Stage 2 profiles above. See
+# examples/schemas/README.md.
+#
 # This workflow does not establish accessibility conformance. It establishes
-# that a fingerprint profile computes what it claims to compute, and that a
-# "stable" profile cannot be silently changed without a new version.
+# that a fingerprint profile computes what it claims to compute, that a
+# "stable" profile cannot be silently changed without a new version, and
+# that the finding schema and fingerprint profiles have not drifted apart.
 
 on:
   pull_request:
     paths:
       - "examples/fingerprints/**"
+      - "examples/schemas/**"
+      - "examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md"
+      - "examples/ACCESSIBILITY_FINDING_TRACKING.md"
       - ".github/workflows/fingerprint-contract.yml"
       - ".github/scripts/check-stable-fingerprint-profiles.mjs"
   push:
     branches: [main]
     paths:
       - "examples/fingerprints/**"
+      - "examples/schemas/**"
   workflow_dispatch:
 
 permissions:
@@ -78,3 +89,31 @@ jobs:
         run: |
           node .github/scripts/check-stable-fingerprint-profiles.mjs \
             --base "${{ github.event.pull_request.base.sha }}"
+
+  schema-validation:
+    name: Accessibility finding schema validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+
+      - name: Install fingerprint checker dependencies
+        working-directory: examples/fingerprints
+        run: npm ci
+
+      - name: Install schema validation dependencies
+        working-directory: examples/schemas
+        run: npm ci
+
+      - name: Compile schema, validate examples, and check fingerprint consistency
+        working-directory: examples/schemas
+        run: npm run validate

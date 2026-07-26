@@ -1,0 +1,745 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mgifford.github.io/ACCESSIBILITY.md/examples/schemas/accessibility-finding-v2.schema.json",
+  "title": "Accessibility Finding",
+  "description": "A machine-readable accessibility finding record. schema_version 2.0 governs the shape of this whole record: how a finding, its tracking relationships, evidence, and verification state are represented for interchange. It is a completely separate version number from the a11y/pattern/v1 and a11y/occurrence/v1 fingerprint profiles (examples/fingerprints/README.md), which govern how a correlation identifier is computed. Changing this schema's version never changes what a fingerprint computes, and changing a fingerprint profile version never requires a new schema_version. See examples/ACCESSIBILITY_FINDING_TRACKING.md for the underlying terminology (finding, occurrence, pattern, tracker ID, display ID, and so on).",
+  "type": "object",
+  "required": ["schema_version", "title", "reported_at", "source", "description", "affected_people"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "description": "The version of this finding-record schema. Distinct from fingerprint profile versions, normalization profile versions, display-ID profile versions, scanner versions, rule versions, and report versions -- all of which can change independently of this value."
+    },
+    "finding_id": {
+      "description": "An optional record identifier assigned by the system storing this finding record, such as a database row's URI or a UUID. It is NOT the tracker ID, the occurrence fingerprint, the pattern fingerprint, the scan request ID, or the scan run ID -- see tracking.tracker_ids and tracking.fingerprints for those. Use null or omit this field when no system has assigned a record-level identity; a finding does not need one to be valid.",
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/uriReference" }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A short title identifying the component, failure, and consequence. See examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md section 4."
+    },
+    "reported_at": {
+      "$ref": "#/$defs/dateTime",
+      "description": "When this finding was reported or recorded, in RFC 3339 date-time format."
+    },
+    "source": { "$ref": "#/$defs/source" },
+    "tracking": { "$ref": "#/$defs/tracking" },
+    "location": { "$ref": "#/$defs/location" },
+    "state": { "$ref": "#/$defs/state" },
+    "description": { "$ref": "#/$defs/description" },
+    "affected_people": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/affectedPerson" },
+      "description": "The people confirmed or reasonably expected to be affected. Required as an array (it may be empty only when the finding is not yet triaged), because a finding without any described impact on people is not yet a useful accessibility finding. See examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md section 8."
+    },
+    "impact": { "$ref": "#/$defs/impact" },
+    "environment": { "$ref": "#/$defs/environment" },
+    "standards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/standardMapping" },
+      "description": "Zero or more standards mappings. A WCAG mapping is never required for a finding to be valid."
+    },
+    "test_results": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/testResult" },
+      "description": "Zero or more test results. A single finding may accumulate evidence from several methods or tools over time."
+    },
+    "evidence": { "$ref": "#/$defs/evidence" },
+    "scope": { "$ref": "#/$defs/scope" },
+    "verification": { "$ref": "#/$defs/verification" },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "User-facing statements of what must be true for this finding to be considered resolved. Must not be limited to attribute presence, selector matches, screenshots, automated passes, or fingerprint absence."
+    },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+
+  "$defs": {
+    "uriReference": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri-reference",
+      "description": "An RFC 3986 URI reference. Used for identifiers that should be globally stable and dereferenceable where practical, such as tracker IDs and scan request/run IDs."
+    },
+
+    "dateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "An RFC 3339 date-time value."
+    },
+
+    "fingerprintValue": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "The full, authoritative fingerprint digest: exactly 64 lowercase hexadecimal characters, as defined by examples/fingerprints/README.md. A shortened display ID (e.g. A11Y-PAT-EA3B846C4F12) must never appear here -- this pattern rejects it structurally, since a display ID is neither 64 characters nor lowercase-only-hex of that length by construction once its A11Y-PAT-/A11Y-OCC- prefix and dash are included, and even a bare 12-character hex fragment fails this length check."
+    },
+
+    "fingerprintEntry": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "description": "The hash algorithm used, e.g. \"sha-256\". Recorded per Stage 2's normative computation; this schema does not redefine or recompute it."
+        },
+        "value": { "$ref": "#/$defs/fingerprintValue" },
+        "relationship": {
+          "type": "string",
+          "enum": ["candidate", "confirmed"],
+          "description": "Whether this fingerprint is an unreviewed correlation candidate or has been confirmed to identify the same pattern/occurrence by a human or process with authority to do so. Absence means \"candidate\" by convention; matching fingerprints alone never justify \"confirmed\"."
+        }
+      }
+    },
+
+    "fingerprints": {
+      "type": "object",
+      "description": "A map of fingerprint profile name (e.g. \"a11y/pattern/v1\", \"a11y/occurrence/v1\") to its computed value. Multiple profile versions may coexist, including profile names not yet known to this schema version -- this object intentionally allows additional properties so a future a11y/pattern/v2 does not require a new schema_version to be recorded. Every value is validated as a full fingerprintEntry; nothing here is computed, normalized, or reinterpreted by this schema. See examples/fingerprints/README.md for how these values are produced.",
+      "additionalProperties": { "$ref": "#/$defs/fingerprintEntry" },
+      "propertyNames": {
+        "pattern": "^a11y/(pattern|occurrence)/v[0-9]+$"
+      }
+    },
+
+    "displayIds": {
+      "type": "object",
+      "description": "A map of display-ID profile name (e.g. \"a11y/pattern-display/v1\", \"a11y/occurrence-display/v1\") to its derived short alias. Display IDs are never authoritative and may collide; see examples/fingerprints/README.md, \"Display IDs\".",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^A11Y-(PAT|OCC)-[0-9A-F]{12}$"
+      }
+    },
+
+    "legacyIdentifier": {
+      "type": "object",
+      "required": ["profile", "value", "migration_status"],
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The name of the legacy identifier's own profile, e.g. \"drupal-core/pattern/v1\". This is not one of the a11y/*/v1 profiles; it names whatever scheme originally produced the value."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The legacy identifier exactly as originally published, e.g. \"DRU-D62C6EC9\". Never recomputed or reformatted."
+        },
+        "migration_status": {
+          "type": "string",
+          "enum": ["not-evaluated", "equivalent", "split", "merged", "unresolved"],
+          "description": "Whether and how this legacy identifier has been mapped onto current a11y/*/v1 fingerprints. \"unresolved\" is the honest default when the mapping has not been established; it does not require a current fingerprint to be present."
+        },
+        "current_fingerprints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/fingerprintValue" },
+          "description": "Zero or more current full fingerprint values this legacy identifier is believed to map to. May be empty, particularly when migration_status is \"unresolved\"."
+        },
+        "notes": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "Free-text context for the migration claim. Must not assert equivalence without evidence."
+        }
+      }
+    },
+
+    "trackerRelationship": {
+      "type": "object",
+      "required": ["id", "relationship"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uriReference",
+          "description": "The tracker's own identifier for the related work item, e.g. a GitHub issue URL. This value is assigned by the tracker, never computed from finding content, and must not be confused with source.scan_request_id."
+        },
+        "relationship": {
+          "type": "string",
+          "enum": ["tracks", "duplicates", "relates-to", "blocks", "blocked-by", "supersedes", "superseded-by"],
+          "description": "How this finding relates to the referenced tracker item."
+        },
+        "status": {
+          "type": "string",
+          "description": "A project-neutral status if one is meaningful to record, e.g. \"open\" or \"closed\". This schema does not attempt to normalize every external tracker's lifecycle into one closed vocabulary; use tracker_native_status for the tracker's own term when it does not fit cleanly."
+        },
+        "tracker_native_status": {
+          "type": "string",
+          "description": "The tracker's own status label verbatim (e.g. a Jira workflow state), when the project-neutral status field alone would lose meaningful information."
+        }
+      }
+    },
+
+    "lifecycle": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["new", "recurring", "not_observed", "not_tested", "out_of_scope", "resolved", "rejected", "needs_review"],
+          "description": "The finding's lifecycle status relative to comparable history. Must not be derived solely from the presence or absence of a fingerprint; see examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Lifecycle States'."
+        },
+        "status_basis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A human-readable explanation of why this status was assigned. Required whenever status is \"resolved\" (enforced below) because an unexplained resolved status is exactly the kind of unverified claim this schema exists to prevent."
+        },
+        "compared_run_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/uriReference" },
+          "description": "The scan run ID(s), or other comparable-evidence identifiers, this status was determined against."
+        },
+        "reviewed_at": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/dateTime" }],
+          "description": "When a human or process with review authority last confirmed this status, if applicable."
+        },
+        "reviewed_by": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "Who or what reviewed this status, if applicable. Does not require a person's real name; a role or system name is sufficient."
+        },
+        "verification_reference": {
+          "$ref": "#/$defs/uriReference",
+          "description": "A reference to verification evidence supporting a \"resolved\" status. This schema cannot enforce that verification actually occurred; see examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Resolved'."
+        },
+        "not_tested_reason": {
+          "type": "string",
+          "description": "Why testing did not complete, when status is \"not_tested\" -- e.g. \"timeout\", \"authentication failure\", \"rule disabled\", \"engine did not run\"."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "resolved" } } },
+          "then": {
+            "properties": { "status_basis": { "type": "string", "minLength": 1 } },
+            "required": ["status_basis"]
+          }
+        }
+      ]
+    },
+
+    "tracking": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tracker_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/trackerRelationship" },
+          "description": "Zero or more tracker relationships. Empty means no tracker relationship is currently recorded; this must never be inferred or auto-populated from source.scan_request_id."
+        },
+        "fingerprints": { "$ref": "#/$defs/fingerprints" },
+        "display_ids": { "$ref": "#/$defs/displayIds" },
+        "legacy_identifiers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/legacyIdentifier" },
+          "description": "Zero or more legacy identifiers preserved for historical search and comparison."
+        },
+        "cluster_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Zero or more heuristic cluster identifiers. Kept structurally separate from tracking.fingerprints: a cluster is not a deterministic fingerprint and may change when the clustering algorithm, threshold, or dataset changes."
+        },
+        "root_cause_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Zero or more confirmed root-cause identifiers, assigned after investigation. A matching fingerprint alone never justifies populating this field."
+        },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" }
+      }
+    },
+
+    "createdBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["person", "tool", "team", "unknown"]
+        },
+        "name": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "Optional. A person's real name is never required."
+        },
+        "tool": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "version": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        }
+      }
+    },
+
+    "source": {
+      "type": "object",
+      "required": ["method"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "user-reported",
+            "testing-with-disabled-people",
+            "manual-evaluation",
+            "automated",
+            "semi-automated",
+            "code-review",
+            "support",
+            "reasoned-inference",
+            "other",
+            "unknown"
+          ],
+          "description": "How this finding was produced. This is the only required field in source -- every other field may be null or omitted for a manual or user-reported finding."
+        },
+        "scan_request_id": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/uriReference" }],
+          "description": "The identifier of the request or work item that caused a scan to run, if any. Distinct from a tracker ID: a scan request is not automatically a defect tracker, and this value must never be copied into tracking.tracker_ids automatically."
+        },
+        "scan_run_id": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/uriReference" }],
+          "description": "The identifier of the specific execution and its evidence, if any."
+        },
+        "reporter_reference": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "An optional, minimal reference to who reported this finding. Must not be used to carry unnecessary personal information -- a pseudonymous handle or ticket-system reference is preferred over a real name or contact detail."
+        },
+        "created_by": { "$ref": "#/$defs/createdBy" },
+        "raw_result_reference": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/uriReference" }],
+          "description": "A reference to raw tool evidence stored elsewhere. Raw evidence is never required to be embedded in the finding record itself, particularly when it may be large or sensitive."
+        }
+      }
+    },
+
+    "locator": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The kind of locator, e.g. \"stable-css\", \"xpath\", \"test-id\", \"accessibility-tree\", \"component\", \"human-description\", \"unknown\". A full absolute XPath must never be mandatory."
+        },
+        "raw_value": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "The locator before normalization, if retained. Optional; raw locator data is never required for interchange."
+        },
+        "normalized_value": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "normalization_profile": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "The named normalization profile applied, e.g. \"a11y/css-locator/v1\" from examples/fingerprints/README.md, when normalized_value is present."
+        }
+      }
+    },
+
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "type": "string",
+          "enum": ["exact-resource", "route-pattern", "component-state", "unknown"]
+        },
+        "safe_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL that is safe to disclose. Query parameters, fragments, and path segments that could carry secrets or personal data must be redacted or replaced with a placeholder before being recorded here."
+        },
+        "route": {
+          "type": "string",
+          "description": "A route or path, which may be a concrete path or a generalized pattern such as \"/node/[nid]\"."
+        },
+        "normalized_key": {
+          "type": "string",
+          "description": "The normalized resource, route pattern, or component-state key, per the named normalization_profile."
+        },
+        "normalization_profile": {
+          "type": "string",
+          "description": "The named normalization profile applied to normalized_key, e.g. \"a11y/route/v1\"."
+        },
+        "component": {
+          "type": "string",
+          "description": "A human-readable component name and location. A valid finding may describe only this and omit every technical field in this object."
+        },
+        "locator": { "$ref": "#/$defs/locator" },
+        "concrete_locations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Zero or more concrete observed locations that a route-pattern location represents. This is evidence about breadth, not part of occurrence fingerprint identity -- see examples/fingerprints/README.md, 'Fields excluded from fingerprint identity'. Populating or changing this list must never silently alter an occurrence fingerprint."
+        }
+      }
+    },
+
+    "state": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "build": { "type": "string" },
+        "commit": { "oneOf": [{ "type": "null" }, { "type": "string" }] },
+        "account_role": { "type": "string" },
+        "ui": { "type": "string" },
+        "locale": { "type": "string" },
+        "other": {
+          "type": "object",
+          "description": "A free-form bag for additional relevant state that does not warrant its own named field yet."
+        }
+      },
+      "description": "Relevant product state at the time of the finding. None of these fields are required; a manual or user-reported finding may omit all of them."
+    },
+
+    "description": {
+      "type": "object",
+      "required": ["summary"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A concise, human-readable statement of the barrier. This is the only required field in description."
+        },
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional reproduction steps. Must remain optional: some user reports cannot provide reliable reproduction steps, and the finding is still valid without them."
+        },
+        "expected": {
+          "type": "string",
+          "description": "The expected user-facing outcome. Should describe behavior, not mandate a specific implementation."
+        },
+        "actual": {
+          "type": "string",
+          "description": "What was actually observed."
+        }
+      }
+    },
+
+    "affectedPerson": {
+      "type": "object",
+      "required": ["description", "status", "evidence_basis"],
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A description of the affected people, described only as specifically as the evidence allows. Must not imply that every person in a named group is affected."
+        },
+        "examples": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Illustrative examples of who may be included, e.g. \"some blind people\". Never a diagnosis and never a claim of completeness."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["reported", "confirmed", "observed", "likely", "unknown"]
+        },
+        "evidence_basis": {
+          "type": "string",
+          "enum": [
+            "user-reported",
+            "testing-with-disabled-people",
+            "manual-evaluation",
+            "automated",
+            "semi-automated",
+            "code-review",
+            "support",
+            "reasoned-inference",
+            "other",
+            "unknown"
+          ],
+          "description": "Aligned with source.method's vocabulary."
+        },
+        "scope_limit": {
+          "type": "string",
+          "description": "Known limitations of the evidence, e.g. which assistive technologies were or were not covered."
+        }
+      }
+    },
+
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "task": {
+          "type": "string",
+          "description": "The task the person is trying to complete."
+        },
+        "effect": {
+          "type": "string",
+          "description": "How the barrier affects that task."
+        },
+        "workaround": {
+          "type": "string",
+          "description": "A workaround, if any."
+        },
+        "workaround_quality": {
+          "type": "string",
+          "enum": ["none", "reasonable", "burdensome", "unreliable", "unsafe"]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"],
+          "description": "Project severity per examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md and ACCESSIBILITY.md's severity taxonomy. Must never be derived solely from scanner impact, WCAG level, occurrence count, or fingerprint count -- see severity_basis."
+        },
+        "severity_basis": {
+          "type": "string",
+          "description": "A human-readable explanation of why this severity was assigned, grounded in task impact."
+        },
+        "confidence": {
+          "type": "string",
+          "description": "How confident this impact statement is, e.g. \"observed-behaviour-with-inferred-impact\"."
+        },
+        "project_severity": {
+          "type": "object",
+          "description": "An escape hatch for a project's own severity vocabulary when the standard enum does not fit, keyed by a namespaced scheme identifier so it cannot collide with another project's terms.",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+
+    "environment": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Environmental and observation metadata. None of these fields are fingerprint identity -- see examples/fingerprints/README.md, 'Fields excluded from fingerprint identity'. A named test_profile may be used by a project that intentionally treats a specific configuration as a distinct occurrence, but it must come from explicit configuration, never be inferred from viewport dimensions, and never be described as identifying a physical device without evidence.",
+      "properties": {
+        "browser": { "type": "string" },
+        "operating_system": { "type": "string" },
+        "assistive_technology": { "type": "string" },
+        "input": { "type": "string" },
+        "viewport_css_pixels": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "width": { "type": "number" },
+            "height": { "type": "number" }
+          }
+        },
+        "zoom": { "type": "string" },
+        "text_size": { "type": "string" },
+        "orientation": { "type": "string" },
+        "colour_scheme": { "type": "string" },
+        "forced_colours": { "type": "boolean" },
+        "reduced_motion": { "type": "boolean" },
+        "contrast_preference": { "type": "string" },
+        "locale": { "type": "string" },
+        "account_role": { "type": "string" },
+        "test_profile": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "A named, explicitly configured test profile, or null."
+        }
+      }
+    },
+
+    "standardMapping": {
+      "type": "object",
+      "required": ["standard", "relationship"],
+      "additionalProperties": false,
+      "properties": {
+        "standard": {
+          "type": "string",
+          "description": "The standard being mapped to, e.g. \"WCAG\"."
+        },
+        "version": { "type": "string" },
+        "requirement": {
+          "type": "string",
+          "description": "The specific requirement or success criterion number, e.g. \"1.3.1\". WCAG criteria are mappings, not rule identities, and must never be used as the rule.id in a Stage 2 pattern fingerprint."
+        },
+        "name": { "type": "string" },
+        "level": { "type": "string" },
+        "relationship": {
+          "type": "string",
+          "enum": ["confirmed-failure", "suspected-failure", "related", "needs-review", "not-applicable"]
+        }
+      }
+    },
+
+    "testResult": {
+      "type": "object",
+      "required": ["method", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "user-reported",
+            "testing-with-disabled-people",
+            "manual-evaluation",
+            "automated",
+            "semi-automated",
+            "code-review",
+            "support",
+            "reasoned-inference",
+            "other",
+            "unknown"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "The result's own status, e.g. \"confirmed\", \"rejected\", \"cantTell\"."
+        },
+        "tested_at": { "$ref": "#/$defs/dateTime" },
+        "tool_namespace": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "The tool's namespace, e.g. \"axe-core\". This does not participate in fingerprint generation; see examples/fingerprints/README.md for where rule.namespace is actually used."
+        },
+        "tool": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "tool_version": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "rule": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "rule_version": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "configuration": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        },
+        "raw_outcome": {
+          "description": "The tool's own raw outcome value, in whatever shape the tool produces it."
+        },
+        "act_outcome": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "An ACT Rules Format outcome, only where relevant to result interchange. Never required."
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": { "type": "string" },
+            "notes": { "type": "string" }
+          },
+          "description": "Human review of this test result, kept separate from the tool's own raw_outcome and project severity."
+        }
+      }
+    },
+
+    "evidenceReference": {
+      "type": "object",
+      "required": ["reference"],
+      "additionalProperties": false,
+      "properties": {
+        "reference": {
+          "$ref": "#/$defs/uriReference",
+          "description": "A reference to evidence stored elsewhere. Must not contain credentials or temporary access tokens."
+        },
+        "description": { "type": "string" }
+      }
+    },
+
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "references": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceReference" }
+        },
+        "attachments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceReference" },
+          "description": "Optional. Embedded sensitive evidence is never required for a valid finding."
+        },
+        "redacted": {
+          "type": "boolean",
+          "description": "Whether sensitive values in this record have been redacted."
+        },
+        "contains_personal_data": {
+          "type": "boolean"
+        },
+        "retention_notes": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }]
+        }
+      },
+      "description": "Schema validation of this object does not establish that the referenced evidence is safe, accurate, or accessible; that is a human and process responsibility."
+    },
+
+    "coverageProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resources_requested": { "type": "array", "items": { "type": "string" } },
+        "resources_completed": { "type": "array", "items": { "type": "string" } },
+        "engines_requested": { "type": "array", "items": { "type": "string" } },
+        "engines_completed": { "type": "array", "items": { "type": "string" } },
+        "rules_enabled": { "type": "array", "items": { "type": "string" } },
+        "states_reached": { "type": "array", "items": { "type": "string" } },
+        "errors": { "type": "array", "items": { "type": "string" } },
+        "skips": { "type": "array", "items": { "type": "string" } },
+        "timeouts": { "type": "array", "items": { "type": "string" } }
+      },
+      "description": "Describes how comparable a given run is to another, to support lifecycle comparison (e.g. whether a 'not_observed' conclusion is trustworthy). This is not fingerprint input."
+    },
+
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "occurrences_observed": { "type": "integer", "minimum": 0 },
+        "resources_checked": { "type": "integer", "minimum": 0 },
+        "shared_component": { "type": "boolean" },
+        "checked_scope": { "type": "array", "items": { "type": "string" } },
+        "unchecked_scope": { "type": "array", "items": { "type": "string" } },
+        "coverage_profile": { "$ref": "#/$defs/coverageProfile" }
+      },
+      "description": "Detailed coverage information is never required for manual or user-reported findings. Resolution must never be inferred merely because a current result set lacks an older fingerprint; use coverage_profile plus tracking.lifecycle to make that judgement explicit instead."
+    },
+
+    "verificationMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "description": "e.g. \"planned\", \"in-progress\", \"completed-for-original-finding\", \"not-required\"."
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Why this method is or is not required. Recommended whenever required is explicitly true or false, per examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md."
+        },
+        "participant_scope": {
+          "oneOf": [{ "type": "null" }, { "type": "string" }],
+          "description": "Only meaningful for testing_with_disabled_people. Never fabricate participant scope; use null when not yet determined."
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceReference" }
+        }
+      }
+    },
+
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "automated": { "$ref": "#/$defs/verificationMethod" },
+        "manual": { "$ref": "#/$defs/verificationMethod" },
+        "testing_with_disabled_people": {
+          "allOf": [
+            { "$ref": "#/$defs/verificationMethod" }
+          ],
+          "description": "Must never be marked completed unless testing with disabled people actually occurred, and must never be required for every finding by default."
+        },
+        "remaining_limitations": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "extensions": {
+      "type": "object",
+      "description": "A controlled extension point for project-specific data that does not fit the core schema. Each key MUST be a namespaced identifier the extending project controls (e.g. a URI under a domain it owns), so that two independent extensions can never collide. A project publishing an extension is responsible for validating its own sub-schema; this schema only validates that extensions is an object keyed by such identifiers, and makes no forward-compatibility promise about what an unrecognized extension key contains.",
+      "propertyNames": {
+        "pattern": "^https?://.+"
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -9,11 +9,10 @@
 // profile rule (e.g. an occurrence vector embedding a display ID instead of
 // a full pattern fingerprint).
 
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import canonicalize from 'canonicalize';
+import { computeDigest, displayId, HEX64 } from './fingerprint-core.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,22 +20,6 @@ function loadJSON(relPath) {
   const fullPath = path.join(HERE, relPath);
   return JSON.parse(readFileSync(fullPath, 'utf8'));
 }
-
-function sha256Hex(utf8String) {
-  return createHash('sha256').update(utf8String, 'utf8').digest('hex');
-}
-
-function computeDigest(profileName, input) {
-  const withProfile = { ...input, profile: profileName };
-  const canonical = canonicalize(withProfile);
-  return sha256Hex(canonical);
-}
-
-function displayId(prefix, fullDigestHex) {
-  return `${prefix}-${fullDigestHex.slice(0, 12).toUpperCase()}`;
-}
-
-const HEX64 = /^[0-9a-f]{64}$/;
 
 function fail(message) {
   failures.push(message);

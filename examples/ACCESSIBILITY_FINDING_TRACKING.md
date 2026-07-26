@@ -276,6 +276,7 @@ This guide does not change either implementation.
 
 ## Related Guides
 
+- [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema (`schema_version: "2.0"`) for the complete machine-readable finding record, with [a complete example](./schemas/accessibility-finding-v2.example.json), [a minimal example](./schemas/accessibility-finding-v2-minimal.example.json), and [a manual/user-reported example](./schemas/accessibility-finding-v2-manual.example.json)
 - [Fingerprint Profiles](./fingerprints/README.md) - normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, canonicalization, and golden test vectors
 - [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Contributing Accessibility Guide](./CONTRIBUTING_A11Y.md)

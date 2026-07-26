@@ -1,0 +1,18 @@
+{
+  "schema_version": "2.0",
+  "title": "Product listing: sort control loses keyboard focus after selection",
+  "reported_at": "2026-06-02T09:15:00-04:00",
+  "source": {
+    "method": "user-reported"
+  },
+  "description": {
+    "summary": "After choosing a sort option, keyboard focus disappears and Tab starts over from the top of the page."
+  },
+  "affected_people": [
+    {
+      "description": "People who navigate by keyboard",
+      "status": "reported",
+      "evidence_basis": "user-reported"
+    }
+  ]
+}
