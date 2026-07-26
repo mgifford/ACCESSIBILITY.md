@@ -55,7 +55,7 @@ These answers determine the required implementation guidance and testing.
 
 ### 2. Find the applicable guidance
 
-Start with [ACCESSIBILITY-template.md](../ACCESSIBILITY-template.md), then use the topic-specific guides in this directory. Do not copy a pattern without reading its limitations and testing guidance.
+Start with [ACCESSIBILITY-template.md](ACCESSIBILITY-template.md), then use the topic-specific guides in this directory. Do not copy a pattern without reading its limitations and testing guidance.
 
 When adding or revising factual guidance:
 
@@ -488,7 +488,7 @@ Avoid these recurring mistakes:
 
 ## Related References
 
-- [ACCESSIBILITY-template.md](../ACCESSIBILITY-template.md)
+- [ACCESSIBILITY-template.md](ACCESSIBILITY-template.md)
 - [Root Contributing Guide](../CONTRIBUTING.md)
 - [Examples Index](./README.md)
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)

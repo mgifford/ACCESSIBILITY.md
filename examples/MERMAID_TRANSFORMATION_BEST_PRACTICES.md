@@ -992,7 +992,7 @@ A Mermaid transformation is ready for production when:
 
 - [Content Security Policy Level 3](https://www.w3.org/TR/CSP3/)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
-- [SVGO Documentation](https://svgo.dev/docs/)
+- [SVGO Documentation](https://svgo.dev/docs/introduction/)
 - [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
 
 ### Machine-Readable References

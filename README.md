@@ -25,7 +25,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 
 **New to this project?** Here's what you need:
 
-1. **Copy the template** → Start with [ACCESSIBILITY-template.md](./ACCESSIBILITY-template.md)
+1. **Copy the template** → Start with [ACCESSIBILITY-template.md](./examples/ACCESSIBILITY-template.md)
 2. **Add CI workflows** → Copy from [examples/](./examples/) directory
 3. **Configure AI agents** → Use [AGENTS.md](./AGENTS.md) as a guide
 4. **Read the framework** → Continue below to understand the approach
@@ -149,7 +149,7 @@ This repository provides templates and guidance to help you implement `ACCESSIBI
 ### Step 1: Add ACCESSIBILITY.md to your repository
 
 **Option A: Start with the template**
-1. Copy [ACCESSIBILITY-template.md](./ACCESSIBILITY-template.md) to your repository root
+1. Copy [ACCESSIBILITY-template.md](./examples/ACCESSIBILITY-template.md) to your repository root
 2. Rename it to `ACCESSIBILITY.md`
 3. Customize the sections to match your project's current state
 4. Link it from your `README.md`

@@ -6,7 +6,7 @@ last_reviewed: 2026-07-19
 # Copilot Bootstrap Prompt
 
 This file provides a reusable task prompt for drafting a project-level
-`ACCESSIBILITY.md` from [ACCESSIBILITY-template.md](../ACCESSIBILITY-template.md).
+`ACCESSIBILITY.md` from [ACCESSIBILITY-template.md](ACCESSIBILITY-template.md).
 It can be used with GitHub Copilot cloud agent or another agent that can inspect
 the target repository.
 
@@ -263,7 +263,7 @@ resulting diff, tests, and human reviewer findings.
 
 ## Related Files
 
-- [ACCESSIBILITY.md template](../ACCESSIBILITY-template.md)
+- [ACCESSIBILITY.md template](ACCESSIBILITY-template.md)
 - [Repository agent instructions](../AGENTS.md)
 - [Copilot Agent Guide](./COPILOT_AGENT_MODE_GUIDE.md)
 - [Manual Accessibility Testing](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)

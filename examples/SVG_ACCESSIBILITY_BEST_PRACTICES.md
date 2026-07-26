@@ -945,7 +945,7 @@ dependency version, or embedding path changes.
 - [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/)
 - [Content Security Policy Level 3](https://www.w3.org/TR/CSP3/)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
-- [SVGO Documentation](https://svgo.dev/docs/)
+- [SVGO Documentation](https://svgo.dev/docs/introduction/)
 - [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
 - [Understanding 1.1.1: Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)
 - [Understanding 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
