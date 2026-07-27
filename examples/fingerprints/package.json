@@ -1,0 +1,16 @@
+{
+  "name": "accessibility-md-fingerprint-checks",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Golden-vector checker for the a11y/pattern/v1 and a11y/occurrence/v1 fingerprint profiles",
+  "type": "module",
+  "scripts": {
+    "check": "node check-fingerprint-vectors.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "canonicalize": "3.0.0"
+  }
+}

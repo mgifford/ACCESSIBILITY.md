@@ -1,0 +1,113 @@
+{
+  "profile": "a11y/pattern/v1",
+  "status": "stable",
+  "algorithm": "sha-256",
+  "encoding": "utf-8",
+  "canonicalization": "RFC 8785",
+  "digest_format": "64 lowercase hexadecimal characters",
+  "display_profile": "a11y/pattern-display/v1",
+  "input_contract": {
+    "profile": {
+      "type": "string",
+      "required": true,
+      "constant": "a11y/pattern/v1",
+      "description": "Must equal the profile name exactly. Included in the canonicalized input so that a pattern and an occurrence fingerprint computed from otherwise-identical JSON never collide across profiles."
+    },
+    "target": {
+      "type": "object",
+      "required": true,
+      "description": "Identifies the product boundary the pattern is scoped to.",
+      "fields": {
+        "scope_type": {
+          "type": "string",
+          "required": true,
+          "enum": ["repository", "product", "site-origin", "package", "component-library", "project-namespace"],
+          "description": "The kind of target boundary. This list may grow in a future profile version; it must not shrink or be reinterpreted within a11y/pattern/v1."
+        },
+        "scope_id": {
+          "type": "string",
+          "required": true,
+          "description": "A stable, normalized identifier for the selected scope, such as a repository URL, product origin, or package URL (purl). Do not use an individual page URL unless that URL defines the entire target scope."
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": true,
+      "description": "The rule that produced this pattern candidate.",
+      "fields": {
+        "namespace": {
+          "type": "string",
+          "required": true,
+          "description": "The rule system or producer namespace, e.g. \"axe-core\", \"htmlcs\", \"qualweb\", \"act\", \"manual\", \"project\". Must be supplied explicitly; must not be inferred from rule.id."
+        },
+        "id": {
+          "type": "string",
+          "required": true,
+          "description": "The stable rule identifier within the namespace. Must not be a WCAG success criterion number. WCAG and ACT mappings are recorded separately from rule identity unless an explicit profile uses an ACT rule as its rule identity."
+        }
+      }
+    },
+    "locator": {
+      "type": "object",
+      "required": true,
+      "description": "The normalized location of the pattern candidate within the target scope.",
+      "fields": {
+        "type": {
+          "type": "string",
+          "required": true,
+          "enum": ["css", "xpath", "test-id", "accessibility-tree", "component", "html-fragment", "human-description", "unknown"],
+          "description": "The kind of locator."
+        },
+        "normalization_profile": {
+          "type": "string",
+          "required": true,
+          "description": "Identifies the exact normalization contract applied to locator.value, e.g. \"a11y/css-locator/v1\". A single normalization process is not assumed to work for every locator type."
+        },
+        "value": {
+          "type": "string",
+          "required": true,
+          "description": "The locator value after applying the named normalization profile. Must not be lowercased unless the named normalization profile explicitly permits it."
+        }
+      }
+    },
+    "state_key": {
+      "type": "string or null",
+      "required": true,
+      "description": "An optional stable product state that is intrinsic to the pattern, such as \"expanded\" for a disclosure widget. Use JSON null, not an omitted field, when no state is required. Must not contain scan date, severity, priority, theme, colour scheme, viewport, browser, orientation, direction, build, or tracker status."
+    }
+  },
+  "excluded_fields": [
+    "scan_date",
+    "first_seen_date",
+    "last_seen_date",
+    "build_number",
+    "commit_hash",
+    "scanner_version",
+    "browser_version",
+    "operating_system_version",
+    "viewport_dimensions",
+    "inferred_device_type",
+    "colour_scheme",
+    "theme",
+    "text_direction",
+    "orientation",
+    "severity",
+    "priority",
+    "review_status",
+    "resolution_status",
+    "tracker_id",
+    "wcag_mappings",
+    "act_mappings",
+    "evidence_urls",
+    "concrete_locations_represented_by_a_route_pattern"
+  ],
+  "normalization_profiles": [
+    "a11y/css-locator/v1",
+    "a11y/exact-resource/v1",
+    "a11y/route/v1",
+    "a11y/component-state/v1"
+  ],
+  "published_at": "2026-07-26",
+  "supersedes": null
+}

@@ -1,0 +1,104 @@
+{
+  "profile": "a11y/occurrence/v1",
+  "status": "stable",
+  "algorithm": "sha-256",
+  "encoding": "utf-8",
+  "canonicalization": "RFC 8785",
+  "digest_format": "64 lowercase hexadecimal characters",
+  "display_profile": "a11y/occurrence-display/v1",
+  "depends_on": {
+    "profile": "a11y/pattern/v1",
+    "description": "Every occurrence fingerprint embeds a complete a11y/pattern/v1 fingerprint. An occurrence fingerprint is not independently meaningful without its pattern fingerprint."
+  },
+  "input_contract": {
+    "profile": {
+      "type": "string",
+      "required": true,
+      "constant": "a11y/occurrence/v1",
+      "description": "Must equal the profile name exactly. Included in the canonicalized input so that a pattern and an occurrence fingerprint computed from otherwise-identical JSON never collide across profiles."
+    },
+    "pattern_fingerprint": {
+      "type": "object",
+      "required": true,
+      "description": "The complete, authoritative pattern fingerprint this occurrence belongs to. Must contain the full 64-character digest, never a shortened display ID.",
+      "fields": {
+        "profile": {
+          "type": "string",
+          "required": true,
+          "description": "The pattern profile the embedded fingerprint was computed under, e.g. \"a11y/pattern/v1\"."
+        },
+        "algorithm": {
+          "type": "string",
+          "required": true,
+          "description": "The hash algorithm used to compute the embedded pattern fingerprint, e.g. \"sha-256\"."
+        },
+        "value": {
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "The full authoritative pattern fingerprint. A shortened display ID (e.g. A11Y-PAT-EA3B846C4F12) must never be used here."
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": true,
+      "description": "The normalized location of this occurrence.",
+      "fields": {
+        "scope": {
+          "type": "string",
+          "required": true,
+          "enum": ["exact-resource", "route-pattern", "component-state", "unknown"],
+          "description": "The kind of location boundary this occurrence was observed at."
+        },
+        "normalization_profile": {
+          "type": "string",
+          "required": true,
+          "description": "Identifies the immutable normalization contract applied to location.key, e.g. \"a11y/route/v1\"."
+        },
+        "key": {
+          "type": "string",
+          "required": true,
+          "description": "The normalized resource, route pattern, or component-state key. A generalized route such as \"/node/[nid]\" may represent several observed resources."
+        }
+      }
+    },
+    "test_profile": {
+      "type": "string or null",
+      "required": true,
+      "description": "Use JSON null by default. A project may use a named test profile when it intentionally treats test configurations (e.g. a defined browser/viewport/theme combination) as separate occurrences. A test profile must come from explicit project configuration; it must not be inferred from viewport width or described as a physical device without evidence."
+    }
+  },
+  "excluded_fields": [
+    "scan_date",
+    "first_seen_date",
+    "last_seen_date",
+    "build_number",
+    "commit_hash",
+    "scanner_version",
+    "browser_version",
+    "operating_system_version",
+    "viewport_dimensions",
+    "inferred_device_type",
+    "colour_scheme",
+    "theme",
+    "text_direction",
+    "orientation",
+    "severity",
+    "priority",
+    "review_status",
+    "resolution_status",
+    "tracker_id",
+    "wcag_mappings",
+    "act_mappings",
+    "evidence_urls",
+    "concrete_locations_represented_by_a_route_pattern"
+  ],
+  "normalization_profiles": [
+    "a11y/exact-resource/v1",
+    "a11y/route/v1",
+    "a11y/component-state/v1"
+  ],
+  "published_at": "2026-07-26",
+  "supersedes": null
+}

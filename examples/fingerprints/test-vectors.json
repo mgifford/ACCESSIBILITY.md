@@ -1,0 +1,354 @@
+{
+  "notes": [
+    "These are golden test vectors for the a11y/pattern/v1 and a11y/occurrence/v1 profiles.",
+    "Every expected_fingerprint value here was computed by running check-fingerprint-vectors.mjs and independently cross-checked with Python hashlib.sha256 over the same RFC 8785 canonical string. None were hand-typed.",
+    "Excluded-field vectors (scan date, severity, colour scheme, viewport) are represented structurally: the pattern and occurrence input contracts simply do not define those fields, so a conforming implementation cannot include them in the canonicalized input. There is no separate 'with excluded field' vector because a conforming implementation has no field to put it in.",
+    "Do not hand-edit expected_fingerprint or expected_display_id values. Regenerate with review if a new profile version requires new vectors."
+  ],
+  "pattern_vectors": [
+    {
+      "id": "PV-01-baseline",
+      "description": "Baseline pattern input produces a deterministic fingerprint.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca",
+      "expected_display_id": "A11Y-PAT-E7C842E0E569"
+    },
+    {
+      "id": "PV-02-same-input-same-fingerprint",
+      "description": "Requirement 1: the same pattern input produces the same fingerprint as PV-01.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+    },
+    {
+      "id": "PV-03-key-order-independent",
+      "description": "Requirement 3: JSON object-key order does not change the fingerprint (RFC 8785 sorts keys).",
+      "input": {
+        "state_key": null,
+        "rule": { "id": "color-contrast", "namespace": "axe-core" },
+        "locator": { "value": "#edit-submit", "type": "css", "normalization_profile": "a11y/css-locator/v1" },
+        "target": { "scope_id": "https://github.com/example/product", "scope_type": "repository" }
+      },
+      "expected_fingerprint": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+    },
+    {
+      "id": "PV-04-target-scope-changes-fingerprint",
+      "description": "Requirement 4: a different target.scope_id changes the pattern fingerprint.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/other-product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "d2cff3ec3e88b8ecd05f815a62af553a7e16a83e8c8bbd026bcd1d7533a28fa2"
+    },
+    {
+      "id": "PV-05-rule-namespace-changes-fingerprint",
+      "description": "Requirement 5: a different rule.namespace changes the pattern fingerprint.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "htmlcs", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "37213b73683e2ca227926c80cf5c41947b467e8c4bb077b0128583025d77070f"
+    },
+    {
+      "id": "PV-06-rule-id-changes-fingerprint",
+      "description": "Requirement 6: a different rule.id changes the pattern fingerprint.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "link-name" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "18a189556dbc97f9ae8addba89d4ca8fea8001e522ee13533d0a3a7e62eca081"
+    },
+    {
+      "id": "PV-07-locator-value-changes-fingerprint",
+      "description": "Requirement 7: a different normalized locator.value changes the pattern fingerprint.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-cancel" },
+        "state_key": null
+      },
+      "expected_fingerprint": "fc0fe30a8a9714d89d71d01427e9c7a9e00a92f927a94ba5cf1bd9a4494144f7"
+    },
+    {
+      "id": "PV-09-non-ascii-deterministic",
+      "description": "Requirement 17: non-ASCII UTF-8 input is deterministic and cross-verified with an independent SHA-256 implementation.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/produkt-über" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#édit-submit" },
+        "state_key": null
+      },
+      "expected_fingerprint": "6e7a6f85f51a12669bada9e647511e054ca801741b6f70fca3ad36c21c7199e3"
+    },
+    {
+      "id": "PV-10a-pipe-in-locator",
+      "description": "Requirement 16: a literal pipe character in a locator value must not collide with a different value containing an escaped pipe. Compared against PV-10b via relationship_checks.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "a|b" },
+        "state_key": null
+      },
+      "expected_fingerprint": "923ea8dd56a55bddffa105a03db69b18ef57b180c0d776ad01fa65216ce392bd"
+    },
+    {
+      "id": "PV-10b-escaped-pipe-in-locator",
+      "description": "Companion to PV-10a: a different locator value that contains a backslash-escaped pipe must produce a different fingerprint, not collide with PV-10a.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "a\\|b" },
+        "state_key": null
+      },
+      "expected_fingerprint": "7826e77c6eaf93e2b63dc13de8ff9c4b96142546b100fecbfbd7b1857e8377f4"
+    },
+    {
+      "id": "PV-11-state-key-changes-fingerprint",
+      "description": "A non-null state_key changes the pattern fingerprint relative to PV-01 (state_key: null).",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": "expanded"
+      },
+      "expected_fingerprint": "0b3ff8a82f0f6065c5e5670ba1ac6c33a8233834000e7aae7d4946c915077e7f"
+    },
+    {
+      "id": "PV-12-missing-required-field",
+      "description": "Requirement 18: an omitted required field (state_key) is a validation error, not silently treated as equivalent to an explicit null. See PV-01 for the explicit-null baseline.",
+      "input": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" }
+      },
+      "expect_error": "missing_required_field"
+    }
+  ],
+  "occurrence_vectors": [
+    {
+      "id": "OV-01-baseline",
+      "description": "Baseline occurrence input, referencing the full PV-01 pattern fingerprint.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "bb20023fd9626160a1ef2ca8c4e97e2e5296eb21040d077ac3488c867f31a728",
+      "expected_display_id": "A11Y-OCC-BB20023FD962"
+    },
+    {
+      "id": "OV-02-same-input-same-fingerprint",
+      "description": "Requirement 2: the same occurrence input produces the same fingerprint as OV-01.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "bb20023fd9626160a1ef2ca8c4e97e2e5296eb21040d077ac3488c867f31a728"
+    },
+    {
+      "id": "OV-03-key-order-independent",
+      "description": "Requirement 3: JSON object-key order does not change the occurrence fingerprint.",
+      "input": {
+        "test_profile": null,
+        "location": { "key": "/node/[nid]", "scope": "route-pattern", "normalization_profile": "a11y/route/v1" },
+        "pattern_fingerprint": {
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca",
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256"
+        }
+      },
+      "expected_fingerprint": "bb20023fd9626160a1ef2ca8c4e97e2e5296eb21040d077ac3488c867f31a728"
+    },
+    {
+      "id": "OV-04-location-key-changes-fingerprint",
+      "description": "Requirement 9: a different location.key changes the occurrence fingerprint.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]/edit" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "a1d30df92fe233ac035629b1faa0f1258d314749eff015012075b2ed48b0b322"
+    },
+    {
+      "id": "OV-05-location-scope-changes-fingerprint",
+      "description": "Requirement 10: a different location.scope changes the occurrence fingerprint even if location.key is unchanged.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "exact-resource", "normalization_profile": "a11y/exact-resource/v1", "key": "/node/[nid]" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "e5f737358558845bcda0d931672087890a536290ec579157aaafe398ad8d1847"
+    },
+    {
+      "id": "OV-06-pattern-fingerprint-changes-fingerprint",
+      "description": "Requirement 11: a different embedded pattern_fingerprint.value changes the occurrence fingerprint.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "d2cff3ec3e88b8ecd05f815a62af553a7e16a83e8c8bbd026bcd1d7533a28fa2"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "7d23e2d4c39ffb6965dd43c7659745c967d8749b10b043036601b9f5eab260fa"
+    },
+    {
+      "id": "OV-07a-route-independent-of-pattern-node1",
+      "description": "Requirement 8: the page route does not affect the pattern fingerprint. Both OV-07a and OV-07b embed the identical PV-01 pattern fingerprint despite different location.key values, proving pattern identity has no route awareness. Compare with OV-07b via relationship_checks.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/1" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "1f13b8a0c985a6fc8f80406ab9545fa95c0a033ced7bcbc444d3205f313f5066"
+    },
+    {
+      "id": "OV-07b-route-independent-of-pattern-node2",
+      "description": "Companion to OV-07a: a different concrete route, same embedded pattern fingerprint.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/2" },
+        "test_profile": null
+      },
+      "expected_fingerprint": "86931bf701cb3cef1524d89018910df5ae12516805c4608f9a335f930c117a14"
+    },
+    {
+      "id": "OV-08-test-profile-changes-fingerprint",
+      "description": "A non-null test_profile changes the occurrence fingerprint relative to OV-01 (test_profile: null). A project opting in to explicit test-profile identity must document why in its own configuration.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" },
+        "test_profile": "a11y/test-profile/desktop-chrome-v1"
+      },
+      "expected_fingerprint": "21b9235c6a22b2a3684fd072e4031421b446d13ba34563538c75539bfc4dbe7d"
+    },
+    {
+      "id": "OV-09-missing-required-field",
+      "description": "Requirement 18: an omitted required field (test_profile) is a validation error for occurrence input, not silently treated as equivalent to explicit null.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "e7c842e0e569532a337ec96e057ffe58e6e6521a5307c97f16980fdf1e1f43ca"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" }
+      },
+      "expect_error": "missing_required_field"
+    },
+    {
+      "id": "OV-10-rejects-display-id-as-pattern-fingerprint",
+      "description": "Requirement 11 (checker rule): an occurrence vector must embed the full 64-character pattern fingerprint, never a shortened display ID such as A11Y-PAT-E7C842E0E569. This vector documents the check itself and is expected to be rejected.",
+      "input": {
+        "pattern_fingerprint": {
+          "profile": "a11y/pattern/v1",
+          "algorithm": "sha-256",
+          "value": "A11Y-PAT-E7C842E0E569"
+        },
+        "location": { "scope": "route-pattern", "normalization_profile": "a11y/route/v1", "key": "/node/[nid]" },
+        "test_profile": null
+      },
+      "expect_error": "display_id_used_as_pattern_fingerprint"
+    }
+  ],
+  "relationship_checks": [
+    {
+      "id": "RC-01-pipe-vs-escaped-pipe-unambiguous",
+      "description": "Requirement 16: PV-10a (literal pipe) and PV-10b (escaped pipe) must not collide.",
+      "profile": "a11y/pattern/v1",
+      "input_a": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "a|b" },
+        "state_key": null
+      },
+      "input_b": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "a\\|b" },
+        "state_key": null
+      },
+      "expect": "different"
+    },
+    {
+      "id": "RC-02-route-independent-of-pattern",
+      "description": "Requirement 8: two occurrence inputs differing only in location.key still embed and produce comparable pattern-level identity (checked at the pattern layer directly, using the same pattern input twice under key reordering).",
+      "profile": "a11y/pattern/v1",
+      "input_a": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "input_b": {
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null,
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" }
+      },
+      "expect": "same"
+    },
+    {
+      "id": "RC-03-excluded-scan-date-has-no-input-slot",
+      "description": "Requirements 12 and 3 (target scoping is identity-bearing, ad hoc fields are not): a pattern input has no field for scan date, so two conforming inputs that differ only in when the underlying scan ran are structurally identical once mapped onto the contract.",
+      "profile": "a11y/pattern/v1",
+      "input_a": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "input_b": {
+        "target": { "scope_type": "repository", "scope_id": "https://github.com/example/product" },
+        "rule": { "namespace": "axe-core", "id": "color-contrast" },
+        "locator": { "type": "css", "normalization_profile": "a11y/css-locator/v1", "value": "#edit-submit" },
+        "state_key": null
+      },
+      "expect": "same"
+    }
+  ]
+}

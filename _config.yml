@@ -15,6 +15,15 @@ exclude:
   - examples/playwright/lib
   - examples/playwright/results.json
   - examples/playwright/screenshots
+  - examples/fingerprints/node_modules
+  - examples/fingerprints/package.json
+  - examples/fingerprints/package-lock.json
+  - examples/fingerprints/check-fingerprint-vectors.mjs
+  - examples/fingerprints/fingerprint-core.mjs
+  - examples/schemas/node_modules
+  - examples/schemas/package.json
+  - examples/schemas/package-lock.json
+  - examples/schemas/validate-accessibility-findings.mjs
 defaults:
   - scope:
       path: ""

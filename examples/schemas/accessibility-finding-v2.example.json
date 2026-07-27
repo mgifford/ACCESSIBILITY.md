@@ -1,0 +1,208 @@
+{
+  "schema_version": "2.0",
+  "finding_id": "https://example.com/findings/2026-07-18-checkout-card-error",
+  "title": "Checkout: card error text is not associated with the field",
+  "reported_at": "2026-07-18T14:30:00-04:00",
+  "source": {
+    "method": "manual-evaluation",
+    "scan_request_id": "https://github.com/example/scans/issues/320",
+    "scan_run_id": "https://example.com/reports/run-2026-07-18",
+    "reporter_reference": null,
+    "created_by": {
+      "type": "person",
+      "name": null,
+      "tool": null,
+      "version": null
+    },
+    "raw_result_reference": null
+  },
+  "tracking": {
+    "tracker_ids": [],
+    "fingerprints": {
+      "a11y/pattern/v1": {
+        "algorithm": "sha-256",
+        "value": "57869bae817fb90e13c94ef1d0908a1b7a642324f5cb61d9e0f56fd82f21ba02",
+        "relationship": "candidate"
+      },
+      "a11y/occurrence/v1": {
+        "algorithm": "sha-256",
+        "value": "4a201c8916e0a3f58b423910e388ef607584a4c88911af24f4b77a0c84bb6a02"
+      }
+    },
+    "display_ids": {
+      "a11y/pattern-display/v1": "A11Y-PAT-57869BAE817F",
+      "a11y/occurrence-display/v1": "A11Y-OCC-4A201C8916E0"
+    },
+    "legacy_identifiers": [],
+    "cluster_ids": [],
+    "root_cause_ids": [],
+    "lifecycle": {
+      "status": "new",
+      "status_basis": "No matching occurrence fingerprint was found in comparable retained history for this repository scope.",
+      "compared_run_ids": [],
+      "reviewed_at": null,
+      "reviewed_by": null
+    }
+  },
+  "location": {
+    "scope": "exact-resource",
+    "safe_url": "https://example.com/checkout/payment",
+    "route": "/checkout/payment",
+    "normalized_key": "/checkout/payment",
+    "normalization_profile": "a11y/exact-resource/v1",
+    "component": "Payment form",
+    "locator": {
+      "type": "stable-css",
+      "raw_value": null,
+      "normalized_value": "[data-component='payment-form']",
+      "normalization_profile": "a11y/css-locator/v1"
+    },
+    "concrete_locations": []
+  },
+  "state": {
+    "build": "2026.07.18.2",
+    "commit": null,
+    "account_role": "test customer",
+    "ui": "empty card number submitted",
+    "locale": "en-CA",
+    "other": {}
+  },
+  "description": {
+    "summary": "The visible card error is not programmatically associated with the field.",
+    "steps": [
+      "Open the payment step with NVDA and Firefox.",
+      "Leave the card number empty.",
+      "Move to Submit order with Tab and press Enter.",
+      "Move focus back to the card number field with Shift+Tab."
+    ],
+    "expected": "The field exposes its label, invalid state, and associated error programmatically.",
+    "actual": "A visible error appears, but the field has no error association and NVDA announces only its label."
+  },
+  "affected_people": [
+    {
+      "description": "People who use screen readers",
+      "examples": [
+        "some blind people",
+        "some low-vision people"
+      ],
+      "status": "likely",
+      "evidence_basis": "manual-evaluation",
+      "scope_limit": "Observed with NVDA and Firefox; not yet evaluated with disabled participants."
+    }
+  ],
+  "impact": {
+    "task": "Correct payment details",
+    "effect": "The person may not know which visible error belongs to the field.",
+    "workaround": "Navigate through surrounding content after each attempt.",
+    "workaround_quality": "burdensome",
+    "severity": "high",
+    "severity_basis": "The error affects error recovery during a critical checkout task.",
+    "confidence": "observed-behaviour-with-inferred-impact"
+  },
+  "environment": {
+    "browser": "Firefox 140",
+    "operating_system": "Windows 11 24H2",
+    "assistive_technology": "NVDA 2026.1",
+    "input": "keyboard",
+    "viewport_css_pixels": {
+      "width": 1280,
+      "height": 720
+    },
+    "zoom": "100%",
+    "locale": "en-CA",
+    "test_profile": null
+  },
+  "standards": [
+    {
+      "standard": "WCAG",
+      "version": "2.2",
+      "requirement": "1.3.1",
+      "name": "Info and Relationships",
+      "level": "A",
+      "relationship": "confirmed-failure"
+    }
+  ],
+  "test_results": [
+    {
+      "method": "manual-evaluation",
+      "status": "confirmed",
+      "tested_at": "2026-07-18T14:30:00-04:00",
+      "tool_namespace": null,
+      "tool": null,
+      "tool_version": null,
+      "rule": null,
+      "rule_version": null,
+      "configuration": null,
+      "raw_outcome": null,
+      "act_outcome": null,
+      "review": {
+        "status": "confirmed",
+        "notes": "Reproduced with NVDA and Firefox."
+      }
+    }
+  ],
+  "evidence": {
+    "references": [],
+    "attachments": [],
+    "redacted": true,
+    "contains_personal_data": false,
+    "retention_notes": null
+  },
+  "scope": {
+    "occurrences_observed": 1,
+    "resources_checked": 1,
+    "shared_component": true,
+    "checked_scope": [
+      "checkout payment step"
+    ],
+    "unchecked_scope": [
+      "other supported screen readers",
+      "mobile application"
+    ],
+    "coverage_profile": {
+      "resources_requested": ["/checkout/payment"],
+      "resources_completed": ["/checkout/payment"],
+      "engines_requested": [],
+      "engines_completed": [],
+      "rules_enabled": [],
+      "states_reached": ["empty-card-number-submitted"],
+      "errors": [],
+      "skips": [],
+      "timeouts": []
+    }
+  },
+  "verification": {
+    "automated": {
+      "required": true,
+      "status": "planned",
+      "rationale": "An automated regression check should be added once the fix lands.",
+      "evidence": []
+    },
+    "manual": {
+      "required": true,
+      "status": "completed-for-original-finding",
+      "rationale": "The original barrier was confirmed through manual evaluation.",
+      "evidence": []
+    },
+    "testing_with_disabled_people": {
+      "required": true,
+      "status": "planned",
+      "rationale": "The defect affects a critical checkout task.",
+      "participant_scope": null,
+      "evidence": []
+    },
+    "remaining_limitations": [
+      "Not yet evaluated with JAWS or VoiceOver.",
+      "Not yet evaluated with disabled participants."
+    ]
+  },
+  "acceptance_criteria": [
+    "The error remains identified in text.",
+    "The field exposes the error association and invalid state programmatically.",
+    "Moving focus to the field makes its label, invalid state, and error available.",
+    "Keyboard focus remains predictable.",
+    "The original interaction is manually retested.",
+    "Testing with disabled screen reader users is completed for the planned participant scope."
+  ],
+  "extensions": {}
+}

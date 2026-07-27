@@ -534,6 +534,10 @@ Review this file and affected guidance:
   [MANUAL_ACCESSIBILITY_TESTING_GUIDE.md](examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - Accessibility issue reporting:
   [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md](examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
+- Finding tracking and identifiers:
+  [ACCESSIBILITY_FINDING_TRACKING.md](examples/ACCESSIBILITY_FINDING_TRACKING.md)
+- Legacy identifier migration profiles:
+  [ACCESSIBILITY_MIGRATION_PROFILES.md](examples/migrations/ACCESSIBILITY_MIGRATION_PROFILES.md)
 - Trusted sources: [TRUSTED_SOURCES.yaml](examples/TRUSTED_SOURCES.yaml)
 - AI agent instructions: [AGENTS.md](AGENTS.md)
 - Sustainability policy: [SUSTAINABILITY.md](SUSTAINABILITY.md)
