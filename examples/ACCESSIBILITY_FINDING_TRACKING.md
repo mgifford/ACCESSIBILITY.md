@@ -31,6 +31,7 @@ This guide names the distinct concepts involved and describes how they relate, s
 13. Historical reports should not be rewritten merely to replace their identifiers.
 14. Correcting a fingerprint contract may create one-to-one, split, merged, or unresolved migrations.
 15. Absence from a later scan does not by itself prove resolution.
+16. A finding can be valid at intake without being ready for remediation; see [Actionability: Valid Report vs. Ready for Remediation](#actionability-valid-report-vs-ready-for-remediation).
 
 ## Terminology
 
@@ -216,6 +217,103 @@ The prior occurrence is outside the explicitly defined current comparison scope.
 ### Resolved
 
 Use only when the relevant scope was successfully retested or explicitly verified and the project's closure criteria have been met. An automated rule no longer reporting a result is not sufficient evidence by itself.
+
+## Actionability: Valid Report vs. Ready for Remediation
+
+A finding can be valid at intake without being ready for a team to act on. Treating every credible report as immediately actionable, or rejecting every incomplete report as invalid, both fail teams and the people who file reports.
+
+> An incomplete report can be valid at intake without being ready for remediation. A finding should enter the active remediation queue only when the team can locate and evaluate it and has sufficient evidence to determine what would demonstrate correction.
+
+This section defines the stages between an intake report and a verified fix, and where a finding should live while it moves between them. It does not create a new fingerprint identity, a new lifecycle status, or a new schema field. It governs triage and queue placement, using the [Lifecycle States](#lifecycle-states) and [`tracking.lifecycle.status`](./schemas/README.md) already defined above and in the schema.
+
+### Actionability stages
+
+| Stage | Meaning |
+| --- | --- |
+| Valid report | Credible evidence of a possible barrier has been recorded. |
+| Ready for evaluation | The team can locate the affected experience and investigate it. |
+| Reproducible or sufficiently evidenced | The team can reproduce the behavior or has equivalent evidence adequate for evaluation. |
+| Ready for remediation | The barrier and remediation scope are understood well enough to change safely. |
+| Ready for verification | The team can repeat the original interaction or an adequately equivalent test after correction. |
+| Ready for closure | Verification demonstrates that the barrier is no longer present for the claimed scope. |
+
+A finding does not have to pass through every stage to be worth preserving. A report can remain at "valid report" indefinitely while retained as evidence; it should not be discarded merely because it has not advanced.
+
+### Three destinations
+
+Findings live in one of three places, independent of the lifecycle status computed for any one comparison:
+
+**Active remediation queue** — findings that are reproducible or otherwise supported by sufficient evidence to evaluate and remediate. An active item should normally have a precise safe location, relevant state and preconditions, expected and actual behavior, reproduction steps or equivalent evidence, relevant environment, technical evidence when applicable, an owner, user-facing acceptance criteria, and a verification plan. A WCAG mapping, severity, priority, frequency, fingerprint, and a proposed fix are useful but are not prerequisites for entering the queue.
+
+**Investigation queue** — credible but intermittent, currently inaccessible, or insufficiently evidenced findings that warrant additional work. Every investigation item must have an owner, the evidence currently available, the next investigative action, the evidence that would justify promotion, an expiry or review date, and the reason it was not promoted to active remediation. Do not let an unowned `needs_review` finding sit indefinitely; a review date forces a decision.
+
+**Observation history** — compact, machine-readable evidence for automated results that were not reproduced or promoted, retained only for recurrence detection: occurrence and pattern fingerprints when available, a safe normalized location, tool and rule identity, scan run ID, first/last-observed and last-checked dates, lifecycle status, the reason it was not promoted, and any relevant coverage comparison. Observation history is not the active human issue queue; apply a documented, project-defined retention policy rather than retaining it indefinitely without a purpose.
+
+### The automated-finding actionability gate
+
+An automated finding should normally enter the active remediation queue only when the team has: a precise safe URL, route, component, or equivalent location; a stable locator or captured affected element where applicable; focused HTML, DOM, accessibility-tree, or component evidence where applicable; tool and rule identifiers and versions; test configuration; relevant state and environment; expected and actual results; a successful controlled rerun or sufficient equivalent evidence; enough evidence to distinguish a likely defect from a tool, crawl, or test failure; and a defined way to verify correction.
+
+The central question triage should ask is:
+
+> Can the team locate the result, rerun or otherwise evaluate the relevant check, inspect the affected output, and determine what would demonstrate correction?
+
+If not, the finding is not ready for the active remediation backlog. Route it to observation history (unreproduced automated result) or the investigation queue (credible but not yet evidenced enough to act on) instead of creating an issue nobody can work.
+
+This gate governs automated findings specifically because they are produced at a volume and speed that manual triage cannot match one-by-one. It does not add a documentation, evidence, or reproduction requirement to a user-submitted report before that report is accepted as a valid finding — see [Direct reproduction and equivalent evidence](#direct-reproduction-and-equivalent-evidence) and the bug reporting guide's [minimum information for a useful report](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md#3-minimum-information-for-a-useful-report).
+
+### Direct reproduction and equivalent evidence
+
+Direct reproduction is the strongest basis for remediation and verification, and should be preferred when available. A team should not normally implement or close a claimed correction when it cannot understand or evaluate the original failure.
+
+Exact reproduction is not always possible. Equivalent evidence supporting evaluation may include: a focused HTML or live-DOM excerpt; accessibility-tree output; tool output with its configuration and version; a recording or screenshot with a written explanation; browser or application logs; repeated reports; deterministic code inspection; evidence from a disabled person; reproduction in a sufficiently equivalent environment; a known invalid component pattern; or an intermittent failure with documented attempts and conditions.
+
+When exact reproduction is unavailable, record: what evidence exists; what the team attempted; what could not be tested; the remaining uncertainty; the scope of any conclusion drawn; and the verification plan.
+
+`Cannot reproduce` describes the team's current evidence, not the reporter's credibility:
+
+> "The team cannot currently reproduce it" means the team does not yet have enough evidence to act. It does not establish that the reporter was wrong.
+
+### Comparable runs
+
+A missing result from an automated rerun is meaningful only when the runs being compared are actually comparable. Treat a run as comparable only when: the same resource or normalized route was in scope; the page loaded successfully; required authentication and account state were reached; the relevant component was present; the same applicable rule ran; the scanner completed; exclusions did not materially change; and the named test profile was sufficiently equivalent.
+
+Classify these as `not_tested`, never `not_observed`: a timeout; an authentication failure; a skipped resource; a missing component caused by a load failure; a disabled rule; a scanner engine that did not run; an incomplete crawl; a test error; or incompatible coverage. Conflating an incomplete rerun with a clean rerun is the single most common way aggressive automated filtering manufactures false confidence.
+
+### Suggested automated repeatability workflow
+
+The following is a recommended starting process, not a universal standard; adjust it to the project.
+
+1. Capture the initial result and its evidence.
+2. Rerun the same rule against the same resource and state.
+3. If reproduced, promote it to active remediation or update existing tracked work.
+4. If not reproduced, make one controlled retry in a fresh session where practical.
+5. If still absent, classify it as `not_observed`.
+6. Keep compact observation history rather than creating an active issue.
+7. Promote it to bounded investigation if it recurs in later comparable runs.
+8. Treat failed or incomplete coverage as `not_tested`.
+
+For deterministic findings, one controlled reproduction may be sufficient to promote. For indicator, timing-dependent, or intermittent findings, a project may define a recurrence threshold. The following is an informative example only, not an accessibility requirement:
+
+```text
+Deterministic finding:
+  Promote after one successful controlled reproduction.
+
+Indicator or intermittent finding:
+  Promote after two observations in three comparable runs,
+  or after manual confirmation.
+
+Not reproduced:
+  Keep compact history for three comparable runs or 30 days,
+  then expire unless it recurs.
+```
+
+These numbers are illustrative. Projects must adjust them based on scan frequency, consequence, test reliability, cost of investigation, affected tasks, legal or contractual obligations, and available evidence.
+
+### Consequences of aggressive filtering, and exceptions
+
+Aggressive automated filtering can remove barriers that are intermittent, timing-dependent, network-dependent, tied to authentication or account state, specific to assistive technology, affected by personalization or preferences, difficult for the development team to reproduce, reported by one disabled person, or present in unstable or dynamically generated interfaces.
+
+Do not automatically discard a credible user-reported barrier, or a potentially high-consequence safety, privacy, financial, health, employment, education, or public-service barrier, because an internal rerun did not reproduce it. Place it in bounded investigation with an owner, a next action, a review date, and a clear evidence threshold for promotion. Do not retain it indefinitely without ownership or a plan — an investigation item with no owner and no review date is functionally the same as a discarded report.
 
 ## Migration Principles
 

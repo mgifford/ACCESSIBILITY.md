@@ -16,7 +16,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 - [MANUAL_ACCESSIBILITY_TESTING_GUIDE](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [BEHAVIORAL_ACCESSIBILITY_AUTOMATION](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) - Reflow risk and Focus Visible behavioral testing, with reusable tested [Playwright modules](./playwright/README.md)
 - [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
-- [ACCESSIBILITY_FINDING_TRACKING](./ACCESSIBILITY_FINDING_TRACKING.md) - Canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, display IDs, and legacy identifier migration
+- [ACCESSIBILITY_FINDING_TRACKING](./ACCESSIBILITY_FINDING_TRACKING.md) - Canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, display IDs, legacy identifier migration, and the actionability policy distinguishing valid intake from remediation-ready findings
 - [fingerprints/README](./fingerprints/README.md) - Normative `a11y/pattern/v1` and `a11y/occurrence/v1` fingerprint contracts, RFC 8785 canonicalization, and executable golden test vectors
 - [schemas/README](./schemas/README.md) - Versioned JSON Schema (`schema_version: "2.0"`) for machine-readable accessibility findings, with validated complete, minimal, and manual examples
 - [migrations/ACCESSIBILITY_MIGRATION_PROFILES](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - Verified `drupal-core` and `open-scans` legacy identifier formats, gaps, and migration requirements for adopting the fingerprint profiles
