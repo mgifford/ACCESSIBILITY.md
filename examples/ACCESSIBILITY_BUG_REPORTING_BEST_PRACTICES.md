@@ -41,22 +41,53 @@ A failed automated rule does not automatically prove a WCAG failure. A passed au
 
 ## 3. Minimum Information for a Useful Report
 
-Include the following when it is known and relevant:
+Different amounts of information are needed at different points in a finding's life. Conflating them is a common cause of both rejecting valid reports and stalling remediation on reports that were never ready for it. See [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md#actionability-valid-report-vs-ready-for-remediation) for the full stage model this section implements.
+
+### 3.1 Minimum information for valid intake
+
+A report is a valid finding, worth recording and preserving, once it identifies:
 
 | Field | What to record |
 | --- | --- |
 | **Title** | Component or location, failure, and task effect. |
-| **Location and state** | Safe URL or route, component name, build, and the state in which the problem appears. |
+| **Location and state** | Safe URL or route, component name, build, and the state in which the problem appears, as precisely as the reporter can safely provide. |
+| **Task and impact** | What the person is trying to do and how the barrier affects that task. |
+| **Actual result** | What was observed. |
+| **Evidence basis** | Whether the report is based on a user report, testing with disabled people, manual evaluation, an automated result, or reasoned inference. |
+
+**Do not reject a report at intake because it lacks the fields below.** A person reporting a barrier is not expected to produce a diagnosis, a locator, a fingerprint, or a WCAG mapping. Preserve the report even when it is incomplete; see [Direct reproduction and equivalent evidence](./ACCESSIBILITY_FINDING_TRACKING.md#direct-reproduction-and-equivalent-evidence).
+
+### 3.2 Additional information needed for evaluation
+
+Before the team can meaningfully evaluate a finding, triage should also have, or actively be collecting:
+
+| Field | What to record |
+| --- | --- |
 | **People affected** | The people, access needs, interaction methods, or assistive technology users confirmed or likely to be affected. Record more than one group when relevant. |
-| **Evidence basis and confidence** | Whether the impact is based on a user report, testing with disabled people, manual evaluation, an automated result, or reasoned inference, plus any uncertainty or scope limit. |
-| **Task and impact** | What the person is trying to do, how the barrier affects that task, and the quality or cost of any workaround. |
 | **Steps or conditions** | The shortest reliable path to the problem, including required preconditions. |
 | **Expected result** | The user-facing behavior that should occur. |
-| **Actual result** | What was observed, including relevant output from assistive technology. |
 | **Environment** | Only the browser, operating system, assistive technology, input, viewport, zoom, preferences, or locale that affect the result. |
-| **Evidence** | A small, redacted excerpt or accessible attachment when it makes the finding easier to understand. |
 
-Do not reject a report from a user because it lacks technical details. A triager can add a locator, standards mapping, diagnostic evidence, or verification plan later.
+This is triage's responsibility to complete, not a precondition for accepting the report in the first place. See [section 5](#5-record-location-and-state-safely) and [section 10](#10-add-technical-evidence-without-exposing-data) for who is responsible for collecting a precise location and technical evidence.
+
+### 3.3 Information normally needed before remediation
+
+Before a finding enters the active remediation queue, the team normally also needs:
+
+| Field | What to record |
+| --- | --- |
+| **Confidence and reproduction status** | Reproduced / intermittent / not observed / not tested / needs evidence, per [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md#direct-reproduction-and-equivalent-evidence). |
+| **Evidence** | A small, redacted excerpt, accessibility-tree output, or accessible attachment sufficient to inspect the result. |
+| **Owner** | Who can change the source. |
+| **Acceptance criteria** | Verifiable, user-facing behavior that would demonstrate correction. |
+
+A WCAG mapping, severity, priority, frequency, fingerprint, and a proposed fix are useful but are **not** prerequisites for remediation readiness.
+
+### 3.4 Information needed before closure
+
+Before closing, the team needs verification evidence: the original interaction (or an adequately equivalent test) was repeated after the fix, relevant adjacent states and environments were checked, and, where required by the verification plan, testing with disabled people was completed. See [section 22](#22-definition-of-done).
+
+Do not reject a report from a user because it lacks the section 3.2–3.4 fields. A triager collects a locator, standards mapping, diagnostic evidence, or verification plan later — it is triage's job, not a filter on whether the report was worth recording.
 
 ## 4. Write a Specific Title
 
@@ -86,6 +117,8 @@ UI state: Form submitted with an invalid card number
 Account role: Test customer
 ```
 
+For a web finding, provide the affected URL whenever it is safe and sufficient. If the exact URL cannot be disclosed, provide a redacted route or another unambiguous way to locate the experience. A report such as "the menu is inaccessible" is not ready for evaluation unless the team can identify which menu and state it concerns; use the most precise safe location available, for example a redacted route, a page or screen name, a component example, a Storybook entry, a repository example, instructions for reaching an authenticated state, or a reference to protected evidence.
+
 Use an exact URL only when its query and fragment values are relevant and safe to share. Remove or replace:
 
 - session identifiers and access tokens;
@@ -102,6 +135,8 @@ Safe:   https://example.com/orders/[test-order-id]
 ```
 
 Do not include production credentials. Provide an approved test account through the organization's secure process when one is needed.
+
+This precision requirement is for actionable evaluation, not for accepting the report — do not delay accepting a valid finding because a precise location has not yet been supplied; triage should add or request it before the finding moves to evaluation.
 
 ### 5.2 Element and component locators
 
@@ -149,7 +184,7 @@ For intermittent findings, record:
 - whether the problem occurred after back navigation or a state change;
 - the earliest known build in which it appeared.
 
-`Cannot reproduce` is a triage state, not automatic evidence that the report is invalid. Preserve the original conditions and intermittent evidence.
+`Cannot reproduce` is a triage state, not automatic evidence that the report is invalid. Preserve the original conditions and intermittent evidence. When direct reproduction is not possible, record equivalent evidence instead of discarding the report; see [Direct reproduction and equivalent evidence](./ACCESSIBILITY_FINDING_TRACKING.md#direct-reproduction-and-equivalent-evidence) for what counts and what to record about the attempt.
 
 ## 7. Separate Expected and Actual Results
 
@@ -250,6 +285,10 @@ See [Light/Dark Mode Accessibility Best Practices](./LIGHT_DARK_MODE_ACCESSIBILI
 
 Technical evidence is optional when the observed behavior is already clear. When it helps, include the smallest relevant excerpt.
 
+Automated and technical findings normally need a focused HTML, DOM, accessibility-tree, or component excerpt before code-level remediation, so the team can inspect the actual result rather than a description of it. Reporters are not universally responsible for collecting this. A disabled person or other reporter may not know how to capture an HTML snippet, a DOM dump, or accessibility-tree output, and requiring one before accepting a report excludes exactly the people best placed to notice a barrier. Triage is responsible for collecting missing technical evidence when it is relevant, available, and needed for remediation — not for rejecting the report until the reporter supplies it.
+
+Do not assume page-source HTML represents the live DOM or accessibility tree: client-side rendering, hydration, and dynamic attribute changes can all mean the two diverge. When the finding depends on runtime state, capture live-DOM or accessibility-tree output rather than the original page source, and note the iframe or shadow-root boundary if one is involved.
+
 ### 10.1 HTML or accessibility-tree excerpt
 
 ```html
@@ -337,7 +376,9 @@ For automated findings:
 - preserve the raw result and configuration;
 - require human review before treating the result as a confirmed user-facing barrier;
 - add or update automated regression coverage when practical;
-- do not treat an automated pass as sufficient closure evidence.
+- do not treat an automated pass as sufficient closure evidence;
+- do not place every raw automated result directly into the active remediation queue — apply the [automated-finding actionability gate](./ACCESSIBILITY_FINDING_TRACKING.md#the-automated-finding-actionability-gate) first, and route what does not clear it to bounded investigation or observation history instead;
+- classify a result that could not run to completion (timeout, authentication failure, disabled rule, incomplete crawl) as `not_tested`, not as an absent finding; classify a genuinely absent result after a [comparable run](./ACCESSIBILITY_FINDING_TRACKING.md#comparable-runs) as `not_observed`, never silently as `resolved`.
 
 ### 12.2 Manual accessibility evaluation
 
@@ -524,6 +565,19 @@ Adapt this template to the organization. Fields marked as optional should remain
 ### Evidence
 
 [Add a small redacted excerpt, attachment description, or link to protected evidence.]
+
+### Actionability and reproduction
+
+- Precise safe URL, route, component, or equivalent location:
+- Reproduction status: Reproduced / Intermittent / Not observed / Not tested / Needs evidence
+- Reproduction attempts and results:
+- Relevant HTML, DOM, accessibility-tree, or component excerpt:
+- Evidence supporting evaluation when exact reproduction is unavailable:
+- Next investigative action:
+- Owner:
+- Review or expiry date:
+
+This section is optional at intake and is triage's responsibility to complete, not the original reporter's — see [Minimum Information for a Useful Report](#3-minimum-information-for-a-useful-report) and [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md#actionability-valid-report-vs-ready-for-remediation).
 
 ### Standards and tests (optional)
 
@@ -730,7 +784,9 @@ An automated or AI-assisted reporting workflow should:
 10. preserve disagreements between a tool result, evaluator review, and participant feedback;
 11. require manual user-facing retesting before closure when automation cannot verify the outcome;
 12. record whether testing with disabled people is required, planned, completed, or not required, including the rationale;
-13. never claim that testing with disabled people occurred unless it actually did.
+13. never claim that testing with disabled people occurred unless it actually did;
+14. route each automated result to the active remediation queue, the investigation queue, or observation history rather than creating one active issue per raw result — see [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md#three-destinations) for what belongs in each;
+15. never automatically reject a credible user-reported or potentially high-consequence barrier solely because an internal rerun did not reproduce it — place it in bounded investigation instead.
 
 Do not close an issue only because the original automated rule passes. The implementation may have changed the selector, hidden the tested node, or introduced a different barrier.
 
@@ -756,6 +812,8 @@ If fingerprints are used:
 - do not infer `mobile` or `desktop` from a width threshold;
 - do not merge results solely because their hashes match;
 - retain legacy identifiers when a fingerprint algorithm changes rather than discarding them.
+
+Do not use a fingerprint match, or a raw automated result on its own, to place a finding directly into the active remediation queue. Apply the [automated-finding actionability gate](./ACCESSIBILITY_FINDING_TRACKING.md#the-automated-finding-actionability-gate) first.
 
 For the full conceptual model, including scan run IDs, root causes, heuristic clusters, legacy identifiers, and migration between fingerprint versions, see [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md).
 
