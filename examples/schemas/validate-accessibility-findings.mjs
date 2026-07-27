@@ -10,7 +10,7 @@
 // Usage:
 //   node validate-accessibility-findings.mjs
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -64,6 +64,24 @@ for (const testCase of policyDoc.cases ?? []) {
   const ok = validate(testCase.finding);
   if (!ok) {
     fail(`[${testCase.id}] (${testCase.description}) was expected to be VALID but failed schema validation:\n${JSON.stringify(validate.errors, null, 2)}`);
+  }
+}
+
+// --- 1c. Shared cross-repo policy fixtures (../shared-fixtures/) must all pass. ---
+//
+// These fixtures are also consumed by accessibility-skills and vital-core;
+// see ../shared-fixtures/README.md. Validating them here keeps this repo's
+// copy schema-valid, but does not by itself prove the other two repos agree
+// with it -- that is asserted by each of their own shared-fixture tests.
+
+const sharedFixturesDir = path.join(HERE, '..', 'shared-fixtures');
+const sharedFixtureFiles = readdirSync(sharedFixturesDir).filter((f) => f.endsWith('.json'));
+
+for (const file of sharedFixtureFiles) {
+  const data = loadJSON(path.join('..', 'shared-fixtures', file));
+  const ok = validate(data);
+  if (!ok) {
+    fail(`shared-fixtures/${file} was expected to be VALID but failed schema validation:\n${JSON.stringify(validate.errors, null, 2)}`);
   }
 }
 
@@ -175,6 +193,7 @@ if (failures.length > 0) {
 console.log(
   `OK: schema compiled, ${validExamples.length} valid example(s) passed, ` +
   `${(policyDoc.cases ?? []).length} schema_version 2.1 policy-classification example(s) passed, ` +
+  `${sharedFixtureFiles.length} shared cross-repo fixture(s) passed, ` +
   `${(invalidDoc.cases ?? []).length} invalid example(s) failed for their declared reason, ` +
   `and the complete example's fingerprints match Stage 2's frozen profiles.`
 );

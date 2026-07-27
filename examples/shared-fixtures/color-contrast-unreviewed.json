@@ -1,0 +1,59 @@
+{
+  "schema_version": "2.1",
+  "title": "Pricing table: body text contrast may fall below 4.5:1 against its background",
+  "reported_at": "2026-07-27T09:00:00Z",
+  "source": {
+    "method": "automated",
+    "raw_result_reference": null
+  },
+  "description": {
+    "summary": "axe-core's color-contrast rule flagged body text on the pricing table as a possible contrast violation. No human has reviewed or reproduced this result yet."
+  },
+  "affected_people": [
+    {
+      "description": "People with low vision",
+      "status": "likely",
+      "evidence_basis": "automated"
+    }
+  ],
+  "location": {
+    "safe_url": "https://example.gov/pricing",
+    "component": "Pricing table"
+  },
+  "standards": [
+    {
+      "standard": "WCAG",
+      "version": "2.2",
+      "requirement": "1.4.3",
+      "name": "Contrast (Minimum)",
+      "level": "AA",
+      "relationship": "suspected-failure"
+    }
+  ],
+  "test_results": [
+    {
+      "method": "automated",
+      "status": "failed",
+      "tool_namespace": "axe-core",
+      "tool": "axe-core",
+      "tool_version": "4.11.0",
+      "rule": "color-contrast",
+      "raw_outcome": "failed",
+      "review": {
+        "status": "needs-review"
+      }
+    }
+  ],
+  "policy": {
+    "standards_obligations": [
+      {
+        "standard_ref": "WCAG 2.2 1.4.3",
+        "obligation": "required",
+        "obligation_basis": "Project baseline target: WCAG 2.2 Level AA."
+      }
+    ],
+    "handling": "review",
+    "handling_basis": "Automated indicator only; not yet reproduced or confirmed by a human reviewer.",
+    "evidence_status": "automated-indicator"
+  }
+}
