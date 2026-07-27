@@ -214,6 +214,67 @@
           }
         }
       }
+    },
+    {
+      "id": "IV-11-policy-on-schema-2.0",
+      "reason": "A schema_version \"2.0\" record must not populate the 2.1-only policy object.",
+      "expected_failure": {
+        "instancePath": "/schema_version",
+        "keyword": "const"
+      },
+      "finding": {
+        "schema_version": "2.0",
+        "title": "Invalid example: policy object on a 2.0 record",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "policy": {
+          "evidence_status": "automated-indicator"
+        }
+      }
+    },
+    {
+      "id": "IV-12-suppress-without-suppression-detail",
+      "reason": "policy.handling is \"suppress\" but the required policy.suppression object (scope, reason, evidence_basis, owner) is missing.",
+      "expected_failure": {
+        "instancePath": "/policy",
+        "keyword": "required"
+      },
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Invalid example: suppress without suppression detail",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "policy": {
+          "evidence_status": "rejected-false-positive",
+          "handling": "suppress"
+        }
+      }
+    },
+    {
+      "id": "IV-13-invalid-obligation-value",
+      "reason": "policy.standards_obligations[].obligation uses a value outside the documented enum (\"mandatory\" instead of \"required\").",
+      "expected_failure": {
+        "instancePath": "/policy/standards_obligations/0/obligation",
+        "keyword": "enum"
+      },
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Invalid example: invalid obligation value",
+        "reported_at": "2026-01-01T00:00:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "This record is intentionally invalid." },
+        "affected_people": [],
+        "policy": {
+          "evidence_status": "automated-indicator",
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.3.1", "obligation": "mandatory" }
+          ]
+        }
+      }
     }
   ]
 }

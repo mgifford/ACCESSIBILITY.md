@@ -32,6 +32,9 @@ This guide names the distinct concepts involved and describes how they relate, s
 14. Correcting a fingerprint contract may create one-to-one, split, merged, or unresolved migrations.
 15. Absence from a later scan does not by itself prove resolution.
 16. A finding can be valid at intake without being ready for remediation; see [Actionability: Valid Report vs. Ready for Remediation](#actionability-valid-report-vs-ready-for-remediation).
+17. Obligation, evidence confidence, handling, severity, priority, lifecycle state, and identity are separate axes and must not be collapsed into one another; see [Policy Classification](#policy-classification).
+18. An automated result is evidence, not a conformance decision. An unconfirmed result normally goes to `review`, not `suppress`.
+19. A policy classification must never alter a fingerprint, tracker ID, or any other identity field.
 
 ## Terminology
 
@@ -218,6 +221,97 @@ The prior occurrence is outside the explicitly defined current comparison scope.
 
 Use only when the relevant scope was successfully retested or explicitly verified and the project's closure criteria have been met. An automated rule no longer reporting a result is not sufficient evidence by itself.
 
+## Policy Classification
+
+A finding carries several independent axes of information: what it is (identity: fingerprints, tracker IDs), how strong the evidence is, whether meeting the relevant standard is required, how it is currently being handled for reporting and enforcement, how severe it is, and how it compares across runs (lifecycle state). Projects and tools repeatedly collapse these into one field -- for example, treating "automated tool flagged it" as equivalent to "confirmed standards failure," or treating "excluded from this sprint's report" as equivalent to "resolved." This section defines three policy dimensions -- `obligation`, `handling`, and `evidence_status` -- and how they relate to the identity, lifecycle, and severity concepts already defined in this guide. It does not redefine or replace any of them.
+
+These three fields are optional and additive: `schema_version: "2.0"` findings remain fully valid without them. A finding that populates them uses `schema_version: "2.1"`; see [Accessibility Finding Schema](./schemas/README.md) for the normative field definitions. Populating a policy classification never computes, alters, or depends on a fingerprint, tracker ID, or any other identity field -- see [Fingerprint Profiles](./fingerprints/README.md), "Fields excluded from fingerprint identity."
+
+### Obligation
+
+Whether satisfying a specific standards mapping is required, a stretch goal, merely advisory, unmapped, or not applicable. `obligation` is assigned per standards mapping (for example, per WCAG success criterion cited in a finding), not once for the whole finding, because a single finding can implicate mappings at different obligation levels -- most commonly an AA criterion the project must meet alongside an AAA criterion it does not.
+
+| Value | Meaning |
+| --- | --- |
+| `required` | Required by the project's target, applicable law, contract, platform policy, or explicit local policy. |
+| `aspirational` | Outside the project's baseline target but a recognized stretch goal the team is encouraged to pursue. |
+| `advisory` | A useful best practice that is not part of the baseline target or a declared stretch goal. |
+| `unmapped` | No authoritative obligation has been established yet. |
+| `not-applicable` | Reviewed and determined not to apply to this finding. |
+
+**AAA criteria under an AA project target are `aspirational` by default, not `advisory`.** Most projects declare a baseline target such as WCAG 2.2 Level AA. A finding confirmed against an AAA success criterion is real, visible, and worth pursuing as a stretch goal -- it is not equivalent to an arbitrary best-practice suggestion with no standards basis at all, which is what `advisory` is for. A project may explicitly elevate a specific AAA criterion to `required` (for example, for safety-critical content, a regulatory requirement narrower than the general target, or a deliberate product commitment); when it does, record the reason in `obligation_basis` so the elevation is traceable rather than silently assumed.
+
+Do not describe satisfying one or several AAA success criteria as achieving WCAG AAA conformance. Full AAA conformance is a whole-scope claim the [W3C is explicit is not recommended as a general policy requirement](https://www.w3.org/WAI/WCAG22/Understanding/conformance.html#levels), and treating individual elevated or aspirational AAA findings as partial credit toward it misrepresents both the finding and the conformance claim.
+
+An `unmapped` finding is not a lesser finding -- it is an honest statement that no authoritative standards mapping has been established yet, which is common for newly reported barriers, best-practice-only issues awaiting a standards basis, or findings still in early triage. Do not default an unmapped finding to `advisory` merely to give it a value; `unmapped` and `advisory` are different claims.
+
+### Handling
+
+The finding's current reporting and enforcement treatment.
+
+| Value | Meaning |
+| --- | --- |
+| `report` | Surfaced in standard reporting and enforcement. |
+| `review` | Evidence or applicability is unresolved; a decision is pending. |
+| `suppress` | Retained but excluded from specified reporting or enforcement under a documented exception. |
+
+`handling` is independent of `obligation`: a `required` finding can be under `review` while evidence is gathered, and an `aspirational` finding can still be `report`ed. `handling` is also independent of `tracking.lifecycle.status`: `suppress` is a reporting and enforcement decision about where a finding appears, not a claim about whether the underlying barrier still exists. A suppressed finding with `tracking.lifecycle.status: "recurring"` is still recurring; suppression only changes whether it shows up in a specific report or gate.
+
+**An unconfirmed automated result normally goes to `review`, not `suppress`.** The default for an indicator nobody has evaluated yet is that it needs evaluation -- not that it has been excluded. Moving a finding to `suppress` requires the documented exception described below; moving it to `review` requires nothing beyond "we have not resolved this yet."
+
+**Suppression is not resolution, and a suppressed finding remains recorded.** Suppressing a finding must never delete it, hide it from every surface, or substitute for verifying and closing it. A valid suppression requires all of:
+
+- **Scope** -- the specific, narrow reporting or enforcement context the suppression applies to (for example, "the CI merge gate for the legacy checkout route," not "this finding" unqualified).
+- **Reason** -- why the finding is excluded from that specific context, in enough detail for a later reviewer to evaluate the decision.
+- **Evidence** -- what supports the suppression (a risk acceptance, a compensating control, an investigation result, a vendor ticket).
+- **Owner** -- who or what role is accountable for the suppression.
+- **A review or expiry date** -- when the suppression must be revisited, or when it lapses. An undated, unowned suppression is functionally the same as silently discarding the finding and is not a valid use of `suppress`; see the equivalent warning about unowned investigation items in [Actionability](#actionability-valid-report-vs-ready-for-remediation).
+
+See [Accessibility Finding Schema](./schemas/README.md) for the normative `policy.suppression` fields.
+
+### Evidence status
+
+How strong the evidence behind a finding currently is, independent of obligation, handling, severity, priority, and lifecycle status.
+
+| Value | Meaning |
+| --- | --- |
+| `automated-indicator` | An unreviewed automated tool result only. |
+| `reproducible-finding` | The team has reproduced the behavior, or has equivalent evidence, but has not yet confirmed it is a genuine, standards-relevant barrier. |
+| `confirmed-user-facing-barrier` | A human has confirmed the finding actually blocks or burdens a person completing a task. |
+| `confirmed-standards-failure` | A human has confirmed the finding fails a specific cited standards requirement. |
+| `rejected-false-positive` | Reviewed and determined the indicator does not reflect a real barrier or failure. |
+| `verified-resolution` | The fix was verified per this guide's [Resolved](#resolved) lifecycle state. |
+
+`evidence_status` describes the finding's evidence, not the applicable rule's severity or the project's obligation to fix it. A `confirmed-user-facing-barrier` and a `confirmed-standards-failure` can both be true of the same finding (a confirmed barrier that also fails a cited standard) or independently true (a confirmed barrier with no clean standards mapping yet, or a confirmed technical standards failure with no yet-identified user-facing consequence).
+
+**An automated result is evidence, not a conformance decision.** `automated-indicator` exists specifically to keep raw tool output from being silently treated as `confirmed-standards-failure` or used to justify closing a finding. Promoting a finding out of `automated-indicator` requires the human confirmation described in [Actionability](#actionability-valid-report-vs-ready-for-remediation), not simply the passage of time or a clean rerun.
+
+### How the axes relate
+
+| Axis | Field | Answers |
+| --- | --- | --- |
+| Identity | `tracking.fingerprints`, `tracking.tracker_ids` | What is this, and what tracked work covers it? |
+| Evidence confidence | `policy.evidence_status` | How strong is the current evidence? |
+| Obligation | `policy.standards_obligations[].obligation` | Are we required to fix this? |
+| Handling | `policy.handling` | Is this currently reported, under review, or suppressed? |
+| Severity / priority | `impact.severity`, project priority fields | How bad is it, and how urgently should it be worked? |
+| Lifecycle | `tracking.lifecycle.status` | Is this new, recurring, not observed, resolved, and so on, relative to comparable history? |
+
+These axes commonly move together but must never be inferred from one another. A finding can be `required` and still `review` (evidence pending); `aspirational` and still `report`ed (a visible stretch-goal opportunity); `confirmed-standards-failure` and still `suppress`ed (a documented, time-bounded exception); or `critical` severity and still `unmapped` obligation (a severe barrier with no standards citation yet). Treat each axis as answering its own question, not as a proxy for the others.
+
+### Compact examples
+
+The following illustrate the eight scenarios below; see [`accessibility-finding-v2.1-policy-examples.json`](./schemas/accessibility-finding-v2.1-policy-examples.json) for complete, schema-valid records.
+
+- **Confirmed AA failure:** `obligation: required`, `handling: report`, `evidence_status: confirmed-standards-failure`.
+- **Unresolved AA indicator:** `obligation: required`, `handling: review`, `evidence_status: automated-indicator`.
+- **Confirmed AAA finding under an AA target:** `obligation: aspirational`, `handling: report`, `evidence_status: confirmed-standards-failure`.
+- **Unresolved AAA indicator:** `obligation: aspirational`, `handling: review`, `evidence_status: automated-indicator`.
+- **Best-practice rule outside the standards target:** `obligation: advisory`, `handling: report`, `evidence_status: confirmed-user-facing-barrier`.
+- **AAA criterion elevated by local policy:** `obligation: required` (with `obligation_basis` naming the local policy), `handling: report`, `evidence_status: confirmed-standards-failure`.
+- **Rejected false positive:** `obligation: not-applicable`, `handling: suppress` (with full suppression detail), `evidence_status: rejected-false-positive`.
+- **Temporary suppression:** `obligation: required`, `handling: suppress` (narrow scope, owner, and expiry date), `evidence_status: confirmed-user-facing-barrier`.
+
 ## Actionability: Valid Report vs. Ready for Remediation
 
 A finding can be valid at intake without being ready for a team to act on. Treating every credible report as immediately actionable, or rejecting every incomplete report as invalid, both fail teams and the people who file reports.
@@ -355,7 +449,7 @@ This guide does not change either implementation.
 ## Related Guides
 
 - [Accessibility Migration Profiles](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - verified `drupal-core` and `open-scans` legacy identifier formats and migration requirements
-- [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema (`schema_version: "2.0"`) for the complete machine-readable finding record, with [a complete example](./schemas/accessibility-finding-v2.example.json), [a minimal example](./schemas/accessibility-finding-v2-minimal.example.json), and [a manual/user-reported example](./schemas/accessibility-finding-v2-manual.example.json)
+- [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema (`schema_version: "2.0"` or `"2.1"`) for the complete machine-readable finding record, with [a complete example](./schemas/accessibility-finding-v2.example.json), [a minimal example](./schemas/accessibility-finding-v2-minimal.example.json), [a manual/user-reported example](./schemas/accessibility-finding-v2-manual.example.json), and [policy-classification examples](./schemas/accessibility-finding-v2.1-policy-examples.json) for [Policy Classification](#policy-classification) above
 - [Fingerprint Profiles](./fingerprints/README.md) - normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, canonicalization, and golden test vectors
 - [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Contributing Accessibility Guide](./CONTRIBUTING_A11Y.md)

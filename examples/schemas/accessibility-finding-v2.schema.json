@@ -2,14 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mgifford.github.io/ACCESSIBILITY.md/examples/schemas/accessibility-finding-v2.schema.json",
   "title": "Accessibility Finding",
-  "description": "A machine-readable accessibility finding record. schema_version 2.0 governs the shape of this whole record: how a finding, its tracking relationships, evidence, and verification state are represented for interchange. It is a completely separate version number from the a11y/pattern/v1 and a11y/occurrence/v1 fingerprint profiles (examples/fingerprints/README.md), which govern how a correlation identifier is computed. Changing this schema's version never changes what a fingerprint computes, and changing a fingerprint profile version never requires a new schema_version. See examples/ACCESSIBILITY_FINDING_TRACKING.md for the underlying terminology (finding, occurrence, pattern, tracker ID, display ID, and so on).",
+  "description": "A machine-readable accessibility finding record. schema_version 2.0 and 2.1 govern the shape of this whole record: how a finding, its tracking relationships, evidence, verification state, and (as of 2.1) policy classification are represented for interchange. It is a completely separate version number from the a11y/pattern/v1 and a11y/occurrence/v1 fingerprint profiles (examples/fingerprints/README.md), which govern how a correlation identifier is computed. Changing this schema's version never changes what a fingerprint computes, and changing a fingerprint profile version never requires a new schema_version. schema_version 2.1 is a strictly additive update to 2.0: every field required or defined under 2.0 is unchanged, and the only addition is the optional top-level `policy` object. A 2.0 record is valid under this schema without modification; it simply carries no policy classification. See examples/ACCESSIBILITY_FINDING_TRACKING.md for the underlying terminology (finding, occurrence, pattern, tracker ID, display ID, and so on), and its 'Policy Classification' section for what `policy` means and how it differs from `standards[].relationship`, `tracking.lifecycle`, and `impact.severity`.",
   "type": "object",
   "required": ["schema_version", "title", "reported_at", "source", "description", "affected_people"],
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "const": "2.0",
-      "description": "The version of this finding-record schema. Distinct from fingerprint profile versions, normalization profile versions, display-ID profile versions, scanner versions, rule versions, and report versions -- all of which can change independently of this value."
+      "enum": ["2.0", "2.1"],
+      "description": "The version of this finding-record schema. Distinct from fingerprint profile versions, normalization profile versions, display-ID profile versions, scanner versions, rule versions, and report versions -- all of which can change independently of this value. \"2.1\" adds the optional top-level `policy` object; every other field is identical between \"2.0\" and \"2.1\". A record may declare either value regardless of whether it populates `policy` -- declaring \"2.1\" does not require `policy` to be present, and a \"2.0\" record must not populate `policy` (see the top-level policy field's own constraint)."
     },
     "finding_id": {
       "description": "An optional record identifier assigned by the system storing this finding record, such as a database row's URI or a UUID. It is NOT the tracker ID, the occurrence fingerprint, the pattern fingerprint, the scan request ID, or the scan run ID -- see tracking.tracker_ids and tracking.fingerprints for those. Use null or omit this field when no system has assigned a record-level identity; a finding does not need one to be valid.",
@@ -52,6 +52,7 @@
     "evidence": { "$ref": "#/$defs/evidence" },
     "scope": { "$ref": "#/$defs/scope" },
     "verification": { "$ref": "#/$defs/verification" },
+    "policy": { "$ref": "#/$defs/policy" },
     "acceptance_criteria": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
@@ -740,6 +741,123 @@
         "pattern": "^https?://.+"
       },
       "additionalProperties": true
+    },
+
+    "obligation": {
+      "type": "string",
+      "enum": ["required", "aspirational", "advisory", "unmapped", "not-applicable"],
+      "description": "Whether satisfying a specific standards mapping is required, a recognized stretch goal, merely advisory, not yet established, or determined not to apply. See examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Policy Classification', for the normative definition of each value and the AAA-under-an-AA-target default (aspirational, not advisory, unless a project explicitly elevates a specific criterion to required)."
+    },
+
+    "handling": {
+      "type": "string",
+      "enum": ["report", "review", "suppress"],
+      "description": "The current reporting/enforcement treatment of this finding: surfaced in standard reporting and enforcement (report), unresolved and awaiting a decision (review), or retained but excluded from specified reporting or enforcement under a documented exception (suppress). handling is independent of obligation -- a required finding can be under review, and an aspirational finding can be reported. handling is also independent of tracking.lifecycle.status: suppression is a reporting/enforcement decision, not a claim that the underlying barrier is resolved."
+    },
+
+    "evidenceStatus": {
+      "type": "string",
+      "enum": [
+        "automated-indicator",
+        "reproducible-finding",
+        "confirmed-user-facing-barrier",
+        "confirmed-standards-failure",
+        "rejected-false-positive",
+        "verified-resolution"
+      ],
+      "description": "How strong the evidence behind this finding currently is, independent of obligation, handling, severity, priority, and tracking.lifecycle.status. 'automated-indicator': an unreviewed automated tool result only. 'reproducible-finding': the team has reproduced the behavior or has equivalent evidence, but has not yet confirmed it is a genuine, standards-relevant barrier. 'confirmed-user-facing-barrier': a human has confirmed the finding actually blocks or burdens a person completing a task. 'confirmed-standards-failure': a human has confirmed the finding fails a specific cited standards requirement. 'rejected-false-positive': reviewed and determined the indicator does not reflect a real barrier or failure. 'verified-resolution': the fix was verified per examples/ACCESSIBILITY_FINDING_TRACKING.md's 'Resolved' lifecycle state. An unconfirmed automated result should normally carry handling \"review\", not \"suppress\" -- see the policy object's own description."
+    },
+
+    "policyStandardEntry": {
+      "type": "object",
+      "required": ["standard_ref", "obligation"],
+      "additionalProperties": false,
+      "properties": {
+        "standard_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Identifies which entry in the top-level standards[] array this policy classification applies to, e.g. \"WCAG 2.2 1.3.1\" or another stable reference formed from that standardMapping entry's standard, version, and requirement fields. This schema does not enforce referential integrity against standards[] by index, because array indices are not stable identifiers across edits; producers should use a human-readable, reconstructible reference."
+        },
+        "obligation": { "$ref": "#/$defs/obligation" },
+        "obligation_basis": {
+          "type": "string",
+          "description": "The authority or reasoning for this obligation classification, e.g. \"project baseline target: WCAG 2.2 AA\", \"contract clause 4.2\", \"local policy: elevated to required 2026-03-01\", or \"no authoritative mapping established\". Recommended whenever obligation is \"required\" or \"not-applicable\", so the classification is not asserted without a stated reason."
+        }
+      },
+      "description": "A per-standards-mapping obligation classification. A finding with standards[] entries at both WCAG AA and AAA levels under an AA project target will normally need two entries here, since an AAA success criterion is aspirational by default even when an AA criterion in the same finding is required -- see examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Policy Classification'."
+    },
+
+    "suppression": {
+      "type": "object",
+      "required": ["scope", "reason", "evidence_basis", "owner"],
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The narrow, specific reporting or enforcement context this suppression applies to, e.g. \"CI merge gate for legacy-checkout route only\". A suppression must not be described as applying globally by default."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why this finding is excluded from the specified reporting or enforcement, in enough detail for a later reviewer to evaluate it."
+        },
+        "evidence_basis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The evidence supporting this suppression decision, e.g. a linked risk acceptance, compensating control, or investigation result."
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Who or what role is accountable for this suppression. Does not require a person's real name; a role or team name is sufficient."
+        },
+        "review_or_expiry_date": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/dateTime" }],
+          "description": "When this suppression must be reviewed or expires, whichever the project uses. Null only when the project has an explicit, documented process for open-ended suppressions; an unowned, undated suppression is not a valid use of this field."
+        }
+      },
+      "description": "Required detail for handling \"suppress\". Suppression retains the finding and its evidence; it removes it only from the specified reporting or enforcement surface, and it is never itself a resolution -- see examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Policy Classification'."
+    },
+
+    "policy": {
+      "type": "object",
+      "required": ["evidence_status"],
+      "additionalProperties": false,
+      "properties": {
+        "standards_obligations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/policyStandardEntry" },
+          "description": "Zero or more per-standards-mapping obligation classifications. May be empty when standards[] is empty or unmapped, or when obligation.unmapped applies to every mapping and a project chooses not to enumerate that explicitly."
+        },
+        "handling": { "$ref": "#/$defs/handling" },
+        "handling_basis": {
+          "type": "string",
+          "description": "A human-readable explanation of why this handling value was assigned, particularly for \"suppress\" and \"review\"."
+        },
+        "evidence_status": { "$ref": "#/$defs/evidenceStatus" },
+        "suppression": { "$ref": "#/$defs/suppression" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "handling": { "const": "suppress" } }, "required": ["handling"] },
+          "then": {
+            "properties": { "suppression": { "$ref": "#/$defs/suppression" } },
+            "required": ["suppression"]
+          }
+        }
+      ],
+      "description": "Policy classification for this finding: obligation per standards mapping, current reporting/enforcement handling, and evidence strength. This is deliberately separate from tracking.lifecycle (comparison-derived lifecycle status), impact.severity/impact confidence, and identity (tracker IDs, fingerprints) -- see examples/ACCESSIBILITY_FINDING_TRACKING.md, 'Policy Classification', for how these axes relate. Populating policy never alters tracking.fingerprints or any other identity field; policy classification must never be computed as part of fingerprint generation."
     }
-  }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "policy": { "type": "object" } }, "required": ["policy"] },
+      "then": {
+        "properties": { "schema_version": { "const": "2.1" } },
+        "required": ["schema_version"]
+      }
+    }
+  ]
 }

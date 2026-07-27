@@ -4,19 +4,32 @@ title: Accessibility Finding Schema
 
 # Accessibility Finding Schema
 
-This directory defines the versioned, machine-readable record format for accessibility findings: `schema_version: "2.0"`. It builds directly on [Accessibility Finding Tracking](../ACCESSIBILITY_FINDING_TRACKING.md) for terminology and on the frozen [fingerprint profiles](../fingerprints/README.md) for correlation identifiers. This schema defines how a finding and its surrounding evidence, tracking relationships, and lifecycle are represented for interchange. It does not define, redefine, or recompute how a fingerprint is generated.
+This directory defines the versioned, machine-readable record format for accessibility findings: `schema_version: "2.0"` or `"2.1"`. It builds directly on [Accessibility Finding Tracking](../ACCESSIBILITY_FINDING_TRACKING.md) for terminology and on the frozen [fingerprint profiles](../fingerprints/README.md) for correlation identifiers. This schema defines how a finding and its surrounding evidence, tracking relationships, lifecycle, and (as of 2.1) policy classification are represented for interchange. It does not define, redefine, or recompute how a fingerprint is generated.
+
+`schema_version: "2.1"` is a strictly additive update to `"2.0"`: it adds one new optional top-level field, `policy` (see "What's new in 2.1" below), and changes nothing else. Both versions are accepted by the same schema file and the same validator; a `"2.0"` producer does not need to change anything to remain valid.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `accessibility-finding-v2.schema.json` | The normative JSON Schema (Draft 2020-12). |
-| `accessibility-finding-v2.example.json` | A complete, valid example with mixed manual and automated evidence, verified Stage 2 fingerprints, and every optional section populated. |
-| `accessibility-finding-v2-minimal.example.json` | The smallest valid finding: no fingerprints, no tracker IDs, no WCAG mapping, no automated tooling, no technical locator. |
-| `accessibility-finding-v2-manual.example.json` | A valid user-reported finding with no fabricated diagnosis, testing, assistive technology, WCAG failure, automated output, or root cause. |
-| `accessibility-finding-v2-invalid-examples.json` | Ten documented negative cases and the exact validation failure each one must produce. |
+| `accessibility-finding-v2.schema.json` | The normative JSON Schema (Draft 2020-12), covering both `schema_version: "2.0"` and `"2.1"`. |
+| `accessibility-finding-v2.example.json` | A complete, valid `"2.1"` example with mixed manual and automated evidence, verified Stage 2 fingerprints, a populated `policy` object, and every optional section populated. |
+| `accessibility-finding-v2-minimal.example.json` | The smallest valid finding (`schema_version: "2.0"`): no fingerprints, no tracker IDs, no WCAG mapping, no automated tooling, no technical locator, no policy classification. |
+| `accessibility-finding-v2-manual.example.json` | A valid `"2.0"` user-reported finding with no fabricated diagnosis, testing, assistive technology, WCAG failure, automated output, or root cause. |
+| `accessibility-finding-v2.1-policy-examples.json` | Eight compact `"2.1"` findings, each isolating one policy-classification scenario (confirmed AA failure, unresolved AA indicator, confirmed AAA-under-AA finding, unresolved AAA indicator, advisory best practice, AAA elevated by local policy, rejected false positive, temporary suppression). |
+| `accessibility-finding-v2-invalid-examples.json` | Thirteen documented negative cases and the exact validation failure each one must produce, including 2.1-specific policy misuse. |
 | `validate-accessibility-findings.mjs` | Executable validator: compiles the schema, checks every valid and invalid example, and checks embedded fingerprints against Stage 2's frozen profiles. |
 | `package.json` / `package-lock.json` | Pins `ajv`, `ajv-formats`, and `canonicalize`. |
+
+## What's new in 2.1
+
+`schema_version: "2.1"` adds one optional top-level field:
+
+- **`policy`** — policy classification for the finding: `standards_obligations` (per-standards-mapping `obligation`: `required` | `aspirational` | `advisory` | `unmapped` | `not-applicable`), `handling` (`report` | `review` | `suppress`), and `evidence_status` (`automated-indicator` | `reproducible-finding` | `confirmed-user-facing-barrier` | `confirmed-standards-failure` | `rejected-false-positive` | `verified-resolution`). `handling: "suppress"` requires a `suppression` object recording scope, reason, evidence basis, owner, and a review or expiry date.
+
+A `"2.0"` record must not populate `policy` (the schema rejects it); declare `"2.1"` to use it. See [Accessibility Finding Tracking, "Policy Classification"](../ACCESSIBILITY_FINDING_TRACKING.md) for the normative definitions, the AAA-under-an-AA-target default, and worked examples for all eight scenarios above.
+
+`policy` never participates in fingerprint generation and is not fingerprint identity — see "Fields excluded from fingerprint identity" in the [fingerprint profiles README](../fingerprints/README.md). Changing or adding a `policy` classification must never change `tracking.fingerprints`.
 
 Run the full check with:
 
@@ -47,7 +60,7 @@ A finding must remain valid when it has no fingerprint, no tracker ID, no WCAG m
 
 | Field | Required | Purpose |
 | --- | --- | --- |
-| `schema_version` | Yes | Must equal `"2.0"`. |
+| `schema_version` | Yes | Must equal `"2.0"` or `"2.1"`. |
 | `finding_id` | No | An optional record identifier assigned by whatever system stores the record. Not the tracker ID, not a fingerprint, not a scan request/run ID. `null` or omitted when no system has assigned one. |
 | `title` | Yes | Short, specific title. |
 | `reported_at` | Yes | RFC 3339 date-time. |
@@ -64,6 +77,7 @@ A finding must remain valid when it has no fingerprint, no tracker ID, no WCAG m
 | `evidence` | No | References, attachments, redaction, and privacy notes. |
 | `scope` | No | Coverage information supporting lifecycle comparison. |
 | `verification` | No | Automated, manual, and testing-with-disabled-people status. |
+| `policy` | No (schema_version `"2.1"` only) | Policy classification: obligation per standards mapping, handling, and evidence status. Never fingerprint identity. |
 | `acceptance_criteria` | No | User-facing statements of resolution. |
 | `extensions` | No | Namespaced, project-owned extension data. |
 

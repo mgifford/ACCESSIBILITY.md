@@ -5,7 +5,7 @@
   "description": "Draft 2020-12 JSON Schema and validation examples for the accessibility-finding-v2 record format",
   "type": "module",
   "scripts": {
-    "validate": "node validate-accessibility-findings.mjs"
+    "validate": "node validate-accessibility-findings.mjs && node check-policy-fingerprint-invariance.mjs"
   },
   "engines": {
     "node": ">=20"

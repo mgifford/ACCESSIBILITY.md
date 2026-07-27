@@ -254,6 +254,16 @@ and
 [CI/CD Accessibility Best Practices: Risk Indicators and Build Gates](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md#risk-indicators-and-build-gates)
 for why and how.
 
+In machine-readable terms, an unreviewed automated result is
+`evidence_status: automated-indicator` with `handling: review`; only a
+human confirmation moves it to `confirmed-standards-failure` or
+`confirmed-user-facing-barrier`, and only a documented exception (scope,
+reason, evidence, owner, expiry) moves it to `handling: suppress`. This is
+never automatic, and it is separate from `obligation` (whether the
+project must fix it) — see [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification).
+Do not disable an entire rule or engine because it produces noise for one
+target or route; suppress the specific, scoped finding instead.
+
 ## 7. Test the Final Output
 
 Source checks are insufficient when a build or runtime transforms content.

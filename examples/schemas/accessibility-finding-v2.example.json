@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "2.1",
   "finding_id": "https://example.com/findings/2026-07-18-checkout-card-error",
   "title": "Checkout: card error text is not associated with the field",
   "reported_at": "2026-07-18T14:30:00-04:00",
@@ -195,6 +195,18 @@
       "Not yet evaluated with JAWS or VoiceOver.",
       "Not yet evaluated with disabled participants."
     ]
+  },
+  "policy": {
+    "standards_obligations": [
+      {
+        "standard_ref": "WCAG 2.2 1.3.1",
+        "obligation": "required",
+        "obligation_basis": "Project baseline target: WCAG 2.2 Level AA."
+      }
+    ],
+    "handling": "report",
+    "handling_basis": "Confirmed AA failure with sufficient evidence; included in standard reporting and enforcement.",
+    "evidence_status": "confirmed-standards-failure"
   },
   "acceptance_criteria": [
     "The error remains identified in text.",

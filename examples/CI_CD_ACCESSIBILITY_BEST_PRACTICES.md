@@ -16,7 +16,11 @@ WCAG conformance by itself. Automated rules, scores, snapshots, and AI output
 are inputs to an accessibility evaluation, not substitutes for one.
 
 This guide targets WCAG 2.2 Level AA for in-scope content and user tasks. That
-target is not a claim that a repository, build, page, or product conforms.
+target is not a claim that a repository, build, page, or product conforms. A
+confirmed AAA-level finding under this AA target is `obligation: aspirational`
+by default, not `advisory` — it is a recognized stretch goal, visible in
+reporting, but non-blocking unless a project explicitly elevates that specific
+criterion to `required`. See [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification).
 
 ## Principles
 
@@ -251,6 +255,18 @@ machine-readable. A first-seen risk indicator has not been reviewed and
 has not ruled out a normative exception (see, for example, the SC 1.4.10
 two-dimensional-layout exception); blocking on it treats an unreviewed
 signal as a confirmed failure.
+
+This table's "default CI treatment" corresponds to a finding's `policy.handling`
+value in [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification):
+a deterministic confirmed failure or reviewed regression is normally
+`report` (and may block); a risk indicator or `cantTell` result is normally
+`review`, not `suppress`, until a human confirms or rejects it; and a
+reviewed exception is `suppress` only when it carries the required scope,
+reason, evidence, owner, and expiry date. `handling` is independent of
+`policy.obligation` — do not use CI treatment as a proxy for whether the
+underlying standard is `required`, and do not silently disable an entire
+rule or engine because one target produces noise; suppress the specific
+finding, scoped and time-bounded, instead.
 
 Fleet-wide and site-wide scans additionally require:
 
@@ -550,6 +566,14 @@ Every suppression or exception should include:
 - an accountable owner and linked issue;
 - an expiry or review date; and
 - the narrowest practical scope.
+
+This is the same required detail as `policy.suppression` (scope, reason,
+evidence, owner, review or expiry date) in
+[Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification) —
+use that vocabulary when recording a suppression in a machine-readable
+finding. A suppression is never resolution, and a suppressed finding
+remains recorded; it is excluded only from the specified reporting or
+enforcement surface, not deleted.
 
 Do not suppress an entire rule when one reviewed instance is the exception. Do
 not update snapshots or baselines solely to make CI green.

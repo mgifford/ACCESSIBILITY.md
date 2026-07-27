@@ -363,6 +363,15 @@ If a result uses the [ACT Rules Format 1.1](https://www.w3.org/TR/act-rules-form
 
 Send `cantTell` results for review. A `passed` or `inapplicable` rule result may still require other tests before drawing a conclusion about a WCAG requirement.
 
+### 11.4 Obligation and handling
+
+A WCAG mapping (11.1) states what standard applies. It does not by itself say whether the project is required to fix it, or whether it currently shows up in reporting and enforcement. Record those separately as `obligation` and `handling` — see [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification) for the full definitions. In brief:
+
+- `obligation` is `required`, `aspirational`, `advisory`, `unmapped`, or `not-applicable`, assigned per standards mapping. **A confirmed AAA finding under an AA project target is `aspirational`, not `advisory` — it is a real, visible stretch goal, not an arbitrary suggestion.** A project may elevate a specific AAA criterion to `required`, with the reason recorded.
+- `handling` is `report`, `review`, or `suppress`. An unconfirmed automated result normally goes to `review`, not `suppress`. Moving a finding to `suppress` requires a narrow scope, a reason, evidence, an owner, and a review or expiry date; suppression is never resolution, and a suppressed finding stays recorded.
+
+Do not infer obligation from severity, and do not infer handling from lifecycle status. A `blocker`-severity finding can still be `unmapped` if no standard has been cited yet; a `resolved` finding is not automatically `suppress`ed, and a `suppress`ed finding is not automatically resolved.
+
 ## 12. Plan Complementary Testing and Verification
 
 Automated testing, manual accessibility evaluation, and testing with disabled people provide different evidence. A verification plan should state which methods are required, why they are appropriate, and what their limits are.
@@ -713,7 +722,7 @@ Scope limit: Initial observation covers NVDA with Firefox only
 
 The JSON format described here is optional. It exists to support imports, reporting, and regression analysis, and it must not require fields that do not exist for manual or user-reported findings.
 
-The canonical, versioned, schema-validated format is `schema_version: "2.0"`, defined in [examples/schemas/](./schemas/README.md). It replaces the illustrative `schema_version: "1.1"` shape previously shown in this section. A concise excerpt of the same checkout example, using the current schema, looks like this:
+The canonical, versioned, schema-validated format is `schema_version: "2.0"` or `"2.1"`, defined in [examples/schemas/](./schemas/README.md). It replaces the illustrative `schema_version: "1.1"` shape previously shown in this section. `"2.1"` adds an optional `policy` object for obligation, handling, and evidence-status classification (see [11.4](#114-obligation-and-handling) and [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification)); it is omitted from the excerpt below because this finding has not yet been classified. A concise excerpt of the same checkout example, using the current schema, looks like this:
 
 ```json
 {
@@ -786,7 +795,8 @@ An automated or AI-assisted reporting workflow should:
 12. record whether testing with disabled people is required, planned, completed, or not required, including the rationale;
 13. never claim that testing with disabled people occurred unless it actually did;
 14. route each automated result to the active remediation queue, the investigation queue, or observation history rather than creating one active issue per raw result — see [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md#three-destinations) for what belongs in each;
-15. never automatically reject a credible user-reported or potentially high-consequence barrier solely because an internal rerun did not reproduce it — place it in bounded investigation instead.
+15. never automatically reject a credible user-reported or potentially high-consequence barrier solely because an internal rerun did not reproduce it — place it in bounded investigation instead;
+16. record an unreviewed automated result as `evidence_status: automated-indicator` with `handling: review`, never as `confirmed-standards-failure` or `handling: suppress`, until a human confirms it — see [Accessibility Finding Tracking, "Policy Classification"](./ACCESSIBILITY_FINDING_TRACKING.md#policy-classification).
 
 Do not close an issue only because the original automated rule passes. The implementation may have changed the selector, hidden the tested node, or introduced a different barrier.
 

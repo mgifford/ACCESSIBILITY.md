@@ -1,0 +1,215 @@
+{
+  "notes": [
+    "Eight compact, valid schema_version 2.1 findings, each isolating one policy-classification scenario from examples/ACCESSIBILITY_FINDING_TRACKING.md's 'Policy Classification' section.",
+    "These are illustrative fragments focused on the policy object; unrelated fields are minimal but schema-valid. They are not run through the fingerprint cross-check in validate-accessibility-findings.mjs because none of them carry tracking.fingerprints -- policy classification never depends on, and never alters, fingerprint identity.",
+    "validate-accessibility-findings.mjs validates every case in this file against the schema and fails if any is invalid."
+  ],
+  "cases": [
+    {
+      "id": "PE-01-confirmed-aa-failure",
+      "description": "Confirmed AA failure: required + report.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Nav menu: expanded/collapsed state not exposed to assistive technology",
+        "reported_at": "2026-07-20T10:00:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "The primary navigation toggle does not expose aria-expanded, so screen reader users cannot tell whether the menu is open." },
+        "affected_people": [
+          { "description": "People who use screen readers", "status": "confirmed", "evidence_basis": "manual-evaluation" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "4.1.2", "name": "Name, Role, Value", "level": "A", "relationship": "confirmed-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 4.1.2", "obligation": "required", "obligation_basis": "Project baseline target: WCAG 2.2 Level AA." }
+          ],
+          "handling": "report",
+          "evidence_status": "confirmed-standards-failure"
+        }
+      }
+    },
+    {
+      "id": "PE-02-unresolved-aa-indicator",
+      "description": "Unresolved AA indicator: required + review.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Automated scan: possible color-contrast failure on pricing table",
+        "reported_at": "2026-07-20T10:05:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "axe-core reported a color-contrast violation; not yet reproduced or reviewed by a human." },
+        "affected_people": [
+          { "description": "People with low vision", "status": "likely", "evidence_basis": "automated" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "1.4.3", "name": "Contrast (Minimum)", "level": "AA", "relationship": "suspected-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.4.3", "obligation": "required", "obligation_basis": "Project baseline target: WCAG 2.2 Level AA." }
+          ],
+          "handling": "review",
+          "handling_basis": "Automated indicator only; not yet confirmed by a human reviewer.",
+          "evidence_status": "automated-indicator"
+        }
+      }
+    },
+    {
+      "id": "PE-03-confirmed-aaa-under-aa-target",
+      "description": "Confirmed AAA finding under an AA target: aspirational + report.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Help content: no sign language interpretation provided for instructional video",
+        "reported_at": "2026-07-20T10:10:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "The instructional video has captions but no sign language interpretation track." },
+        "affected_people": [
+          { "description": "Deaf people who use sign language as a primary language", "status": "confirmed", "evidence_basis": "manual-evaluation" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "1.2.6", "name": "Sign Language (Prerecorded)", "level": "AAA", "relationship": "confirmed-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.2.6", "obligation": "aspirational", "obligation_basis": "Project baseline target is WCAG 2.2 AA; AAA criteria are stretch goals by default and this one has not been elevated to required." }
+          ],
+          "handling": "report",
+          "handling_basis": "Confirmed and visible as a stretch-goal opportunity; non-blocking for the AA baseline.",
+          "evidence_status": "confirmed-standards-failure"
+        }
+      }
+    },
+    {
+      "id": "PE-04-unresolved-aaa-indicator",
+      "description": "Unresolved AAA indicator: aspirational + review.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Automated scan: possible enhanced-contrast (AAA) shortfall on marketing banner",
+        "reported_at": "2026-07-20T10:15:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "A rule flagged text that may fall short of the AAA 7:1 contrast ratio; not yet reviewed." },
+        "affected_people": [
+          { "description": "People with low vision", "status": "likely", "evidence_basis": "automated" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "1.4.6", "name": "Contrast (Enhanced)", "level": "AAA", "relationship": "suspected-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.4.6", "obligation": "aspirational", "obligation_basis": "Project baseline target is WCAG 2.2 AA; AAA criteria are stretch goals by default." }
+          ],
+          "handling": "review",
+          "handling_basis": "Automated indicator only; unresolved and not yet human-reviewed.",
+          "evidence_status": "automated-indicator"
+        }
+      }
+    },
+    {
+      "id": "PE-05-advisory-best-practice",
+      "description": "Best-practice rule outside the standards target: advisory.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Form field: placeholder text disappears with no persistent label hint",
+        "reported_at": "2026-07-20T10:20:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "A recognized usability best practice recommends persistent hint text, but this is not part of the project's WCAG target or a declared stretch goal." },
+        "affected_people": [
+          { "description": "People with cognitive or memory-related disabilities", "status": "likely", "evidence_basis": "manual-evaluation" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "internal-style-guide: persistent-hint-text", "obligation": "advisory", "obligation_basis": "Recognized best practice; not part of the WCAG 2.2 AA baseline or a declared stretch goal." }
+          ],
+          "handling": "report",
+          "evidence_status": "confirmed-user-facing-barrier"
+        }
+      }
+    },
+    {
+      "id": "PE-06-aaa-elevated-by-local-policy",
+      "description": "AAA criterion elevated by local policy: required.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Emergency alert banner: no low-frequency audio alternative provided",
+        "reported_at": "2026-07-20T10:25:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "The emergency alert banner lacks an alternative for a specific AAA criterion the project has elevated to required for safety-critical content." },
+        "affected_people": [
+          { "description": "People who are deaf or hard of hearing", "status": "confirmed", "evidence_basis": "manual-evaluation" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "1.2.9", "name": "Audio-only (Live)", "level": "AAA", "relationship": "confirmed-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.2.9", "obligation": "required", "obligation_basis": "Local policy: elevated to required for safety-critical emergency-alert content, per project accessibility policy section 4.2 (2026-03-01)." }
+          ],
+          "handling": "report",
+          "evidence_status": "confirmed-standards-failure"
+        }
+      }
+    },
+    {
+      "id": "PE-07-rejected-false-positive",
+      "description": "Rejected false positive.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Automated scan: reported missing alt text on a decorative background image",
+        "reported_at": "2026-07-20T10:30:00Z",
+        "source": { "method": "automated" },
+        "description": { "summary": "The tool flagged a missing alt attribute; a reviewer confirmed the image is purely decorative and correctly implemented with an empty alt and aria-hidden." },
+        "affected_people": [],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "1.1.1", "name": "Non-text Content", "level": "A", "relationship": "not-applicable" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 1.1.1", "obligation": "not-applicable", "obligation_basis": "Reviewed: image is decorative and correctly hidden from assistive technology." }
+          ],
+          "handling": "suppress",
+          "handling_basis": "Confirmed false positive; excluded from active reporting but retained for audit history.",
+          "evidence_status": "rejected-false-positive",
+          "suppression": {
+            "scope": "Automated rule reporting for this element only",
+            "reason": "Element is a decorative background image with empty alt and aria-hidden=\"true\"; the rule cannot detect decorative intent.",
+            "evidence_basis": "Manual review of the rendered DOM confirmed aria-hidden and empty alt were present and correctly applied.",
+            "owner": "a11y-review-team",
+            "review_or_expiry_date": null
+          }
+        }
+      }
+    },
+    {
+      "id": "PE-08-temporary-suppression",
+      "description": "Temporary suppression.",
+      "finding": {
+        "schema_version": "2.1",
+        "title": "Third-party checkout widget: focus order issue pending vendor fix",
+        "reported_at": "2026-07-20T10:35:00Z",
+        "source": { "method": "manual-evaluation" },
+        "description": { "summary": "A confirmed focus-order barrier exists in a third-party embedded widget; a vendor fix is scheduled, and the finding is temporarily suppressed from the merge-blocking CI gate while the fix is pending." },
+        "affected_people": [
+          { "description": "People who navigate by keyboard", "status": "confirmed", "evidence_basis": "manual-evaluation" }
+        ],
+        "standards": [
+          { "standard": "WCAG", "version": "2.2", "requirement": "2.4.3", "name": "Focus Order", "level": "A", "relationship": "confirmed-failure" }
+        ],
+        "policy": {
+          "standards_obligations": [
+            { "standard_ref": "WCAG 2.2 2.4.3", "obligation": "required", "obligation_basis": "Project baseline target: WCAG 2.2 Level AA." }
+          ],
+          "handling": "suppress",
+          "handling_basis": "Confirmed defect in third-party code with a scheduled vendor fix; suppressed from the CI merge gate only, not from the tracked backlog.",
+          "evidence_status": "confirmed-user-facing-barrier",
+          "suppression": {
+            "scope": "CI merge-blocking gate for the checkout route only",
+            "reason": "Root cause is in a third-party widget outside this team's codebase; a vendor fix is scheduled and blocking merges would stop unrelated work.",
+            "evidence_basis": "Vendor support ticket VEND-4821 confirms the defect and a target fix date.",
+            "owner": "checkout-team",
+            "review_or_expiry_date": "2026-09-01T00:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}

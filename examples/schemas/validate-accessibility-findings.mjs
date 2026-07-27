@@ -56,6 +56,17 @@ for (const file of validExamples) {
   }
 }
 
+// --- 1b. schema_version 2.1 policy-classification examples must all pass. ---
+
+const policyDoc = loadJSON('accessibility-finding-v2.1-policy-examples.json');
+
+for (const testCase of policyDoc.cases ?? []) {
+  const ok = validate(testCase.finding);
+  if (!ok) {
+    fail(`[${testCase.id}] (${testCase.description}) was expected to be VALID but failed schema validation:\n${JSON.stringify(validate.errors, null, 2)}`);
+  }
+}
+
 // --- 2. Invalid examples must all fail, for the declared reason. ---
 
 const invalidDoc = loadJSON('accessibility-finding-v2-invalid-examples.json');
@@ -163,6 +174,7 @@ if (failures.length > 0) {
 
 console.log(
   `OK: schema compiled, ${validExamples.length} valid example(s) passed, ` +
+  `${(policyDoc.cases ?? []).length} schema_version 2.1 policy-classification example(s) passed, ` +
   `${(invalidDoc.cases ?? []).length} invalid example(s) failed for their declared reason, ` +
   `and the complete example's fingerprints match Stage 2's frozen profiles.`
 );
