@@ -379,7 +379,3 @@ We are looking for feedback on the taxonomy and automation workflows.
 ## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).
-
----
-
-**Would you like me to generate a sample `specification.md` next to define the exact Markdown headings and data structures for this standard?**
