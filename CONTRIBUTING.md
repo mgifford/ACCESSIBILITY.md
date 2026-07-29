@@ -4,7 +4,7 @@ Thanks for your interest in improving ACCESSIBILITY.md.
 
 We welcome contributions from the community, especially from people with disabilities (PwD) and others with lived accessibility experience. Your feedback helps ensure this project remains practical, inclusive, and grounded in real-world use.
 
-For project accessibility standards and requirements, see [ACCESSIBILITY-template.md](./ACCESSIBILITY-template.md), which provides the framework this repository follows.
+For project accessibility standards and requirements, see [ACCESSIBILITY-template.md](./examples/ACCESSIBILITY-template.md), which provides the framework this repository follows.
 
 > [!IMPORTANT]
 > **Participation from people with disabilities is highly valued in this project.**
@@ -33,7 +33,7 @@ For project accessibility standards and requirements, see [ACCESSIBILITY-templat
 - Link related issues where possible.
 - Update relevant docs in [examples/](examples/) when introducing new guidance.
 - Ensure documentation links pass repository link checks.
-- Follow the accessibility standards outlined in [ACCESSIBILITY-template.md](./ACCESSIBILITY-template.md).
+- Follow the accessibility standards outlined in [ACCESSIBILITY-template.md](./examples/ACCESSIBILITY-template.md).
 - If proposing code examples, ensure they meet WCAG 2.2 AA standards.
 - Consider testing with assistive technologies when relevant (screen readers, keyboard navigation, etc.).
 
