@@ -61,9 +61,11 @@ We will:
 - combine automated checks with human evaluation;
 - test complete user tasks and final rendered output;
 - document evidence, gaps, exceptions, and known limitations honestly;
-- provide an accessible way to report barriers and request help; and
+- provide an accessible way to report barriers and request help;
 - involve people with disabilities without requiring anyone to disclose
-  disability status.
+  disability status; and
+- decide the responsible source for a barrier before implementing a fix, and
+  track any temporary local divergence until it is removed.
 
 ## 3. Scope
 
@@ -88,11 +90,13 @@ An exclusion describes planning scope; it does not make a user-facing barrier
 acceptable. Record who owns excluded content, how users can obtain equivalent
 access, and when the exclusion will be reviewed.
 
-### Third-party content and dependencies
+### Third-party content, dependencies, and upstream responsibility
 
 Third-party code, embeds, authentication, payment services, documents, and
 other integrations that are needed to complete an in-scope task are part of
-the user experience and must be evaluated.
+the user experience and must be evaluated. The fact that another project owns
+the source does not remove this project's responsibility for the complete
+user experience.
 
 | Dependency or content | User task | Owner | Current status | Fallback or escalation |
 |---|---|---|---|---|
@@ -100,6 +104,39 @@ the user experience and must be evaluated.
 
 Do not state that a complete process conforms if a required step creates an
 unresolved barrier.
+
+When a barrier may originate in a shared component or external dependency, use
+the [Upstream First](https://github.com/mgifford/upstream-first) skill to
+decide whether the responsible fix is local, an existing installed capability,
+or an upstream contribution. Do not treat filing an upstream issue or merging
+an upstream pull request as resolution: the correction must be released,
+adopted by this project, and verified in the affected user task.
+
+#### Temporary downstream divergence record
+
+Use this table for a temporary local patch, override, fork, pin, or
+workaround kept while an upstream correction is pending. A local change that
+fully restores the required user experience is not an accessibility
+exception, but it remains maintenance debt that must be tracked until
+removed. Fields follow the
+[`upstream-first` debt record](https://github.com/mgifford/upstream-first/blob/main/examples/upstream-debt.example.json)
+so records can be shared between projects.
+
+| Field | Required value |
+|---|---|
+| ID | `{{RECORD_ID}}` |
+| Dependency and affected versions | `{{DEPENDENCY_AND_VERSIONS}}` |
+| Reason for local divergence | `{{REASON}}` |
+| Upstream reference | `{{URL_OR_DOCUMENTED_EXCEPTION}}` |
+| Owner | `{{ROLE}}` |
+| Introduced on | `{{YYYY-MM-DD}}` |
+| Review by | `{{YYYY-MM-DD}}` |
+| Removal condition | `{{UPSTREAM_RELEASE_ADOPTED_AND_VERIFIED}}` |
+| Status | `{{LOCAL_ONLY_UPSTREAM_OPEN_UPSTREAM_MERGED_RELEASED_ADOPTED_REMOVED}}` |
+
+A merged upstream contribution does not close this record. Close it only
+after the supported upstream release is adopted, the local divergence is
+removed, and the original accessibility behavior is verified.
 
 ## 4. Conformance Status
 
@@ -601,6 +638,7 @@ Review this file:
 - [Manual Accessibility Testing Guide](MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)
 - [Accessibility Bug Reporting Best Practices](ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Trusted Sources](TRUSTED_SOURCES.yaml)
+- [Upstream First](https://github.com/mgifford/upstream-first)
 
 ### Standards and evaluation
 
@@ -633,6 +671,9 @@ Before adopting this template:
 - [ ] Severity and response language reflects user impact.
 - [ ] Known limitations have issues, owners, alternatives, and review dates.
 - [ ] Every published metric has a definition, scope, source, date, and owner.
+- [ ] Temporary downstream divergence has an owner, review date, and removal
+      condition, and is not described as resolved until an upstream release
+      is adopted and verified.
 - [ ] AI and automation rules prohibit fabricated testing or conformance
       evidence.
 - [ ] Relative links work after the file is placed in its destination
