@@ -117,6 +117,7 @@ An effective `ACCESSIBILITY.md` file acts as a **Living Commitment**, covering t
 * **Taxonomy:** Standardized labels for issues (e.g., `accessibility`, `color-contrast`).
 * **Definition of Done:** Requirement that no PR is merged without passing a11y linting.
 * **Severity Matrix:** How a11y bugs are prioritized compared to feature requests.
+* **Upstream-first responsibility:** Determine where a barrier originates (local code, a shared component, or a dependency), contribute reusable corrections to the responsible project when viable, and track any temporary local fix until it is released, adopted, and verified. See [Upstream First](https://github.com/mgifford/upstream-first) and the [downstream divergence record](./examples/ACCESSIBILITY-template.md#temporary-downstream-divergence-record).
 
 ### 3. Automated guardrails (the AI bridge)
 * **CI/CD Integration:** Links to workflows running `axe-core` or `Lighthouse`.
@@ -374,6 +375,7 @@ We are looking for feedback on the taxonomy and automation workflows.
 - [Accessibility Agents](https://github.com/Community-Access/accessibility-agents)
 - [Awesome Copilot A11y Instructions](https://github.com/github/awesome-copilot/blob/main/instructions/a11y.instructions.md)
 - [AccessLint skills](https://github.com/AccessLint/skills)
+- [Upstream First](https://github.com/mgifford/upstream-first) - agent skills for deciding whether a fix belongs locally, upstream, or in an existing dependency
 
 ## 📄 License
 

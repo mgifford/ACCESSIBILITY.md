@@ -69,6 +69,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 
 - [CONTRIBUTING_A11Y](./CONTRIBUTING_A11Y.md)
 - [COPILOT_AGENT_MODE_GUIDE](./COPILOT_AGENT_MODE_GUIDE.md)
+- [Upstream First](https://github.com/mgifford/upstream-first) - decision skill for whether a barrier's responsible fix is local, an installed capability, or an upstream contribution; see the [template's divergence record](./ACCESSIBILITY-template.md#temporary-downstream-divergence-record) for tracking temporary local patches
 
 ## YAML / Workflow Assets
 
