@@ -25,15 +25,14 @@ It is intentionally practical: short checklists, clear ownership, and measurable
 ### Phase 1: Starter commitment + CI gates first
 
 - Publish a short public commitment in `ACCESSIBILITY.md`.
-- Enforce CI gates for accessibility checks and WCAG compliance on every PR.
-- Run axe-core or Lighthouse on every PR against the live site URL.
-- Start with realistic thresholds (for example 95+ accessibility score) to catch meaningful issues while stabilizing signal quality.
+- Run axe-core or Lighthouse on every PR against the live site URL as an early indicator, not a conformance gate. A Lighthouse accessibility score is not a WCAG conformance result; it does not test keyboard operation, focus order, or assistive technology behavior.
+- Start with a realistic warning threshold (for example this repository's own `minScore: 0.9` accessibility score in [`.lighthouserc.json`](.lighthouserc.json)) to catch meaningful issues while stabilizing signal quality, before treating any threshold as a merge-blocking gate.
 
 ### Phase 2: Full template adoption after ownership is clear
 
 - Add full sections for ownership, scope, exceptions, and governance.
 - Establish metric baselines and monthly targets per owner.
-- Tighten CI and Lighthouse gates progressively toward 100/100/100/100 (Performance/Accessibility/Best Practices/SEO).
+- Tighten automated thresholds progressively as reviewed regressions are resolved. Raise a warning to a blocking gate only for a specific, deterministic, confirmed failure — never for an aggregate score across categories a tool does not test for WCAG conformance.
 
 ## Weekly workflow (team)
 
@@ -53,10 +52,10 @@ It is intentionally practical: short checklists, clear ownership, and measurable
 
 ### 3) Review with an accessibility gate
 
-- Verify no accessibility regressions in CI for WCAG compliance, keyboard navigation, or screen reader support.
+- Verify no confirmed regressions in automated accessibility checks, and confirm keyboard navigation and screen reader support with manual testing where automated coverage cannot verify them.
 - Require explicit justification for complex ARIA patterns when semantic HTML suffices.
-- Block merges when accessibility thresholds regress beyond agreed limits.
-- Review axe-core or Lighthouse trendlines each month and ratchet thresholds upward.
+- Block merges only on confirmed, deterministic failures against a reviewed baseline; treat an aggregate score drop as an indicator to investigate, not an automatic block.
+- Review axe-core or Lighthouse trendlines each month and ratchet warning thresholds upward as issues are resolved.
 
 ## Monthly cadence (team)
 
