@@ -163,7 +163,21 @@ Identify:
 Use the likelihood and consequence of a regression to decide how much testing
 and review is needed.
 
-### 3. Find applicable guidance
+### 3. Decide the responsible source
+
+Before implementing a fix for a barrier that may originate in a shared
+component, design system, renderer, or external dependency, load the
+[Upstream First](https://github.com/mgifford/upstream-first) skill to decide
+whether the responsible change is local, an existing installed capability, or
+an upstream contribution. Use `maintainer-ready-contribution` to prepare an
+upstream submission. Do not open, comment on, or submit anything in an
+external project without explicit human approval. Record any temporary local
+divergence in the
+[downstream divergence record](examples/ACCESSIBILITY-template.md#temporary-downstream-divergence-record)
+and do not describe a merged upstream fix as resolved until it is released,
+adopted, and verified.
+
+### 4. Find applicable guidance
 
 Use primary standards for requirements and project guides for implementation
 and testing.
@@ -184,6 +198,7 @@ and testing.
 - [CI/CD Accessibility](examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [Shift-Left Automation](examples/SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md)
 - [Progressive Enhancement](examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md)
+- [Upstream First](https://github.com/mgifford/upstream-first) — decision skill for whether a barrier's responsible fix is local, an installed capability, or an upstream contribution; use `maintainer-ready-contribution` for the submission itself. This repository does not restate that decision hierarchy; see [the template's divergence record](examples/ACCESSIBILITY-template.md#temporary-downstream-divergence-record) for tracking temporary local patches.
 
 ### Interaction and navigation
 
@@ -488,9 +503,12 @@ Stop and request direction when:
 - a third-party source restriction prevents necessary verification;
 - required credentials, devices, assistive technologies, or environments are
   unavailable and the missing evidence is release-critical;
-- a secure implementation cannot be provided within scope; or
+- a secure implementation cannot be provided within scope;
 - current user changes overlap the requested edit and cannot be preserved
-  safely.
+  safely; or
+- a fix would require opening, commenting on, or submitting anything in an
+  external project (an issue, fork, branch, or pull request) without prior
+  human approval.
 
 Do not stop solely because:
 
@@ -579,6 +597,12 @@ Use this structure in a pull request or final task report:
 ## Not tested or known limitations
 
 -
+
+## Source ownership and upstream status
+
+- Responsible source (local, integration, dependency, or ecosystem):
+- Upstream reference, if any:
+- Temporary downstream divergence recorded, if any:
 
 ## Sources
 
