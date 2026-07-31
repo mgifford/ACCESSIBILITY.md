@@ -126,7 +126,9 @@ full_width: true
         <h3>Operational Governance</h3>
         <p>
           Define issue taxonomy, severity triage, and accessibility Definition of
-          Done.
+          Done. Decide whether a barrier's fix belongs locally or upstream with
+          <a href="https://github.com/mgifford/upstream-first">Upstream First</a>,
+          and track any temporary local fix until it is released and verified.
         </p>
       </article>
       <article class="card">
@@ -380,6 +382,10 @@ full_width: true
         <a href="https://github.com/mgifford/accessibility-skills"><strong>accessibility-skills</strong></a>.
         Topic-specific <code>.skill</code> archives (forms, keyboard, maps, SVG, and more) are available
         there for global installation in Claude Code, Codex, and other AI coding assistants.
+      </p>
+      <p>
+        For deciding whether a fix belongs locally, in an installed capability, or
+        upstream, see <a href="https://github.com/mgifford/upstream-first"><strong>Upstream First</strong></a>.
       </p>
     </div>
   </div>
