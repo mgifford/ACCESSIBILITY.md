@@ -17,7 +17,19 @@
     "raw_result_reference": null
   },
   "tracking": {
-    "tracker_ids": [],
+    "tracker_ids": [
+      {
+        "id": "https://github.com/example/product/issues/482",
+        "relationship": "tracks",
+        "status": "open"
+      },
+      {
+        "id": "https://github.com/example/payment-design-system/issues/91",
+        "relationship": "blocked-by",
+        "status": "closed",
+        "tracker_native_status": "merged, unreleased"
+      }
+    ],
     "fingerprints": {
       "a11y/pattern/v1": {
         "algorithm": "sha-256",
