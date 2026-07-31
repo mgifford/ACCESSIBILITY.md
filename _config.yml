@@ -1,5 +1,8 @@
 title: ACCESSIBILITY.md
 description: The open standard for project accessibility transparency, governance, and AI-assisted inclusion.
+# Spelling variant and page language. See STYLES.md section 2.4.
+# Change this to en-GB or en-CA in a derived project to switch conventions.
+lang: en-US
 baseurl: "/ACCESSIBILITY.md"
 url: "https://mgifford.github.io"
 github_url: "https://github.com/mgifford/ACCESSIBILITY.md/"

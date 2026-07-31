@@ -4,7 +4,7 @@
 
 Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md`** defines the inclusive state of a project. It is a human and machine-readable manifest that tracks a project’s commitment to accessibility (a11y) through metrics, guardrails, and automated enforcement.
 
-> **Looking for the Claude Skills approach?** If you want to add accessibility guidance to a project via an `AGENTS.skills`, see the companion repo: **[mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills/) (now with evals)**.
+> **Looking for the Claude Skills approach?** If you want to add accessibility guidance to a project as installable agent skills, see the companion repo: **[mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills/) (now with evals)**.
 
 ---
 
@@ -46,16 +46,17 @@ This repository is organized to separate **content you adopt** from **project do
 
 ```
 [Repository Root]
-├── ACCESSIBILITY-template.md       ← Start here: Copy this template
 ├── ACCESSIBILITY.md                ← Our own accessibility commitment
 ├── AGENTS.md                       ← AI agent instructions (copy/adapt)
 ├── CONTRIBUTING.md                 ← How to contribute to this project
+├── STYLES.md                       ← Design and content standards
 ├── SUSTAINABILITY.md               ← Sustainability policy
 ├── BROWSER_SUPPORT.md              ← Browser support guidelines
 ├── COMPARISONS.md                  ← Comparison with similar projects
 ├── README.md                       ← This file
 │
 ├── examples/                       ← Copy these to your project
+│   ├── ACCESSIBILITY-template.md             ← Start here: copy this template
 │   ├── A11Y_SHIFT_LEFT_WORKFLOW.yml          ← GitHub Actions workflow
 │   ├── PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml  ← Pre-commit hooks
 │   ├── TRUSTED_SOURCES.yaml                  ← Vetted a11y resources
@@ -191,8 +192,6 @@ Learn more: [SHIFT_LEFT_ACCESSIBILITY_AUTOMATION.md](./examples/SHIFT_LEFT_ACCES
 ### Step 3: Configure AI coding assistants
 
 Help your AI tools (GitHub Copilot, Cursor, Claude, Codex, etc.) respect accessibility standards:
-
-**For project-level configuration:**
 
 **For Cursor or similar tools:**
 1. Copy [AGENTS.md](./AGENTS.md) to your repository root
@@ -349,7 +348,7 @@ This section documents which AI tools have been used in the development and main
 
 - **Runtime AI**: None. This is a static documentation project; no AI is invoked when users read or use the files.
 - **Browser-based AI**: None. No client-side or browser-based AI features are embedded in this project.
-- **Human oversight**: All AI-generated content is reviewed by the repository maintainer before merging. The README already notes: *"Most of the content on this site was generated with AI assistance and has not yet been fully validated in real-world conditions."*
+- **Human oversight**: All AI-generated content is reviewed by the repository maintainer before merging. The warning at the top of this file notes: *"Most of the content on this site was generated with AI assistance and has not yet been fully validated in real-world conditions."*
 
 ### How to update this disclosure
 
@@ -379,7 +378,3 @@ We are looking for feedback on the taxonomy and automation workflows.
 ## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).
-
----
-
-**Would you like me to generate a sample `specification.md` next to define the exact Markdown headings and data structures for this standard?**
