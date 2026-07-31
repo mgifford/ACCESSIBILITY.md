@@ -93,6 +93,38 @@ https://jira.example.org/browse/A11Y-142
 
 Do not invent a tracker ID where no tracked work item exists.
 
+#### Local and upstream trackers
+
+`tracking.tracker_ids` is an array: a finding may carry both a local
+remediation tracker and an upstream tracker in the project that owns the
+affected component or dependency, using
+[Upstream First](https://github.com/mgifford/upstream-first) to decide
+whether an upstream contribution is warranted. Each entry's `relationship`
+and `status` (or `tracker_native_status`) describe that entry alone — an
+upstream tracker's status is never inferred onto the local tracker, or onto
+the finding's own lifecycle state.
+
+```json
+"tracker_ids": [
+  {
+    "id": "https://github.com/example/product/issues/482",
+    "relationship": "tracks",
+    "status": "open"
+  },
+  {
+    "id": "https://github.com/example/design-system/issues/91",
+    "relationship": "blocked-by",
+    "status": "closed",
+    "tracker_native_status": "merged, unreleased"
+  }
+]
+```
+
+A closed or merged upstream tracker is not evidence that the finding is
+`resolved`. Resolution still requires the affected user task to be retested
+after the upstream correction is released and adopted downstream; see
+[Resolved](#resolved) below.
+
 ### Occurrence fingerprint
 
 A deterministic, versioned correlation key for a pattern at a normalized resource, route pattern, or component state. It is computed rather than assigned.
@@ -220,6 +252,13 @@ The prior occurrence is outside the explicitly defined current comparison scope.
 ### Resolved
 
 Use only when the relevant scope was successfully retested or explicitly verified and the project's closure criteria have been met. An automated rule no longer reporting a result is not sufficient evidence by itself.
+
+When a finding's fix depends on an upstream tracker (see
+[Local and upstream trackers](#local-and-upstream-trackers)), an upstream
+issue being closed or a pull request being merged is not sufficient evidence
+either. Move to `resolved` only after the upstream correction has been
+released, adopted by this project (dependency upgraded, patch removed), and
+the original user task has been retested.
 
 ## Policy Classification
 
@@ -454,3 +493,4 @@ This guide does not change either implementation.
 - [Accessibility Bug Reporting Best Practices](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [Contributing Accessibility Guide](./CONTRIBUTING_A11Y.md)
 - [Examples Index](./README.md)
+- [Upstream First](https://github.com/mgifford/upstream-first) - decision skill for whether a root cause's responsible fix is local, an installed capability, or an upstream contribution; see [Local and upstream trackers](#local-and-upstream-trackers) above for recording the relationship on a finding
