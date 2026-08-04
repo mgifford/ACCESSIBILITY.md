@@ -1,0 +1,350 @@
+name: Accessibility Technical Finding
+description: Report a finding investigated with Playwright MCP or Chrome accessibility tooling
+title: "[A11Y-EVIDENCE]: "
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for an accessibility finding that has been investigated with Playwright MCP, a Playwright ARIA snapshot, Chrome DevTools accessibility tooling, or the Chrome DevTools Protocol Accessibility domain.
+
+        If you encountered a barrier but do not have technical evidence, use the general accessibility issue form. A valid report does not require MCP, Chrome developer tools, a selector, a WCAG mapping, or a proposed fix.
+
+        Technical evidence supports investigation. It does not by itself establish user impact, a WCAG failure, browser responsibility, or conformance. See [Technical Evidence for Reproducible Accessibility Findings](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_FINDING_EVIDENCE.html) and [Accessibility Bug Reporting Best Practices](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.html).
+
+  - type: textarea
+    id: finding-summary
+    attributes:
+      label: Finding summary
+      description: Describe the observed barrier or technical indicator and the affected component or task. Separate observed facts from assumptions.
+      placeholder: |
+        Component or location:
+        Observed behavior:
+        Expected user-facing behavior, if known:
+        Current hypothesis, if any:
+    validations:
+      required: true
+
+  - type: dropdown
+    id: evidence-source
+    attributes:
+      label: Evidence source
+      description: Select every method used. This describes how evidence was collected, not whether the finding is confirmed.
+      multiple: true
+      options:
+        - Playwright MCP accessibility snapshot
+        - Playwright MCP testing or locator-generation tool
+        - Playwright Test ARIA snapshot or assertion
+        - Chrome DevTools Accessibility pane or full accessibility tree
+        - Chrome DevTools Protocol Accessibility domain
+        - Manual accessibility-tree inspection
+        - Assistive technology observation
+        - Other automated or semi-automated tool
+    validations:
+      required: true
+
+  - type: dropdown
+    id: apparent-layer
+    attributes:
+      label: Layer currently under investigation
+      description: Do not assume that a difference in Chrome or Playwright output proves a Chrome or Playwright defect.
+      options:
+        - Unknown or not yet isolated
+        - Application, page, component, or authored content
+        - Shared component, design system, template, or dependency
+        - Playwright MCP snapshot, ref, locator, or serialization behavior
+        - Playwright Test assertion or test implementation
+        - Chrome accessibility tree or CDP Accessibility behavior
+        - Browser and assistive technology integration
+    validations:
+      required: true
+
+  - type: textarea
+    id: location-state
+    attributes:
+      label: Safe location and state
+      description: Provide enough safe information to locate the same interface. Remove credentials, tokens, personal data, and private record identifiers.
+      placeholder: |
+        Safe URL or route:
+        Product build or commit:
+        Component or fixture:
+        UI state:
+        Account role or test-data state:
+        Frame or shadow-root boundary:
+    validations:
+      required: true
+
+  - type: textarea
+    id: task-impact
+    attributes:
+      label: Affected task and people
+      description: Describe confirmed or likely task impact only as specifically as the evidence allows. Enter "Unknown, needs review" when technical evidence has not established user impact.
+      placeholder: |
+        Task:
+        People or interaction methods confirmed or likely to be affected:
+        Consequence:
+        Workaround and its cost:
+        Evidence basis and scope limit:
+    validations:
+      required: false
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Preconditions and reproduction steps
+      description: Give the shortest reliable path to the result. Include the relevant input method, timing, and before-and-after state. If direct reproduction failed, record the attempt and equivalent evidence.
+      placeholder: |
+        Preconditions:
+        1. Navigate to...
+        2. Capture the initial state...
+        3. Use [keyboard, pointer, touch, speech, or other input] to...
+        4. Observe...
+
+        Attempts:
+        Occurrences observed:
+        Timing, loading, network, or navigation conditions:
+    validations:
+      required: false
+
+  - type: dropdown
+    id: reproduction-status
+    attributes:
+      label: Reproduction status
+      description: Failure to reproduce is an investigation state, not proof that the original report is invalid.
+      options:
+        - Needs evidence or not yet attempted
+        - Reproduced under the recorded conditions
+        - Intermittent
+        - Not observed in the attempted run
+        - Not tested because required access or conditions were unavailable
+        - Supported by equivalent evidence without direct reproduction
+    validations:
+      required: true
+
+  - type: dropdown
+    id: evidence-status
+    attributes:
+      label: Evidence status
+      description: Select the strongest status currently supported. Do not promote tool output to a confirmed barrier or standards failure without human review.
+      options:
+        - Not yet classified
+        - Automated indicator, not yet reviewed
+        - Reproducible finding, barrier not yet confirmed
+        - Confirmed user-facing barrier
+        - Confirmed standards failure
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and tool provenance
+      description: Record actual versions and settings that could affect the result. Do not infer a physical device from viewport dimensions.
+      placeholder: |
+        Capture date and time:
+        Product build or commit:
+        Browser and exact version:
+        Operating system and version:
+        Playwright MCP package version:
+        Playwright Test version:
+        Chrome/CDP protocol or browser revision, if known:
+        MCP client and version:
+        Viewport in CSS pixels:
+        Zoom or text size:
+        Locale:
+        Active color, contrast, motion, or forced-color preferences:
+        Relevant flags, configuration, retries, skips, or timeouts:
+    validations:
+      required: true
+
+  - type: textarea
+    id: semantic-target
+    attributes:
+      label: Semantic target and context
+      description: Record the smallest useful semantic description. Do not paste a full page tree when a component excerpt is sufficient.
+      placeholder: |
+        Role:
+        Accessible name:
+        Accessible description:
+        Value and states:
+        Programmatic relationships:
+        Nearest meaningful landmark, form, dialog, region, or heading:
+        Present, absent, or ignored in the accessibility tree:
+        Ignored reason or name source, if known:
+    validations:
+      required: false
+
+  - type: textarea
+    id: locators
+    attributes:
+      label: Locators and temporary references
+      description: Prefer a maintained component ID, test ID, role and accessible name, or concise selector. Mark Playwright MCP refs as temporary. Do not use them as tracker IDs or fingerprint inputs.
+      placeholder: |
+        Component or source identity:
+        Playwright role or label locator:
+        Test ID:
+        CSS fallback:
+        XPath fallback or legacy XPath:
+        Frame or shadow host:
+        MCP ref at capture time, if retained:
+        Ref scope: original snapshot only
+    validations:
+      required: false
+
+  - type: textarea
+    id: aria-snapshot
+    attributes:
+      label: Scoped accessibility or ARIA snapshot
+      description: Paste only the target, meaningful ancestor, relevant siblings, and state needed to explain the finding. Redact private content.
+      placeholder: |
+        - form "Payment":
+          - textbox "Card number" [invalid=true]
+          - paragraph: Enter a card number.
+          - button "Submit order"
+      render: yaml
+    validations:
+      required: false
+
+  - type: textarea
+    id: chrome-accessibility-data
+    attributes:
+      label: Focused Chrome accessibility data
+      description: Include only relevant CDP Accessibility output, name sources, ignored reasons, relationships, or DOM mapping. Full unredacted trees are usually unnecessary.
+      placeholder: |
+        Method or command:
+        Relevant node data:
+        What this output demonstrates:
+        Chromium-specific limitation:
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: dom-evidence
+    attributes:
+      label: Live DOM or component excerpt
+      description: Include the smallest relevant live-DOM or component excerpt. Page-source HTML may not represent runtime state.
+      placeholder: |
+        <label for="card-number">Card number</label>
+        <input id="card-number" aria-invalid="true">
+        <p id="card-number-error">Enter a card number.</p>
+      render: html
+    validations:
+      required: false
+
+  - type: textarea
+    id: visual-interaction-evidence
+    attributes:
+      label: Visual, focus, timing, or interaction evidence
+      description: Describe relevant screenshots, recordings, bounding boxes, focus transitions, timing, or interaction traces. Provide links only when they are safe and access-controlled as needed.
+      placeholder: |
+        Initial focus or state:
+        Triggering input:
+        Resulting focus or state:
+        Screenshot or trace reference and description:
+        Geometry, color, viewport, or timing evidence:
+    validations:
+      required: false
+
+  - type: textarea
+    id: assistive-technology
+    attributes:
+      label: Assistive technology observation
+      description: Complete this only when assistive technology was actually used. Accessibility-tree output is not equivalent to an assistive technology observation.
+      placeholder: |
+        Assistive technology and version:
+        Browser and version:
+        Operating system:
+        Command or interaction:
+        Observed output:
+        Participant or evaluator scope and limitations:
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected-test
+    attributes:
+      label: Proposed focused Playwright regression test
+      description: Optional. Provide the smallest reviewed semantic or behavioral assertion that would fail for the original barrier. Do not use MCP refs in committed tests.
+      placeholder: |
+        import { test, expect } from '@playwright/test';
+
+        test('describes the user-facing contract', async ({ page }) => {
+          // Arrange the relevant state, perform the interaction, and assert
+          // only the semantic or behavioral contract this test can establish.
+        });
+      render: typescript
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-manual
+    attributes:
+      label: Acceptance criteria and remaining manual checks
+      description: Describe the corrected user-facing outcome. State what automation can verify and which keyboard, visual, assistive technology, or disabled-participant checks remain necessary.
+      placeholder: |
+        Acceptance criteria:
+        Automated coverage proposed or completed:
+        Manual checks still required:
+        Testing with disabled people required, planned, completed, or not yet determined:
+        Rationale and scope limitations:
+    validations:
+      required: false
+
+  - type: input
+    id: standards
+    attributes:
+      label: Standards mapping, if reviewed
+      description: Include the exact standard, version, requirement, and relationship. Leave blank when unknown. A tool tag is not automatically a confirmed WCAG failure.
+      placeholder: "WCAG 2.2, 4.1.2 Name, Role, Value, Level A, suspected"
+    validations:
+      required: false
+
+  - type: textarea
+    id: correlation
+    attributes:
+      label: Existing tracking and correlation references
+      description: Optional. Do not calculate new fingerprints for this report. Preserve tracker IDs, versioned fingerprints, scan run IDs, and legacy URL plus XPath hashes without treating them as the GitHub issue ID.
+      placeholder: |
+        Existing tracker ID or related issue:
+        Scan request or run ID:
+        Occurrence fingerprint profile and value:
+        Pattern fingerprint profile and value:
+        Legacy identifier and migration status:
+    validations:
+      required: false
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Unknowns, disagreements, and limitations
+      description: Record conflicting tool and human evidence, unsupported environments, missing access, uncertainty, and the next investigative action.
+      placeholder: |
+        Not tested:
+        Tool or human evidence that disagrees:
+        Unresolved question:
+        Next investigative action:
+        Suggested owner or responsible source:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: evidence-safety
+    attributes:
+      label: Evidence safety and interpretation
+      description: Confirm each statement before submitting this technical evidence.
+      options:
+        - label: I attached no sensitive evidence, or I reviewed and removed credentials, tokens, personal data, private content, and temporary signed URLs.
+          required: true
+        - label: Any screenshot or recording is described, captioned, or transcribed as applicable, or none is attached.
+          required: true
+        - label: Any Playwright MCP ref is marked as temporary and is excluded from durable locators, tracker IDs, and fingerprint inputs, or no MCP ref is included.
+          required: true
+        - label: I have not treated tool output alone as proof of user impact, WCAG failure, browser responsibility, or conformance.
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        After submission, triage should preserve the original evidence, identify missing context, decide whether the finding belongs in active remediation, bounded investigation, or observation history, and route a confirmed browser or Playwright defect to the responsible upstream project. Do not file upstream solely because two tools expose different trees.
