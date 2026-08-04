@@ -6,6 +6,13 @@ title: Accessibility Finding Tracking
 
 This guide explains how to track accessibility findings over time without confusing durable tracked work with the computed identifiers used to correlate results. It is the canonical reference for tracking identifiers and finding correlation in this repository. Other guides should summarize the relevant concepts and link here rather than repeating the model.
 
+For Playwright MCP snapshots, Chrome accessibility-tree inspection, CDP
+Accessibility methods and events, DOM excerpts, traces, and other technical
+artifacts, use
+[Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md).
+That guide explains how to collect and reference evidence. It does not assign
+durable identity or redefine the tracking model in this guide.
+
 This is a conceptual and terminology guide. It does not define a hashing algorithm, a JSON Schema, or test vectors. Those will be specified in a separate, dedicated change once this terminology is stable.
 
 ## Why This Guide Exists
@@ -35,6 +42,7 @@ This guide names the distinct concepts involved and describes how they relate, s
 17. Obligation, evidence confidence, handling, severity, priority, lifecycle state, and identity are separate axes and must not be collapsed into one another; see [Policy Classification](#policy-classification).
 18. An automated result is evidence, not a conformance decision. An unconfirmed result normally goes to `review`, not `suppress`.
 19. A policy classification must never alter a fingerprint, tracker ID, or any other identity field.
+20. Tool-specific session identifiers, including Playwright MCP refs and Chrome CDP AX or DOM node IDs, are evidence metadata, not tracker IDs, durable locators, or fingerprint inputs.
 
 ## Terminology
 
@@ -175,6 +183,8 @@ An analytical grouping based on selector similarity, edit distance, machine lear
 | Legacy identifier | Preserves historical references | Previously assigned or computed | Retained for compatibility |
 | Cluster ID | Groups similar findings heuristically | Computed or assigned | Not necessarily stable |
 | Root-cause ID | Identifies a confirmed remediation source | Assigned after investigation | Defined by project policy |
+| Evidence artifact reference | Locates stored supporting material such as a snapshot, trace, DOM excerpt, or focused accessibility-tree result | Assigned by the evidence store | Stable while the artifact is retained |
+| Tool or session node reference | Connects nodes or actions inside one capture session, such as an MCP ref or CDP `AXNodeId` | Assigned by the tool or browser | Not durable outside its documented session scope |
 
 These relationships are not necessarily one-to-one. For example:
 
@@ -386,6 +396,12 @@ Findings live in one of three places, independent of the lifecycle status comput
 
 An automated finding should normally enter the active remediation queue only when the team has: a precise safe URL, route, component, or equivalent location; a stable locator or captured affected element where applicable; focused HTML, DOM, accessibility-tree, or component evidence where applicable; tool and rule identifiers and versions; test configuration; relevant state and environment; expected and actual results; a successful controlled rerun or sufficient equivalent evidence; enough evidence to distinguish a likely defect from a tool, crawl, or test failure; and a defined way to verify correction.
 
+For practical collection of scoped HTML, DOM, accessibility-tree, Playwright
+MCP, and Chrome CDP evidence, see
+[Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md).
+Its evidence artifacts can satisfy parts of this gate, but its MCP refs and
+browser node IDs must remain session metadata.
+
 The central question triage should ask is:
 
 > Can the team locate the result, rerun or otherwise evaluate the relevant check, inspect the affected output, and determine what would demonstrate correction?
@@ -398,7 +414,7 @@ This gate governs automated findings specifically because they are produced at a
 
 Direct reproduction is the strongest basis for remediation and verification, and should be preferred when available. A team should not normally implement or close a claimed correction when it cannot understand or evaluate the original failure.
 
-Exact reproduction is not always possible. Equivalent evidence supporting evaluation may include: a focused HTML or live-DOM excerpt; accessibility-tree output; tool output with its configuration and version; a recording or screenshot with a written explanation; browser or application logs; repeated reports; deterministic code inspection; evidence from a disabled person; reproduction in a sufficiently equivalent environment; a known invalid component pattern; or an intermittent failure with documented attempts and conditions.
+Exact reproduction is not always possible. Equivalent evidence supporting evaluation may include: a focused HTML or live-DOM excerpt; accessibility-tree output; tool output with its configuration and version; a recording or screenshot with a written explanation; browser or application logs; repeated reports; deterministic code inspection; evidence from a disabled person; reproduction in a sufficiently equivalent environment; a known invalid component pattern; or an intermittent failure with documented attempts and conditions. Use [Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md) to capture these artifacts without turning tool-specific identifiers into tracking identity.
 
 When exact reproduction is unavailable, record: what evidence exists; what the team attempted; what could not be tested; the remaining uncertainty; the scope of any conclusion drawn; and the verification plan.
 
@@ -487,6 +503,7 @@ This guide does not change either implementation.
 
 ## Related Guides
 
+- [Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md) - Playwright MCP, Chrome CDP Accessibility, scoped technical artifacts, and evidence provenance
 - [Accessibility Migration Profiles](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - verified `drupal-core` and `open-scans` legacy identifier formats and migration requirements
 - [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema (`schema_version: "2.0"` or `"2.1"`) for the complete machine-readable finding record, with [a complete example](./schemas/accessibility-finding-v2.example.json), [a minimal example](./schemas/accessibility-finding-v2-minimal.example.json), [a manual/user-reported example](./schemas/accessibility-finding-v2-manual.example.json), and [policy-classification examples](./schemas/accessibility-finding-v2.1-policy-examples.json) for [Policy Classification](#policy-classification) above
 - [Fingerprint Profiles](./fingerprints/README.md) - normative `a11y/pattern/v1` and `a11y/occurrence/v1` contracts, canonicalization, and golden test vectors

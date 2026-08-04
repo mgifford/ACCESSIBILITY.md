@@ -179,7 +179,7 @@ body:
     id: locators
     attributes:
       label: Locators and temporary references
-      description: Prefer a maintained component ID, test ID, role and accessible name, or concise selector. Mark Playwright MCP refs as temporary. Do not use them as tracker IDs or fingerprint inputs.
+      description: Prefer a maintained component ID, test ID, role and accessible name, or concise selector. Mark MCP refs and CDP AX or DOM node IDs as session-only evidence.
       placeholder: |
         Component or source identity:
         Playwright role or label locator:
@@ -189,6 +189,8 @@ body:
         Frame or shadow host:
         MCP ref at capture time, if retained:
         Ref scope: original snapshot only
+        CDP AX or DOM node IDs, if retained:
+        CDP ID scope: enabled session, document, and frame only
     validations:
       required: false
 
@@ -212,9 +214,16 @@ body:
       label: Focused Chrome accessibility data
       description: Include only relevant CDP Accessibility output, name sources, ignored reasons, relationships, or DOM mapping. Full unredacted trees are usually unnecessary.
       placeholder: |
-        Method or command:
+        Method or event:
+        Parameters, including depth or fetchRelatives:
+        Accessibility.enable active: yes/no
+        DOM target and resolution method:
+        Frame:
+        Before or after state and local timestamp:
+        AX or DOM node IDs, marked as session-only:
         Relevant node data:
         What this output demonstrates:
+        What remains unknown:
         Chromium-specific limitation:
       render: text
     validations:
@@ -323,6 +332,7 @@ body:
       placeholder: |
         Not tested:
         Tool or human evidence that disagrees:
+        Unsupported CDP method, event, property, browser, or frame:
         Unresolved question:
         Next investigative action:
         Suggested owner or responsible source:
@@ -339,7 +349,7 @@ body:
           required: true
         - label: Any screenshot or recording is described, captioned, or transcribed as applicable, or none is attached.
           required: true
-        - label: Any Playwright MCP ref is marked as temporary and is excluded from durable locators, tracker IDs, and fingerprint inputs, or no MCP ref is included.
+        - label: Any MCP ref or CDP AX or DOM node ID is marked as session-only and excluded from durable locators, tracker IDs, and fingerprint inputs, or none is included.
           required: true
         - label: I have not treated tool output alone as proof of user impact, WCAG failure, browser responsibility, or conformance.
           required: true

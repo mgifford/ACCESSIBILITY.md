@@ -287,6 +287,11 @@ Technical evidence is optional when the observed behavior is already clear. When
 
 Automated and technical findings normally need a focused HTML, DOM, accessibility-tree, or component excerpt before code-level remediation, so the team can inspect the actual result rather than a description of it. Reporters are not universally responsible for collecting this. A disabled person or other reporter may not know how to capture an HTML snippet, a DOM dump, or accessibility-tree output, and requiring one before accepting a report excludes exactly the people best placed to notice a barrier. Triage is responsible for collecting missing technical evidence when it is relevant, available, and needed for remediation — not for rejecting the report until the reporter supplies it.
 
+For Playwright MCP setup, scoped snapshots, Chrome CDP Accessibility methods
+and events, evidence provenance, and the boundary between session identifiers
+and durable tracking identity, use
+[Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md).
+
 Do not assume page-source HTML represents the live DOM or accessibility tree: client-side rendering, hydration, and dynamic attribute changes can all mean the two diverge. When the finding depends on runtime state, capture live-DOM or accessibility-tree output rather than the original page source, and note the iframe or shadow-root boundary if one is involved.
 
 ### 10.1 HTML or accessibility-tree excerpt
@@ -947,6 +952,7 @@ The [Evaluation Report Template](https://www.w3.org/WAI/test-evaluate/report-tem
 
 ## 26. Related Guides
 
+- [Technical Evidence for Reproducible Accessibility Findings](./ACCESSIBILITY_FINDING_EVIDENCE.md)
 - [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md)
 - [Accessibility Finding Schema](./schemas/README.md) - versioned JSON Schema and validated examples for the machine-readable finding format
 - [Manual Accessibility Testing Guide](./MANUAL_ACCESSIBILITY_TESTING_GUIDE.md)

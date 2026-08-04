@@ -27,10 +27,11 @@ Use this guide with:
 - [Accessibility Finding Schema](./schemas/README.md) for machine-readable
   interchange.
 
-The Playwright MCP instructions in this guide were reviewed on 2026-08-04.
-Playwright MCP and its tool schemas can change. Verify version-sensitive setup
-against the current official documentation before adopting it in a maintained
-workflow.
+The Playwright MCP and Chrome CDP instructions in this guide were reviewed on
+2026-08-04. Playwright MCP tool schemas and the experimental CDP Accessibility
+domain can change. Verify version-sensitive setup and commands against the
+current official documentation and the installed browser before adopting them
+in a maintained workflow.
 
 ## 1. Scope and Non-Goals
 
@@ -71,6 +72,7 @@ purposes.
 | Semantic locator | Finds an element by role, accessible name, label, or related semantics | Until the relevant user-facing semantics change |
 | DOM locator | Finds an element using CSS, XPath, or DOM structure | Until the relevant markup changes |
 | MCP element ref | Identifies an interactive element in the current Playwright MCP snapshot | Until navigation or a relevant page change |
+| CDP AX or DOM node ID | Connects accessibility and DOM nodes within a browser inspection session | Current session, document, and applicable frame only |
 | Evidence artifact | Supports reproduction or evaluation | According to the retention policy |
 | Regression assertion | Defines behavior that should continue to hold | Until the product contract is intentionally revised |
 
@@ -87,6 +89,11 @@ An MCP ref such as `e15` is session evidence. It must not be used as:
 - a locator expected to work in a later run;
 - proof that two results have the same root cause; or
 - proof that a finding has been resolved.
+
+Apply the same restriction to CDP `AXNodeId`, `DOM.NodeId`,
+`DOM.BackendNodeId`, and `Runtime.RemoteObjectId` values. They can connect
+focused records captured in one browser session, but are not durable finding
+identity or maintained product locators.
 
 ## 3. A Layered Evidence Model
 
@@ -782,6 +789,444 @@ accessibility API, or a particular assistive technology.
 Use raw browser data to explain a focused question. Do not attach an entire
 unredacted accessibility tree when a small excerpt answers it.
 
+### 10.1 Keep MCP snapshots and CDP evidence distinct
+
+Playwright MCP snapshots and Chrome DevTools Protocol accessibility data are
+related, but they are not the same artifact.
+
+- A Playwright MCP snapshot is a simplified, human-readable accessibility
+  representation used by an agent to understand and interact with the current
+  page. Its element refs are scoped to that snapshot.
+- The CDP Accessibility domain exposes lower-level Chromium accessibility
+  nodes, computed-property sources, ignored reasons, DOM mappings, and update
+  events.
+- Playwright MCP's `--cdp-endpoint` option connects the MCP server to an
+  existing Chromium browser. It does not make every CDP Accessibility command
+  a standard MCP tool.
+- The current Playwright MCP repository describes its arbitrary Playwright
+  code tool as unsafe and equivalent to remote code execution. Do not enable
+  that capability merely to obtain accessibility evidence. Use a reviewed
+  Playwright Test helper or a narrowly designed tool instead.
+
+The normal workflow is therefore:
+
+1. use Playwright MCP to explore the task and capture a concise semantic
+   snapshot;
+2. identify the focused question that the snapshot cannot answer;
+3. reproduce that state in a maintained Chromium Playwright test or diagnostic
+   script;
+4. use a Playwright `CDPSession` to request only the required browser data; and
+5. retain a redacted excerpt and its provenance with the finding.
+
+Raw CDP should not replace a portable Playwright assertion when the public
+Playwright API can test the required behavior. A Chromium-only assertion is
+appropriate only when the Chromium accessibility-tree behavior itself is the
+contract or the lower-level data is necessary to distinguish an application
+defect from a browser or tooling defect.
+
+### 10.2 Treat the domain and its identifiers as experimental
+
+The Accessibility domain and the methods and events below are marked
+experimental in the tip-of-tree protocol. The tip-of-tree protocol changes
+frequently and does not guarantee backward compatibility. Before relying on a
+command in maintained tooling:
+
+- pin and record the browser version used by the test;
+- record the Playwright version;
+- check the protocol supported by the installed browser rather than assuming
+  the tip-of-tree documentation matches it;
+- isolate raw CDP use behind a small helper; and
+- fail with a clear diagnostic when a required method or property is
+  unavailable.
+
+When Chrome is deliberately started with a remote debugging port, its actual
+protocol definition is available from `/json/protocol`. Do not expose a remote
+debugging port on an untrusted network or enable it in a production browser
+profile merely to collect evidence.
+
+Call `Accessibility.enable` before using methods that require stable
+`AXNodeId` values or Accessibility events. Enabling the domain causes AX node
+IDs to remain consistent between method calls, but can affect performance
+until `Accessibility.disable` is called.
+
+An `AXNodeId`, `DOM.NodeId`, `DOM.BackendNodeId`, `Runtime.RemoteObjectId`,
+`frameId`, or MCP ref is session-level technical evidence. None is a tracker
+ID, fingerprint, durable product locator, or root-cause identifier. Keep these
+values in the raw evidence when they help connect records collected during one
+session, then use the identity model in
+[Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md) for
+durable correlation and tracked work.
+
+### 10.3 Choose the narrowest method that answers the question
+
+| CDP method | What it returns | Appropriate use | Important limitation |
+| --- | --- | --- | --- |
+| `Accessibility.getPartialAXTree` | The AX node for a specified DOM node and, by default, its ancestors, siblings, and children | Focused inspection of one DOM target, including ignored state and nearby context | It can still return more relatives than the evidence package needs; redact and reduce the stored excerpt |
+| `Accessibility.getAXNodeAndAncestors` | A node and its ancestors through the root | Determine whether the target is inside the expected landmark, form, dialog, or semantic container | Requires `Accessibility.enable`; it explains ancestry, not operability or user impact |
+| `Accessibility.queryAXTree` | Nodes in a DOM subtree matching a computed accessible name or role | Find semantic candidates or investigate why an expected role or name is missing | It also computes and can return ignored nodes; every match must be checked for `ignored` |
+| `Accessibility.getRootAXNode` | The root AX node for a frame | Begin incremental traversal or establish the document root | Requires `Accessibility.enable`; the main-frame default does not combine every iframe |
+| `Accessibility.getChildAXNodes` | Child AX nodes for a requested `AXNodeId` | Traverse only the branches needed for investigation | Requires `Accessibility.enable`; use the correct `frameId` for framed content |
+| `Accessibility.getFullAXTree` | AX nodes for a frame's document, optionally limited by depth | Investigate document-level structure or create a deliberately reviewed diagnostic baseline | Full trees are noisy, privacy-sensitive, Chromium-specific, and prone to irrelevant browser-version differences |
+
+The returned `nodes` arrays are connected through fields such as `parentId`
+and `childIds`; they are not necessarily nested JSON trees. A node may also
+include:
+
+- `ignored` and `ignoredReasons`;
+- computed `role`, `name`, `description`, and `value`;
+- state and relationship `properties`;
+- `sources` showing how a computed value was derived or superseded;
+- `backendDOMNodeId` for mapping to the associated DOM node; and
+- `frameId` for the owning frame.
+
+Record the fields that answer the investigation question. Do not keep every
+property merely because the browser returned it.
+
+### 10.4 Try commands in Chrome Protocol Monitor
+
+Chrome DevTools Protocol Monitor is useful for a one-off investigation before
+writing test code:
+
+1. Open Chrome DevTools settings.
+2. Under **Experiments**, enable **Protocol Monitor**.
+3. Close and reopen DevTools.
+4. Open **More tools**, then **Protocol monitor**.
+5. Send `Accessibility.enable`.
+6. Send the narrowest command that answers the question.
+7. Inspect and redact the relevant response or event.
+8. Send `Accessibility.disable` when the investigation is complete.
+
+For example, a depth-limited document tree can be requested with:
+
+```json
+{
+  "cmd": "Accessibility.getFullAXTree",
+  "args": {
+    "depth": 4
+  }
+}
+```
+
+Focused methods require a DOM target. Use `DOM.getDocument`, then
+`DOM.querySelector` or another public DOM-domain method to resolve the target's
+`nodeId`. Pass that session-scoped value to `getPartialAXTree`,
+`getAXNodeAndAncestors`, or `queryAXTree` as applicable.
+
+After the Accessibility domain is enabled, Protocol Monitor can also display
+`Accessibility.loadComplete` and `Accessibility.nodesUpdated` events. Request
+the relevant node before expecting `nodesUpdated` evidence for it. Do not
+paste an entire Protocol Monitor history into a finding when a focused command,
+response, or event excerpt is sufficient.
+
+Protocol Monitor is an investigation surface, not a maintained regression
+test. Convert a stable, reviewable contract into Playwright Test when ongoing
+coverage is justified.
+
+### 10.5 Open and close a CDP session explicitly
+
+Playwright supports raw CDP sessions only for Chromium-based browsers. Keep the
+scope explicit and always disable the Accessibility domain and detach the
+session.
+
+```ts
+import type { CDPSession, Page } from '@playwright/test';
+
+export async function withAccessibilityCDP<T>(
+  page: Page,
+  inspect: (cdp: CDPSession) => Promise<T>,
+): Promise<T> {
+  const cdp = await page.context().newCDPSession(page);
+
+  try {
+    await cdp.send('Accessibility.enable');
+    return await inspect(cdp);
+  } finally {
+    await cdp.send('Accessibility.disable').catch(() => {});
+    await cdp.detach();
+  }
+}
+```
+
+Use a Chromium-only project or skip explicitly in a cross-browser suite:
+
+```ts
+import { test } from '@playwright/test';
+
+test('collects focused Chromium AX evidence', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'Raw CDP is Chromium-specific');
+
+  // Reproduce the target state, then call withAccessibilityCDP(page, ...).
+});
+```
+
+This browser-specific diagnostic should supplement, not silently replace,
+equivalent Firefox and WebKit behavioral coverage.
+
+### 10.6 Resolve a focused DOM target through public CDP commands
+
+Do not read Playwright private properties such as an element handle's internal
+object ID. Resolve the DOM target through public CDP commands. The following
+example deliberately uses a maintained test ID for the CDP lookup:
+
+```ts
+const { root } = await cdp.send('DOM.getDocument', { depth: 0 });
+const { nodeId } = await cdp.send('DOM.querySelector', {
+  nodeId: root.nodeId,
+  selector: '[data-testid="account-save"]',
+});
+
+if (nodeId === 0) {
+  throw new Error('Could not resolve the account-save DOM node');
+}
+```
+
+The selector is a bridge into the current CDP session, not the finding's
+durable identity. Record a human-readable target, component, route, state, and
+semantic locator as described in
+[Construct a Reproducible Target Description](#5-construct-a-reproducible-target-description).
+
+For content inside an iframe, create the session against the relevant
+Playwright `Frame` or pass the documented `frameId` where supported. Record the
+frame boundary. Treat each frame document as a separate accessibility-tree
+scope. Shadow DOM can also require explicit DOM resolution; do not claim that a
+document-level query inspected a target it did not reach.
+
+### 10.7 Inspect one node and its semantic context
+
+Use `getPartialAXTree` when the DOM target and nearby context are the question:
+
+```ts
+const { nodes } = await cdp.send('Accessibility.getPartialAXTree', {
+  nodeId,
+  fetchRelatives: true,
+});
+
+const focusedEvidence = nodes.map((node) => ({
+  nodeId: node.nodeId,
+  ignored: node.ignored,
+  ignoredReasons: node.ignoredReasons,
+  role: node.role,
+  name: node.name,
+  description: node.description,
+  value: node.value,
+  properties: node.properties,
+  parentId: node.parentId,
+  childIds: node.childIds,
+  backendDOMNodeId: node.backendDOMNodeId,
+  frameId: node.frameId,
+}));
+```
+
+Use `getAXNodeAndAncestors` when ancestry is the specific question:
+
+```ts
+const { nodes: targetAndAncestors } = await cdp.send(
+  'Accessibility.getAXNodeAndAncestors',
+  { nodeId },
+);
+```
+
+For example, this can show that a control is exposed but is not inside the
+expected named form or dialog. It cannot establish that focus enters the
+container correctly or that a screen reader announces the relationship as
+expected.
+
+### 10.8 Query computed roles and names carefully
+
+`queryAXTree` searches a DOM subtree using Chrome's computed accessible name
+and role. These are not CSS selectors and are not necessarily the literal
+`aria-label` or `role` attribute values.
+
+```ts
+const { nodes: matches } = await cdp.send('Accessibility.queryAXTree', {
+  nodeId: root.nodeId,
+  role: 'button',
+  accessibleName: 'Save changes',
+});
+
+const exposedMatches = matches.filter((node) => !node.ignored);
+```
+
+The command computes name and role for nodes that are ignored by the
+accessibility tree and includes matching ignored nodes in its result. A match
+does not prove that the node is exposed to assistive technology. Record
+`ignored` and `ignoredReasons`, and compare the result with the live DOM and
+the intended user task.
+
+If neither `accessibleName` nor `role` is supplied, the command returns all AX
+nodes in the specified DOM subtree. That is still a scoped query, but it should
+not be used as a substitute for choosing a focused question.
+
+### 10.9 Traverse incrementally with root and child methods
+
+Use `getRootAXNode` and `getChildAXNodes` when an investigator needs to explore
+selected branches without retrieving the entire document tree:
+
+```ts
+const { node: axRoot } = await cdp.send('Accessibility.getRootAXNode');
+
+const { nodes: firstLevel } = await cdp.send(
+  'Accessibility.getChildAXNodes',
+  { id: axRoot.nodeId },
+);
+```
+
+Continue only into branches relevant to the finding. Preserve `nodeId`,
+`parentId`, and `childIds` inside the session evidence when they are needed to
+reconstruct that excerpt. Do not promote those identifiers into a maintained
+locator or fingerprint.
+
+For framed content, pass the frame's `frameId` as documented. Omitting it uses
+the root frame. A complete multi-frame investigation must therefore identify
+and inspect relevant frames separately.
+
+### 10.10 Reserve full-tree capture for document-level questions
+
+`getFullAXTree` can retrieve the full accessibility tree for a frame document,
+or a depth-limited portion from its root:
+
+```ts
+const { nodes } = await cdp.send('Accessibility.getFullAXTree', {
+  depth: 5,
+});
+```
+
+Use it for questions such as:
+
+- whether document landmarks and headings form the expected broad structure;
+- whether a large application state removes an expected region from the tree;
+- whether a controlled browser change alters a deliberately reviewed tree
+  contract; or
+- which branch should be inspected more narrowly.
+
+Do not make an unfiltered full-tree serialization a default build gate. It can
+contain private content, generate large diffs, and change because of browser
+implementation details unrelated to the product's user-facing contract.
+Prefer focused semantic assertions and scoped evidence. If a full tree is
+retained, record the frame, depth, browser version, capture state, redaction,
+and reason it was necessary.
+
+### 10.11 Observe load and node-update events without overclaiming
+
+After `Accessibility.enable`, a CDP session can subscribe to:
+
+- `Accessibility.loadComplete`, which mirrors the browser's accessibility
+  load-complete event and provides the new document root; and
+- `Accessibility.nodesUpdated`, which reports changed accessibility data for
+  nodes that were previously requested.
+
+Register event handlers before the action under investigation. Request the
+target node before expecting updates for it.
+
+```ts
+const loadEvents: Array<{
+  observedAt: string;
+  root: unknown;
+}> = [];
+
+cdp.on('Accessibility.loadComplete', ({ root }) => {
+  loadEvents.push({
+    observedAt: new Date().toISOString(),
+    root,
+  });
+});
+
+await page.goto('/account/settings');
+await page
+  .getByRole('heading', { name: 'Account settings' })
+  .waitFor();
+```
+
+For an update to a previously requested target:
+
+```ts
+const updates: Array<{
+  observedAt: string;
+  nodes: unknown[];
+}> = [];
+
+cdp.on('Accessibility.nodesUpdated', ({ nodes }) => {
+  updates.push({
+    observedAt: new Date().toISOString(),
+    nodes,
+  });
+});
+
+await cdp.send('Accessibility.getPartialAXTree', {
+  nodeId,
+  fetchRelatives: false,
+});
+
+await page.getByRole('button', { name: 'Submit order' }).click();
+await page.getByText('Enter a card number.').waitFor();
+```
+
+The product-visible wait establishes when the expected state is available.
+The update event is supporting diagnostic evidence. `nodesUpdated` is not a
+complete audit trail of every accessibility-tree mutation, because its
+documented scope is previously requested nodes. Record event ordering and
+local timestamps when timing matters, since the event payload does not by
+itself establish the user's perceived sequence.
+
+Similarly, `loadComplete` does not prove that:
+
+- a client-rendered application has finished every asynchronous update;
+- focus moved to an appropriate location;
+- a particular assistive technology announced the page or update; or
+- the resulting interface is usable.
+
+Use these events to investigate dynamic semantics and timing. Do not make them
+blocking assertions until the project has demonstrated that the event and
+state transition are deterministic for the tested contract.
+
+### 10.12 Record a focused CDP evidence excerpt
+
+For raw browser evidence, record:
+
+- the exact method or event name;
+- the parameters supplied, including `depth`, `fetchRelatives`, semantic query,
+  and frame when relevant;
+- the DOM target and how it was resolved;
+- the focused returned node fields or event payload;
+- before-and-after state and local timestamps for dynamic findings;
+- browser, browser channel, browser version, Playwright version, operating
+  system, and capture date;
+- whether `Accessibility.enable` was active;
+- whether the evidence is Chromium-specific;
+- redactions and retention limits; and
+- what the excerpt demonstrates and what remains unknown.
+
+Store the complete raw output only when it is necessary and safe. In the
+canonical finding record, reference the stored artifact through
+`source.raw_result_reference` or `evidence.references`. Keep durable tracker
+IDs, fingerprints, lifecycle, evidence status, obligation, and handling in the
+tracking record defined by
+[Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md). Do not
+duplicate or recompute them inside a CDP capture.
+
+### 10.13 Do not confuse browser evidence with a conclusion
+
+These methods can show what Chromium computed and how its accessibility nodes
+relate. They do not by themselves prove:
+
+- a WCAG failure or conformance;
+- compatibility with Firefox or WebKit;
+- what an operating-system accessibility API exposes;
+- what NVDA, JAWS, VoiceOver, TalkBack, or another assistive technology
+  announces;
+- keyboard, touch, pointer, or speech-input operability;
+- a logical or usable focus order;
+- the severity or priority of a finding; or
+- whether the responsible defect is in the application, a dependency,
+  Playwright, Chrome, or browser and assistive-technology integration.
+
+Treat differences between an MCP snapshot, CDP output, the live DOM, and an
+assistive technology observation as evidence requiring investigation. Identify
+the responsible layer before routing an upstream issue.
+
 ## 11. Dynamic and Intermittent Findings
 
 For a finding involving timing, loading, animation, asynchronous status,
@@ -807,11 +1252,23 @@ run. Use comparable-run and lifecycle guidance in
 
 ## 12. Evidence Package
 
-A focused evidence package can use this structure without creating a competing
-finding schema:
+An evidence package is not a second finding or tracking record. Keep these
+responsibilities separate:
+
+| Record | Responsibility | Canonical guidance |
+| --- | --- | --- |
+| Evidence package or raw artifact | Stores focused snapshots, DOM and AX excerpts, screenshots, traces, event observations, session identifiers, and capture provenance | This guide |
+| Finding record | Describes the observed or suspected barrier and references its evidence | [Accessibility Finding Schema](./schemas/README.md) |
+| Tracking record | Assigns durable tracker IDs and records fingerprints, lifecycle, actionability, policy classification, and related local or upstream work | [Accessibility Finding Tracking](./ACCESSIBILITY_FINDING_TRACKING.md) |
+
+Evidence collection can happen before a tracker exists. A focused evidence
+package can use this structure without creating a competing finding schema:
 
 ```yaml
-tracker_id: A11Y-123
+capture:
+  captured_at: 2026-08-04T14:30:00-04:00
+  capture_reference: account-settings-20260804T143000Z
+  scan_run_id: https://example.com/reports/run-2026-08-04
 
 target:
   component: Account settings form
@@ -827,15 +1284,23 @@ state:
   condition: invalid email submitted
 
 evidence:
-  before_snapshot: evidence/A11Y-123-before.aria.yml
-  after_snapshot: evidence/A11Y-123-after.aria.yml
-  dom_excerpt: evidence/A11Y-123-target.html
-  screenshot: evidence/A11Y-123-after.png
-  trace: https://evidence.example.test/A11Y-123/trace.zip
+  before_snapshot: evidence/account-settings-before.aria.yml
+  after_snapshot: evidence/account-settings-after.aria.yml
+  dom_excerpt: evidence/account-settings-target.html
+  screenshot: evidence/account-settings-after.png
+  trace: https://evidence.example.test/captures/account-settings-20260804T143000Z/trace.zip
+  chrome_accessibility:
+    method: Accessibility.getPartialAXTree
+    parameters:
+      fetchRelatives: true
+    excerpt: evidence/account-settings-after.ax.json
+    chromium_specific: true
 
 session:
   playwright_mcp_ref: e15
   ref_scope: original snapshot only
+  ax_node_ids: ["23"]
+  ax_id_scope: enabled CDP session and current document only
 
 environment:
   product_build: 2026.08.04.1
@@ -847,8 +1312,17 @@ environment:
 
 limitations:
   - MCP ref is temporary and excluded from fingerprint generation.
+  - AX and DOM node identifiers are session evidence, not durable locators.
   - Screen-reader output was not tested in this session.
 ```
+
+The manifest deliberately contains no tracker ID or fingerprint. The
+`capture_reference` locates this artifact set; it is not finding identity. Omit
+`scan_run_id` when the evidence was not produced by a defined scan run. If a
+tracker is later assigned, add its durable URI to the canonical finding's
+`tracking.tracker_ids` data and reference this existing evidence package. Do
+not calculate a tracker ID from the capture reference or rename historical
+evidence merely to match a new issue number.
 
 This is an explanatory evidence manifest, not a new interchange schema. In the
 canonical finding schema, use `source.raw_result_reference` and
@@ -861,7 +1335,7 @@ canonical finding schema, use `source.raw_result_reference` and
   "reported_at": "2026-08-04T14:30:00-04:00",
   "source": {
     "method": "semi-automated",
-    "raw_result_reference": "https://evidence.example.test/A11Y-123/mcp-session"
+    "raw_result_reference": "https://evidence.example.test/captures/account-settings-20260804T143000Z/mcp-session"
   },
   "location": {
     "scope": "component-state",
@@ -886,17 +1360,21 @@ canonical finding schema, use `source.raw_result_reference` and
   "evidence": {
     "references": [
       {
-        "reference": "https://evidence.example.test/A11Y-123/after.aria.yml",
+        "reference": "https://evidence.example.test/captures/account-settings-20260804T143000Z/after.aria.yml",
         "description": "Scoped ARIA snapshot after invalid submission."
       },
       {
-        "reference": "https://evidence.example.test/A11Y-123/after.png",
+        "reference": "https://evidence.example.test/captures/account-settings-20260804T143000Z/after.png",
         "description": "Redacted screenshot after invalid submission."
+      },
+      {
+        "reference": "https://evidence.example.test/captures/account-settings-20260804T143000Z/after.ax.json",
+        "description": "Focused Chromium getPartialAXTree excerpt after invalid submission."
       }
     ],
     "redacted": true,
     "contains_personal_data": false,
-    "retention_notes": "Retain with the tracked issue according to project policy."
+    "retention_notes": "Retain according to the evidence policy and link from tracked work if an issue is created."
   }
 }
 ```
@@ -1022,6 +1500,9 @@ Before treating a technical evidence package as ready for remediation, verify:
 - [Playwright assertions](https://playwright.dev/docs/test-assertions)
 - [Playwright locators](https://playwright.dev/docs/locators)
 - [Playwright accessibility testing](https://playwright.dev/docs/accessibility-testing)
+- [Playwright BrowserContext `newCDPSession`](https://playwright.dev/docs/api/class-browsercontext#browser-context-new-cdp-session)
+- [Playwright `CDPSession`](https://playwright.dev/docs/api/class-cdpsession)
+- [Chrome DevTools Protocol overview and versioning](https://chromedevtools.github.io/devtools-protocol/)
 - [Chrome DevTools Protocol Accessibility domain](https://chromedevtools.github.io/devtools-protocol/tot/Accessibility/)
 
 ---
