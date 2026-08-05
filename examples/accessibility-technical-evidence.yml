@@ -10,7 +10,7 @@ body:
 
         If you encountered a barrier but do not have technical evidence, use the general accessibility issue form. A valid report does not require MCP, Chrome developer tools, a selector, a WCAG mapping, or a proposed fix.
 
-        Technical evidence supports investigation. It does not by itself establish user impact, a WCAG failure, browser responsibility, or conformance. See [Technical Evidence for Reproducible Accessibility Findings](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_FINDING_EVIDENCE.html) and [Accessibility Bug Reporting Best Practices](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.html).
+        Technical evidence supports investigation. It does not by itself establish user impact, a WCAG failure, browser responsibility, or conformance. See [Technical Evidence for Reproducible Accessibility Findings](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_FINDING_EVIDENCE.html), [Accessibility Bug Reporting Best Practices](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.html), and [Accessibility Finding Issue Tracker Integration](https://mgifford.github.io/ACCESSIBILITY.md/examples/ACCESSIBILITY_FINDING_ISSUE_TRACKER_INTEGRATION.html).
 
   - type: textarea
     id: finding-summary
