@@ -100,7 +100,7 @@ The second example contains `Delete` and `report`, but inserts other words betwe
 
 This produces an accessible name such as `Edit Widget product` while preserving the visible word `Edit` at the start.
 
-A hidden prefix is not automatically a WCAG 2.5.3 failure if the visible text still appears intact in the accessible name. It can still make direct label activation harder. Prefer not to put hidden words before the text a person sees.
+Additional text before the visible label still conforms to WCAG 2.5.3 when the visible words remain intact, contiguous, and in order. W3C recommends placing visible text first. Product behaviour varies: Dragon and Windows Voice Access support partial matching, while Apple does not document partial-name matching. Prefer an exact name where possible; otherwise append necessary context and test supported environments.
 
 ### 3.6 Put supplemental instructions in the description
 
@@ -147,7 +147,7 @@ When a compact repeated action is necessary, add contextual text after the visib
 </ul>
 ```
 
-Test whether the supported speech tool allows the person to say the full unique name and whether its overlay presents repeated matches clearly.
+A unique hidden suffix may help screen-reader users and speech products that accept full or partial accessible names. It does not guarantee easier voice operation because the suffix may not be visible or predictable. Prefer specific visible labels where practical. Otherwise test the product's name overlay and disambiguation workflow.
 
 Do not make accessible names unique by replacing or reordering the visible label. `Modify billing address` is not a good hidden name for a visible `Edit` link.
 
@@ -397,6 +397,20 @@ Microphone or audio setup, if relevant:
 Viewport, zoom, and text size:
 ```
 
+Record compatibility claims with enough detail to reproduce and retest:
+
+```text
+| Product | Version | OS | Browser | Language | Test date |
+| --- | --- | --- | --- | --- | --- |
+| Dragon | 16 | Windows 11 23H2 | Chrome 126 | en-US | 2025-07-21 |
+| Windows Voice Access | 2405 | Windows 11 23H2 | Edge 126 | en-US | 2025-07-21 |
+| Apple Voice Control | macOS 14.5 | macOS 14.5 | Safari 17.5 | en-US | 2025-07-21 |
+| Apple Voice Control | iOS 17.5 | iOS 17.5 | Safari | en-US | 2025-07-21 |
+| Android Voice Access | 5.1 | Android 14 | Chrome 126 | en-US | 2025-07-21 |
+```
+
+Compatibility should include the product, version, operating system, browser, language, and test date. Recheck when any element in the stack changes.
+
 ## 13. Testing Procedure
 
 ### 13.1 Static inspection
@@ -470,9 +484,11 @@ Automation cannot reliably determine:
 
 Automated label-in-name comparisons must account for accessible-name computation, text normalization, punctuation, symbols, and localization. Treat uncertain results as review items rather than confirmed failures.
 
-## 15. Common Failure Patterns
+## 15. Common failures and usability risks
 
-| Failure | Better approach |
+Repeated labels and hidden prefixes are not necessarily WCAG failures. The following are common usability risks and patterns that increase effort or reduce reliability for speech users.
+
+| Issue | Better approach |
 | --- | --- |
 | Visible `Save` button has hidden name `Confirm changes` | Use `Save`, or a name beginning with `Save`. |
 | Hidden words are inserted inside the visible phrase | Keep the visible words contiguous and in order. |
@@ -554,6 +570,10 @@ WCAG criteria describe outcomes, not product-specific spoken commands. A command
 - [Understanding WCAG 2.2 Success Criterion 4.1.3: Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)
 - [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 - [Providing Accessible Names and Descriptions](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/)
+- [Apple Voice Control (Mac)](https://support.apple.com/en-gw/guide/mac-help/mh40719/mac)
+- [Apple Voice Control (iOS)](https://support.apple.com/en-ca/guide/iphone/iph2c21a3c88/ios)
+- [Microsoft Voice Access](https://support.microsoft.com/en-us/accessibility/windows/voice-access/use-voice-to-interact-with-items-on-the-screen)
+- [Android Voice Access](https://support.google.com/accessibility/android/answer/6151854)
 
 ## Machine-Readable Standards Metadata
 
