@@ -1,18 +1,22 @@
 version: 1
 generated_from: https://github.com/mgifford/a11y-ai-training/blob/main/Trusted%20resources%20for%20training%20AI%20-%20Trusted_Resources%20-%20compiled%20list%20with%20descriptions.csv
-generated_on: '2026-02-19'
+generated_on: '2026-09-01'
 notes:
 - First-pass machine-readable conversion from CSV.
 - Update authority_level, topic_tags, jurisdiction, and ownership during curation.
-- 'AI scraping policy: Sources can be marked with ''ai_scraping'' field. Values: ''allowed'' (default if omitted), ''prohibited'' (do not scrape/train on content), ''restricted'' (use only for reference/citation, not training).'
-- 'Respect content creator preferences: Even trusted sources may prohibit AI scraping. Always check ai_scraping field before using content for AI training.'
+- 'AI scraping policy: Sources can be marked with ''ai_scraping'' field. Values: ''allowed''
+  (default if omitted), ''prohibited'' (do not scrape/train on content), ''restricted''
+  (use only for reference/citation, not training).'
+- 'Respect content creator preferences: Even trusted sources may prohibit AI scraping.
+  Always check ai_scraping field before using content for AI training.'
 sources:
 - id: 3play-media
   domain: 3Play Media
   url: 3playmedia.com
   full_url: https://3playmedia.com
   best_for: audio, video, captions, audio descriptions
-  description: Provides captioning, transcription, and audio description services for video accessibility.
+  description: Provides captioning, transcription, and audio description services
+    for video accessibility.
   authority_level: to_review
   topic_tags:
   - captions
@@ -22,7 +26,7 @@ sources:
   - audio
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: 3Play Media
   license: unknown
   status: active
@@ -30,8 +34,12 @@ sources:
   domain: Able Player
   url: ableplayer.github.io/ableplayer
   full_url: https://ableplayer.github.io/ableplayer/
-  best_for: accessible media player, video accessibility, audio accessibility, captions, audio descriptions, keyboard navigation
-  description: Fully accessible cross-browser HTML5 media player with support for captions, audio descriptions, chapters, interactive transcripts, sign language, and keyboard navigation. Recommended default for accessible video and audio on the web.
+  best_for: accessible media player, video accessibility, audio accessibility, captions,
+    audio descriptions, keyboard navigation
+  description: Fully accessible cross-browser HTML5 media player with support for
+    captions, audio descriptions, chapters, interactive transcripts, sign language,
+    and keyboard navigation. Recommended default for accessible video and audio on
+    the web.
   authority_level: to_review
   topic_tags:
   - media
@@ -45,7 +53,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Terrill Thompson
   license: MIT
   status: active
@@ -53,8 +61,10 @@ sources:
   domain: A List Apart
   url: alistapart.com
   full_url: https://alistapart.com
-  best_for: inclusive design, interaction design, leadership, accessibility, system design
-  description: Magazine for people who make websites, often featuring in-depth articles on web standards, design, and accessibility.
+  best_for: inclusive design, interaction design, leadership, accessibility, system
+    design
+  description: Magazine for people who make websites, often featuring in-depth articles
+    on web standards, design, and accessibility.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -65,7 +75,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: A List Apart
   license: unknown
   status: active
@@ -74,7 +84,8 @@ sources:
   url: https://a11y-style-guide.com/
   full_url: https://a11y-style-guide.com/
   best_for: general accessibility
-  description: A practical, living style guide demonstrating accessible UI patterns and components.
+  description: A practical, living style guide demonstrating accessible UI patterns
+    and components.
   authority_level: to_review
   topic_tags:
   - design
@@ -82,16 +93,17 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
-  status: active
+  status: not active
 - id: a11y-canada-ca
   domain: a11y.canada.ca
   url: https://a11y.canada.ca/
   full_url: https://a11y.canada.ca/
   best_for: policy, best practices, standards, wcag
-  description: Government of Canada's digital accessibility standards and practices for federal websites.
+  description: Government of Canada's digital accessibility standards and practices
+    for federal websites.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -104,7 +116,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Government of Canada
   license: Open Government Licence - Canada
   status: active
@@ -123,7 +135,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -132,7 +144,8 @@ sources:
   url: aaron-gustafson.com
   full_url: https://aaron-gustafson.com
   best_for: code examples, aria, w3c
-  description: Personal site of a web designer, author, and accessibility advocate focusing on responsive design & web standards.
+  description: Personal site of a web designer, author, and accessibility advocate
+    focusing on responsive design & web standards.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -146,7 +159,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Aaron Gustafson
   license: unknown
   status: active
@@ -163,7 +176,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: AbilityNet
   license: unknown
   status: active
@@ -171,8 +184,10 @@ sources:
   domain: Accessibility for Ontarians with Disabilities Act(AODA)
   url: https://www.aoda.ca
   full_url: https://www.aoda.ca
-  best_for: AODA compliance, Canadian accessibility law, provincial accessibility standards, policy requirements, legal accessibility guidelines
-  description: Official portal for Accessibility for Ontarians with Disabilities Act information, standards, compliance guidance, and policy updates.
+  best_for: AODA compliance, Canadian accessibility law, provincial accessibility
+    standards, policy requirements, legal accessibility guidelines
+  description: Official portal for Accessibility for Ontarians with Disabilities Act
+    information, standards, compliance guidance, and policy updates.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -186,7 +201,7 @@ sources:
   - assistive-technology
   jurisdiction: Canada
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessibility for Ontarians with Disabilities Act(AODA)
   license: unknown
   status: active
@@ -202,7 +217,7 @@ sources:
   - captions
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UK Government
   license: Open Government Licence
   status: active
@@ -219,7 +234,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessibility Insights
   license: unknown
   status: active
@@ -228,7 +243,8 @@ sources:
   url: wicg.github.io/aom/
   full_url: https://wicg.github.io/aom/
   best_for: code examples, development
-  description: W3C Community Group page dedicated to the AOM specification, which aims to improve web accessibility APIs.
+  description: W3C Community Group page dedicated to the AOM specification, which
+    aims to improve web accessibility APIs.
   authority_level: to_review
   topic_tags:
   - development
@@ -236,7 +252,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessibility Object Model
   license: unknown
   status: active
@@ -245,7 +261,8 @@ sources:
   url: https://accessibility.huit.harvard.edu/
   full_url: https://accessibility.huit.harvard.edu/
   best_for: general accessibility
-  description: Harvard University's central resources for digital accessibility policy, tools, and training.
+  description: Harvard University's central resources for digital accessibility policy,
+    tools, and training.
   authority_level: established
   topic_tags:
   - testing
@@ -254,7 +271,7 @@ sources:
   - training
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Harvard University
   license: unknown
   status: active
@@ -263,7 +280,8 @@ sources:
   url: http://accessibility.oregonstate.edu/
   full_url: http://accessibility.oregonstate.edu/
   best_for: general accessibility
-  description: Accessibility resources, training, and policy guidance from Oregon State University.
+  description: Accessibility resources, training, and policy guidance from Oregon
+    State University.
   authority_level: established
   topic_tags:
   - design
@@ -273,7 +291,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Oregon State University
   license: unknown
   status: active
@@ -282,7 +300,8 @@ sources:
   url: accessibilityoz.com
   full_url: https://accessibilityoz.com
   best_for: wcag, vpat, australia, video, mobile
-  description: Australian consulting firm offering accessibility audits, training, and testing services.
+  description: Australian consulting firm offering accessibility audits, training,
+    and testing services.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -297,7 +316,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: AccessibilityOz
   license: unknown
   status: active
@@ -305,8 +324,10 @@ sources:
   domain: Accessible Culture
   url: https://accessibleculture.org
   full_url: https://accessibleculture.org
-  best_for: accessible arts, museum accessibility, cultural inclusion, event accessibility, public-space best practices
-  description: Accessible Culture promotes inclusion in arts and cultural institutions through guidelines, best practices, and tools for accessible cultural spaces.
+  best_for: accessible arts, museum accessibility, cultural inclusion, event accessibility,
+    public-space best practices
+  description: Accessible Culture promotes inclusion in arts and cultural institutions
+    through guidelines, best practices, and tools for accessible cultural spaces.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -316,7 +337,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessible Culture
   license: unknown
   status: active
@@ -333,7 +354,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessible Educational Materials (AEM)
   license: unknown
   status: active
@@ -342,7 +363,8 @@ sources:
   url: access-media.org
   full_url: https://access-media.org
   best_for: Media Accessibility
-  description: Resources and tools specific to making digital video and audio content accessible, focusing on captioning, transcription, and describing.
+  description: Resources and tools specific to making digital video and audio content
+    accessible, focusing on captioning, transcription, and describing.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -354,7 +376,7 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessible Media Education
   license: unknown
   status: active
@@ -363,7 +385,8 @@ sources:
   url: https://accessible-eu-centre.ec.europa.eu/
   full_url: https://accessible-eu-centre.ec.europa.eu/
   best_for: general accessibility, european accessibility act, en301549
-  description: European Union's center providing resources and knowledge on the European Accessibility Act.
+  description: European Union's center providing resources and knowledge on the European
+    Accessibility Act.
   authority_level: authoritative
   topic_tags:
   - captions
@@ -371,7 +394,7 @@ sources:
   - eaa
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: European Commission
   license: unknown
   status: active
@@ -379,8 +402,10 @@ sources:
   domain: accessible.canada.ca
   url: https://accessible.canada.ca/
   full_url: https://accessible.canada.ca/
-  best_for: Accessible Canada Act (ACA) information, Canadian legal requirements, policy on federal inclusion, promoting inclusion.
-  description: Information on the Accessible Canada Act, promoting inclusion and accessibility for persons with disabilities.
+  best_for: Accessible Canada Act (ACA) information, Canadian legal requirements,
+    policy on federal inclusion, promoting inclusion.
+  description: Information on the Accessible Canada Act, promoting inclusion and accessibility
+    for persons with disabilities.
   authority_level: authoritative
   topic_tags:
   - forms
@@ -394,7 +419,7 @@ sources:
   - assistive-technology
   jurisdiction: Canada
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Government of Canada
   license: Open Government Licence - Canada
   status: active
@@ -402,8 +427,10 @@ sources:
   domain: accessibleweb.com
   url: https://accessibleweb.com/
   full_url: https://accessibleweb.com/
-  best_for: Accessibility monitoring software, compliance reporting, WCAG testing services, ongoing website maintenance.
-  description: Services and software for accessibility testing, monitoring, and compliance reporting.
+  best_for: Accessibility monitoring software, compliance reporting, WCAG testing
+    services, ongoing website maintenance.
+  description: Services and software for accessibility testing, monitoring, and compliance
+    reporting.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -415,7 +442,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -435,7 +462,7 @@ sources:
   - assistive-technology
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: Public Domain
   status: active
@@ -444,7 +471,8 @@ sources:
   url: https://spectrum.adobe.com
   full_url: https://spectrum.adobe.com
   best_for: inclusive design, color, design system
-  description: Information on Adobe product accessibility, including PDF and creative suite tools.
+  description: Information on Adobe product accessibility, including PDF and creative
+    suite tools.
   authority_level: to_review
   topic_tags:
   - forms
@@ -458,16 +486,18 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Adobe Spectrum Design
   license: unknown
-  status: active
+  status: not active
 - id: adp-acb-org
   domain: adp.acb.org
   url: https://adp.acb.org/
   full_url: https://adp.acb.org/
-  best_for: Assistive technology resources, accessible product reviews, American Council of the Blind (ACB) programs, low-vision aids.
-  description: American Council of the Blind's resource for assistive technology and accessible products.
+  best_for: Assistive technology resources, accessible product reviews, American Council
+    of the Blind (ACB) programs, low-vision aids.
+  description: American Council of the Blind's resource for assistive technology and
+    accessible products.
   authority_level: established
   topic_tags:
   - captions
@@ -475,7 +505,7 @@ sources:
   - visual
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: American Council of the Blind
   license: unknown
   status: active
@@ -484,7 +514,8 @@ sources:
   url: adrianroselli.com
   full_url: https://adrianroselli.com
   best_for: wcag, code examples, ARIA, inclusive design, disabilities, W3c
-  description: Personal blog by accessibility expert Adrian Roselli covering WCAG, ARIA, and practical implementation.
+  description: Personal blog by accessibility expert Adrian Roselli covering WCAG,
+    ARIA, and practical implementation.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -500,7 +531,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Adrian Roselli
   license: unknown
   status: active
@@ -509,7 +540,8 @@ sources:
   url: afb.org
   full_url: https://afb.org
   best_for: blindness, low-vision, disabilities, legal
-  description: Major non-profit organization promoting education, research, and policy for people with vision loss.
+  description: Major non-profit organization promoting education, research, and policy
+    for people with vision loss.
   authority_level: established
   topic_tags:
   - policy
@@ -518,7 +550,7 @@ sources:
   - visual
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: American Foundation for the Blind
   license: unknown
   status: active
@@ -527,7 +559,8 @@ sources:
   url: http://developer.android.com
   full_url: http://developer.android.com
   best_for: Building and testing accessible apps for the Android platform
-  description: Guides and documentation for building accessible apps for the Android operating system.
+  description: Guides and documentation for building accessible apps for the Android
+    operating system.
   authority_level: to_review
   topic_tags:
   - forms
@@ -539,7 +572,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Android Accessibility
   license: unknown
   status: active
@@ -547,8 +580,10 @@ sources:
   domain: Annual Disability Statistics Compendium - Home
   url: https://www.disabilitycompendium.org
   full_url: https://www.disabilitycompendium.org
-  best_for: disability statistics, research data, national disability metrics, policy analysis, evidence-based disability insights
-  description: The Annual Disability Statistics Compendium aggregates national and state-level U.S. disability data across key demographic and policy areas.
+  best_for: disability statistics, research data, national disability metrics, policy
+    analysis, evidence-based disability insights
+  description: The Annual Disability Statistics Compendium aggregates national and
+    state-level U.S. disability data across key demographic and policy areas.
   authority_level: to_review
   topic_tags:
   - policy
@@ -556,7 +591,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Annual Disability Statistics Compendium - Home
   license: unknown
   status: active
@@ -565,7 +600,8 @@ sources:
   url: apple.com/accessibility
   full_url: https://apple.com/accessibility
   best_for: mobile, user preferences, ios, inclusive design
-  description: Details on built-in accessibility features across Apple's hardware and software ecosystem.
+  description: Details on built-in accessibility features across Apple's hardware
+    and software ecosystem.
   authority_level: to_review
   topic_tags:
   - design
@@ -575,7 +611,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Apple Accessibility
   license: unknown
   status: active
@@ -594,7 +630,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Apple Accessibility HIG
   license: unknown
   status: active
@@ -610,7 +646,7 @@ sources:
   - accessibility
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -628,7 +664,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Autistic Self Advocacy Network (ASAN)
   license: unknown
   status: active
@@ -646,7 +682,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Axe DevTools
   license: unknown
   status: active
@@ -654,7 +690,8 @@ sources:
   domain: barrierbreak.com
   url: https://barrierbreak.com/
   full_url: https://barrierbreak.com/
-  best_for: Global accessibility consulting, India-based testing services, international standards compliance, digital accessibility audits.
+  best_for: Global accessibility consulting, India-based testing services, international
+    standards compliance, digital accessibility audits.
   description: India-based global accessibility consulting and testing firm.
   authority_level: to_review
   topic_tags:
@@ -665,7 +702,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -673,8 +710,10 @@ sources:
   domain: BBC Accessibility
   url: bbc.co.uk/accessibility
   full_url: https://bbc.co.uk/accessibility
-  best_for: mobile accessibility, user experience, coding examples, content design, United Kingdom
-  description: The British Broadcasting Corporation's guidelines and commitment to accessible digital content.
+  best_for: mobile accessibility, user experience, coding examples, content design,
+    United Kingdom
+  description: The British Broadcasting Corporation's guidelines and commitment to
+    accessible digital content.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -685,7 +724,7 @@ sources:
   - assistive-technology
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: BBC Accessibility
   license: unknown
   status: active
@@ -702,7 +741,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: BBC Accessibility Guidelines
   license: unknown
   status: active
@@ -710,7 +749,8 @@ sources:
   domain: blog.pope.tech
   url: https://blog.pope.tech/
   full_url: https://blog.pope.tech/
-  best_for: Web accessibility scanning tools, automated reporting features, accessibility monitoring best practices, WCAG tips.
+  best_for: Web accessibility scanning tools, automated reporting features, accessibility
+    monitoring best practices, WCAG tips.
   description: Blog for Pope Tech, a web accessibility scanning and monitoring tool.
   authority_level: to_review
   topic_tags:
@@ -723,7 +763,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -732,7 +772,8 @@ sources:
   url: https://www.boia.org/
   full_url: https://www.boia.org/
   best_for: testing, audits
-  description: The Bureau of Internet Accessibility, offering website accessibility audits and remediation services.
+  description: The Bureau of Internet Accessibility, offering website accessibility
+    audits and remediation services.
   authority_level: to_review
   topic_tags:
   - testing
@@ -740,7 +781,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Bureau of Internet Accessibility
   license: unknown
   status: active
@@ -749,7 +790,8 @@ sources:
   url: whatsock.com
   full_url: https://whatsock.com
   best_for: code examples, development
-  description: Site by accessibility developer Bryan Garaventa, focusing on ARIA, scripting, and accessible widgets.
+  description: Site by accessibility developer Bryan Garaventa, focusing on ARIA,
+    scripting, and accessible widgets.
   authority_level: to_review
   topic_tags:
   - aria
@@ -759,16 +801,17 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Bryan Garaventa (WhatSock)
   license: unknown
-  status: active
+  status: not active
 - id: cnib-canadian-national-institute-for-the-blind
   domain: CNIB (Canadian National Institute for the Blind)
   url: cnib.ca
   full_url: https://cnib.ca
   best_for: Canada, AODA, ACA, blindness, low-vision, disabilities, legal
-  description: National charity providing support, services, and advocacy for Canadians with vision loss.
+  description: National charity providing support, services, and advocacy for Canadians
+    with vision loss.
   authority_level: to_review
   topic_tags:
   - audio-description
@@ -780,15 +823,16 @@ sources:
   - visual
   jurisdiction: Canada
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: CNIB (Canadian National Institute for the Blind)
   license: unknown
   status: active
 - id: colorandcontrast-com
   domain: colorandcontrast.com
   url: https://colorandcontrast.com/
   full_url: https://colorandcontrast.com/
-  best_for: WCAG color contrast validation, accessibility compliance tools, visual design best practices, accessible color palette creation.
+  best_for: WCAG color contrast validation, accessibility compliance tools, visual
+    design best practices, accessible color palette creation.
   description: Tool and resources focused on meeting WCAG color contrast requirements.
   authority_level: to_review
   topic_tags:
@@ -809,16 +853,18 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
-  status: active
+  status: not active
 - id: commission-europa-eu
   domain: commission.europa.eu
   url: https://commission.europa.eu/
   full_url: https://commission.europa.eu/
-  best_for: European digital inclusion policy, official EU legislation, European Commission's stance on digital accessibility.
-  description: European Commission's official site, including policy and legislation on digital inclusion.
+  best_for: European digital inclusion policy, official EU legislation, European Commission's
+    stance on digital accessibility.
+  description: European Commission's official site, including policy and legislation
+    on digital inclusion.
   authority_level: authoritative
   topic_tags:
   - inclusive-design
@@ -827,7 +873,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: European Commission
   license: unknown
   status: active
@@ -835,8 +881,10 @@ sources:
   domain: contentdesign.intuit.com
   url: https://contentdesign.intuit.com/
   full_url: https://contentdesign.intuit.com/
-  best_for: Intuit's design system principles, accessible content strategy, content guidelines for UX writing, inclusive design practices.
-  description: Intuit's (creators of QuickBooks) design system principles for accessible content.
+  best_for: Intuit's design system principles, accessible content strategy, content
+    guidelines for UX writing, inclusive design practices.
+  description: Intuit's (creators of QuickBooks) design system principles for accessible
+    content.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -846,7 +894,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -862,7 +910,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: DAISY Consortium
   license: unknown
   status: active
@@ -870,8 +918,10 @@ sources:
   domain: dcmp.org
   url: https://dcmp.org/
   full_url: https://dcmp.org/
-  best_for: Accessible educational videos, described and captioned media (DCMP), resources for students with disabilities, media accessibility standards.
-  description: Described and Captioned Media Program, providing accessible educational videos for students with disabilities.
+  best_for: Accessible educational videos, described and captioned media (DCMP), resources
+    for students with disabilities, media accessibility standards.
+  description: Described and Captioned Media Program, providing accessible educational
+    videos for students with disabilities.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -881,7 +931,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -889,8 +939,10 @@ sources:
   domain: Deque Systems
   url: deque.com
   full_url: https://deque.com
-  best_for: Accessibility software, testing (automated & manual), training, audits, compliance (ADA, VPAT, WCAG, etc.)
-  description: Enterprise accessibility software and consulting, creators of the axe-core automated testing engine.
+  best_for: Accessibility software, testing (automated & manual), training, audits,
+    compliance (ADA, VPAT, WCAG, etc.)
+  description: Enterprise accessibility software and consulting, creators of the axe-core
+    automated testing engine.
   authority_level: established
   topic_tags:
   - wcag
@@ -906,7 +958,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Deque Systems
   license: unknown
   status: active
@@ -915,7 +967,8 @@ sources:
   url: https://dequeuniversity.com/
   full_url: https://dequeuniversity.com/
   best_for: training, testing methods, remediation
-  description: Training for accessibility testing, development, ARIA use, and WCAG compliance.
+  description: Training for accessibility testing, development, ARIA use, and WCAG
+    compliance.
   authority_level: established
   topic_tags:
   - wcag
@@ -931,7 +984,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Deque Systems
   license: unknown
   status: active
@@ -940,7 +993,8 @@ sources:
   url: https://design-system.service.gov.uk/
   full_url: https://design-system.service.gov.uk/
   best_for: code examples, development, design, inclusive design, policy, best practices
-  description: The official GOV.UK Design System, with accessible components and front-end code.
+  description: The official GOV.UK Design System, with accessible components and front-end
+    code.
   authority_level: authoritative
   topic_tags:
   - design
@@ -950,7 +1004,7 @@ sources:
   - policy
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UK Government
   license: Open Government Licence
   status: active
@@ -959,7 +1013,8 @@ sources:
   url: https://designsystem.digital.gov/
   full_url: https://designsystem.digital.gov/
   best_for: design, inclusive design, policy, best practices
-  description: The U.S. Web Design System (USWDS), providing accessible government components and guidelines.
+  description: The U.S. Web Design System (USWDS), providing accessible government
+    components and guidelines.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -969,7 +1024,7 @@ sources:
   - policy
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: Public Domain
   status: active
@@ -978,7 +1033,8 @@ sources:
   url: https://developer.android.com/
   full_url: https://developer.android.com/
   best_for: code examples, development
-  description: General developer documentation for Android, including guides on platform accessibility.
+  description: General developer documentation for Android, including guides on platform
+    accessibility.
   authority_level: to_review
   topic_tags:
   - forms
@@ -990,7 +1046,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -999,7 +1055,8 @@ sources:
   url: https://developer.apple.com/
   full_url: https://developer.apple.com/
   best_for: code examples, development
-  description: Apple developer resources, with extensive guides on building accessible iOS and macOS apps.
+  description: Apple developer resources, with extensive guides on building accessible
+    iOS and macOS apps.
   authority_level: to_review
   topic_tags:
   - design
@@ -1008,7 +1065,7 @@ sources:
   - mobile
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Apple
   license: unknown
   status: active
@@ -1017,7 +1074,8 @@ sources:
   url: https://developer.microsoft.com/
   full_url: https://developer.microsoft.com/
   best_for: code examples, development
-  description: Microsoft developer documentation, including accessibility guides for Windows and web platforms.
+  description: Microsoft developer documentation, including accessibility guides for
+    Windows and web platforms.
   authority_level: to_review
   topic_tags:
   - forms
@@ -1028,7 +1086,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Microsoft
   license: unknown
   status: active
@@ -1037,7 +1095,8 @@ sources:
   url: https://developer.mozilla.org/
   full_url: https://developer.mozilla.org/
   best_for: standards, wcag
-  description: MDN Web Docs, the definitive resource for web standards, including detailed accessibility documentation.
+  description: MDN Web Docs, the definitive resource for web standards, including
+    detailed accessibility documentation.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1049,7 +1108,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Mozilla
   license: unknown
   status: active
@@ -1058,7 +1117,8 @@ sources:
   url: https://digital-strategy.ec.europa.eu/
   full_url: https://digital-strategy.ec.europa.eu/
   best_for: general accessibility
-  description: European Commission's strategy on digital transformation and inclusive technology policies.
+  description: European Commission's strategy on digital transformation and inclusive
+    technology policies.
   authority_level: authoritative
   topic_tags:
   - forms
@@ -1067,7 +1127,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: European Commission
   license: unknown
   status: active
@@ -1075,8 +1135,10 @@ sources:
   domain: Disability news in france
   url: https://informations.handicap.fr
   full_url: https://informations.handicap.fr
-  best_for: disability news (France), French accessibility resources, disability rights, inclusion information, European accessibility updates
-  description: Handicap.fr is a French information hub offering news, rights guidance, and resources for people with disabilities and accessibility professionals.
+  best_for: disability news (France), French accessibility resources, disability rights,
+    inclusion information, European accessibility updates
+  description: Handicap.fr is a French information hub offering news, rights guidance,
+    and resources for people with disabilities and accessibility professionals.
   authority_level: to_review
   topic_tags:
   - forms
@@ -1086,7 +1148,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Disability news in france
   license: unknown
   status: active
@@ -1094,8 +1156,10 @@ sources:
   domain: Disability Statistics
   url: https://www.disabilitystatistics.org
   full_url: https://www.disabilitystatistics.org
-  best_for: U.S. disability data, research tools, demographic insights, disability prevalence, statistical reporting
-  description: A resource offering curated U.S. disability statistics and tools for researchers, policymakers, and advocates.
+  best_for: U.S. disability data, research tools, demographic insights, disability
+    prevalence, statistical reporting
+  description: A resource offering curated U.S. disability statistics and tools for
+    researchers, policymakers, and advocates.
   authority_level: to_review
   topic_tags:
   - testing
@@ -1105,7 +1169,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Disability Statistics
   license: unknown
   status: active
@@ -1121,7 +1185,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1130,7 +1194,8 @@ sources:
   url: https://ebay.gitbook.io/
   full_url: https://ebay.gitbook.io/
   best_for: design, inclusive design
-  description: eBay's internal or public accessibility guidelines and design system documentation.
+  description: eBay's internal or public accessibility guidelines and design system
+    documentation.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1141,7 +1206,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1150,7 +1215,8 @@ sources:
   url: https://ec.europa.eu/
   full_url: https://ec.europa.eu/
   best_for: policy, best practices
-  description: The European Commission's main website, containing official documents and information.
+  description: The European Commission's main website, containing official documents
+    and information.
   authority_level: authoritative
   topic_tags:
   - forms
@@ -1159,7 +1225,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: European Commission
   license: unknown
   status: active
@@ -1168,7 +1234,8 @@ sources:
   url: https://www.edf-feph.org/
   full_url: https://www.edf-feph.org/
   best_for: general accessibility
-  description: European Disability Forum, an NGO advocating for the rights of people with disabilities.
+  description: European Disability Forum, an NGO advocating for the rights of people
+    with disabilities.
   authority_level: to_review
   topic_tags:
   - captions
@@ -1176,7 +1243,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1184,8 +1251,10 @@ sources:
   domain: Ethical Design guide
   url: https://ethicaldesign.guide
   full_url: https://ethicaldesign.guide
-  best_for: ethical design, UX best practices, responsible tech, privacy-first design, accessibility principles, human-centered design
-  description: A curated guide to ethical design principles, emphasizing responsible technology, accessibility, privacy, and human‚Äëcentered practices.
+  best_for: ethical design, UX best practices, responsible tech, privacy-first design,
+    accessibility principles, human-centered design
+  description: A curated guide to ethical design principles, emphasizing responsible
+    technology, accessibility, privacy, and human‚Äëcentered practices.
   authority_level: to_review
   topic_tags:
   - design
@@ -1193,7 +1262,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Ethical Design guide
   license: unknown
   status: active
@@ -1201,8 +1270,10 @@ sources:
   domain: Ethics for Designers
   url: https://www.ethicsfordesigners.com
   full_url: https://www.ethicsfordesigners.com
-  best_for: design ethics, UX decision-making, responsible innovation, ethical frameworks, design guidelines, product ethics
-  description: A resource providing ethical frameworks, checklists, and case studies to help designers integrate ethics into digital product decisions.
+  best_for: design ethics, UX decision-making, responsible innovation, ethical frameworks,
+    design guidelines, product ethics
+  description: A resource providing ethical frameworks, checklists, and case studies
+    to help designers integrate ethics into digital product decisions.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1210,7 +1281,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Ethics for Designers
   license: unknown
   status: active
@@ -1219,7 +1290,8 @@ sources:
   url: https://www.etsi.org/
   full_url: https://www.etsi.org/
   best_for: standards, wcag, european accessibility act, en301549
-  description: European Telecommunications Standards Institute, which develops ICT accessibility standards like EN 301 549.
+  description: European Telecommunications Standards Institute, which develops ICT
+    accessibility standards like EN 301 549.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1232,7 +1304,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1249,7 +1321,7 @@ sources:
   - assistive-technology
   jurisdiction: EU
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: European Commission
   license: unknown
   status: active
@@ -1266,7 +1338,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1274,7 +1346,8 @@ sources:
   domain: Freedom Scientific
   url: https://www.freedomscientific.com/
   full_url: https://www.freedomscientific.com/
-  best_for: JAWS, assistive technology, blind, low-visioni, reading, dyslexia, screen reader
+  best_for: JAWS, assistive technology, blind, low-visioni, reading, dyslexia, screen
+    reader
   description: Screen reader for Microsoft.
   authority_level: to_review
   topic_tags:
@@ -1284,7 +1357,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Freedom Scientific
   license: unknown
   status: active
@@ -1302,7 +1375,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1311,7 +1384,8 @@ sources:
   url: https://getevinced.github.io/
   full_url: https://getevinced.github.io/
   best_for: testing, audits
-  description: Documentation and resources for the Evinced automated accessibility testing platform.
+  description: Documentation and resources for the Evinced automated accessibility
+    testing platform.
   authority_level: to_review
   topic_tags:
   - forms
@@ -1321,16 +1395,17 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
-  status: active
+  status: not active
 - id: getstark-co
   domain: getstark.co
   url: https://www.getstark.co/
   full_url: https://www.getstark.co/
   best_for: design, inclusive design
-  description: Designer tool for checking color contrast, typography, and focus order for accessibility.
+  description: Designer tool for checking color contrast, typography, and focus order
+    for accessibility.
   authority_level: to_review
   topic_tags:
   - color
@@ -1342,7 +1417,7 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1351,7 +1426,8 @@ sources:
   url: google.com/accessibility
   full_url: https://google.com/accessibility
   best_for: tools/software, mobile, android, talk back, user preferences
-  description: Overview of accessibility features and tools across Google products, including Android, Chrome, and search.
+  description: Overview of accessibility features and tools across Google products,
+    including Android, Chrome, and search.
   authority_level: to_review
   topic_tags:
   - testing
@@ -1360,7 +1436,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Google Accessibility
   license: unknown
   status: active
@@ -1369,7 +1445,8 @@ sources:
   url: accessibility.blog.gov.uk
   full_url: https://accessibility.blog.gov.uk
   best_for: accessibility best practices, management, standards
-  description: Official blog from the UK government on public sector digital accessibility compliance and standards.
+  description: Official blog from the UK government on public sector digital accessibility
+    compliance and standards.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -1377,7 +1454,7 @@ sources:
   - policy
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UK Government
   license: Open Government Licence
   status: active
@@ -1395,22 +1472,23 @@ sources:
   - assistive-technology
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UK Government
   license: Open Government Licence
-  status: active
+  status: not active
 - id: handicap-fr
   domain: handicap.fr
   url: https://www.handicap.fr/
   full_url: https://www.handicap.fr/
   best_for: general accessibility
-  description: French-language news and resource site for people with disabilities and accessibility topics.
+  description: French-language news and resource site for people with disabilities
+    and accessibility topics.
   authority_level: to_review
   topic_tags:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1418,8 +1496,10 @@ sources:
   domain: Heydon Pickering
   url: heydonworks.com
   full_url: https://heydonworks.com
-  best_for: design/ux, inclusive design, interaction design, keyboard accessibility, wcag, aria
-  description: Personal site of a writer and accessibility expert focusing on inclusive design patterns and components.
+  best_for: design/ux, inclusive design, interaction design, keyboard accessibility,
+    wcag, aria
+  description: Personal site of a writer and accessibility expert focusing on inclusive
+    design patterns and components.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1435,7 +1515,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Heydon Pickering
   license: unknown
   status: active
@@ -1446,7 +1526,9 @@ sources:
   additional_urls:
   - https://talks.hiddedevries.nl/bio
   best_for: accessibility, web standards, wcag, aria, inclusive design, web components
-  description: Personal blog and speaking portfolio of accessibility advocate and web standards expert Hidde de Vries, featuring articles on ARIA, web components, and inclusive design practices.
+  description: Personal blog and speaking portfolio of accessibility advocate and
+    web standards expert Hidde de Vries, featuring articles on ARIA, web components,
+    and inclusive design practices.
   authority_level: high
   topic_tags:
   - accessibility
@@ -1468,7 +1550,8 @@ sources:
   url: html5doctor.com
   full_url: https://html5doctor.com
   best_for: design/ux, development/code, pdf/documents, resources/blog
-  description: Reference and guide site dedicated to proper usage and semantics of HTML5 elements for better accessibility.
+  description: Reference and guide site dedicated to proper usage and semantics of
+    HTML5 elements for better accessibility.
   authority_level: to_review
   topic_tags:
   - design
@@ -1479,7 +1562,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: HTML5 Doctor
   license: unknown
   status: active
@@ -1488,7 +1571,8 @@ sources:
   url: https://html5accessibility.com/
   full_url: https://html5accessibility.com/
   best_for: general accessibility
-  description: A reference site detailing the accessibility support status of various HTML5 features and elements.
+  description: A reference site detailing the accessibility support status of various
+    HTML5 features and elements.
   authority_level: to_review
   topic_tags:
   - captions
@@ -1496,10 +1580,10 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
-  status: active
+  status: not active
 - id: ibm-accessibility
   domain: IBM Accessibility
   url: https://www.ibm.com/able
@@ -1511,7 +1595,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: IBM Accessibility
   license: unknown
   status: active
@@ -1520,7 +1604,8 @@ sources:
   url: https://www.iheni.com/
   full_url: https://www.iheni.com/
   best_for: general accessibility
-  description: Personal site of accessibility specialist Henny Swan, focusing on inclusive user experience.
+  description: Personal site of accessibility specialist Henny Swan, focusing on inclusive
+    user experience.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -1530,8 +1615,8 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: accessibility specialist Henny Swan
   license: unknown
   status: active
 - id: inclusionhub-com
@@ -1539,7 +1624,8 @@ sources:
   url: https://inclusionhub.com/
   full_url: https://inclusionhub.com/
   best_for: design, inclusive design
-  description: A directory and resource center for accessibility and inclusive design tools, agencies, and vendors.
+  description: A directory and resource center for accessibility and inclusive design
+    tools, agencies, and vendors.
   authority_level: to_review
   topic_tags:
   - testing
@@ -1548,7 +1634,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1557,14 +1643,15 @@ sources:
   url: https://guide.inclusivedesign.ca/
   full_url: https://guide.inclusivedesign.ca/
   best_for: inclusive design decisions, design frameworks
-  description: Practical guide for implementing inclusive design throughout a design process.
+  description: Practical guide for implementing inclusive design throughout a design
+    process.
   authority_level: to_review
   topic_tags:
   - design
   - inclusive-design
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1580,7 +1667,7 @@ sources:
   - inclusive-design
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1595,7 +1682,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Joe Dolson
   license: unknown
   status: active
@@ -1604,7 +1691,8 @@ sources:
   url: https://juicystudio.com/
   full_url: https://juicystudio.com/
   best_for: general accessibility, standards, wcag, aria
-  description: Site by accessibility expert Gez Lemon, offering resources, articles, and tools.
+  description: Site by accessibility expert Gez Lemon, offering resources, articles,
+    and tools.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1616,8 +1704,8 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: accessibility expert Gez Lemon
   license: unknown
   status: active
 - id: karlgroves-com
@@ -1625,7 +1713,8 @@ sources:
   url: https://karlgroves.com/
   full_url: https://karlgroves.com/
   best_for: general accessibility, standards, wcag, aria
-  description: Personal site of accessibility consultant Karl Groves, featuring articles and services.
+  description: Personal site of accessibility consultant Karl Groves, featuring articles
+    and services.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1637,16 +1726,18 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: accessibility consultant Karl Groves
   license: unknown
   status: active
 - id: last-child-ted-s-site
   domain: Last child - Ted's site
   url: https://last-child.com
   full_url: https://last-child.com
-  best_for: general accessibility, trauma informed design, diversity, user experience, wcag, aria, web accessibility, leadership
-  description: Personal site of Ted Drake, focusing on accessibility development and testing.
+  best_for: general accessibility, trauma informed design, diversity, user experience,
+    wcag, aria, web accessibility, leadership
+  description: Personal site of Ted Drake, focusing on accessibility development and
+    testing.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1664,7 +1755,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Ted Drake
   license: unknown
   status: active
@@ -1672,8 +1763,10 @@ sources:
   domain: Law Office of Lainey Feingold
   url: lflegal.com
   full_url: https://lflegal.com
-  best_for: general accessibility, legal, ada, aoda, european accessibility act, structured negotiations
-  description: Legal resources, cases, and settlement agreements related to digital accessibility law.
+  best_for: general accessibility, legal, ada, aoda, european accessibility act, structured
+    negotiations
+  description: Legal resources, cases, and settlement agreements related to digital
+    accessibility law.
   authority_level: to_review
   topic_tags:
   - captions
@@ -1685,7 +1778,7 @@ sources:
   - assistive-technology
   jurisdiction: Canada
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Law Office of Lainey Feingold
   license: unknown
   status: active
@@ -1693,11 +1786,13 @@ sources:
   domain: Léonie Watson (Tink)
   url: tink.uk
   full_url: https://tink.uk
-  best_for: SVG accessibility, accessible SVG flowcharts, screen reader behaviour, ARIA, live regions, keyboard
-  description: >
-    Personal site of Léonie Watson, accessibility consultant and W3C invited expert.
-    Authoritative research on accessible SVG flowcharts, ARIA live regions, and
-    screen reader announcement behaviour. Referenced in WAI working groups.
+  best_for: SVG accessibility, accessible SVG flowcharts, screen reader behaviour,
+    ARIA, live regions, keyboard
+  description: 'Personal site of Léonie Watson, accessibility consultant and W3C invited
+    expert. Authoritative research on accessible SVG flowcharts, ARIA live regions,
+    and screen reader announcement behaviour. Referenced in WAI working groups.
+
+    '
   authority_level: community-expert
   topic_tags:
   - svg
@@ -1710,20 +1805,22 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Léonie Watson (Tink)
   license: unknown
   ai_scraping: restricted
-  ai_scraping_notes: >
-    Treat as restricted pending author confirmation. Cite and link;
+  ai_scraping_notes: 'Treat as restricted pending author confirmation. Cite and link;
     do not reproduce content wholesale or use for AI training.
+
+    '
   status: active
 - id: level-access
   domain: Level Access
   url: levelaccess.com
   full_url: https://levelaccess.com
   best_for: Enterprise Compliance
-  description: Accessibility auditing, consulting, and software for compliance and testing.
+  description: Accessibility auditing, consulting, and software for compliance and
+    testing.
   authority_level: to_review
   topic_tags:
   - testing
@@ -1731,7 +1828,7 @@ sources:
   - policy
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Level Access
   license: unknown
   status: active
@@ -1740,7 +1837,8 @@ sources:
   url: linkedin.com/accessibility
   full_url: https://linkedin.com/accessibility
   best_for: general accessibility
-  description: Accessibility features and commitments for the LinkedIn professional networking platform.
+  description: Accessibility features and commitments for the LinkedIn professional
+    networking platform.
   authority_level: to_review
   topic_tags:
   - forms
@@ -1749,7 +1847,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: LinkedIn Accessibility
   license: unknown
   status: active
@@ -1758,7 +1856,8 @@ sources:
   url: https://m3.material.io/
   full_url: https://m3.material.io/
   best_for: design, inclusive design
-  description: Google's Material Design 3 guidelines, including comprehensive accessibility specifications.
+  description: Google's Material Design 3 guidelines, including comprehensive accessibility
+    specifications.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1768,16 +1867,17 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
-  status: active
+  status: not active
 - id: marco-zehe
   domain: Marco Zehe
   url: marcozehe.de
   full_url: https://marcozehe.de
   best_for: news, thought leadership, blind, firefox
-  description: Personal blog of an accessibility advocate, often focusing on screen readers and Mozilla/Firefox.
+  description: Personal blog of an accessibility advocate, often focusing on screen
+    readers and Mozilla/Firefox.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -1789,16 +1889,17 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Marco Zehe
   license: unknown
-  status: active
+  status: not active
 - id: marcy-sutton
   domain: Marcy Sutton
   url: marcysutton.com
   full_url: https://marcysutton.com
   best_for: general accessibility
-  description: Personal site of an accessibility engineer, speaker, and trainer focused on modern web applications.
+  description: Personal site of an accessibility engineer, speaker, and trainer focused
+    on modern web applications.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -1808,7 +1909,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Marcy Sutton
   license: unknown
   status: active
@@ -1826,16 +1927,17 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Material Design Accessibility
   license: unknown
-  status: active
+  status: not active
 - id: mdn-accessibility
   domain: MDN Accessibility
   url: https://developer.mozilla.org/en-US/docs/Web/Accessibility
   full_url: https://developer.mozilla.org/en-US/docs/Web/Accessibility
   best_for: developer patterns, semantic HTML
-  description: Developer-focused documentation with code examples and accessibility best practices.
+  description: Developer-focused documentation with code examples and accessibility
+    best practices.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -1847,7 +1949,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: MDN Accessibility
   license: unknown
   status: active
@@ -1855,8 +1957,10 @@ sources:
   domain: MDN Web Docs (Mozilla)
   url: developer.mozilla.org
   full_url: https://developer.mozilla.org
-  best_for: Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs
-  description: Comprehensive resource for web developers, including guides on HTML, CSS, JavaScript, and accessibility APIs.
+  best_for: Comprehensive resource for web developers, including guides on HTML, CSS,
+    JavaScript, and accessibility APIs
+  description: Comprehensive resource for web developers, including guides on HTML,
+    CSS, JavaScript, and accessibility APIs.
   authority_level: to_review
   topic_tags:
   - design
@@ -1867,7 +1971,7 @@ sources:
   - javascript
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Mozilla
   license: unknown
   status: active
@@ -1875,7 +1979,8 @@ sources:
   domain: Microsoft Accessibility
   url: microsoft.com/en-us/accessibility
   full_url: https://microsoft.com/en-us/accessibility
-  best_for: Microsoft product accessibility features (Windows, Office, Edge), developer tools (Accessibility Insights), inclusive design principles.
+  best_for: Microsoft product accessibility features (Windows, Office, Edge), developer
+    tools (Accessibility Insights), inclusive design principles.
   description: Microsoft's accessibility commitment, products, and developer resources.
   authority_level: to_review
   topic_tags:
@@ -1888,7 +1993,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Microsoft Accessibility
   license: unknown
   status: active
@@ -1905,7 +2010,7 @@ sources:
   - inclusive-design
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -1913,8 +2018,10 @@ sources:
   domain: national association of the deaf
   url: https://nad.org
   full_url: https://nad.org
-  best_for: Deaf community resources, ASL advocacy, captioning standards, communication accessibility, disability rights (U.S.)
-  description: The National Association of the Deaf advocates for civil rights, education, accessibility, and communication access for Deaf and Hard-of-Hearing individuals.
+  best_for: Deaf community resources, ASL advocacy, captioning standards, communication
+    accessibility, disability rights (U.S.)
+  description: The National Association of the Deaf advocates for civil rights, education,
+    accessibility, and communication access for Deaf and Hard-of-Hearing individuals.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -1925,7 +2032,7 @@ sources:
   - auditory
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: national association of the deaf
   license: unknown
   status: active
@@ -1942,7 +2049,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: National Federation of the Blind
   license: unknown
   status: active
@@ -1951,7 +2058,8 @@ sources:
   url: ncam.wgbh.org
   full_url: https://ncam.wgbh.org
   best_for: general accessibility
-  description: Center focused on research, development, and policy to make media accessible for people with disabilities.
+  description: Center focused on research, development, and policy to make media accessible
+    for people with disabilities.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -1961,8 +2069,8 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: NCAM (National Center for Accessible Media)
   license: unknown
   status: active
 - id: nhk-japan-accessibility
@@ -1970,7 +2078,8 @@ sources:
   url: nhk.or.jp
   full_url: https://nhk.or.jp
   best_for: general accessibility
-  description: Japan's public broadcaster, providing information on their efforts for media and website accessibility.
+  description: Japan's public broadcaster, providing information on their efforts
+    for media and website accessibility.
   authority_level: to_review
   topic_tags:
   - forms
@@ -1979,7 +2088,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: NHK (Japan) Accessibility
   license: unknown
   status: active
@@ -1988,13 +2097,14 @@ sources:
   url: van11y.net
   full_url: https://van11y.net
   best_for: general accessibility, components
-  description: Resource site by Nicolas Hoffmann, providing accessible components and coding examples (van11y = Vanilla A11y).
+  description: Resource site by Nicolas Hoffmann, providing accessible components
+    and coding examples (van11y = Vanilla A11y).
   authority_level: to_review
   topic_tags:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Nicolas Hoffmann
   license: unknown
   status: active
@@ -2010,7 +2120,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Nielsen Norman Group
   license: unknown
   status: active
@@ -2018,8 +2128,10 @@ sources:
   domain: NVDA
   url: https://community.nvda-project.org
   full_url: https://community.nvda-project.org
-  best_for: screen reader support, NVDA troubleshooting, open-source accessibility tools, assistive technology, blindness accessibility
-  description: The community hub for NVDA users and developers, offering documentation, support forums, and accessibility resources.
+  best_for: screen reader support, NVDA troubleshooting, open-source accessibility
+    tools, assistive technology, blindness accessibility
+  description: The community hub for NVDA users and developers, offering documentation,
+    support forums, and accessibility resources.
   authority_level: to_review
   topic_tags:
   - screen-readers
@@ -2032,7 +2144,7 @@ sources:
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2040,8 +2152,14 @@ sources:
   domain: Opquast
   url: opquast.com
   full_url: https://www.opquast.com/
-  best_for: digital quality, web quality, accessibility, security, performance, privacy, ecodesign, checklists
-  description: Opquast develops and disseminates public repositories of best practices for web quality. The Opquast Digital Quality Checklist (Version 5, 2025–2030) contains 245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and overall web quality. Available in English and French at checklists.opquast.com. Opquast is a registered trademark and also provides skills certification.
+  best_for: digital quality, web quality, accessibility, security, performance, privacy,
+    ecodesign, checklists
+  description: Opquast develops and disseminates public repositories of best practices
+    for web quality. The Opquast Digital Quality Checklist (Version 5, 2025–2030)
+    contains 245 rules across 14 categories covering accessibility, security, performance,
+    privacy, ecodesign, and overall web quality. Available in English and French at
+    checklists.opquast.com. Opquast is a registered trademark and also provides skills
+    certification.
   authority_level: recommended
   topic_tags:
   - accessibility
@@ -2058,7 +2176,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Opquast
   license: CC-BY-SA-4.0
   ai_scraping: allowed
@@ -2067,8 +2185,13 @@ sources:
   domain: Opquast Digital Quality Checklist
   url: checklists.opquast.com/en/digital-quality/
   full_url: https://checklists.opquast.com/en/digital-quality/
-  best_for: digital quality checklist, web quality rules, accessibility rules, security rules, performance rules, privacy rules
-  description: The Opquast Digital Quality Checklist — 245 rules to improve websites and applications. Version 5, 2025–2030. Covers 14 categories including content, personal data, e-commerce, forms, navigation, presentation, security, server performance, and code structure. Published under Creative Commons BY-SA 4.0. Also available in French at checklists.opquast.com/fr/digital-quality/.
+  best_for: digital quality checklist, web quality rules, accessibility rules, security
+    rules, performance rules, privacy rules
+  description: The Opquast Digital Quality Checklist — 245 rules to improve websites
+    and applications. Version 5, 2025–2030. Covers 14 categories including content,
+    personal data, e-commerce, forms, navigation, presentation, security, server performance,
+    and code structure. Published under Creative Commons BY-SA 4.0. Also available
+    in French at checklists.opquast.com/fr/digital-quality/.
   authority_level: recommended
   topic_tags:
   - accessibility
@@ -2085,7 +2208,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Opquast
   license: CC-BY-SA-4.0
   ai_scraping: allowed
@@ -2102,7 +2225,7 @@ sources:
   - assistive-technology
   jurisdiction: Australia
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2111,7 +2234,8 @@ sources:
   url: pauljadam.com
   full_url: https://pauljadam.com
   best_for: general accessibility, mobile, ios, android, auditing
-  description: Personal site of a principal accessibility engineer and conference speaker.
+  description: Personal site of a principal accessibility engineer and conference
+    speaker.
   authority_level: to_review
   topic_tags:
   - testing
@@ -2119,7 +2243,7 @@ sources:
   - mobile
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Paul J. Adam
   license: unknown
   status: active
@@ -2128,7 +2252,8 @@ sources:
   url: pdfa.org
   full_url: https://pdfa.org
   best_for: standards, wcag, pdf
-  description: Organization promoting and developing the use of PDF standards, including accessibility (PDF/UA).
+  description: Organization promoting and developing the use of PDF standards, including
+    accessibility (PDF/UA).
   authority_level: to_review
   topic_tags:
   - wcag
@@ -2140,7 +2265,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: PDF Association
   license: unknown
   status: active
@@ -2149,15 +2274,16 @@ sources:
   url: rnib.org.uk
   full_url: https://rnib.org.uk
   best_for: general accessibility, blind, low-vision, disability, uk
-  description: UK-based charity offering support and resources for people with sight loss.
+  description: UK-based charity offering support and resources for people with sight
+    loss.
   authority_level: to_review
   topic_tags:
   - captions
   - visual
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: RNIB (Royal National Institute of Blind People)
   license: unknown
   status: active
 - id: section508-gov
@@ -2165,7 +2291,8 @@ sources:
   url: section508.gov
   full_url: https://section508.gov/
   best_for: U.S. federal accessibility policy and implementation guidance
-  description: Official U.S. government resource for Section 508 requirements, policy, and practical implementation guidance for federal ICT accessibility.
+  description: Official U.S. government resource for Section 508 requirements, policy,
+    and practical implementation guidance for federal ICT accessibility.
   authority_level: authoritative
   topic_tags:
   - design
@@ -2175,7 +2302,7 @@ sources:
   - assistive-technology
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: US Government
   license: Public Domain
   status: active
@@ -2184,7 +2311,8 @@ sources:
   url: ux.shopify.com
   full_url: https://ux.shopify.com
   best_for: design, inclusive design
-  description: Shopify's user experience (UX) documentation, including guides on accessible design within their platform.
+  description: Shopify's user experience (UX) documentation, including guides on accessible
+    design within their platform.
   authority_level: to_review
   topic_tags:
   - forms
@@ -2195,16 +2323,17 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Shopify UX
   license: unknown
-  status: active
+  status: not active
 - id: simply-accessible
   domain: Simply Accessible
   url: simplyaccessible.com
   full_url: https://simplyaccessible.com
   best_for: general accessibility
-  description: Accessibility consulting and training firm focused on practical, user-centered solutions.
+  description: Accessibility consulting and training firm focused on practical, user-centered
+    solutions.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -2213,7 +2342,7 @@ sources:
   - focus
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Simply Accessible
   license: unknown
   status: active
@@ -2229,7 +2358,7 @@ sources:
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2238,7 +2367,8 @@ sources:
   url: smashingmagazine.com
   full_url: https://smashingmagazine.com
   best_for: Front-End & UX Design
-  description: Leading online magazine for professional web designers and developers, with frequent accessibility coverage.
+  description: Leading online magazine for professional web designers and developers,
+    with frequent accessibility coverage.
   authority_level: to_review
   topic_tags:
   - design
@@ -2247,7 +2377,7 @@ sources:
   - audio-description
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Smashing Magazine
   license: unknown
   status: active
@@ -2265,7 +2395,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Teach Access
   license: unknown
   status: active
@@ -2274,14 +2404,15 @@ sources:
   url: https://www.a11yproject.com/
   full_url: https://www.a11yproject.com/
   best_for: best practices, checklists, onboarding
-  description: Community-driven accessibility resource with guides, checklists, and articles.
+  description: Community-driven accessibility resource with guides, checklists, and
+    articles.
   authority_level: to_review
   topic_tags:
   - design
   - captions
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: The A11Y Project
   license: unknown
   status: active
@@ -2289,8 +2420,10 @@ sources:
   domain: U.S. Department of Labor - Office of Disability Employment Policy
   url: https://www.dol.gov
   full_url: https://www.dol.gov
-  best_for: employment law, disability employment policy, workforce accessibility, labor regulations, workplace rights guidance
-  description: The U.S. Department of Labor site providing employment regulations, workplace rights information, and disability employment policy resources.
+  best_for: employment law, disability employment policy, workforce accessibility,
+    labor regulations, workplace rights guidance
+  description: The U.S. Department of Labor site providing employment regulations,
+    workplace rights information, and disability employment policy resources.
   authority_level: authoritative
   topic_tags:
   - forms
@@ -2300,8 +2433,8 @@ sources:
   - assistive-technology
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-09-01'
+  owner: U.S. Department of Labor - Office of Disability Employment Policy
   license: Public Domain
   status: active
 - id: uk-gov-accessibility-blog
@@ -2319,7 +2452,7 @@ sources:
   - visual
   jurisdiction: UK
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UK Government
   license: Open Government Licence
   status: active
@@ -2337,7 +2470,7 @@ sources:
   - section508
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: US Access Board
   license: Public Domain
   status: active
@@ -2346,7 +2479,8 @@ sources:
   url: visionaustralia.org
   full_url: https://visionaustralia.org
   best_for: general accessibility
-  description: Australian blindness and low vision service provider, offering advocacy and accessible technology services.
+  description: Australian blindness and low vision service provider, offering advocacy
+    and accessible technology services.
   authority_level: to_review
   topic_tags:
   - captions
@@ -2354,7 +2488,7 @@ sources:
   - visual
   jurisdiction: Australia
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Vision Australia
   license: unknown
   status: active
@@ -2362,8 +2496,10 @@ sources:
   domain: Vox Product Accessibility Guidelines
   url: https://accessibility.voxmedia.com
   full_url: https://accessibility.voxmedia.com
-  best_for: digital accessibility standards, accessible publishing, accessible design systems, industry accessibility practices, inclusive engineering
-  description: Vox Media's accessibility portal documenting inclusive design standards, engineering patterns, and digital accessibility processes.
+  best_for: digital accessibility standards, accessible publishing, accessible design
+    systems, industry accessibility practices, inclusive engineering
+  description: Vox Media's accessibility portal documenting inclusive design standards,
+    engineering patterns, and digital accessibility processes.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -2374,10 +2510,10 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Vox Product Accessibility Guidelines
   license: unknown
-  status: active
+  status: not active
 - id: w3c-silver-project-wcag-3
   domain: W3C Silver Project (WCAG 3)
   url: https://www.w3.org/WAI/GL/task-forces/silver/
@@ -2395,7 +2531,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C Silver Project (WCAG 3)
   license: W3C Software License
   status: active
@@ -2404,7 +2540,8 @@ sources:
   url: w3.org/WAI/
   full_url: https://w3.org/WAI/
   best_for: Web Standards & Guidelines
-  description: The official World Wide Web Consortium group that develops WCAG and other accessibility guidelines.
+  description: The official World Wide Web Consortium group that develops WCAG and
+    other accessibility guidelines.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -2416,7 +2553,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C
   license: W3C Software License
   status: active
@@ -2433,7 +2570,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: WAI-ARIA Authoring Practices
   license: W3C Software License
   status: active
@@ -2441,8 +2578,11 @@ sources:
   domain: 'W3C WAI: Making Audio and Video Media Accessible'
   url: w3.org/WAI/media/av
   full_url: https://www.w3.org/WAI/media/av/
-  best_for: audio accessibility, video accessibility, captions, transcripts, audio descriptions, media player accessibility
-  description: Comprehensive W3C WAI guidance on making audio and video content accessible, including requirements for captions, transcripts, audio descriptions, and accessible media players.
+  best_for: audio accessibility, video accessibility, captions, transcripts, audio
+    descriptions, media player accessibility
+  description: Comprehensive W3C WAI guidance on making audio and video content accessible,
+    including requirements for captions, transcripts, audio descriptions, and accessible
+    media players.
   authority_level: authoritative
   topic_tags:
   - media
@@ -2456,7 +2596,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C
   license: W3C Document License
   status: active
@@ -2473,7 +2613,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: WAI-Tools Project
   license: W3C Software License
   status: active
@@ -2482,7 +2622,10 @@ sources:
   url: https://github.com/mgifford/wai-yaml-ld
   full_url: https://github.com/mgifford/wai-yaml-ld
   best_for: WCAG lookups, AI training, machine-readable standards, standards relationships
-  description: Machine-readable accessibility standards context for AI coding systems. Provides structured YAML/JSON-LD/CSV artifacts of W3C WAI standards (WCAG, ATAG, UAAG, ARIA, HTML, CSS) that LLMs can consume for generating and reviewing accessible code.
+  description: Machine-readable accessibility standards context for AI coding systems.
+    Provides structured YAML/JSON-LD/CSV artifacts of W3C WAI standards (WCAG, ATAG,
+    UAAG, ARIA, HTML, CSS) that LLMs can consume for generating and reviewing accessible
+    code.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -2517,7 +2660,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: WCAG Guidelines
   license: W3C Software License
   status: active
@@ -2534,7 +2677,7 @@ sources:
   - audio-description
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2543,7 +2686,8 @@ sources:
   url: webaim.org
   full_url: https://webaim.org
   best_for: Training & Evaluation
-  description: Non-profit offering accessibility tools, training, and the annual screen reader survey.
+  description: Non-profit offering accessibility tools, training, and the annual screen
+    reader survey.
   authority_level: established
   topic_tags:
   - screen-readers
@@ -2554,7 +2698,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: WebAIM
   license: unknown
   status: active
@@ -2562,8 +2706,10 @@ sources:
   domain: CivicActions Accessibility
   url: accessibility.civicactions.com
   full_url: https://accessibility.civicactions.com/
-  best_for: automation workflows, practical implementation guides, open-source accessibility operations
-  description: CivicActions accessibility engineering resource hub with implementation-focused guidance, testing practices, and accessibility workflow patterns.
+  best_for: automation workflows, practical implementation guides, open-source accessibility
+    operations
+  description: CivicActions accessibility engineering resource hub with implementation-focused
+    guidance, testing practices, and accessibility workflow patterns.
   authority_level: to_review
   topic_tags:
   - keyboard
@@ -2574,7 +2720,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: CivicActions Accessibility
   license: unknown
   status: active
@@ -2582,8 +2728,13 @@ sources:
   domain: CivicActions Open Requirements Library - Accessibility
   url: github.com/CivicActions/open-practice
   full_url: https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md
-  best_for: procurement, Section 508, government contracts, RFP requirements, vendor requirements, WCAG compliance in procurement
-  description: Comprehensive, vendor-agnostic framework for integrating Section 508 and WCAG 2.2 Level AA accessibility requirements into government procurements. Provides copy-paste requirements for contracting officers to include in solicitations, covering project roles, task requirements, ACR processes, and quality assurance for website maintenance and enhancement.
+  best_for: procurement, Section 508, government contracts, RFP requirements, vendor
+    requirements, WCAG compliance in procurement
+  description: Comprehensive, vendor-agnostic framework for integrating Section 508
+    and WCAG 2.2 Level AA accessibility requirements into government procurements.
+    Provides copy-paste requirements for contracting officers to include in solicitations,
+    covering project roles, task requirements, ACR processes, and quality assurance
+    for website maintenance and enhancement.
   authority_level: to_review
   topic_tags:
   - procurement
@@ -2604,7 +2755,8 @@ sources:
   url: w3.org/WAI/WCAG22/Understanding/
   full_url: https://www.w3.org/WAI/WCAG22/Understanding/
   best_for: criterion-level interpretation and intent for WCAG 2.2
-  description: Official W3C explanatory guidance for each WCAG success criterion, including intent, benefits, examples, and related techniques.
+  description: Official W3C explanatory guidance for each WCAG success criterion,
+    including intent, benefits, examples, and related techniques.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -2616,7 +2768,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C WCAG Understanding Docs
   license: W3C Software License
   status: active
@@ -2625,7 +2777,8 @@ sources:
   url: w3.org/WAI/WCAG22/Techniques/
   full_url: https://www.w3.org/WAI/WCAG22/Techniques/
   best_for: implementation patterns and testable techniques for WCAG 2.2
-  description: Official W3C techniques repository with sufficient/advisory techniques and common failure patterns mapped to WCAG success criteria.
+  description: Official W3C techniques repository with sufficient/advisory techniques
+    and common failure patterns mapped to WCAG success criteria.
   authority_level: authoritative
   topic_tags:
   - wcag
@@ -2640,7 +2793,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C WCAG Techniques
   license: W3C Software License
   status: active
@@ -2649,7 +2802,9 @@ sources:
   url: ericwbailey.website
   full_url: https://ericwbailey.website/
   best_for: guideance for developers and designers
-  description: Working in the open Accessible and inclusive design Semantics and interoperability CSS architecture at scale Progressive enhancement Web performance Internationalization and localization.
+  description: Working in the open Accessible and inclusive design Semantics and interoperability
+    CSS architecture at scale Progressive enhancement Web performance Internationalization
+    and localization.
   authority_level: to_review
   topic_tags:
   - accessibility
@@ -2660,7 +2815,7 @@ sources:
   - open web
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2669,7 +2824,9 @@ sources:
   url: accessibility.github.com
   full_url: https://accessibility.github.com
   best_for: accessibility resources, documentation, best practices
-  description: GitHub's accessibility documentation and resources covering inclusive design practices, keyboard navigation, screen reader support, and WCAG compliance for GitHub products and general web development.
+  description: GitHub's accessibility documentation and resources covering inclusive
+    design practices, keyboard navigation, screen reader support, and WCAG compliance
+    for GitHub products and general web development.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -2689,7 +2846,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: GitHub Accessibility
   license: unknown
   status: active
@@ -2698,7 +2855,9 @@ sources:
   url: cariefisher.com
   full_url: https://cariefisher.com/
   best_for: accessibility articles, tutorials, speaking resources
-  description: Personal site of Carie Fisher, accessibility advocate and developer, featuring articles, talks, and resources on web accessibility, inclusive design, and WCAG implementation.
+  description: Personal site of Carie Fisher, accessibility advocate and developer,
+    featuring articles, talks, and resources on web accessibility, inclusive design,
+    and WCAG implementation.
   authority_level: community-expert
   topic_tags:
   - wcag
@@ -2716,20 +2875,23 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Carie Fisher
   license: unknown
   ai_scraping: prohibited
-  ai_scraping_notes: >
-    Author does not consent to AI scraping or reproduction. Link to articles;
-    do not fetch, summarise, or reproduce content. Confirm if policy changes.
+  ai_scraping_notes: 'Author does not consent to AI scraping or reproduction. Link
+    to articles; do not fetch, summarise, or reproduce content. Confirm if policy
+    changes.
+
+    '
   status: active
 - id: a11yweekly-com
   domain: A11y Weekly
   url: a11yweekly.com
   full_url: https://a11yweekly.com/
   best_for: weekly newsletter, curated accessibility content
-  description: Weekly newsletter featuring curated accessibility news, articles, tools, and resources from across the web accessibility community.
+  description: Weekly newsletter featuring curated accessibility news, articles, tools,
+    and resources from across the web accessibility community.
   authority_level: to_review
   topic_tags:
   - testing
@@ -2737,7 +2899,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: A11y Weekly
   license: unknown
   status: active
@@ -2746,7 +2908,8 @@ sources:
   url: d.umn.edu/itss/training/online/webdesign/
   full_url: https://www.d.umn.edu/itss/training/online/webdesign/index.html
   best_for: web design training, accessibility education
-  description: University of Minnesota Duluth's online web design training materials covering accessibility, HTML, CSS, and inclusive web development practices.
+  description: University of Minnesota Duluth's online web design training materials
+    covering accessibility, HTML, CSS, and inclusive web development practices.
   authority_level: established
   topic_tags:
   - design
@@ -2759,7 +2922,7 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -2768,7 +2931,10 @@ sources:
   url: overlayfactsheet.com
   full_url: https://overlayfactsheet.com/en/
   best_for: accessibility overlays, overlay problems, automated accessibility tools
-  description: Comprehensive documentation explaining why accessibility overlays should not be used as a substitute for proper accessible design. Signed by over 800 accessibility professionals. Essential reading on the limitations and problems with overlay widgets that claim to automatically fix accessibility issues.
+  description: Comprehensive documentation explaining why accessibility overlays should
+    not be used as a substitute for proper accessible design. Signed by over 800 accessibility
+    professionals. Essential reading on the limitations and problems with overlay
+    widgets that claim to automatically fix accessibility issues.
   authority_level: to_review
   topic_tags:
   - overlays
@@ -2780,7 +2946,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Karl Groves and overlay experts community
   license: unknown
   status: active
@@ -2788,8 +2954,12 @@ sources:
   domain: Fluid Infusion Preferences Framework
   url: docs.fluidproject.org/infusion/development/PreferencesFramework
   full_url: https://docs.fluidproject.org/infusion/development/PreferencesFramework
-  best_for: user preferences, personalization, accessibility customization, inclusive design
-  description: Reference implementation of user preference framework that allows users to customize text size, line spacing, font, contrast options, table of contents, and enhanced inputs. Demonstrates best practices for legitimate user personalization without claiming to fix accessibility issues.
+  best_for: user preferences, personalization, accessibility customization, inclusive
+    design
+  description: Reference implementation of user preference framework that allows users
+    to customize text size, line spacing, font, contrast options, table of contents,
+    and enhanced inputs. Demonstrates best practices for legitimate user personalization
+    without claiming to fix accessibility issues.
   authority_level: to_review
   topic_tags:
   - personalization
@@ -2801,7 +2971,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Fluid Project (IDRC)
   license: BSD-3-Clause
   status: active
@@ -2810,7 +2980,10 @@ sources:
   url: paypal.github.io/skipto
   full_url: https://paypal.github.io/skipto/
   best_for: skip navigation, landmarks menu, heading navigation, keyboard accessibility
-  description: Keyboard-accessible menu that lists all landmarks and headings on a page, making it easy for users to jump to different sections. Fills the gap where browsers don't provide easy page structure navigation. Triggered by keyboard shortcut (Alt+0 or Option+0).
+  description: Keyboard-accessible menu that lists all landmarks and headings on a
+    page, making it easy for users to jump to different sections. Fills the gap where
+    browsers don't provide easy page structure navigation. Triggered by keyboard shortcut
+    (Alt+0 or Option+0).
   authority_level: to_review
   topic_tags:
   - navigation
@@ -2823,16 +2996,18 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: PayPal Accessibility Team
   license: Apache-2.0
-  status: active
+  status: not active
 - id: elevenways-media-queries
   domain: Eleven Ways - Media Queries Article
   url: elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries
   full_url: https://elevenways.be/en/articles/a-more-inclusive-website-thanks-to-media-queries
   best_for: CSS media queries, user preferences, inclusive design, prefers-reduced-motion
-  description: Comprehensive guide on using CSS media queries to create more inclusive websites by respecting user preferences for motion, color scheme, contrast, and transparency.
+  description: Comprehensive guide on using CSS media queries to create more inclusive
+    websites by respecting user preferences for motion, color scheme, contrast, and
+    transparency.
   authority_level: to_review
   topic_tags:
   - css
@@ -2844,7 +3019,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Eleven Ways
   license: unknown
   status: active
@@ -2852,8 +3027,11 @@ sources:
   domain: DockYard - CSS Media Queries Accessibility
   url: dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design
   full_url: https://dockyard.com/blog/2024/01/16/css-media-queries-accessibility-optimize-digital-product-design
-  best_for: CSS media queries, accessibility optimization, responsive design, user preferences
-  description: Guide on using CSS media queries to optimize digital product design for accessibility, covering prefers-reduced-motion, prefers-color-scheme, prefers-contrast, and other user preference queries.
+  best_for: CSS media queries, accessibility optimization, responsive design, user
+    preferences
+  description: Guide on using CSS media queries to optimize digital product design
+    for accessibility, covering prefers-reduced-motion, prefers-color-scheme, prefers-contrast,
+    and other user preference queries.
   authority_level: to_review
   topic_tags:
   - css
@@ -2864,7 +3042,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: DockYard
   license: unknown
   status: inactive
@@ -2873,7 +3051,9 @@ sources:
   url: pmc.ncbi.nlm.nih.gov/articles/PMC5934461
   full_url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5934461/
   best_for: dyslexia fonts research, typography, reading accessibility
-  description: Research article examining the effectiveness of typeface on reading performance for readers with dyslexia. Provides scientific context on dyslexia-friendly font claims.
+  description: Research article examining the effectiveness of typeface on reading
+    performance for readers with dyslexia. Provides scientific context on dyslexia-friendly
+    font claims.
   authority_level: authoritative
   topic_tags:
   - research
@@ -2883,7 +3063,7 @@ sources:
   - readability
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: PubMed Central / NIH
   license: public-domain
   status: active
@@ -2892,7 +3072,9 @@ sources:
   url: heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth
   full_url: https://www.heidigregoryparentadvocacy.com/post/the-dyslexia-friendly-font-myth
   best_for: dyslexia fonts, evidence-based practices, typography myths
-  description: Parent advocate and educator perspective on dyslexia-friendly fonts, examining research evidence and practical considerations for font selection in educational settings.
+  description: Parent advocate and educator perspective on dyslexia-friendly fonts,
+    examining research evidence and practical considerations for font selection in
+    educational settings.
   authority_level: to_review
   topic_tags:
   - dyslexia
@@ -2902,7 +3084,7 @@ sources:
   - evidence-based
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Heidi Gregory
   license: unknown
   status: active
@@ -2911,7 +3093,9 @@ sources:
   url: edutopia.org/article/do-dyslexia-fonts-actually-work
   full_url: https://www.edutopia.org/article/do-dyslexia-fonts-actually-work
   best_for: dyslexia fonts, education research, evidence-based practices
-  description: Educational resource examining research on whether specialized dyslexia fonts actually improve reading for students with dyslexia, providing balanced perspective on font choice.
+  description: Educational resource examining research on whether specialized dyslexia
+    fonts actually improve reading for students with dyslexia, providing balanced
+    perspective on font choice.
   authority_level: to_review
   topic_tags:
   - dyslexia
@@ -2921,7 +3105,7 @@ sources:
   - research
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: George Lucas Educational Foundation
   license: unknown
   status: active
@@ -2930,7 +3114,9 @@ sources:
   url: almanac.httparchive.org/en/2024/accessibility
   full_url: https://almanac.httparchive.org/en/2024/accessibility
   best_for: accessibility trends, web statistics, user personalization, overlay analysis
-  description: Annual report analyzing the state of web accessibility based on HTTP Archive data. Includes sections on user personalization widgets, overlay remediation, and current accessibility practices across millions of websites.
+  description: Annual report analyzing the state of web accessibility based on HTTP
+    Archive data. Includes sections on user personalization widgets, overlay remediation,
+    and current accessibility practices across millions of websites.
   authority_level: authoritative
   topic_tags:
   - research
@@ -2943,7 +3129,7 @@ sources:
   - '2.0'
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: HTTP Archive / W3C
   license: Apache-2.0
   status: active
@@ -2952,7 +3138,9 @@ sources:
   url: sparkgeo.com/blog/the-accessibility-of-web-maps
   full_url: https://sparkgeo.com/blog/the-accessibility-of-web-maps/
   best_for: web map accessibility, interactive maps, WCAG compliance for maps
-  description: Practical guidance on making web-based interactive maps accessible, covering WCAG requirements, keyboard navigation, alternative text, and color contrast for cartographic content.
+  description: Practical guidance on making web-based interactive maps accessible,
+    covering WCAG requirements, keyboard navigation, alternative text, and color contrast
+    for cartographic content.
   authority_level: community
   topic_tags:
   - maps
@@ -2964,7 +3152,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Sparkgeo
   license: unknown
   status: active
@@ -2973,7 +3161,9 @@ sources:
   url: accessibilityoz.com/factsheets/interactive-maps/interactive-map-accessibility-principles
   full_url: https://www.accessibilityoz.com/factsheets/interactive-maps/interactive-map-accessibility-principles/
   best_for: interactive map accessibility, map accessibility principles, WCAG maps
-  description: Factsheet outlining core accessibility principles for interactive maps, including keyboard operability, screen reader support, and alternatives to visual map data.
+  description: Factsheet outlining core accessibility principles for interactive maps,
+    including keyboard operability, screen reader support, and alternatives to visual
+    map data.
   authority_level: practitioner
   topic_tags:
   - maps
@@ -2985,7 +3175,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: AccessibilityOz
   license: unknown
   status: active
@@ -2994,7 +3184,9 @@ sources:
   url: github.com/maptime/map-accessibility-guidelines
   full_url: https://github.com/maptime/map-accessibility-guidelines
   best_for: map accessibility guidelines, cartography accessibility, open source maps
-  description: Community-developed guidelines for making maps accessible, covering alternative text, color, keyboard navigation, and structured data alternatives for cartographic content.
+  description: Community-developed guidelines for making maps accessible, covering
+    alternative text, color, keyboard navigation, and structured data alternatives
+    for cartographic content.
   authority_level: community
   topic_tags:
   - maps
@@ -3004,7 +3196,7 @@ sources:
   - alternative-text
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: maptime community
   license: unknown
   status: active
@@ -3012,8 +3204,12 @@ sources:
   domain: arXiv
   url: arxiv.org/abs/2512.05310
   full_url: https://arxiv.org/abs/2512.05310
-  best_for: maps accessibility, equivalent purpose, text alternatives for maps, visual-semantic representation, WCAG 1.1.1
-  description: Research paper presenting a systematic framework for evaluating equivalent purpose for digital maps, examining the gap between visual and semantic map representation to help practitioners assess whether text alternatives truly serve the same purpose as the visual map under WCAG 1.1.1.
+  best_for: maps accessibility, equivalent purpose, text alternatives for maps, visual-semantic
+    representation, WCAG 1.1.1
+  description: Research paper presenting a systematic framework for evaluating equivalent
+    purpose for digital maps, examining the gap between visual and semantic map representation
+    to help practitioners assess whether text alternatives truly serve the same purpose
+    as the visual map under WCAG 1.1.1.
   authority_level: practitioner
   topic_tags:
   - maps
@@ -3026,7 +3222,7 @@ sources:
   jurisdiction: global
   wcag_version:
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: arXiv contributors
   license: arXiv non-exclusive license
   status: active
@@ -3035,7 +3231,9 @@ sources:
   url: w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html
   full_url: https://w3c.github.io/coga/research-modules/Technology-Assisted-Indoor-Navigation-and-Wayfindings.html
   best_for: indoor navigation, wayfinding, cognitive accessibility, indoor maps
-  description: W3C Cognitive and Learning Disabilities Accessibility Task Force research module on technology-assisted indoor navigation and wayfinding, covering cognitive needs in spatial orientation systems.
+  description: W3C Cognitive and Learning Disabilities Accessibility Task Force research
+    module on technology-assisted indoor navigation and wayfinding, covering cognitive
+    needs in spatial orientation systems.
   authority_level: authoritative
   topic_tags:
   - maps
@@ -3047,7 +3245,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: W3C COGA Task Force
   license: W3C Document License
   status: active
@@ -3056,7 +3254,9 @@ sources:
   url: guides.lib.virginia.edu/c.php?g=1248895
   full_url: https://guides.lib.virginia.edu/c.php?g=1248895
   best_for: maps accessibility, library maps, geographic information systems accessibility
-  description: University of Virginia Libraries guide on web accessibility for maps and geographic content, providing practical recommendations for accessible map alternatives in educational and research contexts.
+  description: University of Virginia Libraries guide on web accessibility for maps
+    and geographic content, providing practical recommendations for accessible map
+    alternatives in educational and research contexts.
   authority_level: practitioner
   topic_tags:
   - maps
@@ -3067,7 +3267,7 @@ sources:
   jurisdiction: us
   wcag_version:
   - '2.1'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: University of Virginia Libraries
   license: unknown
   status: active
@@ -3076,7 +3276,8 @@ sources:
   url: codersblock.com/blog/anchor-links-and-how-to-make-them-awesome
   full_url: https://codersblock.com/blog/anchor-links-and-how-to-make-them-awesome/
   best_for: anchor links, in-page navigation, smooth scroll, CSS, JavaScript
-  description: Practical guide to building anchor links, covering URL fragments, scroll offsets, smooth-scroll animation, and making heading links visible on hover.
+  description: Practical guide to building anchor links, covering URL fragments, scroll
+    offsets, smooth-scroll animation, and making heading links visible on hover.
   authority_level: practitioner
   topic_tags:
   - anchor-links
@@ -3086,7 +3287,7 @@ sources:
   - smooth-scroll
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Will Boyd
   license: unknown
   status: active
@@ -3095,7 +3296,8 @@ sources:
   url: amberwilson.co.uk/blog/are-your-anchor-links-accessible
   full_url: https://amberwilson.co.uk/blog/are-your-anchor-links-accessible/
   best_for: anchor links accessibility, focus management, WCAG, skip links
-  description: Accessibility-focused guide to anchor links, covering descriptive link text, focus management after navigation, keyboard support, and WCAG success criteria.
+  description: Accessibility-focused guide to anchor links, covering descriptive link
+    text, focus management after navigation, keyboard support, and WCAG success criteria.
   authority_level: practitioner
   topic_tags:
   - anchor-links
@@ -3107,7 +3309,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Amber Wilson
   license: unknown
   status: active
@@ -3115,8 +3317,11 @@ sources:
   domain: CSS-Tricks
   url: css-tricks.com/almanac/rules/m/media/prefers-reduced-motion
   full_url: https://css-tricks.com/almanac/rules/m/media/prefers-reduced-motion/
-  best_for: prefers-reduced-motion, CSS media queries, vestibular disorders, animation accessibility
-  description: Reference article on the prefers-reduced-motion CSS media query, with examples for disabling or reducing animation for users who have requested reduced motion in their OS settings.
+  best_for: prefers-reduced-motion, CSS media queries, vestibular disorders, animation
+    accessibility
+  description: Reference article on the prefers-reduced-motion CSS media query, with
+    examples for disabling or reducing animation for users who have requested reduced
+    motion in their OS settings.
   authority_level: practitioner
   topic_tags:
   - css
@@ -3128,7 +3333,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: CSS-Tricks / DigitalOcean
   license: unknown
   status: active
@@ -3136,8 +3341,10 @@ sources:
   domain: ta11y.org
   url: ta11y.org
   full_url: https://ta11y.org/
-  best_for: accessibility testing, automated testing, WCAG compliance, accessibility scoring
-  description: Accessibility testing and scoring tool that helps developers and teams evaluate and improve the accessibility of web content against WCAG standards.
+  best_for: accessibility testing, automated testing, WCAG compliance, accessibility
+    scoring
+  description: Accessibility testing and scoring tool that helps developers and teams
+    evaluate and improve the accessibility of web content against WCAG standards.
   authority_level: to_review
   topic_tags:
   - testing
@@ -3148,7 +3355,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -3156,8 +3363,10 @@ sources:
   domain: whollyaccessible.org
   url: whollyaccessible.org
   full_url: https://whollyaccessible.org/
-  best_for: accessibility guidance, inclusive design, disability inclusion, web accessibility best practices
-  description: Resource site providing accessibility guidance and best practices for creating inclusive digital experiences.
+  best_for: accessibility guidance, inclusive design, disability inclusion, web accessibility
+    best practices
+  description: Resource site providing accessibility guidance and best practices for
+    creating inclusive digital experiences.
   authority_level: to_review
   topic_tags:
   - wcag
@@ -3165,7 +3374,7 @@ sources:
   - inclusive-design
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: null
   license: unknown
   status: active
@@ -3173,8 +3382,10 @@ sources:
   domain: accessiblecommunity.org
   url: accessiblecommunity.org
   full_url: https://accessiblecommunity.org/
-  best_for: community accessibility, disability inclusion, accessible events, grassroots accessibility
-  description: Organization dedicated to helping communities become more accessible and inclusive for people with disabilities through practical resources and guidance.
+  best_for: community accessibility, disability inclusion, accessible events, grassroots
+    accessibility
+  description: Organization dedicated to helping communities become more accessible
+    and inclusive for people with disabilities through practical resources and guidance.
   authority_level: to_review
   topic_tags:
   - accessibility
@@ -3183,7 +3394,7 @@ sources:
   - disability
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Accessible Community
   license: unknown
   status: active
@@ -3191,8 +3402,11 @@ sources:
   domain: Niagara College Accessibility Hub
   url: https://accessibilityhub.niagaracollege.ca/
   full_url: https://accessibilityhub.niagaracollege.ca/
-  best_for: charts and graphs accessibility, web accessibility guidance, digital accessibility, inclusive design
-  description: Accessibility Hub from Niagara College providing practical guidance on web accessibility topics including charts, graphs, forms, and multimedia for educators and web developers.
+  best_for: charts and graphs accessibility, web accessibility guidance, digital accessibility,
+    inclusive design
+  description: Accessibility Hub from Niagara College providing practical guidance
+    on web accessibility topics including charts, graphs, forms, and multimedia for
+    educators and web developers.
   authority_level: to_review
   topic_tags:
   - charts
@@ -3204,16 +3418,18 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Niagara College
   license: unknown
-  status: active
+  status: not active
 - id: userway-blog
   domain: UserWay Blog
   url: userway.org/blog
   full_url: https://userway.org/blog/
   best_for: tooltip accessibility, ARIA patterns, practical accessibility guidance
-  description: Practical accessibility guidance from UserWay, including articles on accessible UI components such as tooltips, covering ARIA roles, keyboard interaction, and WCAG compliance.
+  description: Practical accessibility guidance from UserWay, including articles on
+    accessible UI components such as tooltips, covering ARIA roles, keyboard interaction,
+    and WCAG compliance.
   authority_level: practitioner
   topic_tags:
   - tooltip
@@ -3225,7 +3441,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: UserWay
   license: unknown
   status: active
@@ -3234,7 +3450,9 @@ sources:
   url: carbondesignsystem.com
   full_url: https://carbondesignsystem.com
   best_for: design system components, tooltip accessibility, IBM accessibility patterns
-  description: IBM's open-source design system providing accessible component patterns including tooltips, data tables, and complex UI elements, with dedicated accessibility guidance pages.
+  description: IBM's open-source design system providing accessible component patterns
+    including tooltips, data tables, and complex UI elements, with dedicated accessibility
+    guidance pages.
   authority_level: established
   topic_tags:
   - design-system
@@ -3247,7 +3465,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: IBM
   license: Apache-2.0
   status: active
@@ -3255,8 +3473,11 @@ sources:
   domain: Red Hat UX Patterns
   url: ux.redhat.com
   full_url: https://ux.redhat.com
-  best_for: enterprise UI accessibility, tooltip accessibility, PatternFly component guidance
-  description: Red Hat's UX patterns library (PatternFly) providing accessibility guidance for enterprise UI components including tooltips, with ARIA implementation details.
+  best_for: enterprise UI accessibility, tooltip accessibility, PatternFly component
+    guidance
+  description: Red Hat's UX patterns library (PatternFly) providing accessibility
+    guidance for enterprise UI components including tooltips, with ARIA implementation
+    details.
   authority_level: established
   topic_tags:
   - design-system
@@ -3269,7 +3490,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Red Hat
   license: MIT
   status: active
@@ -3278,7 +3499,8 @@ sources:
   url: saltdesignsystem.com
   full_url: https://www.saltdesignsystem.com
   best_for: tooltip accessibility, financial UI components, J.P. Morgan design patterns
-  description: J.P. Morgan's Salt Design System providing accessibility guidance for financial application UI components including tooltips and complex data widgets.
+  description: J.P. Morgan's Salt Design System providing accessibility guidance for
+    financial application UI components including tooltips and complex data widgets.
   authority_level: established
   topic_tags:
   - design-system
@@ -3291,7 +3513,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: J.P. Morgan
   license: Apache-2.0
   status: active
@@ -3299,8 +3521,10 @@ sources:
   domain: Piccalilli
   url: piccalil.li
   full_url: https://piccalil.li
-  best_for: CSS best practices, print CSS, progressive enhancement, accessibility tutorials
-  description: Andy Bell's blog covering modern CSS techniques, progressive enhancement, and accessibility, including in-depth print CSS guidance.
+  best_for: CSS best practices, print CSS, progressive enhancement, accessibility
+    tutorials
+  description: Andy Bell's blog covering modern CSS techniques, progressive enhancement,
+    and accessibility, including in-depth print CSS guidance.
   authority_level: established
   topic_tags:
   - css
@@ -3312,7 +3536,7 @@ sources:
   wcag_version:
   - '2.1'
   - '2.2'
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Andy Bell
   license: unknown
   status: active
@@ -3321,7 +3545,8 @@ sources:
   url: pagedjs.org
   full_url: https://pagedjs.org
   best_for: CSS paged media, print CSS, PDF generation, page breaks, running headers
-  description: Open-source JavaScript library implementing the W3C CSS Paged Media Level 3 specification, enabling advanced print layout features in browsers.
+  description: Open-source JavaScript library implementing the W3C CSS Paged Media
+    Level 3 specification, enabling advanced print layout features in browsers.
   authority_level: established
   topic_tags:
   - css
@@ -3331,7 +3556,7 @@ sources:
   - open-source
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Paged.js community
   license: MIT
   status: active
@@ -3340,7 +3565,8 @@ sources:
   url: sitepoint.com
   full_url: https://www.sitepoint.com
   best_for: web development tutorials, CSS, JavaScript, accessibility, print CSS
-  description: Developer learning platform with tutorials covering HTML, CSS, JavaScript, and web accessibility including print stylesheet guidance.
+  description: Developer learning platform with tutorials covering HTML, CSS, JavaScript,
+    and web accessibility including print stylesheet guidance.
   authority_level: to_review
   topic_tags:
   - css
@@ -3350,7 +3576,7 @@ sources:
   - javascript
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: SitePoint Pty Ltd
   license: unknown
   status: active
@@ -3359,7 +3585,8 @@ sources:
   url: syntax.fm
   full_url: https://syntax.fm
   best_for: web development podcast, CSS, JavaScript, print CSS, developer education
-  description: Popular web development podcast by Wes Bos and Scott Tolinski covering modern web technologies including CSS print and PDF generation.
+  description: Popular web development podcast by Wes Bos and Scott Tolinski covering
+    modern web technologies including CSS print and PDF generation.
   authority_level: to_review
   topic_tags:
   - css
@@ -3369,7 +3596,7 @@ sources:
   - pdf
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: Syntax
   license: unknown
   status: active
@@ -3378,7 +3605,8 @@ sources:
   url: printedcss.com
   full_url: https://printedcss.com
   best_for: CSS paged media, print CSS, PDF generation, commercial HTML-to-PDF
-  description: Commercial HTML-to-PDF engine (Prince XML / YesLogic) supporting comprehensive CSS Paged Media Level 3 and CSS Generated Content for Paged Media specifications.
+  description: Commercial HTML-to-PDF engine (Prince XML / YesLogic) supporting comprehensive
+    CSS Paged Media Level 3 and CSS Generated Content for Paged Media specifications.
   authority_level: to_review
   topic_tags:
   - css
@@ -3388,21 +3616,22 @@ sources:
   - commercial
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-09-01'
   owner: YesLogic Pty Ltd
   license: commercial
   status: active
-
 - id: apca-contrast
   domain: APCA Contrast (git.apcacontrast.com)
   url: git.apcacontrast.com
   full_url: https://git.apcacontrast.com
-  best_for: APCA contrast algorithm, WCAG 3.0 proposed contrast model, advanced perceptual contrast
-  description: >
-    Reference implementation and documentation for APCA (Advanced Perceptual
+  best_for: APCA contrast algorithm, WCAG 3.0 proposed contrast model, advanced perceptual
+    contrast
+  description: 'Reference implementation and documentation for APCA (Advanced Perceptual
     Contrast Algorithm), proposed replacement for WCAG 2.x luminance-ratio contrast
-    in WCAG 3.0. Do not apply to production until WCAG 3.0 is a published
-    Recommendation. For monitoring and research only.
+    in WCAG 3.0. Do not apply to production until WCAG 3.0 is a published Recommendation.
+    For monitoring and research only.
+
+    '
   authority_level: to_review
   topic_tags:
   - color
@@ -3417,17 +3646,18 @@ sources:
   license: W3C Community licence
   status: active
   ai_scraping: allowed
-
 - id: colorbrewer
   domain: ColorBrewer
   url: colorbrewer2.org
   full_url: https://colorbrewer2.org
-  best_for: colorblind-safe palettes, sequential, diverging, qualitative colour schemes, data visualisation, maps
-  description: >
-    Tool by Cynthia Brewer (Penn State) for selecting colour palettes for maps
-    and data visualisation. Provides sequential, diverging, and qualitative
-    palettes with filters for color-vision-deficiency safe, print-safe, and
-    photocopy-safe combinations. Essential resource for accessible chart design.
+  best_for: colorblind-safe palettes, sequential, diverging, qualitative colour schemes,
+    data visualisation, maps
+  description: 'Tool by Cynthia Brewer (Penn State) for selecting colour palettes
+    for maps and data visualisation. Provides sequential, diverging, and qualitative
+    palettes with filters for color-vision-deficiency safe, print-safe, and photocopy-safe
+    combinations. Essential resource for accessible chart design.
+
+    '
   authority_level: established
   topic_tags:
   - color
@@ -3441,18 +3671,18 @@ sources:
   last_reviewed: '2026-03-29'
   owner: Cynthia Brewer / Penn State
   license: Apache-2.0
-  status: active
+  status: not active
   ai_scraping: allowed
-
 - id: focus-trap
   domain: focus-trap (GitHub)
   url: github.com/focus-trap/focus-trap
   full_url: https://github.com/focus-trap/focus-trap
   best_for: focus trap implementation, dialog accessibility, modal keyboard management
-  description: >
-    Production-ready JavaScript library for trapping focus within a DOM element.
-    Recommended fallback when the native `inert` attribute is unavailable
+  description: 'Production-ready JavaScript library for trapping focus within a DOM
+    element. Recommended fallback when the native `inert` attribute is unavailable
     (pre-2023 browsers). MIT licence.
+
+    '
   authority_level: established
   topic_tags:
   - keyboard
@@ -3468,17 +3698,18 @@ sources:
   license: MIT
   status: active
   ai_scraping: allowed
-
 - id: hemingway-editor
   domain: Hemingway Editor
   url: hemingwayapp.com
   full_url: https://hemingwayapp.com
-  best_for: readability scoring, Flesch-Kincaid grade level, plain language checking, content design
-  description: >
-    Web and desktop editor that highlights complex sentences, passive voice,
-    and adverbs, and provides a Flesch-Kincaid readability grade level.
-    Useful for checking content against WCAG 3.1.5 Reading Level AAA target
-    of Grade 8 or lower.
+  best_for: readability scoring, Flesch-Kincaid grade level, plain language checking,
+    content design
+  description: 'Web and desktop editor that highlights complex sentences, passive
+    voice, and adverbs, and provides a Flesch-Kincaid readability grade level. Useful
+    for checking content against WCAG 3.1.5 Reading Level AAA target of Grade 8 or
+    lower.
+
+    '
   authority_level: to_review
   topic_tags:
   - content-design
@@ -3491,16 +3722,16 @@ sources:
   license: proprietary
   status: active
   ai_scraping: allowed
-
 - id: leafletjs-accessibility
   domain: Leaflet.js Accessibility
   url: leafletjs.com/examples/accessibility/
   full_url: https://leafletjs.com/examples/accessibility/
   best_for: Leaflet.js map keyboard support, accessible interactive map implementation
-  description: >
-    Leaflet's official accessibility documentation covering keyboard navigation,
-    screen reader support, and ARIA configuration for interactive maps built
-    with the Leaflet.js library. BSD-2-Clause licence.
+  description: 'Leaflet''s official accessibility documentation covering keyboard
+    navigation, screen reader support, and ARIA configuration for interactive maps
+    built with the Leaflet.js library. BSD-2-Clause licence.
+
+    '
   authority_level: established
   topic_tags:
   - maps
@@ -3515,16 +3746,17 @@ sources:
   license: BSD-2-Clause
   status: active
   ai_scraping: allowed
-
 - id: mermaid-js
   domain: Mermaid.js
   url: mermaid.js.org
   full_url: https://mermaid.js.org
-  best_for: Mermaid diagram accessibility, accTitle/accDescr directives, SVG diagram generation
-  description: >
-    Official documentation for Mermaid.js diagramming library. Includes
-    accessibility configuration (%%accTitle, %%accDescr directives introduced
-    in v9.4), theming, and SVG output options. MIT licence.
+  best_for: Mermaid diagram accessibility, accTitle/accDescr directives, SVG diagram
+    generation
+  description: 'Official documentation for Mermaid.js diagramming library. Includes
+    accessibility configuration (%%accTitle, %%accDescr directives introduced in v9.4),
+    theming, and SVG output options. MIT licence.
+
+    '
   authority_level: established
   topic_tags:
   - svg
@@ -3537,18 +3769,18 @@ sources:
   license: MIT
   status: active
   ai_scraping: allowed
-
 - id: okabe-ito-palette
   domain: Okabe-Ito Color Universal Design
   url: jfly.uni-koeln.de/color/
   full_url: https://jfly.uni-koeln.de/color/
-  best_for: colorblind-safe 8-colour palette, color vision deficiency, data visualisation, scientific figures
-  description: >
-    Masataka Okabe and Kei Ito's colorblind-safe 8-colour palette designed for
-    figures and charts. Handles deuteranopia, protanopia, and tritanopia.
-    Widely recommended as the default qualitative palette for scientific and
-    data visualisation. Hex values: #E69F00 #56B4E9 #009E73 #F0E442
-    #0072B2 #D55E00 #CC79A7 #000000.
+  best_for: colorblind-safe 8-colour palette, color vision deficiency, data visualisation,
+    scientific figures
+  description: 'Masataka Okabe and Kei Ito''s colorblind-safe 8-colour palette designed
+    for figures and charts. Handles deuteranopia, protanopia, and tritanopia. Widely
+    recommended as the default qualitative palette for scientific and data visualisation.
+    Hex values: #E69F00 #56B4E9 #009E73 #F0E442 #0072B2 #D55E00 #CC79A7 #000000.
+
+    '
   authority_level: established
   topic_tags:
   - color
@@ -3559,18 +3791,18 @@ sources:
   last_reviewed: '2026-03-29'
   owner: Masataka Okabe / Kei Ito
   license: unknown
-  status: active
+  status: not active
   ai_scraping: allowed
-
 - id: wicg-inert
   domain: WICG inert polyfill
   url: github.com/WICG/inert
   full_url: https://github.com/WICG/inert
   best_for: inert attribute polyfill, focus management, modal background suppression
-  description: >
-    WICG polyfill for the HTML `inert` attribute. Required for browsers that do
-    not support `inert` natively (shipped in all major browsers from 2023).
+  description: 'WICG polyfill for the HTML `inert` attribute. Required for browsers
+    that do not support `inert` natively (shipped in all major browsers from 2023).
     Use when supporting older browser targets. BSD-3-Clause licence.
+
+    '
   authority_level: established
   topic_tags:
   - keyboard
@@ -3583,16 +3815,17 @@ sources:
   license: BSD-3-Clause
   status: active
   ai_scraping: allowed
-
 - id: wai-tables-tutorial
   domain: W3C WAI Tables Tutorial
   url: www.w3.org/WAI/tutorials/tables/
   full_url: https://www.w3.org/WAI/tutorials/tables/
-  best_for: accessible data tables, scope attribute, caption, multi-level headers, table markup
-  description: >
-    W3C WAI tutorial covering accessible HTML table markup from simple
-    one-header tables through multi-level complex tables. Covers scope,
-    colgroup, rowgroup, id/headers attributes, caption, and summary patterns.
+  best_for: accessible data tables, scope attribute, caption, multi-level headers,
+    table markup
+  description: 'W3C WAI tutorial covering accessible HTML table markup from simple
+    one-header tables through multi-level complex tables. Covers scope, colgroup,
+    rowgroup, id/headers attributes, caption, and summary patterns.
+
+    '
   authority_level: authoritative
   topic_tags:
   - tables
@@ -3608,15 +3841,15 @@ sources:
   license: W3C Document License
   status: active
   ai_scraping: allowed
-
 - id: numberanalytics-accessible-tables
   domain: Number Analytics
   url: www.numberanalytics.com/blog/accessible-tables-design-guide
   full_url: https://www.numberanalytics.com/blog/accessible-tables-design-guide
   best_for: accessible table design, visual design principles for data tables
-  description: >
-    Design-focused guide to accessible data tables covering visual hierarchy,
+  description: 'Design-focused guide to accessible data tables covering visual hierarchy,
     responsive patterns, and accessibility considerations for data-heavy interfaces.
+
+    '
   authority_level: to_review
   topic_tags:
   - tables
