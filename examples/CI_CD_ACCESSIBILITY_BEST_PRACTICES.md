@@ -172,6 +172,67 @@ Use pairwise or risk-based coverage for routine changes, then test every
 applicable combination for high-risk components such as authentication,
 payment, safety, and core navigation.
 
+## Beyond axe-core
+
+A rule scan evaluates the page in whatever state it is in when the scan runs.
+It cannot press Tab, open a disclosure, submit an empty form, or observe where
+focus goes after a dialog closes. A rule scan does not exercise those behaviors,
+so a clean result can coexist with a blocked keyboard or screen reader task.
+
+[Behavioral Accessibility Automation](./BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md)
+covers Reflow risk and Focus Visible in depth. The checks below are additional
+interaction contracts that a rule scan cannot observe.
+
+Playwright can assert the expected behavior directly. The output is a test
+result — did the expected behavior happen? — not an audit finding. It has no
+severity, no WCAG mapping, and no remediation advice, and it covers only the
+behaviors the tests ask about. Keep that distinction in review notes, and do not
+present a passing suite as a conformance result.
+
+Representative checks include:
+
+| Behavior | Why a rule scan does not settle it |
+| --- | --- |
+| Every link, button, and form control is reachable with Tab | Rule scans inspect markup; they do not traverse the page. A `div` with `role="button"`, an accessible name, and a click handler can still be unreachable, and axe-core will not report it. |
+| Disclosure state matches its content | `aria-expanded="false"` is valid while collapsed. A control that shows content without updating the attribute is only wrong after activation. |
+| Dialog focus enters the dialog and returns to its trigger | Focus placement and restoration exist only during interaction. A scan of the closed or open page cannot establish either. |
+| Form errors are marked and linked | `aria-invalid` and the error description usually appear after submission. The initial page can be clean while the error state is not. |
+| Repeated components keep the same contract | One-off tests do not prove the same component elsewhere behaves the same way. Reusable checks run against every page or instance that uses the component. |
+| Accessible names are present on every instance | axe-core already has rules for missing names on common controls. The automated value is keeping the contract across a large component set; whether a name is meaningful still requires a person. |
+
+The [Intopia article "Accessibility testing with Playwright"](https://intopia.github.io/exercise/accessibility-testing-with-playwright.html)
+(published 13 October 2026) is a worked, example-driven reference for these
+checks, with a public playground of working and deliberately broken components
+and the [test source](https://github.com/Intopia/playwright-testing). It covers
+the behaviors above, including reusing one set of checks across a small
+multi-page site. It is informative practitioner guidance, not a normative
+standard or a conformance suite. Adapt its selectors and component assumptions
+to this project; do not copy the tests as a substitute for deciding which
+behaviors are required here.
+
+Before trusting any of these checks:
+
+- **Confirm the check can fail.** Run it against a known-broken fixture or page
+  first. A check that matches no components passes without testing anything, and
+  a selector that silently stops matching removes coverage without failing.
+- **Record environment-dependent behavior.** For example, Playwright's WebKit on
+  macOS follows the system keyboard-navigation setting, where Tab skips links by
+  default. The same keyboard test can pass on one machine and fail on another
+  for reasons unrelated to the page. Record the browser, operating system, and
+  settings that materially affect the result.
+- **Expect retries and longer runtimes.** Failed assertions retry before
+  reporting, so a test with several failures can approach the default test
+  timeout. Do not convert a timeout into an accessibility verdict.
+- **Keep judgment out of the assertion unless a person has made it.** Where the
+  correct behavior is a product decision — where focus should move when a dialog
+  opens, or whether an error summary is required — confirm the decision and
+  record it. Automation should enforce a decided behavior, not invent one.
+
+These are behavioral assertions. Treat a first failure as evidence to
+investigate, not as a confirmed defect: confirm the cause and user impact
+before making it a blocking gate. A deterministic, reviewed regression may
+block; see [Risk Indicators and Build Gates](#risk-indicators-and-build-gates).
+
 ## Semantic Assertions and ARIA Snapshots
 
 Role and accessible-name queries provide useful contracts for the browser's
@@ -598,6 +659,9 @@ not update snapshots or baselines solely to make CI green.
 - [ ] Final rendered output is tested.
 - [ ] Applicable themes, preferences, viewports, and interaction states are
   covered.
+- [ ] Interaction behaviors that a rule scan cannot observe (keyboard
+  reachability, disclosure and dialog state, form error linkage) are covered
+  where their failure would block a user task.
 - [ ] Automated results are interpreted within their documented limitations.
 - [ ] Required manual and assistive-technology tests are completed or handed
   off precisely.
@@ -634,6 +698,7 @@ not update snapshots or baselines solely to make CI green.
 - [Playwright: Accessibility Testing](https://playwright.dev/docs/accessibility-testing)
 - [Playwright: ARIA Snapshots](https://playwright.dev/docs/aria-snapshots)
 - [Deque: axe-core Playwright API](https://github.com/dequelabs/axe-core-npm/tree/develop/packages/playwright)
+- [Intopia: Accessibility testing with Playwright](https://intopia.github.io/exercise/accessibility-testing-with-playwright.html) — informative tutorial with runnable examples and a public playground; not a normative standard
 - [Lighthouse CI Documentation](https://github.com/GoogleChrome/lighthouse-ci/tree/main/docs)
 - [GitHub Actions Secure Use Reference](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
 - [GitHub: Script Injections](https://docs.github.com/en/actions/concepts/security/script-injections)
@@ -641,7 +706,8 @@ not update snapshots or baselines solely to make CI green.
 - [GitHub: Automating Copilot CLI with Actions](https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/automate-with-actions)
 - [GitHub Copilot CLI Programmatic Reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference)
 
-Version-sensitive claims and examples last reviewed: 2026-07-19.
+Version-sensitive claims and examples last reviewed: 2026-07-19. The Intopia
+reference and the behavioral check summary above were reviewed 2026-10-26.
 
 ---
 
