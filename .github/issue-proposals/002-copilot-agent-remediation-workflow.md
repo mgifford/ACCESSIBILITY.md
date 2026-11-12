@@ -108,6 +108,6 @@ Do not change anything unrelated to the accessibility fix.
 
 - GitHub accessibility agents guide: https://accessibility.github.com/documentation/guide/getting-started-with-agents/
 - GitHub accessibility scanner: https://github.com/github/accessibility-scanner
-- Existing CI/CD guide: [examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md](../examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
-- Existing scanner integration: [examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md](../examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)
-- axe-core rules: [examples/AXE_RULES_REFERENCE.md](../examples/AXE_RULES_REFERENCE.md)
+- Existing CI/CD guide: [examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md](../../examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
+- Existing scanner integration: [examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md](../../examples/GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)
+- axe-core rules: [examples/AXE_RULES_REFERENCE.md](../../examples/AXE_RULES_REFERENCE.md)

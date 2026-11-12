@@ -12,8 +12,42 @@ permissions:
   contents: read
 
 jobs:
-  markdown-links:
+  local-docs:
+    name: Validate registry and local documentation links
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install validation dependencies
+        run: pip install -r .github/scripts/requirements.txt
+
+      - name: Test the registry validator
+        run: python .github/scripts/test_maintenance.py
+
+      - name: Validate the committed registry
+        run: python .github/scripts/maintain_trusted_sources.py --validate-only
+
+      - name: Test the local link checker
+        run: python .github/scripts/test_local_links.py
+
+      - name: Check local documentation links
+        run: python .github/scripts/check_local_links.py
+
+      - name: Test workflow wiring
+        run: python .github/scripts/test_workflows.py
+
+  markdown-links:
+    name: Check external Markdown links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -30,4 +64,9 @@ jobs:
             --timeout 20
             --config .github/lychee.toml
             "README.md"
+            "COMPARISONS.md"
+            "TRUSTED_SOURCES.md"
+            "AGENTS.md"
+            "index.md"
+            "action-playbook.md"
             "examples/**/*.md"

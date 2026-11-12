@@ -20,6 +20,8 @@ from maintain_trusted_sources import (
     apply_changes,
     check_url,
     detect_license,
+    enrich_metadata,
+    validate_urls,
     detect_owner,
     load_error_history,
     load_yaml,
@@ -174,7 +176,7 @@ def test_suggest_topic_tags():
 
 
 def test_validate_yaml_structure():
-    """Test YAML validation."""
+    """Test YAML validation, URL shape, provenance, and bounded paths."""
     print("Testing validate_yaml_structure()...")
 
     def make_source(**overrides):
@@ -185,61 +187,154 @@ def test_validate_yaml_structure():
             'full_url': 'https://example.com',
             'best_for': 'testing',
             'description': 'Test source',
-            'status': 'active'
+            'status': 'active',
+            'authority_level': 'to_review',
+            'topic_tags': ['testing'],
+            'jurisdiction': 'global',
+            'wcag_version': [],
+            'last_reviewed': None,
+            'owner': 'Test Owner',
+            'license': 'unknown',
         }
         base.update(overrides)
         return base
 
     results = []
 
-    # Test 1: Valid source
-    errors = validate_yaml_structure([make_source()])
-    ok = len(errors) == 0
-    print(f"  {'✓' if ok else '✗'} Test 1 {'passed' if ok else 'failed'}: Valid source accepted")
-    results.append(ok)
+    def check(label, errors, predicate):
+        ok = predicate(errors)
+        print(f"  {'✓' if ok else '✗'} {label}")
+        results.append(ok)
 
-    # Test 2: Detect duplicate IDs
-    errors = validate_yaml_structure([make_source(id='dup'), make_source(id='dup', url='example2.com', full_url='https://example2.com')])
-    ok = any('Duplicate ID' in e for e in errors)
-    print(f"  {'✓' if ok else '✗'} Test 2 {'passed' if ok else 'failed'}: Duplicate ID detected")
-    results.append(ok)
-
-    # Test 3: Detect duplicate URLs
-    errors = validate_yaml_structure([make_source(id='s1'), make_source(id='s2', url='example.com')])
-    ok = any('Duplicate URL' in e for e in errors)
-    print(f"  {'✓' if ok else '✗'} Test 3 {'passed' if ok else 'failed'}: Duplicate URL detected")
-    results.append(ok)
-
-    # Test 4: Missing required field
+    check(
+        "Valid source accepted",
+        validate_yaml_structure([make_source()]),
+        lambda errors: len(errors) == 0,
+    )
+    check(
+        "Duplicate ID detected",
+        validate_yaml_structure([make_source(id='dup'), make_source(id='dup', url='example2.com', full_url='https://example2.com')]),
+        lambda errors: any('Duplicate ID' in e for e in errors),
+    )
+    check(
+        "Duplicate URL detected",
+        validate_yaml_structure([make_source(id='s1'), make_source(id='s2', url='example.com')]),
+        lambda errors: any('Duplicate URL' in e for e in errors),
+    )
     source_missing = make_source()
     del source_missing['description']
-    errors = validate_yaml_structure([source_missing])
-    ok = any("Missing required field 'description'" in e for e in errors)
-    print(f"  {'✓' if ok else '✗'} Test 4 {'passed' if ok else 'failed'}: Missing required field detected")
+    check(
+        "Missing required field detected",
+        validate_yaml_structure([source_missing]),
+        lambda errors: any("Missing required field 'description'" in e for e in errors),
+    )
+    check(
+        "Invalid status detected",
+        validate_yaml_structure([make_source(id='s-inv', status='broken')]),
+        lambda errors: any('Invalid status' in e for e in errors),
+    )
+    check(
+        "Empty sources list produces no errors",
+        validate_yaml_structure([]),
+        lambda errors: errors == [],
+    )
+    statuses = ['active', 'not active', 'removed']
+    check(
+        "All valid statuses accepted",
+        [e for idx, st in enumerate(statuses, 1) for e in validate_yaml_structure([make_source(id=f'sv-{idx}', status=st)]) if 'Invalid status' in e],
+        lambda errors: errors == [],
+    )
+    check(
+        "Invalid authority_level detected",
+        validate_yaml_structure([make_source(id='s-auth', authority_level='high')]),
+        lambda errors: any('Invalid authority_level' in e for e in errors),
+    )
+    check(
+        "Invalid full_url detected",
+        validate_yaml_structure([make_source(id='s-url', full_url='not-a-url')]),
+        lambda errors: any('full_url must be an absolute HTTP(S) URL' in e for e in errors),
+    )
+    check(
+        "Missing licence detected",
+        validate_yaml_structure([make_source(id='s-lic', license=None)]),
+        lambda errors: any("Missing provenance field 'license'" in e for e in errors),
+    )
+    check(
+        "Unknown licence remains allowed",
+        validate_yaml_structure([make_source(id='s-unknown', license='unknown')]),
+        lambda errors: errors == [],
+    )
+    check(
+        "Invalid review date detected",
+        validate_yaml_structure([make_source(id='s-date', last_reviewed='not-a-date')]),
+        lambda errors: any('last_reviewed must be null or YYYY-MM-DD' in e for e in errors),
+    )
+    check(
+        "Invalid ai_scraping detected",
+        validate_yaml_structure([make_source(id='s-ai', ai_scraping='sometimes')]),
+        lambda errors: any('Invalid ai_scraping' in e for e in errors),
+    )
+    check(
+        "Typed entry requires authority_basis",
+        validate_yaml_structure([make_source(id='s-basis', authority_level='established', resource_type='guidance')]),
+        lambda errors: any('requires authority_basis' in e for e in errors),
+    )
+    check(
+        "Non-provisional entry requires owner",
+        validate_yaml_structure([make_source(id='s-owner', authority_level='established', owner=None)]),
+        lambda errors: any("Missing provenance field 'owner'" in e for e in errors),
+    )
+    check(
+        "Missing local_guidance path detected",
+        validate_yaml_structure([make_source(id='s-local', local_guidance=['examples/does-not-exist.md'])], root_dir='.'),
+        lambda errors: any('local_guidance path does not exist' in e for e in errors),
+    )
+
+    passed = sum(results)
+    print(f"  {passed}/{len(results)} tests passed\n")
+    return passed == len(results)
+
+
+def test_registry_curation():
+    """Validate the committed registry, including the Microsoft ACT entry."""
+    print("Testing committed registry curation...")
+    results = []
+
+    data = load_yaml(ms.TRUSTED_SOURCES_FILE)
+    sources = data['sources']
+    by_id = {source['id']: source for source in sources}
+
+    ok = len(by_id) == len(sources)
+    print(f"  {'✓' if ok else '✗'} Registry IDs are unique")
     results.append(ok)
 
-    # Test 5: Invalid status value
-    errors = validate_yaml_structure([make_source(id='s-inv', status='broken')])
-    ok = any('Invalid status' in e for e in errors)
-    print(f"  {'✓' if ok else '✗'} Test 5 {'passed' if ok else 'failed'}: Invalid status detected")
-    results.append(ok)
-
-    # Test 6: Empty sources list — no errors
-    errors = validate_yaml_structure([])
+    errors = validate_yaml_structure(sources, root_dir='.')
     ok = errors == []
-    print(f"  {'✓' if ok else '✗'} Test 6 {'passed' if ok else 'failed'}: Empty sources list produces no errors")
+    print(f"  {'✓' if ok else '✗'} Committed registry passes structural validation")
+    if not ok:
+        for error in errors[:10]:
+            print(f"      {error}")
     results.append(ok)
 
-    # Test 7: All valid statuses are accepted
-    valid_statuses = ['active', 'not active', 'removed']
-    ok = True
-    for idx, st in enumerate(valid_statuses, 1):
-        errs = validate_yaml_structure([make_source(id=f'sv-{idx}', status=st)])
-        if any('Invalid status' in e for e in errs):
-            ok = False
-            break
-    print(f"  {'✓' if ok else '✗'} Test 7 {'passed' if ok else 'failed'}: All valid statuses accepted")
+    act = by_id.get('microsoft-accessibility-considerations-toolkit')
+    ok = act is not None
+    print(f"  {'✓' if ok else '✗'} Microsoft ACT entry is present")
     results.append(ok)
+    if act:
+        checks = {
+            'license is MIT': act.get('license') == 'MIT',
+            'authority is expert-interpretation': act.get('authority_level') == 'expert-interpretation',
+            'resource_type is methodology': act.get('resource_type') == 'methodology',
+            'normative_status is informative': act.get('normative_status') == 'informative',
+            'ai_scraping is restricted': act.get('ai_scraping') == 'restricted',
+            'last_reviewed is 2026-11-11': act.get('last_reviewed') == '2026-11-11',
+            'authority_basis is recorded': bool(act.get('authority_basis')),
+            'licence notes are recorded': bool(act.get('license_notes')),
+            'additional URLs are recorded': bool(act.get('additional_urls')),
+        }
+        for label, value in checks.items():
+            print(f"  {'✓' if value else '✗'} ACT: {label}")
+            results.append(value)
 
     passed = sum(results)
     print(f"  {passed}/{len(results)} tests passed\n")
@@ -476,6 +571,52 @@ def test_detect_license():
     return passed == len(results)
 
 
+def test_ai_scraping_policy():
+    """Sources marked prohibited must not be fetched for validation/enrichment."""
+    print("Testing ai_scraping policy handling...")
+    results = []
+
+    source = {
+        'id': 'prohibited-source',
+        'domain': 'Prohibited Source',
+        'url': 'example.com',
+        'full_url': 'https://example.com',
+        'best_for': 'testing',
+        'description': 'Test source',
+        'status': 'active',
+        'authority_level': 'to_review',
+        'topic_tags': ['testing'],
+        'jurisdiction': 'global',
+        'wcag_version': [],
+        'last_reviewed': None,
+        'owner': 'Owner',
+        'license': None,
+        'ai_scraping': 'prohibited',
+    }
+
+    with patch.object(ms, 'check_url') as mocked_check:
+        ids_inactive, ids_removed = validate_urls([dict(source)], {'errors': {}})
+        ok = mocked_check.call_count == 0 and ids_inactive == [] and ids_removed == []
+        print(f"  {'✓' if ok else '✗'} validate_urls skips a prohibited source without a network call")
+        results.append(ok)
+
+    with patch.object(ms, 'detect_license') as mocked_license, \
+         patch.object(ms, 'check_content_freshness') as mocked_freshness, \
+         patch('time.sleep'):
+        enriched = [dict(source)]
+        enrich_metadata(enriched, full_scan=False)
+        ok = mocked_license.call_count == 0 and mocked_freshness.call_count == 0
+        print(f"  {'✓' if ok else '✗'} enrich_metadata does not fetch a prohibited source")
+        results.append(ok)
+        ok = enriched[0]['license'] == 'unknown'
+        print(f"  {'✓' if ok else '✗'} prohibited source without a licence is recorded as unknown")
+        results.append(ok)
+
+    passed = sum(results)
+    print(f"  {passed}/{len(results)} tests passed\n")
+    return passed == len(results)
+
+
 def main():
     """Run all tests."""
     print("=== TRUSTED_SOURCES Maintenance Tests ===\n")
@@ -484,6 +625,8 @@ def main():
     results.append(("detect_owner", test_detect_owner()))
     results.append(("suggest_topic_tags", test_suggest_topic_tags()))
     results.append(("validate_yaml_structure", test_validate_yaml_structure()))
+    results.append(("registry_curation", test_registry_curation()))
+    results.append(("ai_scraping_policy", test_ai_scraping_policy()))
     results.append(("apply_changes", test_apply_changes()))
     results.append(("load_yaml / save_yaml", test_load_save_yaml()))
     results.append(("load_error_history / save_error_history", test_load_save_error_history()))

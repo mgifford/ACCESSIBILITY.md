@@ -184,7 +184,7 @@ platforms:
 10. tracking and correlation references added during triage.
 
 Use the platform-neutral
-[Technical Accessibility Finding Template](./issue-trackers/ACCESSIBILITY_TECHNICAL_FINDING_TEMPLATE.md)
+[Technical Accessibility Finding Template](./ACCESSIBILITY_TECHNICAL_FINDING_TEMPLATE.md)
 for GitLab, Jira descriptions, trackers that accept Markdown, and a GitHub
 Markdown fallback. Use the GitHub Issue Form when structured GitHub intake is
 preferred.

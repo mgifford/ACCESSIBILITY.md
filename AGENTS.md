@@ -300,7 +300,12 @@ test results. Keep source, output, and alternatives synchronized.
 This keeps the policy centralized while making the registry easier for both
 people and agents to discover. Use [TRUSTED_SOURCES.yaml](examples/TRUSTED_SOURCES.yaml) 
 as a discovery and review registry, not as proof that every included source 
-is authoritative, current, or licensed for reuse.
+is authoritative, current, or licensed for reuse. The YAML is the canonical
+registry for both this repository and
+[accessibility-skills](https://github.com/mgifford/accessibility-skills); do
+not create or edit a second independent copy. See
+[Registry ownership](TRUSTED_SOURCES.md#registry-ownership-and-cross-repository-synchronization)
+and [resource discovery by task](TRUSTED_SOURCES.md#finding-resources-by-task).
 
 When researching:
 
