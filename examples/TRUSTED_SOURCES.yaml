@@ -131,24 +131,27 @@ sources:
   domain: Aaron Gustafson
   url: aaron-gustafson.com
   full_url: https://aaron-gustafson.com
-  best_for: code examples, aria, w3c
-  description: Personal site of a web designer, author, and accessibility advocate focusing on responsive design & web standards.
-  authority_level: to_review
+  best_for: code examples, aria, w3c, web components, progressive enhancement
+  description: Personal site of a web designer, author, and accessibility advocate focusing on responsive design, web standards, web components, and progressive enhancement.
+  authority_level: community-expert
+  authority_basis: Recognised web standards and accessibility practitioner. Articles and component documentation are practitioner guidance, not a normative standard or an independent accessibility assessment.
   topic_tags:
   - wcag
   - aria
   - keyboard
   - design
   - development
-  - captions
-  - audio-description
+  - web-components
+  - progressive-enhancement
   - focus
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
+  last_reviewed: '2026-11-12'
   owner: Aaron Gustafson
-  license: unknown
+  license: CC BY-NC-SA 3.0
+  license_notes: Site article content is CC BY-NC-SA 3.0; linked component repositories have their own MIT licences. Link and cite; do not reproduce.
+  ai_scraping: restricted
   status: active
 - id: abilitynet
   domain: AbilityNet
@@ -3719,3 +3722,336 @@ sources:
   license: unknown
   status: active
   ai_scraping: allowed
+
+- id: component-theme-switcher
+  domain: Aaron Gustafson
+  url: github.com/aarongustafson/theme-switcher
+  full_url: https://github.com/aarongustafson/theme-switcher
+  best_for: reusable three-state theme picker, system/light/dark preference control, web component evaluation
+  description: >
+    A light-DOM web component that renders a three-choice theme picker and
+    writes the selected preference to `data-theme` on the root element. It
+    builds on `<form-multi-switch>`, supports authored native radios as a
+    fallback, and leaves colour choices and contrast to the site's CSS. The
+    upstream README documents browser tests, a no-JavaScript fallback, and
+    forced-colours styling; those claims were not independently verified here.
+  resource_type: component
+  component_name: "<theme-switcher>"
+  component_type: theme preference control web component
+  repository_url: https://github.com/aarongustafson/theme-switcher
+  documentation_url: https://github.com/aarongustafson/theme-switcher/blob/main/README.md
+  intended_use: >
+    Consider when a site needs a reusable System/Light/Dark selector and wants
+    to keep theme colours in its own CSS. Evaluate it against a native radio
+    group and a small site-specific script before adding a dependency.
+  native_alternatives: >
+    Follow the system preference with CSS alone, or use a native radio group
+    with a small script and server-rendered preference. A component is not
+    required for a site with a single three-choice control.
+  compatibility: >
+    Modern browsers with Custom Elements v1, Shadow DOM, ES modules, :has(),
+    container queries, cascade layers, and media-query change events. The
+    package declares Node.js >=22 for development.
+  progressive_enhancement: >
+    The minimal generated control has no usable controls before JavaScript
+    runs or if it fails. Author-supplied native radios can provide a form and
+    selection fallback, but they do not change the theme without server
+    support. A separate head script is required to reduce a theme flash.
+  accessibility_limitations: >
+    The component depends on native radio semantics and a correctly authored
+    label or legend. Generated controls are unavailable without JavaScript.
+    Storage, cookie, focus, contrast, forced-colours, and assistive-technology
+    behaviour remain site responsibilities. No independent browser or
+    assistive-technology testing was performed for this entry.
+  test_evidence: >
+    Upstream Vitest and Playwright suites, browser demos, and forced-colours
+    checks are documented. They were not executed during this review.
+  curation_status: reviewed
+  curation_notes: >
+    Documentation, API, licence, maintenance activity, and stated limitations
+    reviewed 2026-11-12. Reviewed is not a recommendation for evaluation and is
+    not a WCAG conformance determination.
+  reviewed_version: "1.0.0"
+  maintenance_status: active
+  related_skills:
+  - light-dark-mode
+  - user-personalization
+  authority_level: community-expert
+  authority_basis: >
+    Maintainer is a recognised web standards and accessibility practitioner.
+    This entry describes upstream documentation and claims; it is not an
+    independent accessibility assessment.
+  topic_tags:
+  - web-components
+  - theming
+  - dark-mode
+  - user-preferences
+  - progressive-enhancement
+  jurisdiction: global
+  wcag_version:
+  - '2.2'
+  last_reviewed: '2026-11-12'
+  owner: Aaron Gustafson
+  license: MIT
+  license_notes: >
+    Repository code and documentation are MIT. The linked article is
+    CC BY-NC-SA 3.0. Link and cite; do not reproduce.
+  status: active
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Repository code is MIT, but the linked article has non-commercial and
+    share-alike terms. Use this entry for reference and citation, and check the
+    applicable terms before training on or redistributing the material.
+  local_guidance:
+  - examples/LIGHT_DARK_MODE_ACCESSIBILITY_BEST_PRACTICES.md
+  - examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md
+  additional_urls:
+  - https://www.aaron-gustafson.com/notebook/theme-switching-made-easy/
+  - https://aarongustafson.github.io/theme-switcher/demo/
+
+- id: component-tabbed-interface
+  domain: Aaron Gustafson
+  url: github.com/aarongustafson/tabbed-interface
+  full_url: https://github.com/aarongustafson/tabbed-interface
+  best_for: reusable ARIA tabs over heading-structured content, responsive tab/linear presentation, web component evaluation
+  description: >
+    A web component that converts heading-structured content into an ARIA
+    tabbed interface. Authored content remains in the light DOM and is shown
+    linearly if JavaScript fails. The component measures the rendered tablist
+    and switches to a linear layout when the tabs do not fit. Upstream
+    documentation describes keyboard, print, and browser tests; those claims
+    were not independently verified here.
+  resource_type: component
+  component_name: "<tabbed-interface>"
+  component_type: tabbed-interface web component
+  repository_url: https://github.com/aarongustafson/tabbed-interface
+  documentation_url: https://github.com/aarongustafson/tabbed-interface/blob/main/README.md
+  intended_use: >
+    Consider when a set of heading-delimited sections should become tabs at
+    wider sizes while remaining linear content elsewhere. Evaluate whether tabs
+    are appropriate at all, and test the selected activation model and overflow
+    behaviour in context.
+  native_alternatives: >
+    Keep the sections as ordinary headings and prose, or use native
+    `<details>`/`<summary>` for collapsible sections when disclosure is the
+    actual need. Do not use tabs merely to shorten a page.
+  compatibility: >
+    Modern browsers with Custom Elements v1, Shadow DOM v1, and ES modules.
+    TypeScript definitions, an auto-define entry point, and a manual
+    registration entry point are published.
+  progressive_enhancement: >
+    Content is authored as headings and sections; without JavaScript it remains
+    readable in document order. The component only renders tabs when the
+    rendered tablist fits. `fixed-tabs` keeps tabs at every width and leaves
+    overflow handling to the implementer.
+  accessibility_limitations: >
+    ARIA tabs are not appropriate for every content structure. Shadow DOM and
+    CSS parts affect styling and testing. Automatic versus manual activation is
+    a design choice. `fixed-tabs` can create overflow. Print behaviour and
+    assistive-technology behaviour require testing. No independent browser or
+    assistive-technology testing was performed for this entry.
+  test_evidence: >
+    Upstream Vitest and Playwright suites, browser demos, and print checks are
+    documented. They were not executed during this review.
+  curation_status: reviewed
+  curation_notes: >
+    Documentation, API, licence, maintenance activity, and stated limitations
+    reviewed 2026-11-12. Reviewed is not a recommendation for evaluation and is
+    not a WCAG conformance determination.
+  reviewed_version: "3.0.1"
+  maintenance_status: active
+  related_skills:
+  - keyboard
+  - navigation
+  authority_level: community-expert
+  authority_basis: >
+    Maintainer is a recognised web standards and accessibility practitioner.
+    This entry describes upstream documentation and claims; it is not an
+    independent accessibility assessment.
+  topic_tags:
+  - web-components
+  - tabs
+  - keyboard
+  - aria
+  - progressive-enhancement
+  jurisdiction: global
+  wcag_version:
+  - '2.2'
+  last_reviewed: '2026-11-12'
+  owner: Aaron Gustafson
+  license: MIT
+  license_notes: >
+    Repository code and documentation are MIT. The linked article is
+    CC BY-NC-SA 3.0. Link and cite; do not reproduce.
+  status: active
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Repository code is MIT, but the linked article has non-commercial and
+    share-alike terms. Use this entry for reference and citation, and check the
+    applicable terms before training on or redistributing the material.
+  local_guidance:
+  - examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md
+  - examples/NAVIGATION_ACCESSIBILITY_BEST_PRACTICES.md
+  additional_urls:
+  - https://www.aaron-gustafson.com/notebook/tabbed-interface-the-web-component/
+  - https://aarongustafson.github.io/tabbed-interface/demo/
+
+- id: component-form-matching-fields
+  domain: Aaron Gustafson
+  url: github.com/aarongustafson/form-matching-fields
+  full_url: https://github.com/aarongustafson/form-matching-fields
+  best_for: reusable matching-value validation for email confirmation, password confirmation, web component evaluation
+  description: >
+    A web component that wraps two text-type form fields and adds optional
+    matching validation to the second field. It is additive to native
+    constraint validation and does not replace server-side validation. The
+    upstream README documents supported field types, validation stacking, and
+    label resolution; those claims were not independently verified here.
+  resource_type: component
+  component_name: "<form-matching-fields>"
+  component_type: form validation web component
+  repository_url: https://github.com/aarongustafson/form-matching-fields
+  documentation_url: https://github.com/aarongustafson/form-matching-fields/blob/main/README.md
+  intended_use: >
+    Consider when a form genuinely needs two matching values and native
+    validation alone is insufficient. First consider avoiding the duplicate
+    entry, or using a native/scripted check with a visible, associated error.
+  native_alternatives: >
+    Prefer a single entry field or a reveal/confirm pattern where possible.
+    Otherwise use native `required` and type constraints plus a small
+    site-specific check, with a server-side validation rule and an associated
+    error message.
+  compatibility: >
+    Modern browsers with Custom Elements v1, Shadow DOM v1, and ES modules.
+    Polyfills may be needed for older browsers. The package declares Node.js
+    >=22 for development.
+  progressive_enhancement: >
+    The component is additive to native validation. Without JavaScript the
+    matching check is absent, but the form still submits and native constraints
+    remain. It does not replace server-side validation.
+  accessibility_limitations: >
+    Only the first two eligible text-type inputs are compared; disabled and
+    readonly fields are ignored. The mismatch message is pinned to the second
+    field. Error announcement depends on native validation, the browser, and
+    assistive technology. No independent browser or assistive-technology
+    testing was performed for this entry.
+  test_evidence: >
+    Upstream Vitest coverage and CDN/browser demos are documented. They were
+    not executed during this review.
+  curation_status: reviewed
+  curation_notes: >
+    Documentation, API, licence, maintenance activity, and stated limitations
+    reviewed 2026-11-12. Reviewed is not a recommendation for evaluation and is
+    not a WCAG conformance determination.
+  reviewed_version: "1.0.1"
+  maintenance_status: active
+  related_skills:
+  - forms
+  authority_level: community-expert
+  authority_basis: >
+    Maintainer is a recognised web standards and accessibility practitioner.
+    This entry describes upstream documentation and claims; it is not an
+    independent accessibility assessment.
+  topic_tags:
+  - web-components
+  - forms
+  - validation
+  - password
+  - email
+  jurisdiction: global
+  wcag_version:
+  - '2.2'
+  last_reviewed: '2026-11-12'
+  owner: Aaron Gustafson
+  license: MIT
+  license_notes: >
+    Repository code and documentation are MIT. The linked article is
+    CC BY-NC-SA 3.0. Link and cite; do not reproduce.
+  status: active
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Repository code is MIT, but the linked article has non-commercial and
+    share-alike terms. Use this entry for reference and citation, and check the
+    applicable terms before training on or redistributing the material.
+  local_guidance:
+  - examples/FORMS_ACCESSIBILITY_BEST_PRACTICES.md
+  additional_urls:
+  - https://www.aaron-gustafson.com/notebook/matching-form-fields-with-a-web-component/
+  - https://aarongustafson.github.io/form-matching-fields/demo/
+
+- id: component-web-component-starter
+  domain: Aaron Gustafson
+  url: github.com/aarongustafson/web-component-starter
+  full_url: https://github.com/aarongustafson/web-component-starter
+  best_for: web component project scaffolding, testing setup, progressive enhancement patterns, upstream contribution readiness
+  description: >
+    A project template for building web components with Custom Elements,
+    Shadow DOM, testing, linting, CI/CD, and publishing workflows. It includes
+    a best-practices document and test scaffolding. It is not a runtime
+    component and does not guarantee that a generated component is accessible.
+  resource_type: tool
+  component_name: "Web Component Starter Template"
+  component_type: project starter template
+  repository_url: https://github.com/aarongustafson/web-component-starter
+  documentation_url: https://github.com/aarongustafson/web-component-starter/blob/main/README.md
+  intended_use: >
+    Consider when a team has decided to build a web component and wants a
+    maintained starting point for testing, packaging, and publishing. Do not
+    start from a template when a native element or a reviewed existing
+    component already meets the need.
+  native_alternatives: >
+    No runtime alternative. Start with native HTML and built-in platform
+    behavior; build a component only when that is insufficient.
+  compatibility: >
+    The template targets modern browsers with Custom Elements v1, Shadow DOM
+    v1, and ES modules. Development requires Node.js >=22 and npm.
+  progressive_enhancement: >
+    The template includes progressive-enhancement guidance, but the implementer
+    must preserve semantic HTML, a no-JavaScript fallback, and server-rendered
+    content where the task requires them.
+  accessibility_limitations: >
+    This is scaffolding, not an accessible component. It cannot establish that
+    a generated component is accessible. The implementer remains responsible
+    for semantics, keyboard behavior, focus, names, states, and manual testing.
+    No independent browser or assistive-technology testing was performed for
+    this entry.
+  test_evidence: >
+    Upstream Vitest, Playwright, CI workflows, and a best-practices document are
+    included. They were not executed during this review.
+  curation_status: reviewed
+  curation_notes: >
+    Documentation, project structure, licence, maintenance activity, and stated
+    limitations reviewed 2026-11-12. Reviewed is not a recommendation for
+    evaluation and is not a WCAG conformance determination.
+  reviewed_version: "0.0.1 template"
+  maintenance_status: active
+  related_skills:
+  - progressive-enhancement
+  authority_level: community-expert
+  authority_basis: >
+    Maintainer is a recognised web standards and accessibility practitioner.
+    This entry describes upstream documentation and claims; it is not an
+    independent accessibility assessment.
+  topic_tags:
+  - web-components
+  - testing
+  - progressive-enhancement
+  - tooling
+  jurisdiction: global
+  wcag_version: []
+  last_reviewed: '2026-11-12'
+  owner: Aaron Gustafson
+  license: MIT
+  license_notes: >
+    Repository code and documentation are MIT. The linked article is
+    CC BY-NC-SA 3.0. Link and cite; do not reproduce.
+  status: active
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Repository code is MIT, but the linked article has non-commercial and
+    share-alike terms. Use this entry for reference and citation, and check the
+    applicable terms before training on or redistributing the material.
+  local_guidance:
+  - examples/PROGRESSIVE_ENHANCEMENT_BEST_PRACTICES.md
+  additional_urls:
+  - https://www.aaron-gustafson.com/notebook/a-web-component-starter-template/

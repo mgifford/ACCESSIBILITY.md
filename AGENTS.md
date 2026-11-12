@@ -307,6 +307,13 @@ not create or edit a second independent copy. See
 [Registry ownership](TRUSTED_SOURCES.md#registry-ownership-and-cross-repository-synchronization)
 and [resource discovery by task](TRUSTED_SOURCES.md#finding-resources-by-task).
 
+Component references use the same registry. Look for `resource_type: component`
+or `tool`, `curation_status`, `native_alternatives`, `progressive_enhancement`,
+`accessibility_limitations`, `test_evidence`, and `reviewed_version`. Try native
+HTML first; a `reviewed` component is not an endorsement or a WCAG result, and a
+reference is not permission to install a dependency. See
+[Component reference curation](TRUSTED_SOURCES.md#component-reference-curation).
+
 When researching:
 
 1. prefer normative standards and official specifications for requirements;

@@ -48,6 +48,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 | Concise AI coding skills | [mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills) |
 | Accessibility evaluation methods | [Manual testing guide](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md) and [Microsoft ACT](https://github.com/microsoft/Microsoft-Accessibility/tree/main/Accessibility-Considerations-Toolkit) |
 | Testing tools and CI checks | [CI/CD guidance](./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md) and the [trusted-source registry](./TRUSTED_SOURCES.md) |
+| Existing accessible web components to evaluate | [Component reference curation](./TRUSTED_SOURCES.md#component-reference-curation) |
 | Research and user-centred design guidance | [Comparison and resource categories](./COMPARISONS.md#resource-categories-are-not-interchangeable) |
 
 The registry is a discovery aid. It does not make every listed source

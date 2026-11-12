@@ -82,13 +82,28 @@ and accepted values may evolve with the registry schema.
 | `description` | Short explanation of the source | May be incomplete, promotional, or awaiting review |
 | `authority_level` | Current assessment of the source's role | `to_review` means authority has not been resolved; see the values below |
 | `authority_basis` | Short evidence for a non-provisional `authority_level` | Optional; absence means the classification still needs justification |
-| `resource_type` | Broad role such as `standard`, `research`, `guidance`, `methodology`, `tool`, `skill`, `governance`, or `dataset` | Optional; a source can span more than one role |
+| `resource_type` | Broad role such as `standard`, `research`, `guidance`, `methodology`, `tool`, `skill`, `governance`, `dataset`, or `component` | Optional; a source can span more than one role |
 | `normative_status` | `normative`, `informative`, `mixed`, or `not-applicable` | Optional; do not infer normativity from publisher size |
 | `audience` | Intended users | Optional; descriptive, not an access restriction |
 | `scope` | What the source covers | Optional; keep short and link to the authoritative scope |
 | `limitations` | Known boundaries, gaps, or cautions | Optional; do not use it to dismiss a source |
 | `recommended_use` | Suggested use in this project's workflow | Optional; not a requirement or endorsement |
 | `local_guidance` | Local guides or skills related to the source | Optional; paths must resolve in this repository |
+| `component_name` | The custom element or project name | Component and tool entries; not a conformance claim |
+| `component_type` | The component category, such as theme control or tabbed interface | Descriptive, not a WCAG classification |
+| `repository_url` | Canonical source repository | Optional for non-component entries; required for `resource_type: component` |
+| `documentation_url` | Authoritative README or API documentation | Optional; must be an HTTP(S) URL |
+| `intended_use` | The problem the component is designed to solve | Upstream framing, not an endorsement |
+| `native_alternatives` | Platform or semantic-HTML options to try first | Required for `resource_type: component` |
+| `compatibility` | Browser, platform, or framework assumptions | Upstream claim unless independently tested |
+| `progressive_enhancement` | Behaviour without JavaScript or with partial support | Required for `resource_type: component` |
+| `accessibility_limitations` | Known boundaries, unresolved risks, or testing gaps | Required for `resource_type: component` |
+| `test_evidence` | Upstream or independent test evidence, with what was actually run | Do not describe unrun tests as verification |
+| `curation_status` | `candidate`, `reviewed`, `recommended-for-evaluation`, or `not-currently-recommended` | A curation decision, not a WCAG result |
+| `curation_notes` | What was reviewed and what remains unverified | Required context for a non-candidate status |
+| `reviewed_version` | Version or template revision reviewed | Tie the metadata to a specific upstream state |
+| `maintenance_status` | `active`, `maintenance`, `stale`, `archived`, or `unknown` | Upstream maintenance signal, not accessibility quality |
+| `related_skills` | Skill names that may benefit from the reference | Optional; keep skills concise |
 | `license_notes` | Reuse or attribution conditions beyond the licence name | Optional; required when third-party terms differ from the repository licence |
 | `additional_urls` | Additional authoritative pages | Optional; each must be an HTTP(S) URL |
 | `topic_tags` | Topics for discovery and filtering | Tags can be missing, broad, or outdated |
@@ -121,6 +136,63 @@ The registry uses these values for `authority_level`:
 informative guidance. Where known, `resource_type`, `normative_status`, and
 `authority_basis` record that distinction. Do not infer normative status from a
 large publisher, a government domain, or a repository licence.
+
+## Component reference curation
+
+Component references use the same registry and the same provenance rules as
+other sources. They are not a component library, and inclusion is not an
+endorsement or a WCAG conformance determination.
+
+| Curation status | Meaning | What is needed |
+| --- | --- | --- |
+| `candidate` | Identified and recorded, but the source, API, licence, or maintenance has not been reviewed | A first-pass entry; do not treat as evaluated |
+| `reviewed` | Repository, documentation, licence, maintenance activity, intended use, native alternatives, progressive enhancement, limitations, and test evidence have been reviewed | No independent browser or assistive-technology testing required for this state |
+| `recommended-for-evaluation` | Reviewed plus reproducible evidence relevant to the stated use case, with limitations recorded | Upstream tests and/or independent checks; still not a conformance claim |
+| `not-currently-recommended` | A known blocking issue, stale project, incompatible licence, or unsuitable use case | Record the specific reason and review date |
+
+`reviewed` is deliberately weaker than `recommended-for-evaluation`. Most
+entries start as `candidate` or `reviewed`. A clean automated scan, a README
+that mentions WCAG, or a large star count does not justify a stronger status.
+
+### Pilot component references
+
+These are the first curated references. Read the registry entry for the full
+metadata before adopting one. Each entry links to the upstream maintainer and
+records the version reviewed.
+
+| Component | Intended use | Native alternative to consider first | Curation |
+| --- | --- | --- | --- |
+| [`<theme-switcher>`](https://github.com/aarongustafson/theme-switcher) | Reusable System/Light/Dark preference control | System preference via CSS; native radio group plus server-rendered preference | `reviewed` |
+| [`<tabbed-interface>`](https://github.com/aarongustafson/tabbed-interface) | Tabs over heading-structured content, with a linear fallback | Ordinary headings and sections; native `<details>` for disclosure | `reviewed` |
+| [`<form-matching-fields>`](https://github.com/aarongustafson/form-matching-fields) | Additive matching validation for two text-type fields | Avoid duplicate entry; otherwise native constraints plus a small site-specific check | `reviewed` |
+| [Web Component Starter Template](https://github.com/aarongustafson/web-component-starter) | Scaffolding for a team that has decided to build a component | Native HTML and existing reviewed components | `reviewed` |
+
+Do not copy these components or their documentation into this repository.
+Check the upstream licence, README, demos, tests, and open issues, then test the
+component in the target context. A reference is not authorization to install a
+dependency.
+
+## Upstream defects and maintenance
+
+A referenced component remains the upstream maintainer's responsibility. If it
+has an accessibility defect:
+
+1. Document reproducible evidence and the affected version.
+2. Check for an existing upstream issue before creating a duplicate.
+3. Prefer contributing the fix upstream, using the
+   [Upstream First](https://github.com/mgifford/upstream-first) decision skill.
+4. If a temporary local workaround is unavoidable, record its owner, scope, and
+   removal condition in the project's divergence record.
+5. Re-verify when the upstream fix is released and adopted.
+6. Do not silently maintain a competing fork or describe a merged upstream fix
+   as resolved before it is released, adopted, and verified.
+
+Review a component reference when the upstream repository is deprecated, a
+canonical URL breaks, a major release or material API change lands, an
+accessibility regression is reported, a relevant unresolved issue remains, or
+the licence changes. Do not automatically import upstream releases or rewrite
+skill instructions. Record the reviewed version and date; avoid frequent
+network checks without a specific maintenance question.
 
 ## Finding resources by task
 

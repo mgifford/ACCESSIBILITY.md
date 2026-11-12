@@ -52,6 +52,25 @@ Provide three mutually exclusive choices:
 
 The selector can be permanently visible where space permits. In a constrained header, use one labelled button that opens a single-choice group. Do not use a binary toggle when System is a supported state.
 
+### Pattern C: Use a reviewed web component
+
+A custom element can encapsulate the selector, persistence, and the state signal
+the page uses. It must still render or enhance native controls, preserve
+System/Light/Dark, and leave colour choices and contrast testing to the site. A
+custom element name is not an accessible role or name.
+
+Aaron Gustafson's [`<theme-switcher>`](https://github.com/aarongustafson/theme-switcher)
+is one reviewed reference. It writes `data-theme` to the root and leaves colours
+to CSS. Its minimal generated form has no usable controls before JavaScript runs
+or if it fails; the upstream README documents author-supplied native radios as a
+fallback, and a separate head script is needed to reduce a theme flash.
+
+This is a reference, not a recommendation or a conformance claim. Compare it with
+the native alternatives, check the upstream licence and tests, and test the
+component with your own theme tokens, forced-colours mode, zoom, and assistive
+technology. See the [component curation guidance](../TRUSTED_SOURCES.md#component-reference-curation)
+and the [upstream article](https://www.aaron-gustafson.com/notebook/theme-switching-made-easy/).
+
 ---
 
 ## 3. Theme tokens and browser integration
@@ -865,6 +884,8 @@ An implementation is complete when:
 - [MDN: prefers-contrast](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-contrast)
 - [MDN: forced-colors](https://developer.mozilla.org/docs/Web/CSS/@media/forced-colors)
 - [User Personalization and Accessibility Best Practices](./USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md)
+- [Aaron Gustafson: Theme Switching Made Easy](https://www.aaron-gustafson.com/notebook/theme-switching-made-easy/)
+- [`<theme-switcher>` repository](https://github.com/aarongustafson/theme-switcher)
 
 ---
 

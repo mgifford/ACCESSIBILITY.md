@@ -198,6 +198,25 @@ reach **Serious**.
 
 ---
 
+## Reusable web components
+
+A web component is a JavaScript enhancement. It does not replace semantic HTML,
+a server-rendered fallback, or a no-JavaScript path. Before adopting one:
+
+- Confirm it renders native controls or enhances existing semantic markup.
+- Check what remains when JavaScript fails or has not loaded.
+- Review the licence, maintenance status, tests, and known limitations.
+- Test keyboard, focus, names, states, zoom, forced colours, and print in your
+  own context.
+- Prefer a fix upstream over a private fork, and record any temporary local
+  workaround with an owner and removal condition.
+
+The [Web Component Starter Template](https://github.com/aarongustafson/web-component-starter)
+is a reviewed reference for project scaffolding, testing, and publishing. It is
+not an accessible component and cannot establish that a generated component is
+accessible. See the [component curation guidance](../TRUSTED_SOURCES.md#component-reference-curation)
+and the [upstream article](https://www.aaron-gustafson.com/notebook/a-web-component-starter-template/).
+
 ## What to Avoid
 
 * Rendering page content exclusively in JavaScript — **Critical**

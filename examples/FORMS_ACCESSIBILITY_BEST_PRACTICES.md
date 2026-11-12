@@ -285,6 +285,21 @@ When a field is invalid:
 
 Do not put `role="alert"` on error text that is already present when the page loads. A live region announces changes made after it is established. Avoid combining several competing announcement mechanisms without assistive-technology testing.
 
+### Reusable matching-field components
+
+A web component can add matching-value validation to two fields, but it must be
+additive to native constraint validation and server-side validation, not a
+replacement. Confirm that the error is associated with the right field, is
+announced appropriately, does not overwrite an existing error, and that the form
+still submits when JavaScript is unavailable.
+
+[`<form-matching-fields>`](https://github.com/aarongustafson/form-matching-fields)
+is one reviewed reference. It compares the first two eligible text-type inputs
+and pins a custom validity message to the second field. That is a narrow scope,
+not a general validation framework. This is a reference, not a recommendation;
+read the upstream README and article, check the licence, and test it in context.
+See the [component curation guidance](../TRUSTED_SOURCES.md#component-reference-curation).
+
 ---
 
 ## 11. Error summaries
@@ -594,6 +609,11 @@ Applicability depends on the form and process. This list is not a substitute for
 - [Understanding 3.3.8: Accessible Authentication](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html)
 - [WAI-ARIA Authoring Practices: Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
 - [WAI-ARIA Authoring Practices: Date Picker Dialog Example](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/)
+
+### Component reference
+
+- [Aaron Gustafson: Easy Data-entry Verification with a Web Component](https://www.aaron-gustafson.com/notebook/matching-form-fields-with-a-web-component/)
+- [`<form-matching-fields>` repository](https://github.com/aarongustafson/form-matching-fields)
 
 ### HTML and structured standards
 
