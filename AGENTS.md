@@ -332,6 +332,27 @@ not independent proof of permission, licensing, or consent.
 If a source restriction prevents necessary verification, use another
 authoritative source or ask for human review.
 
+## Cross-Repository Synchronization
+
+`examples/` is the canonical source for the topic guides;
+`mgifford/accessibility-skills` contains concise derivatives. Do not copy a
+canonical guide over a skill.
+
+The local-first workflow lives in the skills repository:
+
+```bash
+cd ../accessibility-skills
+npm run sync:status
+npm run sync:diff -- --skill forms
+npm run sync:validate
+```
+
+`npm run sync:review` records a reviewed decision and never edits `SKILL.md`.
+A canonical change does not require a skill change, but it does require a
+recorded decision. Do not advance synchronization metadata without review, and
+do not edit both repositories during a read-only check. See
+[SYNC_WORKFLOW.md](https://github.com/mgifford/accessibility-skills/blob/main/SYNC_WORKFLOW.md).
+
 ## Documentation and Jekyll Safety
 
 - Preserve meaningful heading hierarchy and list structure.

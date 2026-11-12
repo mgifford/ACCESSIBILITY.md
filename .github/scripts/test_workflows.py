@@ -56,6 +56,8 @@ def main():
           'issues: write' not in text and 'issues.create' not in text)
     check('sync workflow has a timeout',
           any(step.get('timeout-minutes') for step in steps(workflow)) or 'timeout-minutes' in text)
+    check('sync workflow emits a machine-readable report',
+          'sync.mjs report' in text and 'upload-artifact' in text)
 
     link_text = read(LINK_WORKFLOW)
     check('PR link workflow runs local link checks',

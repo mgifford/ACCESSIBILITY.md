@@ -416,8 +416,29 @@ skills repository owns the actionable drift issue so the same finding is not
 filed in both repositories.
 
 A skill is a distillation, not a copy. A changed canonical guide requires a
-reviewed decision (update, no update needed, or further review required) before
-the skill's metadata is advanced.
+reviewed decision (update, no update needed, intentional divergence, or
+deferred) before the skill's metadata is advanced.
+
+### Local development
+
+The skills repository provides a local-first CLI that discovers this checkout
+from an explicit path, `ACCESSIBILITY_MD_DIR`, `sync.config.yaml`, or a sibling
+directory:
+
+```bash
+cd ../accessibility-skills
+npm run sync:status
+npm run sync:diff -- --skill forms
+npm run sync:review -- --skill forms --decision no-update --note "No material change"
+npm run sync:validate
+npm run sync:report -- --output sync-report.md
+```
+
+No model, network request, GitHub credential, or monorepo is required. See
+[SYNC_WORKFLOW.md](https://github.com/mgifford/accessibility-skills/blob/main/SYNC_WORKFLOW.md)
+for discovery precedence, statuses, review decisions, and PR order. The
+optional agent prompt is
+[UPDATE_SKILL_FROM_CANONICAL.md](https://github.com/mgifford/accessibility-skills/blob/main/prompts/UPDATE_SKILL_FROM_CANONICAL.md).
 
 ## 📄 License
 
