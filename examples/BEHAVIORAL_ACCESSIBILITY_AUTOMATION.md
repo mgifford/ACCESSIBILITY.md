@@ -730,7 +730,7 @@ not that the requirement is fully automatable.
 - [CI/CD Accessibility Best Practices](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
 - [AXE Rules Coverage](./AXE_RULES_COVERAGE.md)
 - [Playwright examples and tests](./playwright/README.md)
-- [Definition of Done](../DEFINITION_OF_DONE.md)
+- [Definition of Done](../docs/DEFINITION_OF_DONE.md)
 
 ## 12. Primary references
 
