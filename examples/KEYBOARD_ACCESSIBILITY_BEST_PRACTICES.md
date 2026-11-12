@@ -335,6 +335,22 @@ Follow the complete current APG pattern for any custom widget. The following is 
 
 Do not implement a widget from this summary alone. Use the complete pattern, document any variation, and test with representative browsers and assistive technologies.
 
+### Reusable tab implementations
+
+A web component can generate a tablist and panels from heading-structured
+content. Verify the activation model (manual Enter/Space or automatic on focus),
+arrow/Home/End behaviour, panel labelling, focus into the active panel, and a
+linear fallback when tabs do not fit. Check how the component behaves in print
+and how its shadow DOM is styled and tested.
+
+[`<tabbed-interface>`](https://github.com/aarongustafson/tabbed-interface) is one
+reviewed reference. It keeps authored content in the light DOM and presents it
+linearly without JavaScript or when the tablist does not fit. `fixed-tabs`
+removes that fallback and leaves overflow to the implementer. This is a
+reference, not a recommendation; do not use tabs for content that should remain
+linear, and test the component in context. See the
+[component curation guidance](../TRUSTED_SOURCES.md#component-reference-curation).
+
 ---
 
 ## 13. Character-key shortcuts
@@ -562,6 +578,11 @@ Applicability depends on the interface. Conformance with a keyboard criterion do
 - [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 - [APG: Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
 - [APG: Dialog Modal Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+
+### Component reference
+
+- [Aaron Gustafson: Tabbed Interface: The Web Component](https://www.aaron-gustafson.com/notebook/tabbed-interface-the-web-component/)
+- [`<tabbed-interface>` repository](https://github.com/aarongustafson/tabbed-interface)
 
 ### HTML and structured standards
 

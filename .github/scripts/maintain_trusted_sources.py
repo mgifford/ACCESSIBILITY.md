@@ -392,8 +392,32 @@ VALID_RESOURCE_TYPES = [
     'skill',
     'governance',
     'dataset',
+    'component',
 ]
 VALID_NORMATIVE_STATUSES = ['normative', 'informative', 'mixed', 'not-applicable']
+VALID_CURATION_STATUSES = [
+    'candidate',
+    'reviewed',
+    'recommended-for-evaluation',
+    'not-currently-recommended',
+]
+VALID_MAINTENANCE_STATUSES = ['active', 'maintenance', 'stale', 'archived', 'unknown']
+COMPONENT_REQUIRED_FIELDS = [
+    'component_name',
+    'component_type',
+    'repository_url',
+    'documentation_url',
+    'curation_status',
+    'intended_use',
+    'native_alternatives',
+    'compatibility',
+    'progressive_enhancement',
+    'accessibility_limitations',
+    'test_evidence',
+    'reviewed_version',
+    'maintenance_status',
+    'last_reviewed',
+]
 
 
 def validate_yaml_structure(
@@ -466,6 +490,39 @@ def validate_yaml_structure(
 
         if 'normative_status' in source and source['normative_status'] not in VALID_NORMATIVE_STATUSES:
             errors.append(f"{source_id}: Invalid normative_status '{source['normative_status']}', must be one of {VALID_NORMATIVE_STATUSES}")
+
+        if 'curation_status' in source and source['curation_status'] not in VALID_CURATION_STATUSES:
+            errors.append(f"{source_id}: Invalid curation_status '{source['curation_status']}', must be one of {VALID_CURATION_STATUSES}")
+
+        if 'maintenance_status' in source and source['maintenance_status'] not in VALID_MAINTENANCE_STATUSES:
+            errors.append(f"{source_id}: Invalid maintenance_status '{source['maintenance_status']}', must be one of {VALID_MAINTENANCE_STATUSES}")
+
+        for field in (
+            'component_name', 'component_type', 'intended_use', 'native_alternatives',
+            'compatibility', 'progressive_enhancement', 'accessibility_limitations',
+            'test_evidence', 'curation_notes', 'reviewed_version',
+        ):
+            if field in source and not isinstance(source[field], str):
+                errors.append(f"{source_id}: '{field}' must be a string")
+
+        for field in ('repository_url', 'documentation_url'):
+            if field in source:
+                parsed = urlparse(str(source[field]))
+                if parsed.scheme not in ('http', 'https') or not parsed.netloc:
+                    errors.append(f"{source_id}: {field} must be an absolute HTTP(S) URL, got '{source[field]}'")
+
+        if 'related_skills' in source:
+            if not isinstance(source['related_skills'], list):
+                errors.append(f"{source_id}: 'related_skills' must be a list")
+            else:
+                for skill in source['related_skills']:
+                    if not isinstance(skill, str) or not re.match(r'^[a-z0-9][a-z0-9-]*$', skill):
+                        errors.append(f"{source_id}: related_skills entry is not a valid skill name: '{skill}'")
+
+        if source.get('resource_type') == 'component':
+            for field in COMPONENT_REQUIRED_FIELDS:
+                if field not in source or source[field] in (None, ''):
+                    errors.append(f"{source_id}: component reference is missing required field '{field}'")
 
         # Date and list shapes.
         last_reviewed = source.get('last_reviewed')

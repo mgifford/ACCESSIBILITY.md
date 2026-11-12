@@ -285,6 +285,26 @@ def test_validate_yaml_structure():
         lambda errors: any("Missing provenance field 'owner'" in e for e in errors),
     )
     check(
+        "Invalid curation_status detected",
+        validate_yaml_structure([make_source(id='s-curation', curation_status='recommended')]),
+        lambda errors: any('Invalid curation_status' in e for e in errors),
+    )
+    check(
+        "Component reference missing required fields detected",
+        validate_yaml_structure([make_source(id='s-component', resource_type='component')]),
+        lambda errors: any("component reference is missing required field 'component_name'" in e for e in errors),
+    )
+    check(
+        "Invalid component repository URL detected",
+        validate_yaml_structure([make_source(id='s-repo', component_name='x', component_type='x', repository_url='not-a-url', documentation_url='https://example.com', curation_status='reviewed', intended_use='x', native_alternatives='x', compatibility='x', progressive_enhancement='x', accessibility_limitations='x', test_evidence='x', reviewed_version='1', maintenance_status='active')]),
+        lambda errors: any('repository_url must be an absolute HTTP(S) URL' in e for e in errors),
+    )
+    check(
+        "Invalid related_skills entry detected",
+        validate_yaml_structure([make_source(id='s-skills', related_skills=['Forms Skill'])]),
+        lambda errors: any('related_skills entry is not a valid skill name' in e for e in errors),
+    )
+    check(
         "Missing local_guidance path detected",
         validate_yaml_structure([make_source(id='s-local', local_guidance=['examples/does-not-exist.md'])], root_dir='.'),
         lambda errors: any('local_guidance path does not exist' in e for e in errors),
@@ -335,6 +355,67 @@ def test_registry_curation():
         for label, value in checks.items():
             print(f"  {'✓' if value else '✗'} ACT: {label}")
             results.append(value)
+
+    passed = sum(results)
+    print(f"  {passed}/{len(results)} tests passed\n")
+    return passed == len(results)
+
+
+def test_component_references():
+    """Validate the pilot component references and their curation metadata."""
+    print("Testing component reference curation...")
+    results = []
+    data = load_yaml(ms.TRUSTED_SOURCES_FILE)
+    components = [source for source in data['sources'] if str(source.get('id', '')).startswith('component-')]
+    ok = len(components) >= 4
+    print(f"  {'✓' if ok else '✗'} At least four component references are present (found {len(components)})")
+    results.append(ok)
+
+    expected_ids = {
+        'component-theme-switcher',
+        'component-tabbed-interface',
+        'component-form-matching-fields',
+        'component-web-component-starter',
+    }
+    by_id = {source['id']: source for source in data['sources']}
+    for component_id in sorted(expected_ids):
+        component = by_id.get(component_id)
+        ok = component is not None
+        print(f"  {'✓' if ok else '✗'} {component_id} is present")
+        results.append(ok)
+        if not component:
+            continue
+        required = [
+            'component_name', 'component_type', 'repository_url', 'documentation_url',
+            'curation_status', 'intended_use', 'native_alternatives', 'compatibility',
+            'progressive_enhancement', 'accessibility_limitations', 'test_evidence',
+            'reviewed_version', 'maintenance_status', 'last_reviewed', 'related_skills',
+        ]
+        for field in required:
+            ok = bool(component.get(field))
+            print(f"  {'✓' if ok else '✗'} {component_id}: {field} is recorded")
+            results.append(ok)
+        ok = component.get('license') == 'MIT'
+        print(f"  {'✓' if ok else '✗'} {component_id}: licence is MIT")
+        results.append(ok)
+        ok = component.get('curation_status') in ms.VALID_CURATION_STATUSES
+        print(f"  {'✓' if ok else '✗'} {component_id}: curation_status is valid")
+        results.append(ok)
+        ok = component.get('maintenance_status') in ms.VALID_MAINTENANCE_STATUSES
+        print(f"  {'✓' if ok else '✗'} {component_id}: maintenance_status is valid")
+        results.append(ok)
+
+    # Related skill names must resolve when the sibling skills checkout is present.
+    skills_root = os.path.abspath(os.path.join('.', '..', 'accessibility-skills'))
+    if os.path.isdir(skills_root):
+        for component in components:
+            for skill in component.get('related_skills', []):
+                path = os.path.join(skills_root, 'skills', skill, 'SKILL.md')
+                ok = os.path.exists(path)
+                print(f"  {'✓' if ok else '✗'} {component['id']}: related skill '{skill}' exists")
+                results.append(ok)
+    else:
+        print("  - sibling accessibility-skills checkout not present; related skill paths skipped")
 
     passed = sum(results)
     print(f"  {passed}/{len(results)} tests passed\n")
@@ -627,6 +708,7 @@ def main():
     results.append(("validate_yaml_structure", test_validate_yaml_structure()))
     results.append(("registry_curation", test_registry_curation()))
     results.append(("ai_scraping_policy", test_ai_scraping_policy()))
+    results.append(("component_references", test_component_references()))
     results.append(("apply_changes", test_apply_changes()))
     results.append(("load_yaml / save_yaml", test_load_save_yaml()))
     results.append(("load_error_history / save_error_history", test_load_save_error_history()))
