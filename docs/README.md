@@ -20,6 +20,7 @@ commitment, see [ACCESSIBILITY.md](../ACCESSIBILITY.md).
 - [Design and content standards](./STYLES.md)
 - [Comparison with KreerC/ACCESSIBILITY.md](./COMPARISON_WITH_KREERC.md) —
   legacy redirect to the current [comparison page](../COMPARISONS.md)
+- [Project learnings](./LEARNINGS.md) — durable maintenance lessons from this work
 - [Archive](./archive/) — historical project records retained for context
 
 Component and resource references stay in the
