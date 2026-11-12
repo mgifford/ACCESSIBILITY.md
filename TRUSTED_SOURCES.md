@@ -172,6 +172,28 @@ Check the upstream licence, README, demos, tests, and open issues, then test the
 component in the target context. A reference is not authorization to install a
 dependency.
 
+## Upstream defects and maintenance
+
+A referenced component remains the upstream maintainer's responsibility. If it
+has an accessibility defect:
+
+1. Document reproducible evidence and the affected version.
+2. Check for an existing upstream issue before creating a duplicate.
+3. Prefer contributing the fix upstream, using the
+   [Upstream First](https://github.com/mgifford/upstream-first) decision skill.
+4. If a temporary local workaround is unavoidable, record its owner, scope, and
+   removal condition in the project's divergence record.
+5. Re-verify when the upstream fix is released and adopted.
+6. Do not silently maintain a competing fork or describe a merged upstream fix
+   as resolved before it is released, adopted, and verified.
+
+Review a component reference when the upstream repository is deprecated, a
+canonical URL breaks, a major release or material API change lands, an
+accessibility regression is reported, a relevant unresolved issue remains, or
+the licence changes. Do not automatically import upstream releases or rewrite
+skill instructions. Record the reviewed version and date; avoid frequent
+network checks without a specific maintenance question.
+
 ## Finding resources by task
 
 This is a navigation aid, not a second registry. The YAML remains the canonical
