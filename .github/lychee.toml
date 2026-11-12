@@ -23,5 +23,9 @@ exclude = [
   # Harvard accessibility site returns 403 to automated link checkers
   "^https://accessibility\\.huit\\.harvard\\.edu",
   # Barrierbreak returns 202 to automated link checkers
-  "^https://www\\.barrierbreak\\.com"
+  "^https://www\\.barrierbreak\\.com",
+  # Stack Overflow returns 403 to automated link checkers
+  "^https://stackoverflow\\.com",
+  # Slack workspace invitations return 403 to automated link checkers
+  "^https://web-a11y\\.slack\\.com"
 ]

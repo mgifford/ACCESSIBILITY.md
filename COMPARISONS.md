@@ -24,7 +24,7 @@ licensing, and review status, use the
 
 | Category | Question it answers | Typical examples |
 | --- | --- | --- |
-| **Normative standards and specifications** | What must be satisfied? | [WCAG 2.2](https://www.w3.org/TR/WCAG22/), [WAI-ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/), [EN 301 549](https://www.etsi.org/human-factors-accessibility/en-301-549-v3-the-harmonized-european-standard-for-ict-accessibility) |
+| **Normative standards and specifications** | What must be satisfied? | [WCAG 2.2](https://www.w3.org/TR/WCAG22/), [WAI-ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/), [EN 301 549 (ETSI standards library)](https://www.etsi.org/standards/) |
 | **Research and functional considerations** | Which access strategies and interface barriers should be examined? | [Microsoft Accessibility Considerations Toolkit](https://github.com/microsoft/Microsoft-Accessibility/tree/main/Accessibility-Considerations-Toolkit), [W3C COGA](https://www.w3.org/TR/coga-usable/) |
 | **Design and implementation guidance** | How might a team build this component or pattern? | This repository's [`examples/`](./examples/README.md), Intopia's skill, `A11Y.md` |
 | **Automated accessibility testing** | Which machine-detectable conditions are present? | axe-core, Playwright assertions, Lighthouse, scanner integrations |
