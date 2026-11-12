@@ -7,6 +7,11 @@ title: Examples Index
 This index helps you browse all example assets used by `ACCESSIBILITY.md`.
 Reference and adapt these examples for your project — they are not copy-paste solutions.
 
+Looking for an external standard, research source, tool, or evaluation method?
+Start with the task-based [resource discovery guide](../TRUSTED_SOURCES.md#finding-resources-by-task)
+rather than searching this whole directory. The registry is a discovery aid,
+not a vetted list or an endorsement.
+
 ## Testing and Automation
 
 - [CI_CD_ACCESSIBILITY_BEST_PRACTICES](./CI_CD_ACCESSIBILITY_BEST_PRACTICES.md)
@@ -18,7 +23,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 - [ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES](./ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md)
 - [ACCESSIBILITY_FINDING_TRACKING](./ACCESSIBILITY_FINDING_TRACKING.md) - Canonical model for tracker IDs, scan request/run IDs, occurrence and pattern fingerprints, display IDs, legacy identifier migration, and the actionability policy distinguishing valid intake from remediation-ready findings
 - [fingerprints/README](./fingerprints/README.md) - Normative `a11y/pattern/v1` and `a11y/occurrence/v1` fingerprint contracts, RFC 8785 canonicalization, and executable golden test vectors
-- [schemas/README](./schemas/README.md) - Versioned JSON Schema (`schema_version: "2.0"`) for machine-readable accessibility findings, with validated complete, minimal, and manual examples
+- [schemas/README](./schemas/README.md) - Versioned JSON Schema (`schema_version: "2.0"` with the `2.1` policy object) for machine-readable accessibility findings, with validated complete, minimal, manual, and policy-classification examples
 - [migrations/ACCESSIBILITY_MIGRATION_PROFILES](./migrations/ACCESSIBILITY_MIGRATION_PROFILES.md) - Verified `drupal-core` and `open-scans` legacy identifier formats, gaps, and migration requirements for adopting the fingerprint profiles
 - [GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION](./GITHUB_ACCESSIBILITY_SCANNER_INTEGRATION.md)
 - [TEST_COVERAGE](./TEST_COVERAGE.md)
@@ -78,7 +83,7 @@ Reference and adapt these examples for your project — they are not copy-paste 
 - [AGENT_REMEDIATION_WORKFLOW.yml](./AGENT_REMEDIATION_WORKFLOW.yml) - GitHub Actions workflow triggered by accessibility issue label events; invokes Copilot coding agent to propose a fix as a draft PR
 - [BROWSER_TESTING_WORKFLOW.yml](./BROWSER_TESTING_WORKFLOW.yml) - Multi-browser accessibility testing
 - [PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml](./PRE_COMMIT_ACCESSIBILITY_SAMPLE.yaml)
-- [TRUSTED_SOURCES.yaml](./TRUSTED_SOURCES.yaml) - Machine-readable source metadata for discovery and review, with automated monthly maintenance. Includes procurement requirements from [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md). See [maintenance documentation](../.github/TRUSTED_SOURCES_MAINTENANCE.md).
+- [TRUSTED_SOURCES.yaml](./TRUSTED_SOURCES.yaml) - Machine-readable source metadata for discovery and review (not a vetted list), with automated monthly maintenance. See the [human-readable guide](../TRUSTED_SOURCES.md), including [resource discovery by task](../TRUSTED_SOURCES.md#finding-resources-by-task) and [registry ownership](../TRUSTED_SOURCES.md#registry-ownership-and-cross-repository-synchronization). Includes procurement requirements from [CivicActions Open Requirements Library](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md). See [maintenance documentation](../.github/TRUSTED_SOURCES_MAINTENANCE.md).
 
 ## Prompt Starters and Agent Tasks
 

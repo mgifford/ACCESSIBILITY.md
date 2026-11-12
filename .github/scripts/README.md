@@ -76,5 +76,5 @@ python .github/scripts/maintain_trusted_sources.py --skip-validation
 
 ## See Also
 
-- [TRUSTED_SOURCES_MAINTENANCE.md](../.github/TRUSTED_SOURCES_MAINTENANCE.md) - Full documentation
-- [maintain-trusted-sources.yml](../.github/workflows/maintain-trusted-sources.yml) - GitHub Action workflow
+- [TRUSTED_SOURCES_MAINTENANCE.md](../TRUSTED_SOURCES_MAINTENANCE.md) - Full documentation
+- [maintain-trusted-sources.yml](../workflows/maintain-trusted-sources.yml) - GitHub Action workflow

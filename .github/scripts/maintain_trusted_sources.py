@@ -104,6 +104,10 @@ def validate_urls(sources: List[Dict[str, Any]], error_history: Dict[str, Any]) 
         if not full_url or status == 'removed':
             continue
         
+        if source.get('ai_scraping') == 'prohibited':
+            print(f"Skipping {source_id}: ai_scraping is prohibited")
+            continue
+        
         print(f"Checking {source_id}: {full_url}")
         status_code, error_msg = check_url(full_url)
         
@@ -288,6 +292,8 @@ def enrich_metadata(sources: List[Dict[str, Any]], full_scan: bool = False) -> N
             continue
         
         print(f"Processing {source_id}...")
+        scraping_policy = source.get('ai_scraping', 'allowed')
+        fetch_allowed = scraping_policy != 'prohibited'
         
         # Fill in owner if missing
         if not source.get('owner'):
@@ -296,13 +302,18 @@ def enrich_metadata(sources: List[Dict[str, Any]], full_scan: bool = False) -> N
                 source['owner'] = owner
                 print(f"  Set owner: {owner}")
         
-        # Fill in license if missing (set to "unknown" if can't determine)
+        # Fill in license if missing (set to "unknown" if can't determine).
+        # Do not fetch a source whose registry policy forbids retrieval.
         if source.get('license') is None:
-            print(f"  Detecting license...")
-            license_info = detect_license(full_url)
-            source['license'] = license_info
-            print(f"  Set license: {license_info}")
-            time.sleep(REQUEST_DELAY)
+            if fetch_allowed:
+                print(f"  Detecting license...")
+                license_info = detect_license(full_url)
+                source['license'] = license_info
+                print(f"  Set license: {license_info}")
+                time.sleep(REQUEST_DELAY)
+            else:
+                source['license'] = 'unknown'
+                print("  Skipped license fetch (ai_scraping: prohibited); set license: unknown")
         
         # Update last_reviewed if we're doing metadata updates
         if source.get('last_reviewed') is None or full_scan:
@@ -318,6 +329,9 @@ def enrich_metadata(sources: List[Dict[str, Any]], full_scan: bool = False) -> N
         
         # Check content freshness for active sources
         if status == 'active':
+            if not fetch_allowed:
+                print("  Skipped freshness fetch (ai_scraping: prohibited)")
+                continue
             print(f"  Checking content freshness...")
             last_updated = check_content_freshness(full_url)
             if last_updated:
@@ -358,49 +372,139 @@ def apply_changes(
     return sources
 
 
-def validate_yaml_structure(sources: List[Dict[str, Any]]) -> List[str]:
+VALID_STATUSES = ['active', 'not active', 'removed']
+VALID_AUTHORITY_LEVELS = [
+    'authoritative',
+    'established',
+    'expert-interpretation',
+    'community-expert',
+    'practitioner',
+    'community',
+    'to_review',
+]
+VALID_AI_SCRAPING = ['allowed', 'restricted', 'prohibited']
+VALID_RESOURCE_TYPES = [
+    'standard',
+    'research',
+    'guidance',
+    'methodology',
+    'tool',
+    'skill',
+    'governance',
+    'dataset',
+]
+VALID_NORMATIVE_STATUSES = ['normative', 'informative', 'mixed', 'not-applicable']
+
+
+def validate_yaml_structure(
+    sources: List[Dict[str, Any]],
+    root_dir: Optional[str] = None,
+) -> List[str]:
     """
-    Validate YAML structure and required fields.
-    
-    Returns list of validation errors.
+    Validate YAML structure, required fields, and registry provenance.
+
+    Returns list of validation errors. Passing root_dir also checks that
+    optional local_guidance paths resolve inside the repository.
     """
     errors = []
     required_fields = ['id', 'domain', 'url', 'full_url', 'best_for', 'description', 'status']
-    
+
     # Track for duplicate detection
     seen_ids = set()
     seen_urls = {}
-    
+
     for i, source in enumerate(sources):
         source_id = source.get('id', f'source_{i}')
-        
+
         # Check for duplicate IDs
         if source_id in seen_ids:
             errors.append(f"{source_id}: Duplicate ID found")
         seen_ids.add(source_id)
-        
+
         # Check for duplicate URLs
         full_url = source.get('full_url', '')
         if full_url and full_url in seen_urls:
             errors.append(f"{source_id}: Duplicate URL '{full_url}' (also in {seen_urls[full_url]})")
         if full_url:
             seen_urls[full_url] = source_id
-        
+
         # Check required fields
         for field in required_fields:
             if field not in source:
                 errors.append(f"{source_id}: Missing required field '{field}'")
-        
-        # Check that null values are intentional (not for owner/license which should be "unknown")
-        if source.get('license') is None:
-            # This is OK during initial state, but after enrichment should be set
-            pass
-        
-        # Validate status values
-        valid_statuses = ['active', 'not active', 'removed']
-        if source.get('status') not in valid_statuses:
-            errors.append(f"{source_id}: Invalid status '{source.get('status')}', must be one of {valid_statuses}")
-    
+
+        # Stable identifier format. IDs are used by tools and citations.
+        if not re.match(r'^[a-z0-9][a-z0-9-]*$', str(source_id)):
+            errors.append(f"{source_id}: ID must use lowercase letters, digits, and hyphens")
+
+        # Canonical URL must be a complete HTTP(S) URL.
+        if full_url:
+            parsed = urlparse(str(full_url))
+            if parsed.scheme not in ('http', 'https') or not parsed.netloc:
+                errors.append(f"{source_id}: full_url must be an absolute HTTP(S) URL, got '{full_url}'")
+
+        # Provenance fields must be recorded, not left null. Unknown licensing
+        # is allowed as the literal string "unknown" until it is verified.
+        # Entries still marked to_review may have an unresolved owner.
+        value = source.get('license')
+        if value is None or (isinstance(value, str) and not value.strip()):
+            errors.append(f"{source_id}: Missing provenance field 'license'")
+
+        # Validate enumerated fields rather than accepting arbitrary labels.
+        if source.get('status') not in VALID_STATUSES:
+            errors.append(f"{source_id}: Invalid status '{source.get('status')}', must be one of {VALID_STATUSES}")
+
+        authority = source.get('authority_level')
+        if authority not in VALID_AUTHORITY_LEVELS:
+            errors.append(f"{source_id}: Invalid authority_level '{authority}', must be one of {VALID_AUTHORITY_LEVELS}")
+
+        if 'ai_scraping' in source and source['ai_scraping'] not in VALID_AI_SCRAPING:
+            errors.append(f"{source_id}: Invalid ai_scraping '{source['ai_scraping']}', must be one of {VALID_AI_SCRAPING}")
+
+        if 'resource_type' in source and source['resource_type'] not in VALID_RESOURCE_TYPES:
+            errors.append(f"{source_id}: Invalid resource_type '{source['resource_type']}', must be one of {VALID_RESOURCE_TYPES}")
+
+        if 'normative_status' in source and source['normative_status'] not in VALID_NORMATIVE_STATUSES:
+            errors.append(f"{source_id}: Invalid normative_status '{source['normative_status']}', must be one of {VALID_NORMATIVE_STATUSES}")
+
+        # Date and list shapes.
+        last_reviewed = source.get('last_reviewed')
+        if last_reviewed is not None and not re.match(r'^\d{4}-\d{2}-\d{2}$', str(last_reviewed)):
+            errors.append(f"{source_id}: last_reviewed must be null or YYYY-MM-DD, got '{last_reviewed}'")
+
+        for field in ('topic_tags', 'wcag_version', 'audience', 'local_guidance', 'additional_urls'):
+            if field in source and not isinstance(source[field], list):
+                errors.append(f"{source_id}: '{field}' must be a list")
+
+        for field in ('jurisdiction', 'scope', 'limitations', 'authority_basis', 'recommended_use', 'license_notes'):
+            if field in source and not isinstance(source[field], str):
+                errors.append(f"{source_id}: '{field}' must be a string")
+
+        # A curated, typed entry needs a recorded owner and an authority basis.
+        # Legacy records may remain to_review until a human resolves them.
+        if authority and authority != 'to_review':
+            owner = source.get('owner')
+            if owner is None or (isinstance(owner, str) and not owner.strip()):
+                errors.append(f"{source_id}: Missing provenance field 'owner' for a non-provisional authority_level")
+            if source.get('resource_type') and not source.get('authority_basis'):
+                errors.append(f"{source_id}: authority_level '{authority}' with resource_type requires authority_basis")
+
+        # Additional URLs must be complete HTTP(S) URLs.
+        for extra_url in source.get('additional_urls', []) or []:
+            parsed = urlparse(str(extra_url))
+            if parsed.scheme not in ('http', 'https') or not parsed.netloc:
+                errors.append(f"{source_id}: additional_urls entry is not an absolute HTTP(S) URL: '{extra_url}'")
+
+        # Optional local relationship paths must resolve.
+        if root_dir:
+            for local_path in source.get('local_guidance', []) or []:
+                candidate = os.path.normpath(os.path.join(root_dir, str(local_path)))
+                root_abs = os.path.abspath(root_dir)
+                if not os.path.abspath(candidate).startswith(root_abs + os.sep):
+                    errors.append(f"{source_id}: local_guidance path escapes the repository: '{local_path}'")
+                elif not os.path.exists(candidate):
+                    errors.append(f"{source_id}: local_guidance path does not exist: '{local_path}'")
+
     return errors
 
 
@@ -424,13 +528,11 @@ def main():
     
     # Validate structure
     print("Validating YAML structure...")
-    validation_errors = validate_yaml_structure(sources)
+    validation_errors = validate_yaml_structure(sources, root_dir='.')
     if validation_errors:
-        print("⚠️  Validation warnings:")
-        for error in validation_errors[:10]:  # Show first 10
+        print("⚠️  Validation errors:")
+        for error in validation_errors:
             print(f"  - {error}")
-        if len(validation_errors) > 10:
-            print(f"  ... and {len(validation_errors) - 10} more")
     else:
         print("✓ Structure validation passed\n")
     

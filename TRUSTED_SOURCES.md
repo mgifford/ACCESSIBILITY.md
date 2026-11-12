@@ -80,7 +80,17 @@ and accepted values may evolve with the registry schema.
 | `full_url` | Complete link used to reach the source | Availability does not establish quality |
 | `best_for` | Topics or uses suggested by the registry | Descriptive metadata, not a requirement |
 | `description` | Short explanation of the source | May be incomplete, promotional, or awaiting review |
-| `authority_level` | Current assessment of the source's role | `to_review` means authority has not been resolved |
+| `authority_level` | Current assessment of the source's role | `to_review` means authority has not been resolved; see the values below |
+| `authority_basis` | Short evidence for a non-provisional `authority_level` | Optional; absence means the classification still needs justification |
+| `resource_type` | Broad role such as `standard`, `research`, `guidance`, `methodology`, `tool`, `skill`, `governance`, or `dataset` | Optional; a source can span more than one role |
+| `normative_status` | `normative`, `informative`, `mixed`, or `not-applicable` | Optional; do not infer normativity from publisher size |
+| `audience` | Intended users | Optional; descriptive, not an access restriction |
+| `scope` | What the source covers | Optional; keep short and link to the authoritative scope |
+| `limitations` | Known boundaries, gaps, or cautions | Optional; do not use it to dismiss a source |
+| `recommended_use` | Suggested use in this project's workflow | Optional; not a requirement or endorsement |
+| `local_guidance` | Local guides or skills related to the source | Optional; paths must resolve in this repository |
+| `license_notes` | Reuse or attribution conditions beyond the licence name | Optional; required when third-party terms differ from the repository licence |
+| `additional_urls` | Additional authoritative pages | Optional; each must be an HTTP(S) URL |
 | `topic_tags` | Topics for discovery and filtering | Tags can be missing, broad, or outdated |
 | `jurisdiction` | Geographic or legal scope where known | Do not infer legal applicability from an empty or global value |
 | `wcag_version` | WCAG versions discussed by the source | Mentioning a version does not make the source normative |
@@ -92,6 +102,80 @@ and accepted values may evolve with the registry schema.
 
 Repository-level fields such as `version`, `generated_from`, `generated_on`,
 and `notes` describe the dataset itself rather than an individual source.
+
+### Authority values
+
+The registry uses these values for `authority_level`:
+
+| Value | Meaning | Not the same as |
+| --- | --- | --- |
+| `authoritative` | Official publisher or standards body, including normative specifications and official guidance | A guarantee that every statement is current or applicable |
+| `established` | Widely used reference or framework with a public maintenance record | A normative standard |
+| `expert-interpretation` | Structured synthesis by recognised experts that is explicitly not normative | A consensus standard or a representation of disabled people |
+| `community-expert` | Individual practitioner or expert with demonstrated subject knowledge | An organisational endorsement |
+| `practitioner` | Practical guidance from people doing the work | Verified research |
+| `community` | Community-maintained or collectively edited material | Reviewed authority |
+| `to_review` | Authority has not been resolved | Permission to treat the source as authoritative |
+
+`authoritative` does not by itself distinguish a normative requirement from
+informative guidance. Where known, `resource_type`, `normative_status`, and
+`authority_basis` record that distinction. Do not infer normative status from a
+large publisher, a government domain, or a repository licence.
+
+## Finding resources by task
+
+This is a navigation aid, not a second registry. The YAML remains the canonical
+dataset. Each entry below points to the local guide, the related skill, the
+applicable standard, and an external resource only where it adds something the
+local material does not.
+
+| I need to… | Local guidance | Related skill | Normative requirement | Complementary external resource |
+| --- | --- | --- | --- | --- |
+| Build or review accessible charts and data visualizations | [Charts and Graphs](./examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md) | [`charts-graphs`](https://github.com/mgifford/accessibility-skills/blob/main/skills/charts-graphs/SKILL.md) | [WCAG 1.1.1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html), [1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html), [1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) | [ACT visual adaptation](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.2-visual-adaptation.md) and [nonvisual access](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.1-nonvisual-access.md) considerations; [manual testing guide](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md) |
+| Implement keyboard interaction for a custom widget | [Keyboard](./examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md) | [`keyboard`](https://github.com/mgifford/accessibility-skills/blob/main/skills/keyboard/SKILL.md) | [WCAG 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html), [2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) | [ACT keyboard interaction](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.7-keyboard-interaction.md) and [voice control](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.7-voice-control.md) considerations |
+| Support voice control and speech input | [Speech Recognition](./examples/SPEECH_RECOGNITION_ACCESSIBILITY_BEST_PRACTICES.md) | [`speech-recognition`](https://github.com/mgifford/accessibility-skills/blob/main/skills/speech-recognition/SKILL.md) | [WCAG 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) | [ACT alternatives to speech input](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.6-alternatives-to-speech-input.md) and [voice control](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.7-voice-control.md) considerations |
+| Support cognitive access needs | [Content Design](./examples/CONTENT_DESIGN_ACCESSIBILITY_BEST_PRACTICES.md), [Plain Language](./examples/PLAIN_LANGUAGE_ACCESSIBILITY_BEST_PRACTICES.md) | [`content-design`](https://github.com/mgifford/accessibility-skills/blob/main/skills/content-design/SKILL.md), [`plain-language`](https://github.com/mgifford/accessibility-skills/blob/main/skills/plain-language/SKILL.md) | [WCAG 3.1.5](https://www.w3.org/WAI/WCAG22/Understanding/reading-level.html), [3.2.3](https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html) | [ACT memory, attention, and executive function](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.10-memory-attention-and-executive-function.md) and [language and communication](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.10-language-and-communication.md) considerations; [W3C COGA](https://www.w3.org/TR/coga-usable/) |
+| Support user personalization and preferences | [User Personalization](./examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) | [`user-personalization`](https://github.com/mgifford/accessibility-skills/blob/main/skills/user-personalization/SKILL.md) | [WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [1.4.12](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html) | [ACT visual adaptation](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/considerations/4.2.2-visual-adaptation.md) considerations |
+| Evaluate an interface across access strategies | [Manual Accessibility Testing](./examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md) | [`manual-testing`](https://github.com/mgifford/accessibility-skills/blob/main/skills/manual-testing/SKILL.md) | [WCAG 2.2](https://www.w3.org/TR/WCAG22/), [W3C WAI evaluation guidance](https://www.w3.org/WAI/test-evaluate/) | [ACT responsible use](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/responsible-consideration-use.md), [interpretation guidance](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/consideration-interpretation.md), and [heuristics](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/heuristics/index.md) |
+| Add automated checks to CI | [CI/CD](./examples/CI_CD_ACCESSIBILITY_BEST_PRACTICES.md), [Behavioral Automation](./examples/BEHAVIORAL_ACCESSIBILITY_AUTOMATION.md) | [`ci-cd`](https://github.com/mgifford/accessibility-skills/blob/main/skills/ci-cd/SKILL.md), [`behavioral-a11y`](https://github.com/mgifford/accessibility-skills/blob/main/skills/behavioral-a11y/SKILL.md) | [WCAG 2.2](https://www.w3.org/TR/WCAG22/) | [ACT evaluation methodology](https://github.com/microsoft/Microsoft-Accessibility/tree/main/Accessibility-Considerations-Toolkit/tests/evals) |
+| Establish a project commitment | [ACCESSIBILITY template](./examples/ACCESSIBILITY-template.md) | [`ACCESSIBILITY-general`](https://github.com/mgifford/accessibility-skills/blob/main/skills/ACCESSIBILITY-general/SKILL.md) | Not a standard; project policy | [Comparison with complementary resources](./COMPARISONS.md) |
+
+Links to ACT point to its own repository so Microsoft can maintain the
+authoritative text. Do not copy consideration files into this repository or
+into a skill.
+
+## Registry ownership and cross-repository synchronization
+
+The canonical registry is
+[`examples/TRUSTED_SOURCES.yaml`](./examples/TRUSTED_SOURCES.yaml) in this
+repository. Edit it here.
+
+The [accessibility-skills](https://github.com/mgifford/accessibility-skills)
+repository does not maintain a second independently edited copy. It references
+this registry and its human-readable entry point. The skills repository has no
+runtime dependency on the registry, so installing or using a skill does not
+require a network request.
+
+If a future consumer genuinely needs an offline snapshot, generate it from a
+recorded source revision, validate it, and document the regeneration procedure.
+Do not reintroduce a hand-edited duplicate. The registry validator and its
+tests are the check against silent divergence.
+
+## External resource review
+
+An external source changing does not automatically require a skill rewrite. A
+skill's canonical source is the local guide in this repository, not the
+external site. Review an external source when:
+
+- a linked resource has moved or disappeared;
+- its scope or guidance materially changed;
+- a relevant standard was superseded;
+- its licence or reuse conditions changed; or
+- existing local guidance contains a verified contradiction.
+
+Use `last_reviewed`, `status`, and `ai_scraping` to support that review. Do not
+schedule frequent network checks that consume maintainer time without a
+specific review question.
 
 ## Authority and Source Selection
 
@@ -233,12 +317,18 @@ month and can also be run manually.
 
 The maintenance process is intended to:
 
-- validate registry structure;
-- check URL availability;
+- validate registry structure, required provenance, URLs, and local
+  `local_guidance` paths;
+- check URL availability, skipping sources marked `ai_scraping: prohibited`;
 - track repeated URL errors;
-- suggest or add missing metadata;
-- evaluate limited freshness signals; and
+- suggest or add missing metadata without overriding verified values;
+- evaluate limited freshness signals where retrieval is permitted; and
 - open a pull request when it produces changes.
+
+`python .github/scripts/maintain_trusted_sources.py --validate-only` checks the
+committed registry without making network requests. The PR link-check workflow
+runs that validator, its tests, a local Markdown link checker, and a workflow
+wiring check.
 
 Automation cannot determine whether a source remains authoritative, accurate,
 appropriately licensed, representative, or suitable for a specific claim.
@@ -279,7 +369,7 @@ appropriate private security channel rather than a public issue.
 - [Contributing Accessibility](./examples/CONTRIBUTING_A11Y.md)
 - [Examples Index](./examples/README.md)
 
-Version-sensitive registry and maintenance details last reviewed: 2026-07-19.
+Version-sensitive registry and maintenance details last reviewed: 2026-11-11.
 
 ---
 

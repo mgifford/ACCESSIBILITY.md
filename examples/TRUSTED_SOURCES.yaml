@@ -435,8 +435,8 @@ sources:
   - assistive-technology
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-11-11'
+  owner: U.S. Department of Justice
   license: Public Domain
   status: active
 - id: adobe-spectrum-design
@@ -969,8 +969,8 @@ sources:
   - policy
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-11-11'
+  owner: U.S. General Services Administration (GSA)
   license: Public Domain
   status: active
 - id: developer-android-com
@@ -1447,7 +1447,7 @@ sources:
   - https://talks.hiddedevries.nl/bio
   best_for: accessibility, web standards, wcag, aria, inclusive design, web components
   description: Personal blog and speaking portfolio of accessibility advocate and web standards expert Hidde de Vries, featuring articles on ARIA, web components, and inclusive design practices.
-  authority_level: high
+  authority_level: community-expert
   topic_tags:
   - accessibility
   - web-standards
@@ -1689,7 +1689,7 @@ sources:
   owner: Law Office of Lainey Feingold
   license: unknown
   status: active
-- id: léonie-watson-tink
+- id: leonie-watson-tink
   domain: Léonie Watson (Tink)
   url: tink.uk
   full_url: https://tink.uk
@@ -1909,6 +1909,93 @@ sources:
   owner: null
   license: unknown
   status: active
+- id: microsoft-accessibility-considerations-toolkit
+  domain: Microsoft Accessibility Considerations Toolkit (ACT)
+  url: github.com/microsoft/Microsoft-Accessibility/tree/main/Accessibility-Considerations-Toolkit
+  full_url: https://github.com/microsoft/Microsoft-Accessibility/tree/main/Accessibility-Considerations-Toolkit
+  best_for: access considerations, EN 301 549 functional performance statements, assistive-technology interaction patterns, accessibility-focused usability heuristics, responsible evaluation methodology, structured agent evaluation
+  description: >
+    Microsoft's reference knowledge base of access considerations organized
+    around the EN 301 549 Functional Performance Statements. It documents
+    possible interface barriers, assistive-technology interaction patterns,
+    accessibility-focused usability heuristics, responsible interpretation
+    guidance, provenance, and evaluation methodology. Authored Markdown is the
+    human-readable source; generated YAML and JSON Schemas support structured
+    agent and evaluation-pipeline consumption.
+  resource_type: methodology
+  normative_status: informative
+  audience:
+  - accessibility evaluators
+  - designers
+  - researchers
+  - developers
+  - AI agent developers
+  scope: >
+    Functional access considerations, evaluation lenses, assistive-technology
+    interaction patterns, usability heuristics, responsible-use guidance, and
+    structured evaluation methodology. The documents use EN 301 549 FPS
+    clauses as an organizing reference and are not a WCAG success-criterion
+    mapping.
+  limitations: >
+    Reference guidance, not a WCAG compliance testing tool, conformance
+    certification, representation of disabled people, or substitute for user
+    research. Some consideration documents are stubs. The project has no
+    release/tag convention yet and recommends pinning reviewed commits.
+    Original contributions are MIT-licensed, but W3C-derived cognitive and WCAG
+    material carries separate licence and attribution terms.
+  authority_level: expert-interpretation
+  authority_basis: >
+    Microsoft's expert synthesis of established accessibility knowledge,
+    standards, assistive-technology interaction patterns, and documented
+    research, with stated community-validation intent. The project explicitly
+    distinguishes this interpretation from normative standards and from direct
+    input by people with disabilities.
+  topic_tags:
+  - access-considerations
+  - en-301-549
+  - functional-performance-statements
+  - assistive-technology
+  - keyboard
+  - voice-control
+  - cognitive
+  - visual
+  - nonvisual
+  - evaluation
+  - usability-heuristics
+  - responsible-ai
+  - ai-agents
+  jurisdiction: global
+  wcag_version:
+  - '2.2'
+  last_reviewed: '2026-11-11'
+  owner: Microsoft Corporation
+  license: MIT
+  license_notes: >
+    MIT covers original contributions. W3C-derived cognitive considerations
+    and the WCAG reference require their own notices and W3C terms; a
+    repository-wide MIT designation does not remove third-party obligations.
+  status: active
+  ai_scraping: restricted
+  ai_scraping_notes: >
+    Use for reference and citation. Do not assume that MIT or public
+    availability grants rights to train on, redistribute, or reproduce
+    W3C-derived material. Preserve notices and provenance when reusing any
+    portion, and cite the original maintainers.
+  recommended_use: >
+    Use as an evaluation lens and methodology reference when investigating
+    access strategies and possible barriers. Pair it with this repository's
+    governance, component guidance, and testing procedures; do not present FPS
+    clauses as WCAG success criteria.
+  local_guidance:
+  - examples/MANUAL_ACCESSIBILITY_TESTING_GUIDE.md
+  - examples/KEYBOARD_ACCESSIBILITY_BEST_PRACTICES.md
+  - examples/CHARTS_GRAPHS_ACCESSIBILITY_BEST_PRACTICES.md
+  - examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md
+  additional_urls:
+  - https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/responsible-consideration-use.md
+  - https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/consideration-interpretation.md
+  - https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/licensing.md
+  - https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/provenance.json
 - id: national-association-of-the-deaf
   domain: national association of the deaf
   url: https://nad.org
@@ -2042,7 +2129,8 @@ sources:
   full_url: https://www.opquast.com/
   best_for: digital quality, web quality, accessibility, security, performance, privacy, ecodesign, checklists
   description: Opquast develops and disseminates public repositories of best practices for web quality. The Opquast Digital Quality Checklist (Version 5, 2025–2030) contains 245 rules across 14 categories covering accessibility, security, performance, privacy, ecodesign, and overall web quality. Available in English and French at checklists.opquast.com. Opquast is a registered trademark and also provides skills certification.
-  authority_level: recommended
+  authority_level: established
+  authority_basis: Publisher-maintained digital-quality framework with a public checklist; useful and widely cited, but not a normative accessibility standard.
   topic_tags:
   - accessibility
   - web-quality
@@ -2069,7 +2157,9 @@ sources:
   full_url: https://checklists.opquast.com/en/digital-quality/
   best_for: digital quality checklist, web quality rules, accessibility rules, security rules, performance rules, privacy rules
   description: The Opquast Digital Quality Checklist — 245 rules to improve websites and applications. Version 5, 2025–2030. Covers 14 categories including content, personal data, e-commerce, forms, navigation, presentation, security, server performance, and code structure. Published under Creative Commons BY-SA 4.0. Also available in French at checklists.opquast.com/fr/digital-quality/.
-  authority_level: recommended
+  authority_level: established
+  authority_basis: Publisher-maintained checklist under CC BY-SA 4.0; it is a quality framework, not a normative accessibility standard.
+  license_notes: CC BY-SA 4.0 requires attribution and share-alike terms; verify before adapting or redistributing the checklist text.
   topic_tags:
   - accessibility
   - web-quality
@@ -2300,8 +2390,8 @@ sources:
   - assistive-technology
   jurisdiction: US
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-11-11'
+  owner: U.S. Department of Labor
   license: Public Domain
   status: active
 - id: uk-gov-accessibility-blog
@@ -2759,8 +2849,8 @@ sources:
   - assistive-technology
   jurisdiction: global
   wcag_version: []
-  last_reviewed: null
-  owner: null
+  last_reviewed: '2026-11-11'
+  owner: University of Minnesota Duluth
   license: unknown
   status: active
 - id: overlayfactsheet
@@ -2867,7 +2957,7 @@ sources:
   last_reviewed: null
   owner: DockYard
   license: unknown
-  status: inactive
+  status: not active
 - id: pmc-dyslexia-fonts
   domain: PMC - Typography and Dyslexia
   url: pmc.ncbi.nlm.nih.gov/articles/PMC5934461

@@ -111,7 +111,7 @@ Include a simple test: can a Copilot agent, given only `AGENTS.md` and `examples
 ## References
 
 - GitHub accessibility agents guide: https://accessibility.github.com/documentation/guide/getting-started-with-agents/
-- Current AGENTS.md: [AGENTS.md](../AGENTS.md)
-- Current prompt starter: [examples/ACCESSIBILITY_PROMPT_STARTER.md](../examples/ACCESSIBILITY_PROMPT_STARTER.md)
+- Current AGENTS.md: [AGENTS.md](../../AGENTS.md)
+- Current prompt starter: [examples/ACCESSIBILITY_PROMPT_STARTER.md](../../examples/ACCESSIBILITY_PROMPT_STARTER.md)
 - wai-yaml-ld (machine-readable WCAG standards for agents): https://github.com/mgifford/wai-yaml-ld
 - WCAG 2.2 quick reference: https://www.w3.org/WAI/WCAG22/quickref/

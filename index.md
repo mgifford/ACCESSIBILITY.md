@@ -23,7 +23,7 @@ full_width: true
     </div>
     <aside class="code-card" aria-label="Simple sample ACCESSIBILITY.md snippet">
       <h2>Simple Sample ACCESSIBILITY.md</h2>
-      <p><a href="./ACCESSIBILITY-template.md">See full ACCESSIBILITY-template.md</a></p>
+      <p><a href="./examples/ACCESSIBILITY-template.md">See full ACCESSIBILITY-template.md</a></p>
       <pre><code># ACCESSIBILITY.md
 
 ## Conformance
@@ -400,7 +400,7 @@ full_width: true
     <div class="steps">
       <article class="step">
         <h3>1. Start with the Template</h3>
-        <p>Begin with <a href="./ACCESSIBILITY-template.md">ACCESSIBILITY-template.md</a>, customise it for your project, and place it at your repository root. Link it from your README.</p>
+        <p>Begin with <a href="./examples/ACCESSIBILITY-template.md">ACCESSIBILITY-template.md</a>, customise it for your project, and place it at your repository root. Link it from your README.</p>
       </article>
       <article class="step">
         <h3>2. Set Up GitHub Workflows</h3>
@@ -411,7 +411,7 @@ full_width: true
       <article class="step">
         <h3>3. Configure AI Agents</h3>
         <p>
-          Install skills globally from the <a href="https://github.com/mgifford/accessibility-skills">accessibility-skills</a> repository in Codex, Claude Code, or other AI coding assistants. Or reference <a href="./AGENTS.html">AGENTS.md</a> / create <code>.cursorrules</code> for project-level configuration.
+          Install skills globally from the <a href="https://github.com/mgifford/accessibility-skills">accessibility-skills</a> repository in Codex, Claude Code, or other AI coding assistants. Or reference <a href="./AGENTS.md">AGENTS.md</a> / create <code>.cursorrules</code> for project-level configuration.
         </p>
       </article>
       <article class="step">

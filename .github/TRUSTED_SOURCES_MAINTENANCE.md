@@ -88,19 +88,35 @@ The script maintains a history file at `.github/data/url_error_history.json`:
 
 ## Respecting Content Creator Preferences
 
-The script respects the `ai_scraping` field in TRUSTED_SOURCES.yaml:
-- `allowed` (default): Content can be used
-- `prohibited`: Do not scrape/train on content
-- `restricted`: Use only for reference/citation
+The registry records an `ai_scraping` policy, but the maintenance script is
+not a consent or licence enforcement system. It applies these rules:
+
+- `prohibited`: URL validation, licence detection, and freshness checks skip
+  the source. The script makes no request to it. The entry remains in the
+  registry for citation and human discovery.
+- `restricted`: the script may check availability, but its content must not be
+  used for training.
+- `allowed` (default when omitted): availability checks may run, subject to
+  the source's own terms.
+
+An omitted value is not independent proof of permission. The script does not
+train on source content, and a successful check does not grant reuse rights.
 
 ## Quality Assurance
 
 ### What the Script Does
-- ✅ Validates all URLs monthly
+- ✅ Validates URLs monthly, skipping sources marked `ai_scraping: prohibited`
 - ✅ Tracks 404 errors with two-strike removal
-- ✅ Enriches missing metadata
-- ✅ Detects content staleness
+- ✅ Enriches missing metadata without overriding verified values
+- ✅ Detects content staleness where retrieval is permitted
 - ✅ Creates PRs for human review
+
+The registry validator also checks identifier format, absolute URLs,
+duplicate IDs and URLs, required licence/owner provenance, authority and
+status enums, review-date format, optional field shapes, and local guidance
+paths. It does not decide whether a source is authoritative, accurate, or
+appropriately licensed for a particular use; a human must review those
+judgements.
 
 ### What Humans Should Review
 - ⚠️ Verify sources marked "not active" are truly inactive

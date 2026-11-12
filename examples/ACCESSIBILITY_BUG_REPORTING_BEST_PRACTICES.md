@@ -784,6 +784,26 @@ Preserve the tool's raw output separately by reference when exact round-trip fid
 
 Automation can collect and organize evidence. It should not invent certainty, affected populations, or lived experience.
 
+Keep these states distinct, and say which one a statement is in:
+
+- **Directly observed behavior:** a reproduced interface property, input result, or
+  output, recorded with the environment and conditions.
+- **Potential barrier requiring investigation:** a plausible mismatch between the
+  interface and an access strategy that the available evidence does not yet
+  confirm.
+- **Verified finding:** a barrier confirmed through the project's review and
+  evidence process, within a stated scope.
+- **Unsupported assumption:** a claim about a person, disability, assistive
+  technology, cause, or impact that the evidence does not establish. Do not
+  present it as a finding.
+
+A possible barrier is a reason to investigate, not a diagnosis of a person and
+not a confirmed defect. Keep interface observations separate from claims about
+people, and preserve uncertainty. Microsoft's
+[Responsible Consideration Use](https://github.com/microsoft/Microsoft-Accessibility/blob/main/Accessibility-Considerations-Toolkit/methodology/responsible-consideration-use.md)
+guidance is a useful reference for this boundary; it is not a WCAG conformance
+method.
+
 An automated or AI-assisted reporting workflow should:
 
 1. preserve the raw result, tool version, rule version, configuration, time, and tested URL or route;
