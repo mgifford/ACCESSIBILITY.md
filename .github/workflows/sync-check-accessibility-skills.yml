@@ -60,6 +60,22 @@ jobs:
             echo "has_review=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Generate machine-readable report
+        if: always()
+        working-directory: accessibility-skills
+        env:
+          ACCESSIBILITY_MD_DIR: ${{ github.workspace }}/ACCESSIBILITY.md
+        run: |
+          node scripts/sync.mjs report --format json --output /tmp/sync-report.json || true
+
+      - name: Upload synchronization report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-md-sync-report
+          path: /tmp/sync-report.json
+          if-no-files-found: ignore
+
       - name: Publish the report
         if: always()
         run: |
