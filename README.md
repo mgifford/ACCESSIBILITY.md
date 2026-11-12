@@ -37,6 +37,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 - Installation: [INSTALL.txt](./INSTALL.txt)
 - Procurement: [Section 508 Requirements for Government Contracts](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md)
 - Comparison with complementary resources: [COMPARISONS.md](./COMPARISONS.md)
+- Project maintenance and contributor docs: [docs/README.md](./docs/README.md)
 - Resource discovery by task: [TRUSTED_SOURCES.md](./TRUSTED_SOURCES.md#finding-resources-by-task)
 
 ### Find the right entry point
