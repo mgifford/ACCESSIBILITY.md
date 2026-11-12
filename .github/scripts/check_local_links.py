@@ -18,7 +18,7 @@ from urllib.parse import unquote, urlparse
 
 LINK_PATTERN = re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
 SKIP_PREFIXES = ('http://', 'https://', 'mailto:', 'tel:', 'data:', 'javascript:')
-DEFAULT_GLOBS = ('*.md', 'examples/**/*.md', '.github/**/*.md')
+DEFAULT_GLOBS = ('*.md', 'docs/**/*.md', 'examples/**/*.md', '.github/**/*.md')
 
 
 def find_markdown_files(root: str) -> List[str]:

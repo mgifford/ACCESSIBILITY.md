@@ -1,3 +1,8 @@
+---
+title: Branch Merge Status Report (Archive)
+layout: prose
+---
+
 # Branch Merge Status Report
 
 **Generated:** 2026-02-28  

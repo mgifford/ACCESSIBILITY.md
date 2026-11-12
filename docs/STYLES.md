@@ -1,3 +1,8 @@
+---
+title: Design and Content Standards
+layout: prose
+---
+
 # STYLES.md: Unified design and content standards
 
 ---
@@ -193,7 +198,7 @@ Always honor CSS media query preferences before adding JavaScript-driven control
 }
 ```
 
-See also: `ACCESSIBILITY.md`, and the [User Personalization Best Practices](examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) guide for JavaScript-driven preference controls.
+See also: `ACCESSIBILITY.md`, and the [User Personalization Best Practices](../examples/USER_PERSONALIZATION_ACCESSIBILITY_BEST_PRACTICES.md) guide for JavaScript-driven preference controls.
 
 ### 3.5 Page layout patterns
 
@@ -229,7 +234,7 @@ All three children share horizontal padding of `1rem` to keep text flush with th
 ---
 
 ## 4. Accessibility and semantic logic
-This section implements the mandates in [ACCESSIBILITY.md](ACCESSIBILITY.md).
+This section implements the mandates in [ACCESSIBILITY.md](../ACCESSIBILITY.md).
 
 * **Heading Hierarchy:** Must be logical. H1 → H2 → H3. Never skip levels for "style."
 * **Alt-Text:** Must describe the *intent* of the image, not just the pixels. 
@@ -245,7 +250,7 @@ This section implements the mandates in [ACCESSIBILITY.md](ACCESSIBILITY.md).
 3. **Reference Accessibility:** Before outputting a UI component, check `ACCESSIBILITY.md` for ARIA and keyboard navigation requirements.
 4. **Markdown Formatting:** Always use semantic Markdown. Use GFM (GitHub Flavored Markdown) callouts (`> [!NOTE]`) for emphasis.
 
-Also see: [AGENTS.md](AGENTS.md)
+Also see: [AGENTS.md](../AGENTS.md)
 
 ---
 

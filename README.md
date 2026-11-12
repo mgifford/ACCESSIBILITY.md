@@ -37,6 +37,7 @@ Just as `SECURITY.md` defines how to handle vulnerabilities, **`ACCESSIBILITY.md
 - Installation: [INSTALL.txt](./INSTALL.txt)
 - Procurement: [Section 508 Requirements for Government Contracts](https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md)
 - Comparison with complementary resources: [COMPARISONS.md](./COMPARISONS.md)
+- Project maintenance and contributor docs: [docs/README.md](./docs/README.md)
 - Resource discovery by task: [TRUSTED_SOURCES.md](./TRUSTED_SOURCES.md#finding-resources-by-task)
 
 ### Find the right entry point
@@ -66,11 +67,17 @@ This repository is organized to separate **content you adopt** from **project do
 ├── ACCESSIBILITY.md                ← Our own accessibility commitment
 ├── AGENTS.md                       ← AI agent instructions (copy/adapt)
 ├── CONTRIBUTING.md                 ← How to contribute to this project
-├── STYLES.md                       ← Design and content standards
 ├── SUSTAINABILITY.md               ← Sustainability policy
 ├── BROWSER_SUPPORT.md              ← Browser support guidelines
 ├── COMPARISONS.md                  ← Comparison with similar projects
 ├── README.md                       ← This file
+│
+├── docs/                           ← Project maintenance and contributor docs
+│   ├── README.md                   ← Index
+│   ├── DEFINITION_OF_DONE.md       ← Report readiness checklist
+│   ├── STYLES.md                   ← Design and content standards
+│   ├── COMPARISON_WITH_KREERC.md   ← Legacy redirect to COMPARISONS.md
+│   └── archive/                    ← Historical project records
 │
 ├── examples/                       ← Copy these to your project
 │   ├── ACCESSIBILITY-template.md             ← Start here: copy this template
